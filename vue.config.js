@@ -3,6 +3,9 @@ const version = require('./package.json').version;
 process.env.VUE_APP_VERSION = version;
 
 module.exports = {
+    publicPath: process.env.NODE_ENV === 'production'
+        ? '/media-tracker/'
+        : '/',
     pwa: {
         name: 'Media Tracker',
         themeColor: '#4299E1',
