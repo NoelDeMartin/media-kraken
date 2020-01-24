@@ -1,5 +1,8 @@
 import Vue from 'vue';
+
 import App from '@/App.vue';
+
+import { bootServices } from '@/services';
 import plugins from '@/plugins';
 
 Vue.config.productionTip = false;
@@ -9,4 +12,13 @@ Vue.instance = new Vue({
     render: h => h(App),
 });
 
-Vue.instance.$mount('#app');
+bootServices(Vue.instance)
+    .catch(error => error)
+    .then(error => {
+        Vue.instance.$mount('#app');
+
+        if (error) {
+            alert('Something went wrong! (look at the console for details)');
+            console.error(error);
+        }
+    });

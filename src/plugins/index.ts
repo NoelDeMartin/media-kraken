@@ -1,3 +1,7 @@
 import '@/plugins/registerServiceWorker';
 
-export default {};
+import store from '@/plugins/vuex';
+
+export default {
+    store,
+};
