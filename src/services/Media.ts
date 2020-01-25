@@ -20,29 +20,27 @@ export default class Media extends Service {
             : {};
     }
 
+    public addMovies(movies: Movie[]): void {
+        this.app.$store.commit('setMovies', [...this.movies, ...movies]);
+    }
+
+    protected async init(): Promise<void> {
+        await super.init();
+
+        const movies = await Movie.all();
+
+        this.app.$store.commit('setMovies', movies);
+    }
+
     protected registerStoreModule(store: Store<State>): void {
         store.registerModule('media', {
             state: {
-                movies: [
-                    new Movie(
-                        '1',
-                        'Spirited Away',
-                        'https://m.media-amazon.com/images/M/MV5BNmU5OTQ0OWQtOTY0OS00Yjg4LWE1NDYtNDRhYWMxYWY4OTMwXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_UY1200_CR108,0,630,1200_AL_.jpg',
-                        'https://www.imdb.com/title/tt0245429',
-                    ),
-                    new Movie(
-                        '2',
-                        'Pom Poko',
-                        'https://m.media-amazon.com/images/M/MV5BNDM3MDc3OTk4MF5BMl5BanBnXkFtZTcwMzQ2ODIyNw@@._V1_UY1200_CR108,0,630,1200_AL_.jpg"',
-                        'https://www.imdb.com/title/tt0110008',
-                    ),
-                    new Movie(
-                        '3',
-                        'The Tale of The Princess Kaguya',
-                        'https://m.media-amazon.com/images/M/MV5BMTcwODI0MzEwOF5BMl5BanBnXkFtZTgwNjkyNTEwMTE@._V1_UY1200_CR110,0,630,1200_AL_.jpg',
-                        'https://www.imdb.com/title/tt2576852',
-                    ),
-                ],
+                movies: [],
+            },
+            mutations: {
+                setMovies(state: State, movies: Movie[]) {
+                    state.movies = movies;
+                },
             },
         });
     }

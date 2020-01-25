@@ -1,15 +1,12 @@
-export default class Movie {
+import { FieldType } from 'soukai';
+import { SolidModel } from 'soukai-solid';
 
-    public id: string;
-    public title: string;
-    public posterUrl: string;
-    public externalUrl: string;
+export default class Movie extends SolidModel {
 
-    constructor(id: string, title: string, posterUrl: string, externalUrl: string) {
-        this.id = id;
-        this.title = title;
-        this.posterUrl = posterUrl;
-        this.externalUrl = externalUrl;
-    }
+    public static fields = {
+        title: FieldType.String,
+        posterUrl: FieldType.String,
+        externalUrl: FieldType.String,
+    };
 
 }

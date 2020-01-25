@@ -1,5 +1,5 @@
 <template>
-    <div class="flex flex-wrap justify-center -m-2 max-w-100">
+    <div class="flex flex-wrap justify-center max-w-100 mb-4">
         <MoviesGridItem
             v-for="movie of movies"
             :key="movie.id"

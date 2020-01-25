@@ -1,4 +1,5 @@
 import '@/plugins/registerServiceWorker';
+import '@/plugins/soukai';
 
 import store from '@/plugins/vuex';
 
