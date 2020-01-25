@@ -7,6 +7,7 @@ export default class Movie extends SolidModel {
         title: FieldType.String,
         posterUrl: FieldType.String,
         externalUrl: FieldType.String,
+        watched: FieldType.Boolean,
     };
 
 }

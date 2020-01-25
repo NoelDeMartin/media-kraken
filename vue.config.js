@@ -24,6 +24,17 @@ module.exports = {
         if (process.env.NODE_ENV !== 'production') {
             config.resolve.symlinks(false);
         }
+
+        const svgRule = config.module.rule('svg');
+
+        svgRule.uses.clear();
+
+        svgRule
+            .use('babel-loader')
+            .loader('babel-loader')
+            .end()
+            .use('vue-svg-loader')
+            .loader('vue-svg-loader');
     },
     pwa: {
         name: 'Media Tracker',

@@ -2,6 +2,8 @@ import Vue from 'vue';
 
 import App from '@/App.vue';
 
+import '@/components/base';
+
 import { bootServices } from '@/services';
 import plugins from '@/plugins';
 
