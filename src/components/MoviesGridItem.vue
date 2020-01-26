@@ -32,7 +32,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import Movie from '@/models/Movie';
+import Movie from '@/models/soukai/Movie';
 
 export default Vue.extend({
     props: {

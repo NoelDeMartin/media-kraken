@@ -1,8 +1,10 @@
 import { Store } from 'vuex';
 
-import Movie from '@/models/Movie';
+import Movie from '@/models/soukai/Movie';
 
 import Service from '@/services/Service';
+import EventBus from '@/utils/EventBus';
+import User from '@/models/users/User';
 
 interface State {
     movies: Movie[];
@@ -26,10 +28,14 @@ export default class Media extends Service {
 
     protected async init(): Promise<void> {
         await super.init();
+        await this.app.$auth.ready;
 
-        const movies = await Movie.all();
+        if (this.app.$auth.isLoggedIn()) {
+            await this.load(this.app.$auth.user);
+        }
 
-        this.app.$store.commit('setMovies', movies);
+        EventBus.on('login', this.load.bind(this));
+        EventBus.on('logout', this.unload.bind(this));
     }
 
     protected registerStoreModule(store: Store<State>): void {
@@ -43,6 +49,16 @@ export default class Media extends Service {
                 },
             },
         });
+    }
+
+    private async load(user: User): Promise<void> {
+        const movies = await Movie.from(user.storages[0]).all();
+
+        this.app.$store.commit('setMovies', movies);
+    }
+
+    private async unload(): Promise<void> {
+        this.app.$store.commit('setMovies', []);
     }
 
 }

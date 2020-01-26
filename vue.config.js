@@ -8,6 +8,13 @@ module.exports = {
         ? '/media-tracker/'
         : '/',
     configureWebpack: {
+        externals: {
+            'node-fetch': 'fetch',
+            'text-encoding': 'TextEncoder',
+            'whatwg-url': 'window',
+            'isomorphic-fetch': 'fetch',
+            '@trust/webcrypto': 'crypto',
+        },
         resolve: {
             alias: process.env.NODE_ENV !== 'production'
                 ? {

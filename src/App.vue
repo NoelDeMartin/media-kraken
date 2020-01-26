@@ -3,7 +3,8 @@
         id="app"
         class="w-screen h-screen flex items-center justify-center bg-gray-300"
     >
-        <Home />
+        <Home v-if="$auth.loggedIn" />
+        <Login v-else />
     </div>
 </template>
 
@@ -11,10 +12,12 @@
 import Vue from 'vue';
 
 import Home from '@/pages/Home.vue';
+import Login from '@/pages/Login.vue';
 
 export default Vue.extend({
     components: {
         Home,
+        Login,
     },
 });
 </script>

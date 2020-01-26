@@ -1,4 +1,3 @@
-import Soukai, { LocalStorageEngine, definitionsFromContext } from 'soukai';
+import Soukai, { definitionsFromContext } from 'soukai';
 
-Soukai.loadModels(definitionsFromContext(require.context('@/models')));
-Soukai.useEngine(new LocalStorageEngine('media-tracker'));
+Soukai.loadModels(definitionsFromContext(require.context('@/models/soukai')));
