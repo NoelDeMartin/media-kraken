@@ -6,7 +6,8 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "deploy": "scripts/deploy.sh"
+    "deploy": "scripts/deploy.sh",
+    "docs:build": "scripts/compile-docs.sh"
   },
   "dependencies": {
     "rdflib": "^0.19.1",

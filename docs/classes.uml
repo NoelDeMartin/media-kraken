@@ -1,0 +1,25 @@
+@startuml
+
+skinparam monochrome true
+skinparam shadowing false
+
+class Movie {
+    {field} **@type** ldp:Resource
+    {field} **@type** schema:Movie
+    {method} **title:** schema:name
+    {method} **posterUrl:** schema:image
+    {method} **externalUrls[]:** schema:sameAs
+    {method} **createdAt:** purl:created
+    {method} **updatedAt:** purl:modified
+}
+
+class WatchAction {
+    {field} **@type** schema:WatchAction
+    {method} **object:** schema:object
+    {method} **createdAt:** purl:created
+    {method} **updatedAt:** purl:modified
+}
+
+WatchAction --> "1" Movie
+
+@enduml
