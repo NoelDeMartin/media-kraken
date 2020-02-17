@@ -44,7 +44,11 @@ export default Vue.extend({
             const movies = moviesJson.map(json => new Movie(json));
 
             // TODO use proper location
-            await Promise.all(movies.map(movie => movie.save(this.$auth.user!.storages[0])));
+            await Promise.all(movies.map(async movie => {
+                await movie.save(this.$auth.user!.storages[0]);
+
+                movie.setRelationModels('actions', []);
+            }));
 
             this.$media.addMovies(movies);
         },

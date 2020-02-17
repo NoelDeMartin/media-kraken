@@ -53,6 +53,14 @@ export default class Media extends Service {
 
     private async load(user: User): Promise<void> {
         const movies = await Movie.from(user.storages[0]).all();
+        const actionPromises = movies.map(async movie => {
+            if (movie.isRelationLoaded('actions'))
+                return;
+
+            await movie.loadRelation('actions');
+        });
+
+        await Promise.all(actionPromises);
 
         this.app.$store.commit('setMovies', movies);
     }
