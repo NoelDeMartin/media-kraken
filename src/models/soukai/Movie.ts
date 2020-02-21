@@ -33,6 +33,12 @@ export default class Movie extends SolidModel {
         return this.actions && this.actions.length > 0;
     }
 
+    public get uuid(): string | null {
+        return this.url
+            ? this.url.substring(this.url.lastIndexOf('/') + 1)
+            : null;
+    }
+
     public actionsRelationship(): SolidEmbedsRelation<Movie, WatchAction, typeof WatchAction> {
         return this.embeds(WatchAction) as any;
     }

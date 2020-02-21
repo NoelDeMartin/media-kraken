@@ -54,19 +54,22 @@ export default class Auth extends Service {
     }
 
     public async logout(): Promise<void> {
-        if (this.loggedIn) {
-            if (this.user instanceof OfflineUser) {
-                if (!confirm('Logging out from offline mode will delete all your data, are you sure you want to proceed?')) {
-                    return;
-                }
+        if (!this.loggedIn)
+            return;
 
-                Storage.remove('user');
-            } else if (this.user instanceof SolidUser) {
-                await SolidAuthClient.logout();
-            }
+        if (this.user instanceof OfflineUser) {
+            if (!confirm('Logging out from offline mode will delete all your data, are you sure you want to proceed?'))
+                return;
 
-            this.logoutUser();
+            Storage.remove('user');
+        } else if (this.user instanceof SolidUser) {
+            await SolidAuthClient.logout();
         }
+
+        this.logoutUser();
+
+        if (this.app.$router.currentRoute.name !== 'login')
+            this.app.$router.push('/login');
     }
 
     protected get storage(): State {

@@ -17,6 +17,11 @@ Vue.instance = new Vue({
 bootServices(Vue.instance)
     .catch(error => error)
     .then(error => {
+        const { $auth, $router } = Vue.instance;
+
+        if (!$auth.loggedIn && $router.currentRoute.name !== 'login')
+            $router.replace({ name: 'login' });
+
         Vue.instance.$mount('#app');
 
         if (error) {

@@ -33,9 +33,12 @@
             </div>
         </button>
         <div class="opacity-75 bg-black p-2 w-full">
-            <span class="block font-semibold text-white tracking-wider truncate">
+            <router-link
+                :to="{ name: 'movie', params: { uuid: movie.uuid } }"
+                class="block font-semibold text-white tracking-wider truncate"
+            >
                 {{ movie.title }}
-            </span>
+            </router-link>
         </div>
     </div>
 </template>
