@@ -1,4 +1,5 @@
 import User from '@/models/users/User';
+import MediaContainer from '@/models/soukai/MediaContainer';
 
 interface OfflineUserJson {
     name: string;
@@ -26,6 +27,13 @@ export default class OfflineUser extends User {
             avatar_url: this.avatarUrl,
             storages: this.storages,
         };
+    }
+
+    protected async getMoviesContainer(storage: string): Promise<MediaContainer> {
+        const moviesContainer = await MediaContainer.find<MediaContainer>(storage + 'movies/');
+
+        return  moviesContainer
+            || MediaContainer.at(storage).create({ name: 'Movies' });
     }
 
 }

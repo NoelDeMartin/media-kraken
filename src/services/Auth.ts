@@ -1,7 +1,6 @@
 import { Store } from 'vuex';
 
 import { SolidEngine } from 'soukai-solid';
-import $rdf from 'rdflib';
 import SolidAuthClient, { Session } from 'solid-auth-client';
 import Soukai, { LocalStorageEngine } from 'soukai';
 
@@ -11,8 +10,9 @@ import User from '@/models/users/User';
 import OfflineUser from '@/models/users/OfflineUser';
 import SolidUser from '@/models/users/SolidUser';
 
-import Storage from '@/utils/Storage';
 import EventBus from '@/utils/EventBus';
+import RDFStore from '@/utils/RDFStore';
+import Storage from '@/utils/Storage';
 
 interface State {
     user: User | null;
@@ -120,17 +120,21 @@ export default class Auth extends Service {
     }
 
     protected async loginUser(user: User): Promise<void> {
-        if (!this.loggedIn) {
-            this.app.$store.commit('setUser', user);
+        if (this.loggedIn)
+            return;
 
-            if (user instanceof OfflineUser) {
-                Soukai.useEngine(new LocalStorageEngine('media-tracker'));
-            } else if (user instanceof SolidUser) {
-                Soukai.useEngine(new SolidEngine(SolidAuthClient.fetch.bind(SolidAuthClient)));
-            }
+        this.app.$store.commit('setUser', user);
 
-            EventBus.emit('login', user);
+        if (user instanceof OfflineUser) {
+            Soukai.useEngine(new LocalStorageEngine('media-tracker'));
+        } else if (user instanceof SolidUser) {
+            Soukai.useEngine(new SolidEngine(SolidAuthClient.fetch.bind(SolidAuthClient)));
         }
+
+        EventBus.emit('login', user);
+
+        if (this.app.$router.currentRoute.name === 'login')
+            this.app.$router.replace({ name: 'home' });
     }
 
     protected async logoutUser(): Promise<void> {
@@ -153,29 +157,25 @@ export default class Auth extends Service {
         }
     }
 
-    private async loginFromSession(session: Session): Promise<void> {
-        const FOAF = $rdf.Namespace('http://xmlns.com/foaf/0.1/');
-        const PIM = $rdf.Namespace('http://www.w3.org/ns/pim/space#');
+    private async loginFromSession({ webId }: Session): Promise<void> {
+        const store = await RDFStore.fromUrl(webId);
 
-        const store = $rdf.graph();
-        const data = await SolidAuthClient.fetch(session.webId).then(res => res.text());
-
-        $rdf.parse(data, store, session.webId, null as any, null as any);
-
-        const webId = store.sym(session.webId);
-
-        const name = store.any(webId, FOAF('name'), null as any, null as any);
-        const avatarUrl = store.any(webId, FOAF('img'), null as any, null as any);
-        const storages = store.each(webId, PIM('storage'), null as any, null as any);
+        const name = store.statement(webId, 'foaf:name');
+        const avatarUrl = store.statement(webId, 'foaf:img');
+        const storages = store.statements(webId, 'pim:storage');
 
         // TODO load extended profile to find additional storages
 
+        if (storages.length === 0)
+            throw new Error("Couldn't find pim:storage in profile");
+
         await this.loginUser(
             new SolidUser(
-                webId.value,
-                name ? name.value : 'Unknown',
-                avatarUrl ? avatarUrl.value : null,
-                (storages || []).map($storage => $storage.value),
+                webId,
+                name ? name.object.value : 'Unknown',
+                avatarUrl ? avatarUrl.object.value : null,
+                storages.map(storage => storage.object.value),
+                store,
             ),
         );
     }

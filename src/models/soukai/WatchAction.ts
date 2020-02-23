@@ -13,6 +13,8 @@ export default class WatchAction extends SolidModel {
 
     public static rdfsClasses = ['schema:WatchAction'];
 
+    public static timestamps = ['createdAt'];
+
     public static fields = {
         object: {
             type: FieldType.Key,

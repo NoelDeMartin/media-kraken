@@ -35,18 +35,21 @@ export default Vue.extend({
     methods: {
         async importMovies() {
             const data = await FilePicker.upload({ accept: '.json' });
-
             const moviesJson: any[] = JSON.parse(data);
-            const movies = moviesJson.map(json => new Movie(json));
 
-            // TODO use proper location
-            await Promise.all(movies.map(async movie => {
-                await movie.save(this.$auth.user!.storages[0]);
+            // TODO implement createMany in soukai
+            await Promise.all(moviesJson.map(json => this.createMovieFromJson(json)));
+        },
+        async createMovieFromJson(json: any): Promise<void> {
+            const attributes = {
+                title: json.title,
+                posterUrl: json.posterUrl,
+                externalUrls: json.externalUrls || [],
+            };
 
-                movie.setRelationModels('actions', []);
-            }));
+            // TODO parse watch actions
 
-            this.$media.addMovies(movies);
+            await this.$media.moviesContainer!.createMovie(attributes);
         },
     },
 });

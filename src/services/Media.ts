@@ -1,29 +1,34 @@
 import { Store } from 'vuex';
 
+import MediaContainer from '@/models/soukai/MediaContainer';
 import Movie from '@/models/soukai/Movie';
-
-import Service from '@/services/Service';
-import EventBus from '@/utils/EventBus';
 import User from '@/models/users/User';
 
+import Service from '@/services/Service';
+
+import EventBus from '@/utils/EventBus';
+
 interface State {
-    movies: Movie[];
+    moviesContainer: MediaContainer | null;
 }
 
 export default class Media extends Service {
 
     public get movies(): Movie[] {
-        return this.storage.movies || [];
+        if (!this.storage.moviesContainer)
+            return [];
+
+        return this.storage.moviesContainer.movies || [];
+    }
+
+    public get moviesContainer(): MediaContainer | null {
+        return this.storage.moviesContainer;
     }
 
     protected get storage(): State {
         return this.app.$store.state.media
             ? this.app.$store.state.media
             : {};
-    }
-
-    public addMovies(movies: Movie[]): void {
-        this.app.$store.commit('setMovies', [...this.movies, ...movies]);
     }
 
     protected async init(): Promise<void> {
@@ -41,19 +46,23 @@ export default class Media extends Service {
     protected registerStoreModule(store: Store<State>): void {
         store.registerModule('media', {
             state: {
-                movies: [],
+                moviesContainer: null,
             },
             mutations: {
-                setMovies(state: State, movies: Movie[]) {
-                    state.movies = movies;
+                setMoviesContainer(state: State, moviesContainer: MediaContainer | null) {
+                    state.moviesContainer = moviesContainer;
                 },
             },
         });
     }
 
     private async load(user: User): Promise<void> {
-        const movies = await Movie.from(user.storages[0]).all();
-        const actionPromises = movies.map(async movie => {
+        const { movies: moviesContainer } = await user.initContainers();
+
+        if (!moviesContainer.isRelationLoaded('movies'))
+            await moviesContainer.loadRelation('movies');
+
+        const actionPromises = moviesContainer.movies!.map(async movie => {
             if (movie.isRelationLoaded('actions'))
                 return;
 
@@ -62,11 +71,11 @@ export default class Media extends Service {
 
         await Promise.all(actionPromises);
 
-        this.app.$store.commit('setMovies', movies);
+        this.app.$store.commit('setMoviesContainer', moviesContainer);
     }
 
     private async unload(): Promise<void> {
-        this.app.$store.commit('setMovies', []);
+        this.app.$store.commit('setMoviesContainer', null);
     }
 
 }

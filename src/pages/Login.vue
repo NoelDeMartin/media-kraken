@@ -49,16 +49,9 @@ export default Vue.extend({
     methods: {
         async loginWithSolid() {
             await this.$auth.loginWithSolid(this.idp);
-
-            this.goHome();
         },
         async loginOffline() {
             await this.$auth.loginOffline();
-
-            this.goHome();
-        },
-        goHome() {
-            this.$router.push({ name: 'home' });
         },
     },
 });

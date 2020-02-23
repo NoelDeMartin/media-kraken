@@ -3,6 +3,13 @@
 skinparam monochrome true
 skinparam shadowing false
 
+class MediaContainer {
+    {field} **@type** ldp:Container
+    {method} **name:** rdfs:label
+    {method} **createdAt:** purl:created
+    {method} **updatedAt:** purl:modified
+}
+
 class Movie {
     {field} **@type** ldp:Resource
     {field} **@type** schema:Movie
@@ -17,9 +24,10 @@ class WatchAction {
     {field} **@type** schema:WatchAction
     {method} **object:** schema:object
     {method} **createdAt:** purl:created
-    {method} **updatedAt:** purl:modified
 }
 
 WatchAction --> "1" Movie
+Movie --> "*" WatchAction : embeds
+MediaContainer --> "*" Movie : contains
 
 @enduml
