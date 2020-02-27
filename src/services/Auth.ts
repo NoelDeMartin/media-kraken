@@ -126,7 +126,7 @@ export default class Auth extends Service {
         this.app.$store.commit('setUser', user);
 
         if (user instanceof OfflineUser) {
-            Soukai.useEngine(new LocalStorageEngine('media-tracker'));
+            Soukai.useEngine(new LocalStorageEngine('media-kraken'));
         } else if (user instanceof SolidUser) {
             Soukai.useEngine(new SolidEngine(SolidAuthClient.fetch.bind(SolidAuthClient)));
         }

@@ -5,7 +5,7 @@ process.env.VUE_APP_VERSION = version;
 
 module.exports = {
     publicPath: process.env.NODE_ENV === 'production'
-        ? '/media-tracker/'
+        ? '/media-kraken/'
         : '/',
     configureWebpack: {
         externals: {
@@ -44,7 +44,7 @@ module.exports = {
             .loader('vue-svg-loader');
     },
     pwa: {
-        name: 'Media Tracker',
+        name: 'Media Kraken',
         themeColor: '#4299E1',
         msTileColor: '#4299E1',
         manifestOptions: {

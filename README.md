@@ -1,4 +1,4 @@
-# Media Tracker
+# Media Kraken
 
 Movies media tracker application.
 
