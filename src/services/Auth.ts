@@ -43,7 +43,7 @@ export default class Auth extends Service {
 
         await this.loginUser(user);
 
-        Storage.set('user', user.toJson());
+        Storage.set('user', user.toJSON());
     }
 
     public async loginWithSolid(idp: string): Promise<void> {
@@ -98,7 +98,7 @@ export default class Auth extends Service {
         }
 
         if (user !== null) {
-            await this.loginUser(OfflineUser.fromJson(user));
+            await this.loginUser(OfflineUser.fromJSON(user));
         }
     }
 

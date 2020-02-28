@@ -9,9 +9,15 @@
             <div class="flex-grow" />
             <button
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
-                @click="importMovies"
+                @click="importMoviesFromJSON"
             >
-                Import
+                Import from JSON
+            </button>
+            <button
+                class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
+                @click="importMoviesFromTViso"
+            >
+                Import from TViso
             </button>
             <button
                 class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
@@ -28,28 +34,40 @@
 import Vue from 'vue';
 
 import Movie from '@/models/soukai/Movie';
+import TVisoMovie from '@/models/third-party/TVisoMovie';
 
 import FilePicker from '@/utils/FilePicker';
 
 export default Vue.extend({
     methods: {
-        async importMovies() {
+        async importMoviesFromJSON() {
+            // TODO validate json
             const data = await FilePicker.upload({ accept: '.json' });
-            const moviesJson: any[] = JSON.parse(data);
 
-            // TODO implement createMany in soukai
-            await Promise.all(moviesJson.map(json => this.createMovieFromJson(json)));
+            this.$media.importMovies(
+                JSON.parse(data),
+                'json',
+                {
+                    onStart: () => console.log('Start importing'),
+                    onProgress: (current, total) => console.log(`Imported ${current}/${total}`),
+                    onCompleted: (totalRaw, totalImported) => console.log(`Completed, ${totalImported}/${totalRaw} were imported successfully`),
+                },
+            );
         },
-        async createMovieFromJson(json: any): Promise<void> {
-            const attributes = {
-                title: json.title,
-                posterUrl: json.posterUrl,
-                externalUrls: json.externalUrls || [],
-            };
+        async importMoviesFromTViso() {
+            // TODO validate json
 
-            // TODO parse watch actions
+            const data = await FilePicker.upload({ accept: '.json' });
 
-            await this.$media.moviesContainer!.createMovie(attributes);
+            this.$media.importMovies(
+                JSON.parse(data).filter(TVisoMovie.isTVisoMovieData),
+                'tviso',
+                {
+                    onStart: () => console.log('Start importing'),
+                    onProgress: (current, total) => console.log(`Imported ${current}/${total}`),
+                    onCompleted: (totalRaw, totalImported) => console.log(`Completed, ${totalImported}/${totalRaw} were imported successfully`),
+                },
+            );
         },
     },
 });

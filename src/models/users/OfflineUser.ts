@@ -1,7 +1,7 @@
 import User from '@/models/users/User';
 import MediaContainer from '@/models/soukai/MediaContainer';
 
-interface OfflineUserJson {
+interface OfflineUserJSON {
     name: string;
     avatar_url: string | null;
     storages: string[];
@@ -9,7 +9,7 @@ interface OfflineUserJson {
 
 export default class OfflineUser extends User {
 
-    public static fromJson(json: OfflineUserJson): OfflineUser {
+    public static fromJSON(json: OfflineUserJSON): OfflineUser {
         return new OfflineUser(json.name, json.avatar_url, json.storages);
     }
 
@@ -21,7 +21,7 @@ export default class OfflineUser extends User {
         super(name, avatarUrl, storages);
     }
 
-    public toJson(): OfflineUserJson {
+    public toJSON(): OfflineUserJSON {
         return {
             name: this.name,
             avatar_url: this.avatarUrl,

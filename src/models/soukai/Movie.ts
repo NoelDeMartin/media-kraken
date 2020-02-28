@@ -1,4 +1,4 @@
-import { FieldType } from 'soukai';
+import { FieldType, Attributes } from 'soukai';
 import { SolidModel, SolidEmbedsRelation } from 'soukai-solid';
 
 import WatchAction from '@/models/soukai/WatchAction';
@@ -20,7 +20,6 @@ export default class Movie extends SolidModel {
         posterUrl: {
             type: FieldType.String,
             rdfProperty: 'schema:image',
-            required: true,
         },
         externalUrls: {
             type: FieldType.Array,
@@ -33,6 +32,10 @@ export default class Movie extends SolidModel {
         return this.actions && this.actions.length > 0;
     }
 
+    public get watchedAt(): Date | null {
+        return this.watched ? this.actions[0].createdAt : null;
+    }
+
     public get uuid(): string | null {
         return this.url
             ? this.url.substring(this.url.lastIndexOf('/') + 1)
@@ -43,8 +46,13 @@ export default class Movie extends SolidModel {
         return this.embeds(WatchAction) as any;
     }
 
-    public async watch(): Promise<void> {
-        const action = await this.actionsRelationship().create({ object: this.url });
+    public async watch(date?: Date): Promise<void> {
+        const actionAttributes: Attributes = { object: this.url };
+
+        if (date)
+            actionAttributes.createdAt = date;
+
+        const action = await this.actionsRelationship().create(actionAttributes);
 
         // TODO maybe this should be handled by soukai...
         if (this.isRelationLoaded('actions'))
