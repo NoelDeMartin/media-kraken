@@ -13,11 +13,24 @@ interface UploadConfig {
     accept?: string;
 }
 
+const BODY_CANCEL_EVENTS = ['focus', 'mousemove', 'touchmove'];
+
 class FilePicker {
 
     private input: HTMLInputElement;
 
     private activeUpload?: ActiveUpload;
+
+    private cancelActiveUpload = () => {
+        if (!this.activeUpload)
+            return;
+
+        BODY_CANCEL_EVENTS.map(
+            event => document.body.removeEventListener(event, this.cancelActiveUpload),
+        );
+
+        setTimeout(() => delete this.activeUpload, 200);
+    }
 
     constructor() {
         this.input = document.createElement('input');
@@ -40,6 +53,10 @@ class FilePicker {
     private initializeActiveUpload(output: Output = Output.Raw): Promise<string> {
         this.activeUpload = { output };
 
+        BODY_CANCEL_EVENTS.map(
+            event => document.body.addEventListener(event, this.cancelActiveUpload),
+        );
+
         return new Promise<string>((resolve, reject) => {
             this.activeUpload!.resolve = resolve;
             this.activeUpload!.reject = reject;
@@ -51,26 +68,25 @@ class FilePicker {
             return;
 
         const reader = new FileReader();
+        const activeUpload = this.activeUpload;
+
+        delete this.activeUpload;
 
         reader.onload = () => {
-            if (!this.activeUpload)
+            if (!activeUpload)
                 return;
 
-            this.activeUpload.resolve!(reader.result as string);
-
-            delete this.activeUpload;
+            activeUpload.resolve!(reader.result as string);
         };
 
         reader.onerror = error => {
-            if (!this.activeUpload)
+            if (!activeUpload)
                 return;
 
-            this.activeUpload.reject!(error);
-
-            delete this.activeUpload;
+            activeUpload.reject!(error);
         };
 
-        switch(this.activeUpload.output) {
+        switch(activeUpload.output) {
             case Output.Raw:
                 reader.readAsText(this.input.files[0]);
                 break;
