@@ -44,7 +44,9 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import JSONMovie from '@/models/third-party/JSONMovie';
 import Movie from '@/models/soukai/Movie';
+import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 import TVisoMovie from '@/models/third-party/TVisoMovie';
 
 import FilePicker from '@/utils/FilePicker';
@@ -62,33 +64,27 @@ export default Vue.extend({
             this.$router.push({ name: 'search', query: { query } });
         },
         async importMoviesFromJSON() {
-            // TODO validate json
             const data = await FilePicker.upload({ accept: '.json' });
+            const thirdPartyMovies = JSON.parse(data)
+                .filter((movieData: any) => JSONMovie.isValidData(movieData))
+                .map((movieData: any) => new JSONMovie(movieData));
 
-            this.$media.importMovies(
-                JSON.parse(data),
-                'json',
-                {
-                    onStart: () => console.log('Start importing'),
-                    onProgress: (current, total) => console.log(`Imported ${current}/${total}`),
-                    onCompleted: (totalRaw, totalImported) => console.log(`Completed, ${totalImported}/${totalRaw} were imported successfully`),
-                },
-            );
+            this.importMovies(thirdPartyMovies);
         },
         async importMoviesFromTViso() {
-            // TODO validate json
-
             const data = await FilePicker.upload({ accept: '.json' });
+            const thirdPartyMovies = JSON.parse(data)
+                .filter((movieData: any) => TVisoMovie.isValidData(movieData))
+                .map((movieData: any) => new TVisoMovie(movieData));
 
-            this.$media.importMovies(
-                JSON.parse(data).filter(TVisoMovie.isTVisoMovieData),
-                'tviso',
-                {
-                    onStart: () => console.log('Start importing'),
-                    onProgress: (current, total) => console.log(`Imported ${current}/${total}`),
-                    onCompleted: (totalRaw, totalImported) => console.log(`Completed, ${totalImported}/${totalRaw} were imported successfully`),
-                },
-            );
+            this.importMovies(thirdPartyMovies);
+        },
+        importMovies(movies: ThirdPartyMovie[]) {
+            this.$media.importMovies(movies, {
+                onStart: () => console.log('Start importing'),
+                onProgress: (current, total) => console.log(`Imported ${current}/${total}`),
+                onCompleted: (totalRaw, totalImported) => console.log(`Completed, ${totalImported}/${totalRaw} were imported successfully`),
+            });
         },
     },
 });

@@ -5,6 +5,7 @@ import Movie from '@/models/soukai/Movie';
 import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 
 import Arr from '@/utils/Arr';
+import Time from '@/utils/Time';
 
 interface Data {
     title: string;
@@ -14,6 +15,29 @@ interface Data {
 }
 
 export default class JSONMovie extends ThirdPartyMovie {
+
+    public static isValidData(data: any): data is Data {
+        return typeof data.title === 'string'
+            && (
+                !data.posterUrl || (
+                    typeof data.posterUrl === 'string' &&
+                    data.posterUrl.startsWith('http')
+                )
+            )
+            && (
+                !data.watchedAt || (
+                    typeof data.watchedAt === 'string' &&
+                    Time.isValidDateString(data.watchedAt)
+                )
+            )
+            && (
+                !data.externalUrls || (
+                    Array.isArray(data.externalUrls) &&
+                    !!data.externalUrls.find((url: any) => typeof url !== 'string') &&
+                    !!data.externalUrls.find((url: string) => !url.startsWith('http'))
+                )
+            );
+    }
 
     protected data!: Data;
 

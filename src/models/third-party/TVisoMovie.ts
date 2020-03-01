@@ -7,6 +7,7 @@ import Movie from '@/models/soukai/Movie';
 import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 
 import Arr from '@/utils/Arr';
+import Time from '@/utils/Time';
 
 import TheMovieDBMovie from './TheMovieDBMovie';
 
@@ -17,7 +18,7 @@ const enum DataMediaType {
     TVShow = 4,
 }
 
-const enum DataStatus {
+enum DataStatus {
     Watched = 'watched',
     Following = 'following',
     Pending = 'pending',
@@ -33,8 +34,12 @@ interface Data {
 
 export default class TVisoMovie extends ThirdPartyMovie {
 
-    public static isTVisoMovieData(data: Data): boolean {
-        return data.type === DataMediaType.Movie;
+    public static isValidData(data: any): data is Data {
+        return typeof data.title === 'string'
+            && typeof data.imdb === 'string'
+            && data.type === DataMediaType.Movie
+            && Arr.contains(Object.values(DataStatus), data.status)
+            && (typeof data.checkedDate === 'string' && Time.isValidDateString(data.checkedDate));
     }
 
     protected data!: Data;
