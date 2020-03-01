@@ -64,9 +64,17 @@ export default Vue.extend({
     },
     methods: {
         async importResult(result: TheMovieDBMovie) {
-            // TODO obtain imdb url
+            // TODO catch errors
 
             const movie = await result.import(this.$media.moviesContainer!);
+            const { imdb_id } = await TheMovieDBApi.getExternalMovieIds(result.id);
+
+            await movie.update({
+                externalUrls: [
+                    ...movie.externalUrls,
+                    'https://www.imdb.com/title/' + imdb_id,
+                ],
+            });
 
             this.$router.push({ name: 'movies.show', params: { uuid: movie.uuid as string } });
         },

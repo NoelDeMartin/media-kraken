@@ -16,6 +16,7 @@ export default class TheMovieDBMovie extends ThirdPartyMovie {
 
     protected data!: Data;
 
+    public id: number;
     public title: string;
     public url: string;
     public posterUrl: string;
@@ -23,6 +24,7 @@ export default class TheMovieDBMovie extends ThirdPartyMovie {
     constructor(data: Data) {
         super(data);
 
+        this.id = data.id;
         this.title = data.title;
         this.url = 'https://www.themoviedb.org/movie/' + this.data.id;
         this.posterUrl = 'http://image.tmdb.org/t/p/w342' + this.data.poster_path;
