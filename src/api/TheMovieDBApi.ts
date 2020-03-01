@@ -1,17 +1,24 @@
-interface MovieResult {
-    id: number;
-    title: string;
-    poster_path: string;
-}
+import { Data as MovieData } from '@/models/third-party/TheMovieDBMovie';
 
 interface FindResponse {
-    movie_results: MovieResult[];
+    movie_results: MovieData[];
+}
+
+interface SearchMoviesResponse {
+    page: number;
+    total_results: number;
+    total_pages: number;
+    results: MovieData[];
 }
 
 class TheMovieDBApi {
 
     public find(externalId: string, options: object = {}): Promise<FindResponse> {
         return this.request(`find/${externalId}`, options);
+    }
+
+    public searchMovies(query: string): Promise<SearchMoviesResponse> {
+        return this.request('search/movie', { query });
     }
 
     private async request(path: string, parameters: object = {}): Promise<any> {

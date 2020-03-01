@@ -7,6 +7,17 @@
                 </svg>
             </router-link>
             <div class="flex-grow" />
+            <input
+                v-model="search"
+                class="
+                    shadow appearance-none border rounded mr-2 py-2 px-3
+                    text-gray-700 leading-tight
+                    focus:outline-none focus:shadow-outline
+                "
+                type="text"
+                placeholder="Search"
+                @keyup.enter="submitSearch"
+            >
             <button
                 class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2"
                 @click="importMoviesFromJSON"
@@ -39,7 +50,17 @@ import TVisoMovie from '@/models/third-party/TVisoMovie';
 import FilePicker from '@/utils/FilePicker';
 
 export default Vue.extend({
+    data: () => ({
+        search: '',
+    }),
     methods: {
+        submitSearch() {
+            const query = this.search;
+
+            this.search = '';
+
+            this.$router.push({ name: 'search', query: { query } });
+        },
         async importMoviesFromJSON() {
             // TODO validate json
             const data = await FilePicker.upload({ accept: '.json' });

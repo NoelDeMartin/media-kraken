@@ -6,7 +6,7 @@ import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 
 import Arr from '@/utils/Arr';
 
-interface Data {
+export interface Data {
     id: number;
     title: string;
     poster_path: string;
@@ -16,8 +16,16 @@ export default class TheMovieDBMovie extends ThirdPartyMovie {
 
     protected data!: Data;
 
-    private get url(): string {
-        return 'https://www.themoviedb.org/movie/' + this.data.id;
+    public title: string;
+    public url: string;
+    public posterUrl: string;
+
+    constructor(data: Data) {
+        super(data);
+
+        this.title = data.title;
+        this.url = 'https://www.themoviedb.org/movie/' + this.data.id;
+        this.posterUrl = 'http://image.tmdb.org/t/p/w342' + this.data.poster_path;
     }
 
     public is(movie: Movie): boolean {
@@ -32,8 +40,8 @@ export default class TheMovieDBMovie extends ThirdPartyMovie {
 
     public async getAttributes(): Promise<Attributes> {
         return {
-            title: this.data.title,
-            posterUrl: 'http://image.tmdb.org/t/p/w342' + this.data.poster_path,
+            title: this.title,
+            posterUrl: this.posterUrl,
             externalUrls: [this.url],
         };
     }

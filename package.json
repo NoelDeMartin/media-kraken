@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
+    "serve:tmdb": "nodemon ./aws/lambda/themoviedb-proxy/serve.js",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "deploy": "scripts/deploy.sh",
@@ -33,6 +34,7 @@
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
     "node-sass": "^4.13.1",
+    "nodemon": "^2.0.2",
     "sass-loader": "^8.0.2",
     "typescript": "~3.5.3",
     "vue-svg-loader": "^0.15.0",
