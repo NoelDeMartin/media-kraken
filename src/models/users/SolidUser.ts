@@ -1,11 +1,8 @@
-import { DocumentAlreadyExists } from 'soukai';
-
 import MediaContainer from '@/models/soukai/MediaContainer';
 import TypeRegistration from '@/models/soukai/TypeRegistration';
 import User from '@/models/users/User';
 
 import RDFStore from '@/utils/RDFStore';
-import Url from '@/utils/Url';
 import UUID from '@/utils/UUID';
 
 export default class SolidUser extends User {
@@ -54,15 +51,7 @@ export default class SolidUser extends User {
     protected async createMoviesContainer(storage: string, typeIndexUrl: string): Promise<MediaContainer> {
         const moviesContainer = new MediaContainer({ name: 'Movies' });
 
-        try {
-            await moviesContainer.save(storage);
-        } catch (error) {
-            if (!(error instanceof DocumentAlreadyExists))
-                throw error;
-
-            moviesContainer.url = Url.resolveDirectory(storage, 'movies-' + UUID.generate());
-            await moviesContainer.save(storage);
-        }
+        await moviesContainer.save(storage);
 
         const typeRegistration = new TypeRegistration({
             forClass: 'https://schema.org/Movie',

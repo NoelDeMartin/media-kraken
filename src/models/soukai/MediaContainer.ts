@@ -26,7 +26,6 @@ export default class MediaContainer extends SolidModel {
 
         const movie = new Movie(attributes);
 
-        // TODO catch errors
         await movie.save(this.url);
 
         if (!(Soukai.engine instanceof SolidEngine))

@@ -3,6 +3,9 @@ import { SolidModel, SolidEmbedsRelation } from 'soukai-solid';
 
 import WatchAction from '@/models/soukai/WatchAction';
 
+import Str from '@/utils/Str';
+import Url from '@/utils/Url';
+
 export default class Movie extends SolidModel {
 
     public static rdfContexts = {
@@ -57,6 +60,10 @@ export default class Movie extends SolidModel {
         // TODO maybe this should be handled by soukai...
         if (this.isRelationLoaded('actions'))
             this.setRelationModels('actions', [...this.actions, action]);
+    }
+
+    protected newUrl(): string {
+        return Url.resolve(this.classDef.collection, Str.slug(this.title));
     }
 
 }
