@@ -6,7 +6,7 @@
         <div class="overflow-y-auto text-center">
             <MoviesGrid :movies="pendingMovies" />
             <router-link
-                :to="{ name: 'movies.index' }"
+                :to="{ name: 'collection' }"
                 class="underline text-blue-700 hover:text-blue-900"
             >
                 View all

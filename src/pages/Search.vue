@@ -76,7 +76,7 @@ export default Vue.extend({
                 ],
             });
 
-            this.$router.push({ name: 'movies.show', params: { uuid: movie.uuid as string } });
+            this.$router.push({ name: 'movie', params: { uuid: movie.uuid as string } });
         },
     },
 });

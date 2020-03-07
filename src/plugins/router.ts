@@ -1,11 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
+import AppLayout from '@/components/AppLayout.vue';
+
+import Collection from '@/pages/Collection.vue';
 import Home from '@/pages/Home.vue';
 import Login from '@/pages/Login.vue';
-import Master from '@/pages/layouts/Master.vue';
-import MoviesIndex from '@/pages/movies/Index.vue';
-import MoviesShow from '@/pages/movies/Show.vue';
+import Movie from '@/pages/Movie.vue';
 import NotFound from '@/pages/errors/404.vue';
 import Search from '@/pages/Search.vue';
 
@@ -17,19 +18,20 @@ const router = new VueRouter({
         { name: 'login', path: '/login', component: Login },
         {
             path: '/',
-            component: Master,
+            component: AppLayout,
             children: [
                 { name: 'home', path: '', component: Home },
                 { name: 'search', path: 'search', component: Search },
+                { name: 'collection', path: 'collection', component: Collection },
                 {
                     path: 'movies',
                     component: { render: h => h('router-view') },
                     children: [
-                        { name: 'movies.index', path: '/', component: MoviesIndex },
+                        { path: '/', redirect: { name: 'collection' } },
                         {
-                            name: 'movies.show',
+                            name: 'movie',
                             path: ':uuid',
-                            component: MoviesShow,
+                            component: Movie,
                             props: route => ({ movieUuid: route.params.uuid }),
                         },
                     ],

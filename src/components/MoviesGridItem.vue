@@ -34,7 +34,7 @@
         </button>
         <div class="opacity-75 bg-black p-2 w-full">
             <router-link
-                :to="{ name: 'movies.show', params: { uuid: movie.uuid } }"
+                :to="{ name: 'movie', params: { uuid: movie.uuid } }"
                 class="block font-semibold text-white tracking-wider truncate"
             >
                 {{ movie.title }}
