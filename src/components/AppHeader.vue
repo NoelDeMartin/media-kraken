@@ -3,7 +3,7 @@
         <div class="mx-auto max-w-content p-4 pt-12">
             <div class="relative flex items-center w-full">
                 <router-link :to="{ name: 'home' }" class="mr-4" title="Media Kraken">
-                    <Icon name="logo" class="w-auto h-16" />
+                    <BaseIcon name="logo" class="w-auto h-16" />
                 </router-link>
                 <AppHeaderSearch />
                 <AppHeaderProfile />

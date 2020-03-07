@@ -12,7 +12,7 @@
     >
         <div v-if="movie.watched" class="flex items-center px-2 py-1 m-1 bg-green-300 rounded-full text-green-800">
             <span class="font-semibold text-xs mr-1">Watched</span>
-            <Icon name="checkmark" />
+            <BaseIcon name="checkmark" />
         </div>
         <button
             v-else
@@ -28,8 +28,8 @@
             >
                 <span class="block font-semibold text-xs mr-1 group-hover:hidden">Pending</span>
                 <span class="hidden font-semibold text-xs mr-1 group-hover:block">Watch</span>
-                <Icon name="time" class="block group-hover:hidden" />
-                <Icon name="checkmark" class="hidden group-hover:block" />
+                <BaseIcon name="time" class="block group-hover:hidden" />
+                <BaseIcon name="checkmark" class="hidden group-hover:block" />
             </div>
         </button>
         <div class="opacity-75 bg-black p-2 w-full">

@@ -11,7 +11,7 @@
                 "
                 @click="$search.open()"
             >
-                <Icon name="search" class="w-4 h-4 mr-2" />
+                <BaseIcon name="search" class="w-4 h-4 mr-2" />
                 <span class="text-sm">Press "s" to start searching</span>
             </button>
         </BaseTransition>
@@ -36,7 +36,7 @@
                     @blur="$search.close()"
                 >
                 <div class="pointer-events-none absolute inset-y-0 left-0 pl-4 flex items-center">
-                    <Icon name="search" class="w-4 h-4 pointer-events-none text-gray-600" />
+                    <BaseIcon name="search" class="w-4 h-4 pointer-events-none text-gray-600" />
                 </div>
             </div>
         </BaseTransition>
