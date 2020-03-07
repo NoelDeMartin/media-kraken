@@ -5,6 +5,7 @@ import Service from '@/services/Service';
 import Arr from '@/utils/Arr';
 
 const ESC_KEY_CODE = 27;
+const NON_WRITABLE_INPUT_TYPES = ['submit', 'reset', 'checkbox', 'radio'];
 
 interface State {
     open: boolean;
@@ -74,7 +75,7 @@ export default class Search extends Service {
             return;
 
         document.addEventListener('keydown', this.keyboardListener = event => {
-            if (!this.handleKeyboardEvent(event as KeyboardEvent))
+            if (!this.captureHotKey(event as KeyboardEvent))
                 return;
 
             event.preventDefault();
@@ -90,20 +91,46 @@ export default class Search extends Service {
         this.keyboardListener = null;
     }
 
-    private handleKeyboardEvent({ target, key, keyCode }: KeyboardEvent): boolean {
-        if (this.searching && target === this.searchInput && keyCode === ESC_KEY_CODE) {
+    private captureHotKey({ target, key, keyCode }: KeyboardEvent): boolean {
+        if (
+            this.searching &&
+            target === this.searchInput &&
+            keyCode === ESC_KEY_CODE
+        ) {
             this.close();
 
             return true;
         }
 
-        if (!this.searching && target === document.body && Arr.contains(['s', '/'], key.toLowerCase())) {
+        if (
+            !this.searching &&
+            Arr.contains(['s', '/'], key.toLowerCase()) &&
+            !this.isWritable(target)
+        ) {
             this.open();
 
             return true;
         }
 
         return false;
+    }
+
+    private isWritable(element: any): boolean {
+        if (!(element instanceof HTMLElement))
+            return false;
+
+        const name = element.nodeName.toLowerCase();
+
+        return name === 'select'
+            || (
+                name === 'input' &&
+                !Arr.contains(
+                    NON_WRITABLE_INPUT_TYPES,
+                    (element.getAttribute('type') || '').toLowerCase(),
+                )
+            )
+            || name === 'textarea'
+            || element.isContentEditable;
     }
 
 }
