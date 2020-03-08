@@ -8,9 +8,9 @@
     >
         <div
             v-show="$ui.mobile || !$search.searching"
-            class="inset-y-0"
+            class="inset-y-0 z-20"
             :class="{
-                'fixed z-20 w-screen pr-10 transition-all duration-300': $ui.mobile,
+                'fixed w-screen pr-10 transition-all duration-300': $ui.mobile,
                 'absolute right-0': $ui.desktop,
                 'right-full': $ui.mobile && !$ui.menuOpen,
                 'right-0': $ui.mobile && $ui.menuOpen,

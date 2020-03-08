@@ -8,7 +8,7 @@ const ESC_KEY_CODE = 27;
 const NON_WRITABLE_INPUT_TYPES = ['submit', 'reset', 'checkbox', 'radio'];
 
 interface State {
-    open: boolean;
+    searching: boolean;
     query: string;
 }
 
@@ -24,7 +24,7 @@ export default class Search extends Service {
     }
 
     public get searching(): boolean {
-        return this.app.$store.state.search.open || false;
+        return this.app.$store.state.search.searching || false;
     }
 
     public setSearchInput(input: HTMLInputElement | null): void {
@@ -35,18 +35,16 @@ export default class Search extends Service {
             : this.startListeningKeyboard();
     }
 
-    public async open(): Promise<void> {
+    public async start(): Promise<void> {
         if (this.searchInput === null)
             return;
 
-        this.app.$store.commit('setOpen', true);
-
-        // TODO refactor (why does nextTick not work?)
-        setTimeout(() => this.searchInput!.focus(), 100);
+        this.app.$store.commit('setSearching', true);
+        this.app.$nextTick(() => this.searchInput!.focus());
     }
 
-    public close(): void {
-        this.app.$store.commit('setOpen', false);
+    public stop(): void {
+        this.app.$store.commit('setSearching', false);
     }
 
     public update(query: string): void {
@@ -56,12 +54,12 @@ export default class Search extends Service {
     protected registerStoreModule(store: Store<State>): void {
         store.registerModule('search', {
             state: {
-                open: false,
+                searching: false,
                 query: '',
             },
             mutations: {
-                setOpen(state: State, open: boolean) {
-                    state.open = open;
+                setSearching(state: State, searching: boolean) {
+                    state.searching = searching;
                 },
                 setQuery(state: State, query: string) {
                     state.query = query;
@@ -97,7 +95,7 @@ export default class Search extends Service {
             target === this.searchInput &&
             keyCode === ESC_KEY_CODE
         ) {
-            this.close();
+            this.stop();
 
             return true;
         }
@@ -107,7 +105,7 @@ export default class Search extends Service {
             Arr.contains(['s', '/'], key.toLowerCase()) &&
             !this.isWritable(target)
         ) {
-            this.open();
+            this.start();
 
             return true;
         }

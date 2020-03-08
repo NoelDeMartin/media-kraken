@@ -20,6 +20,7 @@ module.exports = {
             },
             inset: theme => ({
                 '10': theme('spacing.10'),
+                '16': theme('spacing.16'),
                 '1/2': '50%',
                 'full': '100%',
             }),

@@ -1,24 +1,38 @@
 <template>
     <header>
         <div class="mx-auto max-w-content p-4 desktop:pt-12">
-            <div
-                class="relative flex items-center w-full justify-between"
-                :class="{
-                    'flex-col': $ui.mobile && $search.searching,
-                }"
-            >
-                <button
-                    v-show="!$search.searching"
-                    ref="menu-button"
-                    type="button"
-                    class="p-4 rounded text-black hover:bg-gray-300 desktop:hidden"
-                    @click="$ui.toggleMenu()"
+            <div class="relative flex items-center w-full justify-end h-16">
+                <BaseTransition
+                    :enter-duration="300"
+                    :leave-duration="100"
+                    animation="fade"
+                    enter-active-class="transition-delay-200"
                 >
-                    <BaseIcon name="menu" class="w-6 h-6" />
-                </button>
-                <router-link :to="{ name: 'home' }" class="mr-4" title="Media Kraken">
-                    <BaseIcon name="logo" class="w-auto h-16" />
-                </router-link>
+                    <button
+                        v-show="!$search.searching"
+                        ref="menu-button"
+                        type="button"
+                        class="absolute left-0 p-4 rounded text-black z-10 hover:bg-gray-300 desktop:hidden"
+                        @click="$ui.toggleMenu()"
+                    >
+                        <BaseIcon name="menu" class="w-6 h-6" />
+                    </button>
+                </BaseTransition>
+                <BaseTransition
+                    :enter-duration="300"
+                    :leave-duration="100"
+                    animation="fade"
+                    enter-active-class="transition-delay-200"
+                >
+                    <div
+                        v-show="$ui.desktop || !$search.searching"
+                        class="absolute inset-x-16 inset-y-0 z-10 flex justify-center desktop:relative desktop:inset-auto"
+                    >
+                        <router-link :to="{ name: 'home' }" class="mr-4" title="Media Kraken">
+                            <BaseIcon name="logo" class="w-auto h-16" />
+                        </router-link>
+                    </div>
+                </BaseTransition>
                 <AppHeaderSearch />
                 <AppHeaderProfile />
             </div>

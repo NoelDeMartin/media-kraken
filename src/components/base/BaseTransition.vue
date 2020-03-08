@@ -17,7 +17,7 @@ type TransitionClassesArrays = { [entry in keyof TransitionClasses]?: string[] }
 enum Animation {
     Fade = 'fade',
     Scale = 'scale',
-    Resize = 'resize',
+    ResizeWidth = 'resize-width',
 }
 
 export default Vue.extend({
@@ -139,7 +139,7 @@ export default Vue.extend({
                         leave: ['scale-100'],
                         leaveTo: ['scale-90'],
                     };
-                case Animation.Resize:
+                case Animation.ResizeWidth:
                     return {
                         enter: ['max-w-0'],
                         enterTo: ['max-w-full'],
