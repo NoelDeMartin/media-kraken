@@ -1,5 +1,9 @@
 module.exports = {
     theme: {
+        // Only two screens: mobile (default) & desktop
+        screens: {
+            'desktop': '640px',
+        },
         // Extend default config
         // @see https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
         extend: {

@@ -1,19 +1,5 @@
-<template>
-    <transition
-        :duration="durations"
-        :enter-class="transitionClasses.enter"
-        :enter-active-class="transitionClasses.enterActive"
-        :enter-to-class="transitionClasses.enterTo"
-        :leave-class="transitionClasses.leave"
-        :leave-active-class="transitionClasses.leaveActive"
-        :leave-to-class="transitionClasses.leaveTo"
-    >
-        <slot />
-    </transition>
-</template>
-
 <script lang="ts">
-import Vue from 'vue';
+import Vue, { CreateElement, VNode } from 'vue';
 
 import Arr from '@/utils/Arr';
 
@@ -36,6 +22,10 @@ enum Animation {
 
 export default Vue.extend({
     props: {
+        enabled: {
+            type: Boolean,
+            default: true,
+        },
         duration: {
             type: Number,
             default: 300,
@@ -158,6 +148,28 @@ export default Vue.extend({
                     };
             }
         },
+    },
+    render(h: CreateElement): VNode {
+        if (!this.enabled)
+            return this.$slots.default as any as VNode;
+
+        const { durations, transitionClasses } = this as any;
+
+        return h(
+            'transition',
+            {
+                props: {
+                    duration: durations,
+                    enterActiveClass: transitionClasses.enterActive,
+                    enterClass: transitionClasses.enter,
+                    enterToClass: transitionClasses.enterTo,
+                    leaveActiveClass: transitionClasses.leaveActive,
+                    leaveClass: transitionClasses.leave,
+                    leaveToClass: transitionClasses.leaveTo,
+                },
+            },
+            this.$slots.default,
+        );
     },
 });
 </script>

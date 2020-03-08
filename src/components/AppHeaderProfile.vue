@@ -1,43 +1,105 @@
 <template>
     <BaseTransition
+        :enabled="$ui.desktop"
         :leave-duration="200"
         :enter-duration="300"
         enter-active-class="transition-delay-100"
         animation="fade"
     >
-        <div v-show="!$search.searching" class="absolute right-0 inset-y-0 flex items-center">
-            <router-link
-                class="mr-4 text-sm text-kraken-darkest font-bold hover:underline"
-                :to="{ name: 'collection' }"
-                :class="{ 'underline': $route.name === 'collection' }"
+        <div
+            v-show="$ui.mobile || !$search.searching"
+            class="inset-y-0"
+            :class="{
+                'fixed z-20 w-screen pr-10 transition-all duration-300': $ui.mobile,
+                'absolute right-0': $ui.desktop,
+                'right-full': $ui.mobile && !$ui.menuOpen,
+                'right-0': $ui.mobile && $ui.menuOpen,
+            }"
+        >
+            <div
+                ref="mobile-menu"
+                class="
+                    h-full p-6 flex flex-col bg-white shadow
+                    desktop:p-0 desktop:flex-row desktop:items-center desktop:bg-transparent desktop:shadow-none
+                "
             >
-                My Collection
-            </router-link>
-            <button
-                ref="button"
-                type="button"
-                class="rounded-full text-kraken-darkest focus:outline-none focus:shadow-solid"
-                @click="toggleMenu()"
-            >
-                <img class="h-12 w-12 rounded-full" src="https://placekitten.com/48/48">
-            </button>
-            <BaseTransition animations="fade scale">
-                <div
-                    v-show="menuOpen"
-                    ref="menu"
-                    class="origin-top-right absolute right-0 mt-2 w-32 rounded-md shadow-lg top-full"
-                >
-                    <div class="py-1 rounded-lg bg-white shadow border border-gray-300">
-                        <button
-                            type="button"
-                            class="block px-4 py-2 w-full text-left text-sm text-gray-700 hover:bg-gray-100"
-                            @click="$auth.logout()"
+                <div v-if="$ui.mobile" class="flex items-center">
+                    <UserAvatar class="h-16 w-16 mr-4 flex-shrink-0 rounded-full text-kraken-darkest outline-none shadow-solid" />
+                    <div class="flex flex-col overflow-hidden">
+                        <span class="truncate text-lg font-bold">
+                            {{ $auth.user.name }}
+                        </span>
+                        <a
+                            v-if="userWebId"
+                            :href="userWebId"
+                            target="blank"
+                            class="truncate text-sm text-gray-700 hover:underline"
                         >
-                            Logout
-                        </button>
+                            {{ userWebId }}
+                        </a>
                     </div>
                 </div>
-            </BaseTransition>
+                <nav class="mt-4 desktop:mt-0">
+                    <router-link
+                        v-close-menu
+                        class="
+                            text-lg text-kraken-darkest font-bold hover:underline
+                            desktop:text-sm desktop:mr-4
+                        "
+                        :to="{ name: 'collection' }"
+                        :class="{ 'underline': $route.name === 'collection' }"
+                    >
+                        My Collection
+                    </router-link>
+                </nav>
+                <button
+                    v-show="$ui.desktop"
+                    ref="button"
+                    type="button"
+                    class="rounded-full text-kraken-darkest focus:outline-none focus:shadow-solid"
+                    @click="$ui.toggleMenu()"
+                >
+                    <UserAvatar class="h-12 w-12 rounded-full" />
+                </button>
+                <div class="flex-grow" />
+                <BaseTransition :enabled="$ui.desktop" :duration="100" animations="fade scale">
+                    <div
+                        v-show="$ui.menuOpen || $ui.mobile"
+                        ref="desktop-menu"
+                        class="
+                            w-42 right-0 top-full mt-2 origin-top-right
+                            rounded-md
+                            desktop:absolute desktop:shadow-lg
+                        "
+                        :class="{ 'pb-1 rounded-lg bg-white border border-gray-300': $ui.desktop }"
+                    >
+                        <div v-if="$ui.desktop" class="flex flex-col p-4 overflow-hidden bg-gray-200 border-b border-gray-300">
+                            <span class="truncate font-bold">
+                                {{ $auth.user.name }}
+                            </span>
+                            <a
+                                v-if="userWebId"
+                                :href="userWebId"
+                                target="blank"
+                                class="truncate text-sm text-gray-700 hover:underline"
+                            >
+                                {{ userWebId }}
+                            </a>
+                        </div>
+                        <button
+                            type="button"
+                            class="flex items-center text-gray-800 hover:underline"
+                            :class="{
+                                'text-lg': $ui.mobile,
+                                'px-4 py-2 w-full text-sm': $ui.desktop,
+                            }"
+                            @click="$auth.logout()"
+                        >
+                            <BaseIcon name="logout" class="w-4 h-4 mr-2" /> <span>Logout</span>
+                        </button>
+                    </div>
+                </BaseTransition>
+            </div>
         </div>
     </BaseTransition>
 </template>
@@ -45,51 +107,36 @@
 <script lang="ts">
 import Vue from 'vue';
 
-interface Data {
-    menuOpen: boolean;
-    clickListener: EventListener | null;
+import SolidUser from '@/models/users/SolidUser';
 
-    $refs?: {
-        button: HTMLButtonElement,
-        menu: HTMLElement,
-    };
-}
+import UserAvatar from '@/components/UserAvatar.vue';
 
 export default Vue.extend({
-    data: (): Data => ({
-        menuOpen: false,
-        clickListener: null,
-    }),
-    methods: {
-        toggleMenu() {
-            this.menuOpen = !this.menuOpen;
-
-            this.menuOpen
-                ? this.startListeningClicks()
-                : this.stopListeningClicks();
+    components: {
+        UserAvatar,
+    },
+    directives: {
+        closeMenu: {
+            bind: el => el.addEventListener('click', () => Vue.instance.$ui.closeMenu()),
         },
-        startListeningClicks() {
-            if (this.clickListener)
-                return;
+    },
+    computed: {
+        userWebId(): string | null {
+            if (!(this.$auth.user instanceof SolidUser))
+                return null;
 
-            document.addEventListener('click', this.clickListener = e => {
-                const target = e.target as HTMLElement;
-                const { button, menu } = this.$refs;
-
-                if (target === button || target === menu || button.contains(target) || menu.contains(target))
-                    return;
-
-                this.toggleMenu();
-            });
+            return this.$auth.user.id;
         },
-        stopListeningClicks() {
-            if (!this.clickListener)
-                return;
-
-            document.removeEventListener('click', this.clickListener);
-
-            this.clickListener = null;
-        },
+    },
+    mounted() {
+        this.$ui.setMobileMenu(this.$refs['mobile-menu'] as HTMLElement);
+        this.$ui.setDesktopMenu(this.$refs['desktop-menu'] as HTMLElement);
+        this.$ui.addMenuTrigger(this.$refs['button'] as HTMLButtonElement);
+    },
+    beforeDestroy() {
+        this.$ui.setMobileMenu(null);
+        this.$ui.setDesktopMenu(null);
+        this.$ui.removeMenuTrigger(this.$refs['button'] as HTMLButtonElement);
     },
 });
 </script>

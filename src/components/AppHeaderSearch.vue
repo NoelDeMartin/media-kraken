@@ -1,23 +1,30 @@
 <template>
-    <div class="relative flex-grow mr-4 z-10">
-        <BaseTransition animation="fade">
+    <div
+        class="relative desktop:flex-grow desktop:mr-4 desktop:z-10"
+        :class="{
+            'w-full': $ui.mobile && $search.searching,
+        }"
+    >
+        <BaseTransition :enabled="$ui.desktop" animation="fade">
             <button
                 v-show="!$search.searching"
                 type="button"
                 class="
-                    absolute transform -translate-y-1/2 top-1/2
-                    flex items-center px-4 py-2
-                    rounded text-gray-600 hover:bg-gray-300
+                    flex items-center p-4
+                    rounded text-black hover:bg-gray-300
+                    transform
+                    desktop:text-gray-600
+                    desktop:absolute desktop:-translate-y-1/2 desktop:top-1/2 desktop:py-2
                 "
                 @click="$search.open()"
             >
-                <BaseIcon name="search" class="w-4 h-4 mr-2" />
-                <span class="text-sm">Press "s" to start searching</span>
+                <BaseIcon name="search" class="w-6 h-6 p-1 desktop:w-4 desktop:h-4 desktop:p-0 desktop:mr-2" />
+                <span class="text-sm hidden desktop:block">Press "s" to start searching</span>
             </button>
         </BaseTransition>
 
-        <BaseTransition animations="fade resize">
-            <div v-show="$search.searching" class="relative">
+        <BaseTransition :enabled="$ui.desktop" animations="fade resize">
+            <div v-show="$search.searching" class="relative mt-4 desktop:mt-0">
                 <input
                     ref="search-input"
                     class="

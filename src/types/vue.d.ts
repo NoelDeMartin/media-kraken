@@ -2,6 +2,7 @@ import Auth from '@/services/Auth';
 import Config from '@/services/Config';
 import Media from '@/services/Media';
 import Search from '@/services/Search';
+import UI from '@/services/UI';
 
 declare module 'vue/types/vue' {
 
@@ -10,6 +11,7 @@ declare module 'vue/types/vue' {
         $config: Config;
         $media: Media;
         $search: Search;
+        $ui: UI;
     }
 
     interface VueConstructor<V extends Vue = Vue> {
