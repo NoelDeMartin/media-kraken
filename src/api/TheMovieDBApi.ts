@@ -30,17 +30,16 @@ class TheMovieDBApi {
     }
 
     private async request(path: string, parameters: object = {}): Promise<any> {
-        // TODO handle url missing from config or using custom API key
-        const response = await fetch(process.env.VUE_APP_TMB_PROXY_URL as string, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ path, parameters }),
-        });
+        const url = new URL('https://api.themoviedb.org/3/' + path);
 
-        if (response.status !== 200)
-            throw new Error('Something went wrong with the request to the TMBD API');
+        Object
+            .entries({
+                ...parameters,
+                api_key: process.env.VUE_APP_TMDB_API_KEY as string,
+            })
+            .forEach(([key, value]) => url.searchParams.append(key, value));
 
-        return response.json();
+        return (await fetch(url.href)).json();
     }
 
 }
