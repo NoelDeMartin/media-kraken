@@ -1,24 +1,37 @@
-import { Store } from 'vuex';
+import { Component } from 'vue';
 
-import Service from '@/services/Service';
+import Service, { ComputedStateDefinitions } from '@/services/Service';
 
-interface State {
-    layoutMediaQueries: {
-        [layout in Layout]: boolean;
-    },
-    menuOpen: boolean;
-}
+import UUID from '@/utils/UUID';
 
 enum Layout {
     Mobile = 'mobile',
     Desktop = 'desktop',
 }
 
+interface Modal {
+    id: string;
+    component: Component;
+    props: object;
+}
+
+interface State {
+    layoutMediaQueries: {
+        [layout in Layout]: boolean;
+    },
+    menuOpen: boolean;
+    modals: Modal[];
+}
+
+interface ComputedState {
+    layout: Layout;
+}
+
 const screenBreakpoints: { [layout in Layout]?: number } = {
     [Layout.Desktop]: 640,
 };
 
-export default class UI extends Service {
+export default class UI extends Service<State, ComputedState> {
 
     private mobileMenu: HTMLElement | null = null;
     private desktopMenu: HTMLElement | null = null;
@@ -27,7 +40,7 @@ export default class UI extends Service {
     private clickListener: EventListener | null = null;
 
     public get layout(): Layout {
-        return this.app.$store.getters.activeLayout;
+        return this.computedState.layout;
     }
 
     public get mobile(): boolean {
@@ -39,11 +52,20 @@ export default class UI extends Service {
     }
 
     public get menuOpen(): boolean {
-        return this.app.$store.state.ui.menuOpen;
+        return this.state.menuOpen;
+    }
+
+    public get modals(): Modal[] {
+        return this.state.modals;
+    }
+
+    public get showOverlay(): boolean {
+        return (this.mobile && this.menuOpen)
+            || this.modals.length > 0;
     }
 
     private get menu(): HTMLElement | null {
-        return this.app.$ui.mobile ? this.mobileMenu : this.desktopMenu;
+        return this.mobile ? this.mobileMenu : this.desktopMenu;
     }
 
     public setMobileMenu(menu: HTMLElement | null) {
@@ -76,7 +98,7 @@ export default class UI extends Service {
 
         const menuOpen = !this.menuOpen;
 
-        this.app.$store.commit('setMenuOpen', menuOpen);
+        this.setState({ menuOpen });
 
         menuOpen ? this.startListeningClicks() : this.stopListeningClicks();
     }
@@ -88,51 +110,75 @@ export default class UI extends Service {
         this.toggleMenu();
     }
 
+    public openModal(component: Component, props: object = {}) {
+        this.setState({
+            modals: [
+                ...this.modals,
+                {
+                    id: UUID.generate(),
+                    component,
+                    props,
+                },
+            ],
+        });
+    }
+
+    public closeModal(id: string) {
+        const index = this.modals.findIndex(modal => modal.id === id);
+
+        if (index === -1)
+            return;
+
+        this.setState({
+            modals: [
+                ...this.modals.slice(0, index),
+                ...this.modals.slice(index + 1),
+            ],
+        });
+    }
+
     protected async init(): Promise<void> {
         await super.init();
 
         for (const [layout, breakpoint] of Object.entries(screenBreakpoints)) {
             const media = window.matchMedia(`(min-width: ${breakpoint}px)`);
+            const updateState = () => this.setState({
+                layoutMediaQueries: {
+                    ...this.state.layoutMediaQueries,
+                    [layout]: media.matches,
+                },
+            });
 
-            this.app.$store.commit('setLayoutMediaQuery', { layout, active: media.matches });
+            media.addListener(updateState);
 
-            media.addListener(media => this.app.$store.commit('setLayoutMediaQuery', { layout, active: media.matches }));
+            updateState();
         }
     }
 
-    protected registerStoreModule(store: Store<State>): void {
-        store.registerModule('ui', {
-            state: {
-                layoutMediaQueries: {
-                    [Layout.Mobile]: true,
-                    [Layout.Desktop]: false,
-                },
-                menuOpen: false,
+    protected getInitialState(): State {
+        return {
+            layoutMediaQueries: {
+                [Layout.Mobile]: true,
+                [Layout.Desktop]: false,
             },
-            mutations: {
-                setLayoutMediaQuery(
-                    state: State,
-                    { layout, active }: {layout: Layout, active: boolean },
-                ) {
-                    state.layoutMediaQueries[layout] = active;
-                },
-                setMenuOpen(state: State, menuOpen: boolean) {
-                    state.menuOpen = menuOpen;
-                },
-            },
-            getters: {
-                activeLayout({ layoutMediaQueries }: State): Layout {
-                    for (const [layout, active] of Object.entries(layoutMediaQueries).reverse()) {
-                        if (!active)
-                            continue;
+            menuOpen: false,
+            modals: [],
+        };
+    }
 
-                        return layout as Layout;
-                    }
+    protected getComputedStateDefinitions(): ComputedStateDefinitions<State, ComputedState> {
+        return {
+            layout({ layoutMediaQueries }: State): Layout {
+                for (const [layout, active] of Object.entries(layoutMediaQueries).reverse()) {
+                    if (!active)
+                        continue;
 
-                    return Layout.Mobile;
-                },
+                    return layout as Layout;
+                }
+
+                return Layout.Mobile;
             },
-        });
+        };
     }
 
     private startListeningClicks() {
@@ -143,7 +189,7 @@ export default class UI extends Service {
             const target = e.target as HTMLElement;
 
             if (
-                target === this.menu ||
+                this.menu === target ||
                 this.menu!.contains(target) ||
                 this.menuTriggers.find(button => target === button || button.contains(target))
             )

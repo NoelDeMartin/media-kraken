@@ -1,4 +1,5 @@
 import { Attributes } from 'soukai';
+import dayjs, { Dayjs } from 'dayjs';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
 import Movie from '@/models/soukai/Movie';
@@ -9,7 +10,8 @@ import Arr from '@/utils/Arr';
 export interface Data {
     id: number;
     title: string;
-    poster_path: string;
+    release_date?: string;
+    poster_path?: string;
 }
 
 export default class TheMovieDBMovie extends ThirdPartyMovie {
@@ -19,7 +21,8 @@ export default class TheMovieDBMovie extends ThirdPartyMovie {
     public id: number;
     public title: string;
     public url: string;
-    public posterUrl: string;
+    public releaseDate: Dayjs | null;
+    public posterUrl: string | null;
 
     constructor(data: Data) {
         super(data);
@@ -27,7 +30,12 @@ export default class TheMovieDBMovie extends ThirdPartyMovie {
         this.id = data.id;
         this.title = data.title;
         this.url = 'https://www.themoviedb.org/movie/' + this.data.id;
-        this.posterUrl = 'http://image.tmdb.org/t/p/w342' + this.data.poster_path;
+        this.releaseDate = this.data.release_date
+            ? dayjs(this.data.release_date)
+            : null;
+        this.posterUrl = this.data.poster_path
+            ? 'http://image.tmdb.org/t/p/w342' + this.data.poster_path
+            : null;
     }
 
     public is(movie: Movie): boolean {

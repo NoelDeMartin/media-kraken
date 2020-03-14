@@ -7,7 +7,7 @@
         animation="fade"
     >
         <div
-            v-show="$ui.mobile || !$search.searching"
+            v-show="$ui.mobile || !$search.open"
             class="inset-y-0 z-20"
             :class="{
                 'fixed w-screen pr-10 transition-all duration-300': $ui.mobile,

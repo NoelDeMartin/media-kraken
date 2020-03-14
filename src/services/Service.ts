@@ -2,7 +2,11 @@ import Vue from 'vue';
 
 import { Store } from 'vuex';
 
-export default abstract class Service {
+export type ComputedStateDefinitions<State, ComputedState> = {
+    [ComputedProperty in keyof ComputedState]: (state: State) => ComputedState[ComputedProperty];
+};
+
+export default abstract class Service<State = void, ComputedState = {}> {
 
     protected app: Vue;
 
@@ -15,12 +19,45 @@ export default abstract class Service {
         this.ready = Promise.resolve().then(() => this.init(...args));
     }
 
+    protected get state(): State {
+        return this.app.$store.state[this.constructor.name] || this.getInitialState();
+    }
+
+    protected get computedState(): ComputedState {
+        return this.app.$store.getters;
+    }
+
     protected async init(...args: any[]): Promise<void> {
         this.registerStoreModule(this.app.$store);
     }
 
-    protected registerStoreModule(store: Store<any>): void {
-        // override to initialize vuex module
+    protected registerStoreModule(store: Store<State>): void {
+        const initialState = this.getInitialState();
+
+        if (initialState === null)
+            return;
+
+        store.registerModule(this.constructor.name, {
+            state: initialState,
+            mutations: {
+                setState(state: State, newState: Partial<State>) {
+                    Object.assign(state, newState);
+                },
+            },
+            getters: this.getComputedStateDefinitions(),
+        });
+    }
+
+    protected getInitialState(): State {
+        return null as any;
+    }
+
+    protected getComputedStateDefinitions(): ComputedStateDefinitions<State, ComputedState> {
+        return {} as any;
+    }
+
+    protected setState(newState: Partial<State>): void {
+        this.app.$store.commit('setState', newState);
     }
 
 }

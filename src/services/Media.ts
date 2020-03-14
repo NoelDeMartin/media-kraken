@@ -1,5 +1,3 @@
-import { Store } from 'vuex';
-
 import MediaContainer from '@/models/soukai/MediaContainer';
 import Movie from '@/models/soukai/Movie';
 import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
@@ -19,23 +17,21 @@ interface ImportListener {
     onCompleted?(totalRaw: number, totalImported: number): void;
 }
 
-export default class Media extends Service {
+export default class Media extends Service<State> {
 
     public get movies(): Movie[] {
-        if (!this.storage.moviesContainer)
+        if (!this.state.moviesContainer)
             return [];
 
-        return this.storage.moviesContainer.movies || [];
+        return this.state.moviesContainer.movies || [];
     }
 
     public get moviesContainer(): MediaContainer | null {
-        return this.storage.moviesContainer;
+        return this.state.moviesContainer;
     }
 
-    protected get storage(): State {
-        return this.app.$store.state.media
-            ? this.app.$store.state.media
-            : {};
+    public get empty(): boolean {
+        return this.movies.length === 0;
     }
 
     public async importMovies(thirdPartyMovies: ThirdPartyMovie[], listener: ImportListener = {}): Promise<Movie[]> {
@@ -80,17 +76,8 @@ export default class Media extends Service {
         EventBus.on('logout', this.unload.bind(this));
     }
 
-    protected registerStoreModule(store: Store<State>): void {
-        store.registerModule('media', {
-            state: {
-                moviesContainer: null,
-            },
-            mutations: {
-                setMoviesContainer(state: State, moviesContainer: MediaContainer | null) {
-                    state.moviesContainer = moviesContainer;
-                },
-            },
-        });
+    protected getInitialState(): State {
+        return { moviesContainer: null };
     }
 
     private async load(user: User): Promise<void> {
@@ -108,11 +95,11 @@ export default class Media extends Service {
 
         await Promise.all(actionPromises);
 
-        this.app.$store.commit('setMoviesContainer', moviesContainer);
+        this.setState({ moviesContainer });
     }
 
     private async unload(): Promise<void> {
-        this.app.$store.commit('setMoviesContainer', null);
+        this.setState({ moviesContainer: null });
     }
 
 }

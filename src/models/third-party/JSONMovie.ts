@@ -33,8 +33,8 @@ export default class JSONMovie extends ThirdPartyMovie {
             && (
                 !data.externalUrls || (
                     Array.isArray(data.externalUrls) &&
-                    !!data.externalUrls.find((url: any) => typeof url !== 'string') &&
-                    !!data.externalUrls.find((url: string) => !url.startsWith('http'))
+                    !data.externalUrls.find((url: any) => typeof url !== 'string') &&
+                    !data.externalUrls.find((url: string) => !url.startsWith('http'))
                 )
             );
     }

@@ -1,5 +1,3 @@
-import { Store } from 'vuex';
-
 import { SolidEngine } from 'soukai-solid';
 import SolidAuthClient, { Session } from 'solid-auth-client';
 import Soukai, { LocalStorageEngine } from 'soukai';
@@ -22,16 +20,16 @@ interface HasUser {
     user: User;
 }
 
-export default class Auth extends Service {
+export default class Auth extends Service<State> {
 
     private solidAuthListener?: (session?: Session) => Promise<void>;
 
     public get loggedIn(): boolean {
-        return !!this.storage.user;
+        return !!this.state.user;
     }
 
     public get user(): User | null {
-        return this.storage.user;
+        return this.state.user;
     }
 
     public isLoggedIn(): this is HasUser {
@@ -69,13 +67,7 @@ export default class Auth extends Service {
         this.logoutUser();
 
         if (this.app.$router.currentRoute.name !== 'login')
-            this.app.$router.push('/login');
-    }
-
-    protected get storage(): State {
-        return this.app.$store.state.auth
-            ? this.app.$store.state.auth
-            : {};
+            this.app.$router.push({ name: 'login' });
     }
 
     protected async init(): Promise<void> {
@@ -102,28 +94,15 @@ export default class Auth extends Service {
         }
     }
 
-    protected async registerStoreModule(store: Store<State>): Promise<void> {
-        store.registerModule('auth', {
-            state: {
-                user: null,
-            },
-            mutations: {
-                setUser(state: State, user: User | null) {
-                    state.user = user;
-                },
-            },
-        });
-    }
-
-    protected unregisterStoreModule(store: Store<State>): void {
-        store.unregisterModule('auth');
+    protected getInitialState(): State {
+        return { user: null };
     }
 
     protected async loginUser(user: User): Promise<void> {
         if (this.loggedIn)
             return;
 
-        this.app.$store.commit('setUser', user);
+        this.setState({ user });
 
         if (user instanceof OfflineUser) {
             Soukai.useEngine(new LocalStorageEngine('media-kraken'));
@@ -143,7 +122,7 @@ export default class Auth extends Service {
                 (Soukai.engine as LocalStorageEngine).clear();
             }
 
-            this.app.$store.commit('setUser', null);
+            this.setState({ user: null });
 
             EventBus.emit('logout');
         }

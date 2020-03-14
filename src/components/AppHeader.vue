@@ -9,7 +9,7 @@
                     enter-active-class="transition-delay-200"
                 >
                     <button
-                        v-show="!$search.searching"
+                        v-show="!$search.open"
                         ref="menu-button"
                         type="button"
                         class="absolute left-0 p-4 rounded text-black z-10 hover:bg-gray-300 desktop:hidden"
@@ -25,7 +25,7 @@
                     enter-active-class="transition-delay-200"
                 >
                     <div
-                        v-show="$ui.desktop || !$search.searching"
+                        v-show="$ui.desktop || !$search.open"
                         class="absolute inset-x-16 inset-y-0 z-10 flex justify-center desktop:relative desktop:inset-auto"
                     >
                         <router-link :to="{ name: 'home' }" class="mr-4" title="Media Kraken">
