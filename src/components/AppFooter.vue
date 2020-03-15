@@ -1,13 +1,15 @@
 <template>
-    <footer class="bg-kraken-lightest w-full">
-        <div class="max-w-content mx-auto px-4 py-2 text-xs text-kraken-darkest text-center">
-            <a
-                class="inline-block hover:underline"
+    <footer class="px-4 py-2 text-xs text-kraken-darker text-center">
+        <div class="flex justify-end">
+            <BaseLink
+                :blank="true"
+                title="View application source code"
                 href="https://github.com/noeldemartin/media-kraken"
-                target="_blank"
+                class="mr-1"
             >
-                Media Kraken
-            </a> | Version {{ $config.version }}
+                view source
+            </BaseLink>
+            | v{{ $config.version }}
         </div>
     </footer>
 </template>

@@ -1,9 +1,7 @@
 <template>
-    <AppModal :cancelable="false" @close="ui.closeModal(id)">
-        <div class="flex items-center">
-            <LoadingCircle class="w-8 h-8 text-kraken-darker mr-4" />
-            <p>{{ message }}</p>
-        </div>
+    <AppModal class="flex items-center p-4" :cancelable="false" @close="$ui.closeModal(id)">
+        <LoadingCircle class="w-8 h-8 text-kraken-darker mr-4" />
+        <p>{{ message }}</p>
     </AppModal>
 </template>
 

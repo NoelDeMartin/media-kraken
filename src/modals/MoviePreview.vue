@@ -1,6 +1,6 @@
 <template>
     <AppModal @close="$ui.closeModal(id)">
-        <div class="flex flex-col desktop:flex-row">
+        <div class="flex flex-col overflow-hidden p-4 desktop:flex-row">
             <img
                 v-if="movie.posterUrl"
                 :src="movie.posterUrl"
@@ -13,8 +13,8 @@
                     :src="movie.posterUrl"
                     class="h-64 self-start mb-2 border border-gray-400 desktop:hidden"
                 >
-                <p v-if="movie.data.overview" class="text-sm text-gray-700 mb-2 leading-relaxed overflow-y-auto">
-                    {{ movie.data.overview }}
+                <p v-if="movie.description" class="text-sm text-gray-700 mb-2 leading-relaxed overflow-y-auto">
+                    {{ movie.description }}
                 </p>
                 <div class="flex-grow" />
                 <div class="flex justify-end flex-col desktop:flex-row desktop:items-center">
@@ -23,6 +23,7 @@
                     </p>
                     <div class="flex">
                         <button
+                            type="button"
                             class="
                                 flex items-center rounded-full shadow border border-blue-700
                                 text-sm font-medium text-blue-100 bg-blue-600 hover:bg-blue-700
@@ -34,6 +35,7 @@
                             <span class="mr-1">pending</span>
                         </button>
                         <button
+                            type="button"
                             class="
                                 flex items-center rounded-full shadow border border-green-700
                                 text-sm font-medium text-green-100 bg-green-600 hover:bg-green-700
