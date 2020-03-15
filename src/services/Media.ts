@@ -34,6 +34,12 @@ export default class Media extends Service<State> {
         return this.movies.length === 0;
     }
 
+    public async importMovie(thirdPartyMovie: ThirdPartyMovie): Promise<Movie> {
+        const [movie] = await this.importMovies([thirdPartyMovie]);
+
+        return movie;
+    }
+
     public async importMovies(thirdPartyMovies: ThirdPartyMovie[], listener: ImportListener = {}): Promise<Movie[]> {
         // TODO implement createMany in soukai
         const movies: Movie[] = [];

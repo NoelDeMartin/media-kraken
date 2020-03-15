@@ -1,4 +1,5 @@
 import { Attributes } from 'soukai';
+import dayjs from 'dayjs';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
 import Movie from '@/models/soukai/Movie';
@@ -9,6 +10,8 @@ import Time from '@/utils/Time';
 
 interface Data {
     title: string;
+    description?: string;
+    releaseDate?: string;
     posterUrl?: string;
     watchedAt?: string;
     externalUrls?: string[];
@@ -18,20 +21,27 @@ export default class JSONMovie extends ThirdPartyMovie {
 
     public static isValidData(data: any): data is Data {
         return typeof data.title === 'string'
+            && (!('description' in data) || typeof data.description === 'string')
             && (
-                !data.posterUrl || (
+                !('releaseDate' in data) || (
+                    typeof data.releaseDate === 'string' &&
+                    Time.isValidDateString(data.releaseDate)
+                )
+            )
+            && (
+                !('posterUrl' in data) || (
                     typeof data.posterUrl === 'string' &&
                     data.posterUrl.startsWith('http')
                 )
             )
             && (
-                !data.watchedAt || (
+                !('watchedAt' in data) || (
                     typeof data.watchedAt === 'string' &&
                     Time.isValidDateString(data.watchedAt)
                 )
             )
             && (
-                !data.externalUrls || (
+                !('externalUrls' in data) || (
                     Array.isArray(data.externalUrls) &&
                     !data.externalUrls.find((url: any) => typeof url !== 'string') &&
                     !data.externalUrls.find((url: string) => !url.startsWith('http'))
@@ -39,7 +49,15 @@ export default class JSONMovie extends ThirdPartyMovie {
             );
     }
 
-    protected data!: Data;
+    public data!: Data;
+
+    constructor(data: Data) {
+        super(data, data.title, {
+            description: data.description,
+            posterUrl: data.posterUrl,
+            releaseDate: data.releaseDate ? dayjs(data.releaseDate) : undefined,
+        });
+    }
 
     private get externalUrls(): string[] {
         return this.data.externalUrls || [];

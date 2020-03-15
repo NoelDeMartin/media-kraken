@@ -4,6 +4,8 @@ import Service, { ComputedStateDefinitions } from '@/services/Service';
 
 import UUID from '@/utils/UUID';
 
+import LoadingMessage from '@/modals/LoadingMessage.vue';
+
 enum Layout {
     Mobile = 'mobile',
     Desktop = 'desktop',
@@ -12,7 +14,12 @@ enum Layout {
 interface Modal {
     id: string;
     component: Component;
+    options: ModalOptions;
     props: object;
+}
+
+interface ModalOptions {
+    cancellable: boolean;
 }
 
 interface State {
@@ -92,6 +99,18 @@ export default class UI extends Service<State, ComputedState> {
         this.menuTriggers.splice(index, 1);
     }
 
+    public async loading<T>(callback: () => Promise<T>, message?: string): Promise<T> {
+        const modal = await this.openModal(LoadingMessage, { message }, { cancellable: false });
+
+        try {
+            const result = await callback();
+
+            return result;
+        } finally {
+            this.closeModal(modal.id, true);
+        }
+    }
+
     public toggleMenu() {
         if (!this.menu)
             return;
@@ -110,23 +129,38 @@ export default class UI extends Service<State, ComputedState> {
         this.toggleMenu();
     }
 
-    public openModal(component: Component, props: object = {}) {
+    public openModal(component: Component, props: object = {}, options: Partial<ModalOptions> = {}): Modal {
+        const id = UUID.generate();
+        const modal = {
+            id,
+            component,
+            options: {
+                cancellable: true,
+                ...options,
+            },
+            props: {
+                ...props,
+                id,
+            },
+        };
+
         this.setState({
             modals: [
                 ...this.modals,
-                {
-                    id: UUID.generate(),
-                    component,
-                    props,
-                },
+                modal,
             ],
         });
+
+        return modal;
     }
 
-    public closeModal(id: string) {
+    public closeModal(id: string, force: boolean = false) {
         const index = this.modals.findIndex(modal => modal.id === id);
 
         if (index === -1)
+            return;
+
+        if (!force && !this.modals[index].options.cancellable)
             return;
 
         this.setState({

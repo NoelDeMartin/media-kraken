@@ -6,6 +6,7 @@
                     v-stop-search
                     type="button"
                     class="w-full flex px-4 py-2 items-center border-b"
+                    :title="resultButtonTitle(result)"
                     :class="{
                         'bg-gray-300': $search.highlightedResult === result,
                     }"
@@ -14,8 +15,8 @@
                 >
                     <div
                         class="
-                            relative overflow-hidden
-                            w-12 h-12 mr-2 flex items-center justify-center rounded
+                            relative flex-shrink-0
+                            w-12 h-12 mr-2 flex items-center justify-center
                             bg-gray-400 border border-gray-400
                         "
                     >
@@ -25,29 +26,25 @@
                             :style="{ 'background-image': `url('${result.posterUrl}')` }"
                         />
                     </div>
-                    <div class="flex flex-col items-start">
-                        <span class="text-base font-bold">
-                            {{ result.title }}
-                        </span>
+                    <div class="flex flex-col items-start overflow-hidden">
+                        <div class="flex items-center max-w-full mb-1">
+                            <span class="text-base font-semibold tracking-wide mr-2 truncate">
+                                {{ result.title }}
+                            </span>
+                            <BaseIcon
+                                v-if="result.collectionUuid"
+                                class="w-4 h-4 text-green-500"
+                                :class="{
+                                    'text-green-500': result.watched,
+                                    'text-blue-500': !result.watched,
+                                }"
+                                :name="result.watched ? 'checkmark' : 'time'"
+                            />
+                        </div>
                         <span class="text-sm text-gray-700">
                             {{ result.releaseYear || '-' }}
                         </span>
                     </div>
-                    <div class="flex-grow" />
-                    <template v-if="result.collectionUuid">
-                        <span
-                            v-if="result.watched"
-                            class="font-bold text-lg text-green-500"
-                        >
-                            watched
-                        </span>
-                        <span
-                            v-else
-                            class="font-bold text-lg text-blue-500"
-                        >
-                            pending
-                        </span>
-                    </template>
                 </button>
             </li>
             <li
@@ -87,6 +84,18 @@ export default Vue.extend({
     },
     destroyed() {
         this.$search.setSearchResultsContainer(null);
+    },
+    methods: {
+        resultButtonTitle(result: SearchResult): string {
+            const title = result.title;
+
+            if (!result.collectionUuid)
+                return title;
+
+            const status = result.watched ? 'Watched' : 'Pending';
+
+            return `${title} (${status})`;
+        },
     },
 });
 </script>

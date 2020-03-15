@@ -16,11 +16,11 @@ export type SearchResult = MovieSearchResult;
 
 interface MovieSearchResult {
     title: string;
-    posterUrl: string | null;
-    releaseYear: number | null;
     collectionUuid: string | null;
-    watched?: boolean;
     source: ThirdPartyMovie;
+    posterUrl?: string;
+    releaseYear?: number;
+    watched?: boolean;
 }
 
 interface State {
@@ -195,16 +195,19 @@ export default class Search extends Service<State> {
 
                 return {
                     title: movie.title,
-                    posterUrl: movie.posterUrl,
-                    releaseYear: movie.releaseDate ? movie.releaseDate.year() : null,
                     collectionUuid: collectionMovie ? collectionMovie.uuid : null,
-                    watched: collectionMovie ? collectionMovie.watched : undefined,
                     source: movie,
+                    posterUrl: movie.posterUrl,
+                    releaseYear: movie.releaseDate ? movie.releaseDate.year() : undefined,
+                    watched: collectionMovie ? collectionMovie.watched : undefined,
                 };
             });
 
         this.searching = false;
-        this.setState({ results });
+        this.setState({
+            results,
+            highlightedResultIndex: results.length > 0 ? 0 : null,
+        });
     }
 
     private startListeningKeyboard() {

@@ -42,7 +42,11 @@ export default class TVisoMovie extends ThirdPartyMovie {
             && (typeof data.checkedDate === 'string' && Time.isValidDateString(data.checkedDate));
     }
 
-    protected data!: Data;
+    public data!: Data;
+
+    constructor(data: Data) {
+        super(data, data.title);
+    }
 
     private get imdbUrl(): string {
         return 'https://www.imdb.com/title/' + this.data.imdb;

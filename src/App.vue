@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="font-montserrat font-normal text-base text-gray-900 leading-tight">
         <router-view />
         <BaseTransition animation="fade">
             <div v-show="$ui.showOverlay" class="fixed inset-0 z-20">

@@ -14,6 +14,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
+// Adapted from https://samherbert.net/svg-loaders/
 export default Vue.extend({});
 </script>
 
