@@ -34,6 +34,13 @@ module.exports = {
                 '0': '0',
                 'content': '900px',
             },
+            gridTemplateColumns: theme => ({
+                ...Object.entries(theme('spacing')).reduce((gridTemplateColumns, [key, value]) => {
+                    gridTemplateColumns['fit-' + key] = `repeat(auto-fit, ${value})`;
+
+                    return gridTemplateColumns;
+                }, {}),
+            }),
         },
     },
 };

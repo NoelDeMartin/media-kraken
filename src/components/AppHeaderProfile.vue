@@ -8,7 +8,7 @@
     >
         <div
             v-show="$ui.mobile || !$search.open"
-            class="inset-y-0 z-20"
+            class="inset-y-0 z-30"
             :class="{
                 'fixed w-screen pr-10 transition-all duration-300': $ui.mobile,
                 'absolute right-0': $ui.desktop,
@@ -24,7 +24,7 @@
                 "
             >
                 <div v-if="$ui.mobile" class="flex items-center">
-                    <UserAvatar class="h-16 w-16 mr-4 flex-shrink-0 rounded-full text-kraken-darkest outline-none shadow-solid" />
+                    <UserAvatar class="w-16 h-16 mr-4 flex-shrink-0 rounded-full text-kraken-darkest outline-none shadow-solid" />
                     <div class="flex flex-col overflow-hidden">
                         <span class="truncate text-lg font-bold">
                             {{ $auth.user.name }}
@@ -41,6 +41,7 @@
                 </div>
                 <nav class="mt-4 desktop:mt-0">
                     <router-link
+                        v-if="!$media.empty"
                         v-close-menu
                         class="
                             text-lg text-kraken-darkest font-bold hover:underline
@@ -56,10 +57,14 @@
                     v-show="$ui.desktop"
                     ref="button"
                     type="button"
-                    class="rounded-full text-kraken-darkest focus:outline-none focus:shadow-solid"
+                    :class="{
+                        'rounded-full text-kraken-darkest focus:outline-none focus:shadow-solid': !$auth.isOffline,
+                        'text-gray-700 hover:text-gray-800': $auth.isOffline,
+                    }"
                     @click="$ui.toggleMenu()"
                 >
-                    <UserAvatar class="h-12 w-12 rounded-full" />
+                    <UserAvatar v-if="$auth.user.avatarUrl" class="w-12 h-12 rounded-full" />
+                    <BaseIcon v-else name="cog" class="w-5 h-5" />
                 </button>
                 <div class="flex-grow" />
                 <BaseTransition :enabled="$ui.desktop" :duration="100" animations="fade scale">
@@ -73,7 +78,7 @@
                         "
                         :class="{ 'pb-1 rounded-lg bg-white border border-gray-300': $ui.desktop }"
                     >
-                        <div v-if="$ui.desktop" class="flex flex-col p-4 overflow-hidden bg-gray-200 border-b border-gray-300">
+                        <div v-if="$ui.desktop && !$auth.isOffline" class="flex flex-col p-4 overflow-hidden bg-gray-200 border-b border-gray-300">
                             <span class="truncate font-bold">
                                 {{ $auth.user.name }}
                             </span>

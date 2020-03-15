@@ -32,6 +32,10 @@ export default class Auth extends Service<State> {
         return this.state.user;
     }
 
+    public get isOffline(): boolean | null {
+        return this.loggedIn ? this.user instanceof OfflineUser : null;
+    }
+
     public isLoggedIn(): this is HasUser {
         return this.loggedIn;
     }

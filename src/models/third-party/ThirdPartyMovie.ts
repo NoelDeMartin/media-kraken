@@ -4,6 +4,8 @@ import { Dayjs } from 'dayjs';
 import Movie from '@/models/soukai/Movie';
 import MediaContainer from '@/models/soukai/MediaContainer';
 
+import ThirdPartyMedia from '@/models/third-party/ThirdPartyMedia';
+
 interface OptionalProperties {
     description?: string;
     url?: string;
@@ -11,9 +13,8 @@ interface OptionalProperties {
     posterUrl?: string;
 }
 
-export default abstract class ThirdPartyMovie {
+export default abstract class ThirdPartyMovie extends ThirdPartyMedia {
 
-    public data: any;
     public title: string;
     public description?: string;
     public url?: string;
@@ -21,7 +22,8 @@ export default abstract class ThirdPartyMovie {
     public posterUrl?: string;
 
     constructor(data: any, title: string, optionalProperties: OptionalProperties = {}) {
-        this.data = data;
+        super(data);
+
         this.title = title;
 
         Object.assign(this, optionalProperties);

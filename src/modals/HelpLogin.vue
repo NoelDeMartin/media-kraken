@@ -1,11 +1,11 @@
 <template>
     <AppModal @close="$ui.closeModal(id)">
         <span class="font-semibold text-2xl m-4">
-            Do you need help to log in?
+            Which one should I choose?
         </span>
         <hr class="border-gray-500">
         <div class="p-4">
-            <span class="font-medium text-kraken-darkest mt-4 mb-2">
+            <span class="block font-medium text-kraken-darkest my-2">
                 Login with Solid
             </span>
             <div class="text-sm text-gray-800">
@@ -28,7 +28,7 @@
         </div>
         <hr class="border-gray-500">
         <div class="p-4">
-            <span class="font-medium text-kraken-darkest mt-4 mb-2">
+            <span class="block font-medium text-kraken-darkest my-2">
                 Login Offline
             </span>
             <div class="text-sm text-gray-800">

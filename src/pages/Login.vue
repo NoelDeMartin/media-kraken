@@ -1,5 +1,5 @@
 <template>
-    <div class="w-screen h-screen flex flex-col items-center justify-center bg-kraken-lightest p-8">
+    <div class="w-screen h-screen flex flex-col items-center justify-center bg-white p-8">
         <template v-if="!$auth.isLoggedIn()">
             <BaseIcon name="logo" class="w-48 h-48" />
             <h1 class="mt-4 text-3xl font-semibold">
@@ -49,7 +49,7 @@
                         class="mt-4 self-center text-sm text-kraken-darker hover:underline hover:text-kraken-darkest"
                         @click="showHelp"
                     >
-                        Do you need help?
+                        Which one should I choose?
                     </button>
                 </template>
             </div>
@@ -80,7 +80,7 @@ import Vue from 'vue';
 
 import AppFooter from '@/components/AppFooter.vue';
 
-import LoginHelp from '@/modals/LoginHelp.vue';
+import HelpLogin from '@/modals/HelpLogin.vue';
 
 interface Data {
     identityProviderUrl: string | null;
@@ -108,7 +108,7 @@ export default Vue.extend({
             }
         },
         showHelp() {
-            this.$ui.openModal(LoginHelp);
+            this.$ui.openModal(HelpLogin);
         },
     },
 });
