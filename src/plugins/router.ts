@@ -3,26 +3,25 @@ import VueRouter from 'vue-router';
 
 import AppLayout from '@/components/AppLayout.vue';
 
-import Collection from '@/pages/Collection.vue';
-import Home from '@/pages/Home.vue';
-import Login from '@/pages/Login.vue';
-import Movie from '@/pages/Movie.vue';
-import NotFound from '@/pages/errors/404.vue';
-import Search from '@/pages/Search.vue';
+import CollectionPage from '@/pages/CollectionPage.vue';
+import Error404Page from '@/pages/Error404Page.vue';
+import HomePage from '@/pages/HomePage.vue';
+import LoginPage from '@/pages/LoginPage.vue';
+import MoviePage from '@/pages/MoviePage.vue';
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
     mode: 'history',
+    base: process.env.VUE_APP_PUBLIC_PATH,
     routes: [
-        { name: 'login', path: '/login', component: Login },
+        { name: 'login', path: '/login', component: LoginPage },
         {
             path: '/',
             component: AppLayout,
             children: [
-                { name: 'home', path: '', component: Home },
-                { name: 'search', path: 'search', component: Search },
-                { name: 'collection', path: 'collection', component: Collection },
+                { name: 'home', path: '', component: HomePage },
+                { name: 'collection', path: 'collection', component: CollectionPage },
                 {
                     path: 'movies',
                     component: { render: h => h('router-view') },
@@ -31,12 +30,12 @@ const router = new VueRouter({
                         {
                             name: 'movie',
                             path: ':uuid',
-                            component: Movie,
+                            component: MoviePage,
                             props: route => ({ movieUuid: route.params.uuid }),
                         },
                     ],
                 },
-                { path: '*', component: NotFound },
+                { path: '*', component: Error404Page },
             ],
         },
     ],

@@ -1,9 +1,7 @@
 <template>
-    <main>
-        <h1 class="text-2xl font-semibold">
-            Collection
-        </h1>
-    </main>
+    <h1 class="text-lg font-medium my-4">
+        <slot />
+    </h1>
 </template>
 
 <script lang="ts">

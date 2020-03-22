@@ -1,13 +1,28 @@
 <template>
-    <AppModal @close="$ui.closeModal(id)">
-        <div class="flex flex-col overflow-hidden p-4 desktop:flex-row">
+    <AppModal :id="id" :options="options" :header="false">
+        <div class="flex flex-col overflow-hidden desktop:flex-row">
             <img
                 v-if="movie.posterUrl"
                 :src="movie.posterUrl"
                 class="h-64 max-h-full mr-4 border border-gray-400 hidden desktop:block"
             >
             <div class="flex flex-col max-h-full">
-                <span class="text-xl font-semibold mb-2">{{ movie.title }}</span>
+                <div class="flex items-center mb-2">
+                    <h2 class="text-xl font-semibold">
+                        {{ movie.title }}
+                        <span v-if="movie.releaseDate" class="font-medium text-base">
+                            ({{ movie.releaseDate.year() }})
+                        </span>
+                    </h2>
+                    <div class="flex-grow" />
+                    <button
+                        type="button"
+                        class="p-2 rounded-lg self-start hover:bg-gray-300 desktop:self-center"
+                        @click="$ui.closeModal(id)"
+                    >
+                        <BaseIcon name="close" class="w-4 h-4 text-gray-800" />
+                    </button>
+                </div>
                 <img
                     v-if="movie.posterUrl"
                     :src="movie.posterUrl"
@@ -22,30 +37,24 @@
                         Add it to your collection:
                     </p>
                     <div class="flex">
-                        <button
-                            type="button"
-                            class="
-                                flex items-center rounded-full shadow border border-blue-700
-                                text-sm font-medium text-blue-100 bg-blue-600 hover:bg-blue-700
-                                px-2 h-8 mr-2
-                            "
+                        <BaseButton
+                            icon="time"
+                            class="bg-blue-500 text-white mr-2 hover:bg-blue-700"
+                            text-class="font-semibold text-sm"
+                            icon-class="w-4 h-4 mr-2"
                             @click="addToCollection(false)"
                         >
-                            <BaseIcon name="time" class="w-4 h-4 mr-2" />
-                            <span class="mr-1">pending</span>
-                        </button>
-                        <button
-                            type="button"
-                            class="
-                                flex items-center rounded-full shadow border border-green-700
-                                text-sm font-medium text-green-100 bg-green-600 hover:bg-green-700
-                                px-2 h-8
-                            "
+                            pending
+                        </BaseButton>
+                        <BaseButton
+                            icon="checkmark"
+                            class="bg-green-500 text-white mr-2 hover:bg-green-700"
+                            text-class="font-semibold text-sm"
+                            icon-class="w-4 h-4 mr-2"
                             @click="addToCollection(true)"
                         >
-                            <BaseIcon name="checkmark" class="w-4 h-4 mr-2" />
-                            <span class="mr-1">watched</span>
-                        </button>
+                            watched
+                        </BaseButton>
                     </div>
                 </div>
             </div>
@@ -58,6 +67,8 @@ import Vue from 'vue';
 
 import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 
+import { ModalOptions } from '@/services/UI';
+
 import AppModal from '@/components/AppModal.vue';
 
 export default Vue.extend({
@@ -67,6 +78,10 @@ export default Vue.extend({
     props: {
         id: {
             type: String,
+            required: true,
+        },
+        options: {
+            type: Object as () => ModalOptions,
             required: true,
         },
         movie: {
@@ -88,7 +103,7 @@ export default Vue.extend({
 
                     return movie;
                 },
-                `Importing ${this.movie.title}...`,
+                `Adding **${this.movie.title}** to your collection...`,
             );
 
             this.$router.push({ name: 'movie', params: { uuid: movie.uuid! }});

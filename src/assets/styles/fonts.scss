@@ -6,7 +6,7 @@ $latinExtUnicodeRange: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local('Montserrat Regular'), local('Montserrat-Regular'), url('~@/styles/fonts/Montserrat_Regular_Latin.woff2') format('woff2');
+    src: local('Montserrat Regular'), local('Montserrat-Regular'), url('~@/assets/fonts/Montserrat_Regular_Latin.woff2') format('woff2');
     unicode-range: $latinUnicodeRange;
 }
 @font-face {
@@ -14,7 +14,7 @@ $latinExtUnicodeRange: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+
     font-style: normal;
     font-weight: 400;
     font-display: swap;
-    src: local('Montserrat Regular'), local('Montserrat-Regular'), url('~@/styles/fonts/Montserrat_Regular_Latin_Ext.woff2') format('woff2');
+    src: local('Montserrat Regular'), local('Montserrat-Regular'), url('~@/assets/fonts/Montserrat_Regular_Latin_Ext.woff2') format('woff2');
     unicode-range: $latinExtUnicodeRange;
 }
 
@@ -23,7 +23,7 @@ $latinExtUnicodeRange: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: local('Montserrat Medium'), local('Montserrat-Medium'), url('~@/styles/fonts/Montserrat_Medium_Latin.woff2') format('woff2');
+    src: local('Montserrat Medium'), local('Montserrat-Medium'), url('~@/assets/fonts/Montserrat_Medium_Latin.woff2') format('woff2');
     unicode-range: $latinUnicodeRange;
 }
 @font-face {
@@ -31,7 +31,7 @@ $latinExtUnicodeRange: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+
     font-style: normal;
     font-weight: 500;
     font-display: swap;
-    src: local('Montserrat Medium'), local('Montserrat-Medium'), url('~@/styles/fonts/Montserrat_Medium_Latin_Ext.woff2') format('woff2');
+    src: local('Montserrat Medium'), local('Montserrat-Medium'), url('~@/assets/fonts/Montserrat_Medium_Latin_Ext.woff2') format('woff2');
     unicode-range: $latinExtUnicodeRange;
 }
 
@@ -40,7 +40,7 @@ $latinExtUnicodeRange: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url('~@/styles/fonts/Montserrat_SemiBold_Latin.woff2') format('woff2');
+    src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url('~@/assets/fonts/Montserrat_SemiBold_Latin.woff2') format('woff2');
     unicode-range: $latinUnicodeRange;
 }
 @font-face {
@@ -48,7 +48,7 @@ $latinExtUnicodeRange: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+
     font-style: normal;
     font-weight: 600;
     font-display: swap;
-    src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url('~@/styles/fonts/Montserrat_SemiBold_Latin_Ext.woff2') format('woff2');
+    src: local('Montserrat SemiBold'), local('Montserrat-SemiBold'), url('~@/assets/fonts/Montserrat_SemiBold_Latin_Ext.woff2') format('woff2');
     unicode-range: $latinExtUnicodeRange;
 }
 
@@ -57,7 +57,7 @@ $latinExtUnicodeRange: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: local('Montserrat Bold'), local('Montserrat-Bold'), url('~@/styles/fonts/Montserrat_Bold_Latin.woff2') format('woff2');
+    src: local('Montserrat Bold'), local('Montserrat-Bold'), url('~@/assets/fonts/Montserrat_Bold_Latin.woff2') format('woff2');
     unicode-range: $latinUnicodeRange;
 }
 @font-face {
@@ -65,6 +65,6 @@ $latinExtUnicodeRange: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+
     font-style: normal;
     font-weight: 700;
     font-display: swap;
-    src: local('Montserrat Bold'), local('Montserrat-Bold'), url('~@/styles/fonts/Montserrat_Bold_Latin_Ext.woff2') format('woff2');
+    src: local('Montserrat Bold'), local('Montserrat-Bold'), url('~@/assets/fonts/Montserrat_Bold_Latin_Ext.woff2') format('woff2');
     unicode-range: $latinExtUnicodeRange;
 }

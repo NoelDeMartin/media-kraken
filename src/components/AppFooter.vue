@@ -1,13 +1,22 @@
 <template>
-    <footer class="px-4 py-2 text-xs text-kraken-darker text-center">
-        <div class="flex justify-end">
-            <BaseLink
-                :blank="true"
-                title="View application source code"
-                href="https://github.com/noeldemartin/media-kraken"
-                class="mr-1"
+    <footer class="px-4 py-2 text-xs text-primary-700 text-center">
+        <div
+            class="flex max-w-content mx-auto"
+            :class="!$auth.loggedIn ? 'justify-center' : 'justify-end'"
+        >
+            <button
+                type="button"
+                class="mr-1 hover:underline hover:text-primary-900"
+                @click="$ui.openMarkdownModal('about')"
             >
-                view source
+                about
+            </button>
+            | <BaseLink
+                title="View application source code"
+                url="https://github.com/noeldemartin/media-kraken"
+                class="mx-1"
+            >
+                source
             </BaseLink>
             | v{{ $config.version }}
         </div>

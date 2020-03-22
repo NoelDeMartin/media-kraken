@@ -8,7 +8,7 @@ import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie.js';
 import Arr from '@/utils/Arr';
 import Time, { DebouncedFunction } from '@/utils/Time';
 
-import MoviePreview from '@/modals/MoviePreview.vue';
+import MovieModal from '@/modals/MovieModal.vue';
 
 const NON_WRITABLE_INPUT_TYPES = ['submit', 'reset', 'checkbox', 'radio'];
 
@@ -171,7 +171,7 @@ export default class Search extends Service<State> {
             return;
         }
 
-        this.app.$ui.openModal(MoviePreview, { movie: result.source });
+        this.app.$ui.openModal(MovieModal, { movie: result.source });
 
         this.stop();
     }

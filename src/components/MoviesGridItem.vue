@@ -1,46 +1,29 @@
 <template>
-    <div
-        :style="{
-            'background-image': `url('${movie.posterUrl}')`,
-        }"
-        class="
-            flex flex-col justify-end items-end
-            bg-cover bg-center
-            w-40 h-40 flex items-end overflow-hidden m-2
-            border border-gray-600 rounded-lg
-        "
-    >
-        <div v-if="movie.watched" class="flex items-center px-2 py-1 m-1 bg-green-300 rounded-full text-green-800">
-            <span class="font-semibold text-xs mr-1">Watched</span>
-            <BaseIcon name="checkmark" />
-        </div>
-        <button
-            v-else
-            type="button"
-            class="group"
-            @click="movie.watch()"
+    <router-link :to="{ name: 'movie', params: { uuid: movie.uuid } }" class="relative group">
+        <MoviePoster :url="movie.posterUrl" :title="movie.title" />
+        <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-25" />
+        <div
+            class="absolute top-0 right-0 -mt-1 w-10 h-10 flex items-center justify-center"
+            style="margin-right:-.7rem"
         >
-            <div
-                class="
-                    flex items-center px-2 py-1 m-1 bg-blue-300 rounded-full text-blue-800
-                    group-hover:bg-green-300 group-hover:text-green-800
-                "
-            >
-                <span class="block font-semibold text-xs mr-1 group-hover:hidden">Pending</span>
-                <span class="hidden font-semibold text-xs mr-1 group-hover:block">Watch</span>
-                <BaseIcon name="time" class="block group-hover:hidden" />
-                <BaseIcon name="checkmark" class="hidden group-hover:block" />
-            </div>
-        </button>
-        <div class="opacity-75 bg-black p-2 w-full">
-            <router-link
-                :to="{ name: 'movie', params: { uuid: movie.uuid } }"
-                class="block font-semibold text-white tracking-wider truncate"
-            >
-                {{ movie.title }}
-            </router-link>
+            <BaseIcon
+                name="bookmark"
+                class="absolute inset-0 w-10 h-10"
+                :class="{
+                    'text-green-300': movie.watched,
+                    'text-blue-300': !movie.watched,
+                }"
+            />
+            <BaseIcon
+                class="w-4 h-4 z-10"
+                :name="movie.watched ? 'checkmark' : 'time'"
+                :class="{
+                    'text-green-600': movie.watched,
+                    'text-blue-600': !movie.watched,
+                }"
+            />
         </div>
-    </div>
+    </router-link>
 </template>
 
 <script lang="ts">
@@ -48,7 +31,12 @@ import Vue from 'vue';
 
 import Movie from '@/models/soukai/Movie';
 
+import MoviePoster from '@/components/MoviePoster.vue';
+
 export default Vue.extend({
+    components: {
+        MoviePoster,
+    },
     props: {
         movie: {
             type: Movie,

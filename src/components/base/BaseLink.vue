@@ -1,15 +1,25 @@
 <template>
-    <a
+    <router-link
+        v-if="route"
+        class="inline-block text-primary-700 hover:underline hover:text-primary-900"
         :title="title"
-        :href="href"
-        :target="blank ? '_blank' : null"
-        class="inline-block text-kraken-darker hover:underline hover:text-kraken-darkest"
+        :to="routerTo"
+    >
+        <slot />
+    </router-link>
+    <a
+        v-else
+        class="inline-block text-primary-700 hover:underline hover:text-primary-900"
+        target="_blank"
+        :title="title"
+        :href="url"
     >
         <slot />
     </a>
 </template>
 
 <script lang="ts">
+import { Location } from 'vue-router';
 import Vue from 'vue';
 
 export default Vue.extend({
@@ -18,13 +28,18 @@ export default Vue.extend({
             type: String,
             default: null,
         },
-        href: {
+        url: {
             type: String,
-            required: true,
+            default: null,
         },
-        blank: {
-            type: Boolean,
-            default: false,
+        route: {
+            type: String,
+            default: null,
+        },
+    },
+    computed: {
+        routerTo(): Location {
+            return { name: this.route };
         },
     },
 });

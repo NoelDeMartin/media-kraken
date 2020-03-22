@@ -8,7 +8,7 @@
     >
         <div
             v-show="$ui.mobile || !$search.open"
-            class="inset-y-0 z-30"
+            class="inset-y-0 z-50"
             :class="{
                 'fixed w-screen pr-10 transition-all duration-300': $ui.mobile,
                 'absolute right-0': $ui.desktop,
@@ -24,7 +24,7 @@
                 "
             >
                 <div v-if="$ui.mobile" class="flex items-center">
-                    <UserAvatar class="w-16 h-16 mr-4 flex-shrink-0 rounded-full text-kraken-darkest outline-none shadow-solid" />
+                    <UserAvatar class="w-16 h-16 mr-4 flex-shrink-0 rounded-full text-primary-900 outline-none shadow-solid" />
                     <div class="flex flex-col overflow-hidden">
                         <span class="truncate text-lg font-bold">
                             {{ $auth.user.name }}
@@ -40,26 +40,23 @@
                     </div>
                 </div>
                 <nav class="mt-4 desktop:mt-0">
-                    <router-link
+                    <BaseLink
                         v-if="!$media.empty"
                         v-close-menu
-                        class="
-                            text-lg text-kraken-darkest font-bold hover:underline
-                            desktop:text-sm desktop:mr-4
-                        "
-                        :to="{ name: 'collection' }"
+                        route="collection"
+                        class="font-semibold desktop:text-sm desktop:mr-4"
                         :class="{ 'underline': $route.name === 'collection' }"
                     >
                         My Collection
-                    </router-link>
+                    </BaseLink>
                 </nav>
                 <button
                     v-show="$ui.desktop"
                     ref="button"
                     type="button"
                     :class="{
-                        'rounded-full text-kraken-darkest focus:outline-none focus:shadow-solid': !$auth.isOffline,
-                        'text-gray-700 hover:text-gray-800': $auth.isOffline,
+                        'rounded-full text-primary-900 focus:outline-none focus:shadow-solid': $auth.user.avatarUrl,
+                        'text-gray-700 hover:text-gray-800': !$auth.user.avatarUrl,
                     }"
                     @click="$ui.toggleMenu()"
                 >
@@ -76,10 +73,13 @@
                             rounded-md
                             desktop:absolute desktop:shadow-lg
                         "
-                        :class="{ 'pb-1 rounded-lg bg-white border border-gray-300': $ui.desktop }"
+                        :class="{
+                            'pb-1 rounded-lg bg-white border border-gray-300 overflow-hidden': $ui.desktop,
+                            '-mt-4': $ui.desktop && !$auth.user.avatarUrl,
+                        }"
                     >
                         <div v-if="$ui.desktop && !$auth.isOffline" class="flex flex-col p-4 overflow-hidden bg-gray-200 border-b border-gray-300">
-                            <span class="truncate font-bold">
+                            <span class="truncate font-bold mb-1">
                                 {{ $auth.user.name }}
                             </span>
                             <a

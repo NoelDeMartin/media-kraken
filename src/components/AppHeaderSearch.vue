@@ -3,7 +3,7 @@
         class="flex items-center h-full"
         :class="{
             'absolute inset-0 justify-end':$ui.mobile,
-            'relative justify-start flex-grow mr-4 z-10': $ui.desktop,
+            'relative justify-start flex-grow mr-4 z-20': $ui.desktop,
         }"
     >
         <BaseTransition animation="fade">
@@ -34,7 +34,7 @@
                     ref="search-input"
                     class="
                         block w-full py-2 pr-4 pl-10
-                        bg-white shadow rounded-lg appearance-none border border-kraken-lighter focus:border-kraken-light
+                        bg-white shadow rounded-lg appearance-none border border-primary-200 focus:border-primary-300
                     "
                     type="text"
                     autocomplete="off"

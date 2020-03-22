@@ -1,12 +1,12 @@
 const path = require('path');
 const version = require('./package.json').version;
+const publicPath = process.env.NODE_ENV === 'production' ? '/media-kraken/' : '/';
 
 process.env.VUE_APP_VERSION = version;
+process.env.VUE_APP_PUBLIC_PATH = publicPath;
 
 module.exports = {
-    publicPath: process.env.NODE_ENV === 'production'
-        ? '/media-kraken/'
-        : '/',
+    publicPath,
     configureWebpack: {
         externals: {
             'node-fetch': 'fetch',
@@ -42,6 +42,12 @@ module.exports = {
             .end()
             .use('vue-svg-loader')
             .loader('vue-svg-loader');
+
+        config.module
+            .rule('markdown')
+            .test(/\.md$/)
+            .use('raw-loader')
+            .loader('raw-loader');
     },
     pwa: {
         name: 'Media Kraken',

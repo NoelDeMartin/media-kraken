@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute top-full inset-x-0 -mt-2 bg-white border shadow rounded-lg overflow-hidden">
+    <div class="absolute top-full inset-x-0 -mt-2 bg-white border shadow rounded-lg overflow-hidden z-20">
         <ul>
             <li v-for="result of $search.results" :key="result.id">
                 <button
@@ -33,10 +33,10 @@
                             </span>
                             <BaseIcon
                                 v-if="result.collectionUuid"
-                                class="w-4 h-4 text-green-500"
+                                class="w-4 h-4"
                                 :class="{
-                                    'text-green-500': result.watched,
-                                    'text-blue-500': !result.watched,
+                                    'text-green-600': result.watched,
+                                    'text-blue-600': !result.watched,
                                 }"
                                 :name="result.watched ? 'checkmark' : 'time'"
                             />
@@ -49,7 +49,7 @@
             </li>
             <li
                 v-if="$search.searching"
-                class="flex items-center justify-center h-16 text-kraken-dark"
+                class="flex items-center justify-center h-16 text-primary-500"
             >
                 <LoadingDots />
             </li>

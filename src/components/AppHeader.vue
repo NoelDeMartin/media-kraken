@@ -29,7 +29,7 @@
                         class="absolute inset-x-16 inset-y-0 z-10 flex justify-center desktop:relative desktop:inset-auto"
                     >
                         <router-link :to="{ name: 'home' }" class="mr-4" title="Media Kraken">
-                            <BaseIcon name="logo" class="w-auto h-16" />
+                            <BaseIcon name="media-kraken" class="w-auto h-16" />
                         </router-link>
                     </div>
                 </BaseTransition>

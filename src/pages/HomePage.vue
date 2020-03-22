@@ -1,21 +1,23 @@
 <template>
-    <div v-if="!$media.empty">
-        <h1 class="text-2xl font-semibold mb-4 text-center">
-            Movies To Watch
-        </h1>
-        <div class="overflow-y-auto text-center">
-            <MoviesGrid :movies="pendingMovies" />
-            <router-link
-                :to="{ name: 'collection' }"
-                class="underline text-blue-700 hover:text-blue-900"
-            >
-                View all
-            </router-link>
-        </div>
+    <MoviesGrid
+        v-if="pendingMovies.length > 0"
+        class="mt-6"
+        :movies="pendingMovies"
+    />
+
+    <div v-else-if="!$media.empty">
+        <BasePageHeader>All done!</BasePageHeader>
+        <p class="leading-relaxed">
+            You don't have anything pending to watch! Check out
+            <BaseLink route="collection">
+                your collection
+            </BaseLink>
+            or press "s" to start searching something new.
+        </p>
     </div>
 
     <div v-else class="flex flex-col flex-grow w-full">
-        <span class="block text-2xl font-bold my-4">Welcome!</span>
+        <BasePageHeader>Welcome!</BasePageHeader>
         <p class="mb-4 leading-relaxed">
             To get started, import some movies to your collection. If you don't have
             anything to import, just press "s" and start searching.

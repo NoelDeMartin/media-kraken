@@ -4,22 +4,12 @@ import Service, { ComputedStateDefinitions } from '@/services/Service';
 
 import UUID from '@/utils/UUID';
 
-import LoadingMessage from '@/modals/LoadingMessage.vue';
+import LoadingModal from '@/modals/LoadingModal.vue';
+import MarkdownModal from '@/modals/MarkdownModal.vue';
 
 enum Layout {
     Mobile = 'mobile',
     Desktop = 'desktop',
-}
-
-interface Modal {
-    id: string;
-    component: Component;
-    options: ModalOptions;
-    props: object;
-}
-
-interface ModalOptions {
-    cancellable: boolean;
 }
 
 interface State {
@@ -37,6 +27,17 @@ interface ComputedState {
 const screenBreakpoints: { [layout in Layout]?: number } = {
     [Layout.Desktop]: 640,
 };
+
+export interface Modal {
+    id: string;
+    component: Component;
+    options: ModalOptions;
+    props: object;
+}
+
+export interface ModalOptions {
+    cancellable: boolean;
+}
 
 export default class UI extends Service<State, ComputedState> {
 
@@ -100,7 +101,7 @@ export default class UI extends Service<State, ComputedState> {
     }
 
     public async loading<T>(callback: () => Promise<T>, message?: string): Promise<T> {
-        const modal = await this.openModal(LoadingMessage, { message }, { cancellable: false });
+        const modal = await this.openModal(LoadingModal, { message }, { cancellable: false });
 
         try {
             const result = await callback();
@@ -127,6 +128,10 @@ export default class UI extends Service<State, ComputedState> {
             return;
 
         this.toggleMenu();
+    }
+
+    public openMarkdownModal(content: string, replacements: any = {}): void {
+        this.openModal(MarkdownModal, { content, replacements });
     }
 
     public openModal(component: Component, props: object = {}, options: Partial<ModalOptions> = {}): Modal {

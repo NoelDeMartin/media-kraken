@@ -23,6 +23,7 @@
   },
   "devDependencies": {
     "@fullhuman/postcss-purgecss": "^2.0.5",
+    "@types/marked": "^0.7.3",
     "@types/rdflib": "^0.17.1",
     "@types/webpack-env": "^1.15.0",
     "@vue/cli-plugin-babel": "^4.1.0",
@@ -33,8 +34,10 @@
     "@vue/eslint-config-typescript": "^4.0.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.0.0",
+    "marked": "^0.8.2",
     "node-sass": "^4.13.1",
     "nodemon": "^2.0.2",
+    "raw-loader": "^4.0.0",
     "sass-loader": "^8.0.2",
     "typescript": "~3.5.3",
     "vue-svg-loader": "^0.15.0",

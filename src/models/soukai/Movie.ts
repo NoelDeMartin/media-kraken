@@ -20,6 +20,14 @@ export default class Movie extends SolidModel {
             rdfProperty: 'schema:name',
             required: true,
         },
+        description: {
+            type: FieldType.String,
+            rdfProperty: 'schema:description',
+        },
+        releaseDate: {
+            type: FieldType.Date,
+            rdfProperty: 'schema:datePublished',
+        },
         posterUrl: {
             type: FieldType.String,
             rdfProperty: 'schema:image',

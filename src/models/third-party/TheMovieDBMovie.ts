@@ -48,6 +48,8 @@ export default class TheMovieDBMovie extends ThirdPartyMovie {
     public async getAttributes(): Promise<Attributes> {
         return {
             title: this.title,
+            description: this.description,
+            releaseDate: this.releaseDate ? this.releaseDate.toDate() : undefined,
             posterUrl: this.posterUrl,
             externalUrls: [this.url],
         };
