@@ -14,7 +14,7 @@ module.exports = {
 
             black: {
                 default: '#000',
-                overlay: 'rgba(0, 0, 0, .1)',
+                overlay: 'rgba(0, 0, 0, .05)',
             },
 
             white: {
@@ -68,6 +68,18 @@ module.exports = {
                 800: '#3c5d12',
                 900: '#223908',
             },
+
+            red: {
+                100: '#fff5f5',
+                200: '#fed7d7',
+                300: '#feb2b2',
+                400: '#fc8181',
+                500: '#f56565',
+                600: '#e53e3e',
+                700: '#c53030',
+                800: '#9b2c2c',
+                900: '#742a2a',
+            },
         },
         // Extend default config
         // @see https://github.com/tailwindcss/tailwindcss/blob/master/stubs/defaultConfig.stub.js
@@ -95,6 +107,9 @@ module.exports = {
         },
     },
     variants: {
+        display: ['responsive', 'group-hover'],
         opacity: ['responsive', 'hover', 'focus', 'group-hover'],
+        textColor: ['responsive', 'hover', 'focus', 'group-hover'],
+        margin: ['responsive', 'last'],
     },
 };

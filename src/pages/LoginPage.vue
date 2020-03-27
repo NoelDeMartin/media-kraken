@@ -1,5 +1,5 @@
 <template>
-    <div class="w-screen h-screen flex flex-col items-center justify-center bg-white p-8">
+    <div class="flex flex-col flex-grow items-center justify-center p-8">
         <template v-if="!$auth.isLoggedIn()">
             <BaseIcon name="media-kraken" class="w-48 h-48" />
             <h1 class="mt-4 text-3xl font-semibold">
@@ -90,23 +90,17 @@
             </button>
             first.
         </p>
-        <AppFooter class="fixed bottom-0 inset-x-0" />
     </div>
 </template>
 
 <script lang="ts">
 import Vue from 'vue';
 
-import AppFooter from '@/components/AppFooter.vue';
-
 interface Data {
     identityProviderUrl: string | null;
 }
 
 export default Vue.extend({
-    components: {
-        AppFooter,
-    },
     data: (): Data => ({ identityProviderUrl: null }),
     methods: {
         loginWithSolid() {

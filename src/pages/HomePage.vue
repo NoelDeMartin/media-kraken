@@ -41,7 +41,7 @@ export default Vue.extend({
     },
     computed: {
         pendingMovies(): Movie[] {
-            return this.$media.movies.filter(movie => !movie.watched);
+            return this.$media.movies.filter(movie => movie.pending);
         },
     },
 });

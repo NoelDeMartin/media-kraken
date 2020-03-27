@@ -106,7 +106,10 @@ export default Vue.extend({
                 `Adding **${this.movie.title}** to your collection...`,
             );
 
-            this.$router.push({ name: 'movie', params: { uuid: movie.uuid! }});
+            this.$ui.showSnackbar(
+                `**${this.movie.title}** has been added to your collection!`,
+                { transient: true },
+            );
         },
     },
 });

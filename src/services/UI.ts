@@ -1,7 +1,10 @@
 import { Component } from 'vue';
+import { SolidModel } from 'soukai-solid';
 
 import Service, { ComputedStateDefinitions } from '@/services/Service';
 
+import Arr from '@/utils/Arr';
+import AsyncOperation from '@/utils/AsyncOperation';
 import UUID from '@/utils/UUID';
 
 import LoadingModal from '@/modals/LoadingModal.vue';
@@ -18,6 +21,7 @@ interface State {
     },
     menuOpen: boolean;
     modals: Modal[];
+    snackbars: Snackbar[];
 }
 
 interface ComputedState {
@@ -39,11 +43,24 @@ export interface ModalOptions {
     cancellable: boolean;
 }
 
+export interface Snackbar {
+    id: string;
+    message: string;
+    options: SnackbarOptions;
+}
+
+export interface SnackbarOptions {
+    loading: boolean;
+    error: boolean;
+    transient: boolean;
+}
+
 export default class UI extends Service<State, ComputedState> {
 
     private mobileMenu: HTMLElement | null = null;
     private desktopMenu: HTMLElement | null = null;
     private menuTriggers: HTMLButtonElement[] = [];
+    private myCollection: HTMLElement | null = null;
 
     private clickListener: EventListener | null = null;
 
@@ -63,8 +80,16 @@ export default class UI extends Service<State, ComputedState> {
         return this.state.menuOpen;
     }
 
+    public get myCollectionElement(): HTMLElement | null {
+        return this.myCollection;
+    }
+
     public get modals(): Modal[] {
         return this.state.modals;
+    }
+
+    public get snackbars(): Snackbar[] {
+        return this.state.snackbars;
     }
 
     public get showOverlay(): boolean {
@@ -98,6 +123,10 @@ export default class UI extends Service<State, ComputedState> {
             return;
 
         this.menuTriggers.splice(index, 1);
+    }
+
+    public setMyCollection(myCollection: HTMLElement | null) {
+        this.myCollection = myCollection;
     }
 
     public async loading<T>(callback: () => Promise<T>, message?: string): Promise<T> {
@@ -134,18 +163,20 @@ export default class UI extends Service<State, ComputedState> {
         this.openModal(MarkdownModal, { content, replacements });
     }
 
-    public openModal(component: Component, props: object = {}, options: Partial<ModalOptions> = {}): Modal {
+    public openModal(component: Component, props: object = {}, partialOptions: Partial<ModalOptions> = {}): Modal {
         const id = UUID.generate();
+        const options = {
+            cancellable: true,
+            ...partialOptions,
+        };
         const modal = {
             id,
+            options,
             component,
-            options: {
-                cancellable: true,
-                ...options,
-            },
             props: {
                 ...props,
                 id,
+                options,
             },
         };
 
@@ -168,12 +199,83 @@ export default class UI extends Service<State, ComputedState> {
         if (!force && !this.modals[index].options.cancellable)
             return;
 
+        this.setState({ modals: Arr.withoutIndex(this.modals, index) });
+    }
+
+    public showError(error: any): void {
+        this.showSnackbar('Something went wrong!', { error: true, transient: true });
+
+        console.error(error);
+    }
+
+    public showSnackbar(message: string, options: Partial<SnackbarOptions> = {}): Snackbar {
+        const snackbar = {
+            id: UUID.generate(),
+            message,
+            options: {
+                loading: false,
+                error: false,
+                transient: false,
+                ...options,
+            },
+        };
+
         this.setState({
-            modals: [
-                ...this.modals.slice(0, index),
-                ...this.modals.slice(index + 1),
+            snackbars: [
+                ...this.snackbars,
+                snackbar,
             ],
         });
+
+        return snackbar;
+    }
+
+    public updateSnackbar(id: string, message: string, options: Partial<SnackbarOptions> = {}): Snackbar | null {
+        const index = this.snackbars.findIndex(snackbar => snackbar.id === id);
+
+        if (index === -1)
+            return null;
+
+        const snackbar = this.snackbars[index];
+
+        snackbar.message = message;
+        Object.assign(snackbar.options, options);
+
+        return snackbar;
+    }
+
+    public hideSnackbar(id: string): void {
+        const index = this.snackbars.findIndex(snackbar => snackbar.id === id);
+
+        if (index === -1)
+            return;
+
+        this.setState({ snackbars: Arr.withoutIndex(this.snackbars, index) });
+    }
+
+    async updateModel<Model extends SolidModel>(
+        model: Model,
+        update: (model: Model) => Promise<any> | any,
+        affectedAttributes: string[] = [],
+    ): Promise<void> {
+        const operation = new AsyncOperation();
+        const initialAttributes = affectedAttributes.map(attribute => model.getAttribute(attribute));
+
+        try {
+            operation.start();
+
+            await update(model);
+            await model.save();
+
+            operation.complete();
+        } catch (error) {
+            operation.fail(error);
+
+            // TODO implement model.setAttributes(...); in soukai
+            affectedAttributes.forEach((attribute, index) => {
+                model.setAttribute(attribute, initialAttributes[index]);
+            });
+        }
     }
 
     protected async init(): Promise<void> {
@@ -202,6 +304,7 @@ export default class UI extends Service<State, ComputedState> {
             },
             menuOpen: false,
             modals: [],
+            snackbars: [],
         };
     }
 

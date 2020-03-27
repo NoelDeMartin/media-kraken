@@ -41,7 +41,8 @@
                 </div>
                 <nav class="mt-4 desktop:mt-0">
                     <BaseLink
-                        v-if="!$media.empty"
+                        v-show="!$media.empty"
+                        ref="my-collection"
                         v-close-menu
                         route="collection"
                         class="font-semibold desktop:text-sm desktop:mr-4"
@@ -137,11 +138,13 @@ export default Vue.extend({
         this.$ui.setMobileMenu(this.$refs['mobile-menu'] as HTMLElement);
         this.$ui.setDesktopMenu(this.$refs['desktop-menu'] as HTMLElement);
         this.$ui.addMenuTrigger(this.$refs['button'] as HTMLButtonElement);
+        this.$ui.setMyCollection((this.$refs['my-collection'] as Vue).$el as HTMLElement);
     },
     beforeDestroy() {
         this.$ui.setMobileMenu(null);
         this.$ui.setDesktopMenu(null);
         this.$ui.removeMenuTrigger(this.$refs['button'] as HTMLButtonElement);
+        this.$ui.setMyCollection(null);
     },
 });
 </script>

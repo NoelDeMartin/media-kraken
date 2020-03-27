@@ -1,0 +1,194 @@
+import Vue from 'vue';
+import mixins from 'vue-typed-mixins';
+
+enum Animation {
+    Fade = 'fade',
+    Scale = 'scale',
+    ResizeWidth = 'resize-width',
+    SlideUp = 'slide-up',
+}
+
+interface TransitionClasses {
+    enterActive: string;
+    enter: string;
+    enterTo: string;
+    leaveActive: string;
+    leave: string;
+    leaveTo: string;
+}
+
+interface VueTransitionProps {
+    duration: number | { enter: number, leave: number };
+    enterActiveClass: string;
+    enterClass: string;
+    enterToClass: string;
+    leaveActiveClass: string;
+    leaveClass: string;
+    leaveToClass: string;
+}
+
+interface ComponentListeners {
+    [key: string]: Function | Function[];
+}
+
+interface VueTransitionListeners extends ComponentListeners {
+    beforeLeave(el: HTMLElement): void;
+}
+
+type TransitionClassesArrays = { [entry in keyof TransitionClasses]?: string[] };
+
+export default mixins(Vue.extend({
+    props: {
+        enabled: {
+            type: Boolean,
+            default: true,
+        },
+        duration: {
+            type: Number,
+            default: 300,
+        },
+        enterDuration: {
+            type: Number,
+            default: null,
+        },
+        leaveDuration: {
+            type: Number,
+            default: null,
+        },
+        animations: {
+            type: String,
+            default: null,
+        },
+        animation: {
+            type: String as () => Animation,
+            default: null,
+        },
+        enterActiveClass: {
+            type: String,
+            default: '',
+        },
+        enterClass: {
+            type: String,
+            default: '',
+        },
+        enterToClass: {
+            type: String,
+            default: '',
+        },
+        leaveActiveClass: {
+            type: String,
+            default: '',
+        },
+        leaveClass: {
+            type: String,
+            default: '',
+        },
+        leaveToClass: {
+            type: String,
+            default: '',
+        },
+    },
+    computed: {
+        durations(): { enter: number, leave: number} {
+            return {
+                enter: this.enterDuration || this.duration,
+                leave: this.leaveDuration || this.duration,
+            };
+        },
+        transitionClasses(): TransitionClasses {
+            const animations = (this.animations
+                ? this.animations.split(' ')
+                : (this.animation ? [this.animation] : [])) as Animation[];
+
+            const transitionClassesArrays = animations.reduce(this.mergeAnimationClasses, {
+                enterActive: [
+                    'transition-all',
+                    'ease-out',
+                    'duration-' + this.durations.enter,
+                    ...this.enterActiveClass.split(' '),
+                ],
+                enter: this.enterClass.split(' '),
+                enterTo: this.enterToClass.split(' '),
+                leaveActive: [
+                    'transition-all',
+                    'ease-in',
+                    'duration-' + this.durations.leave,
+                    ...this.leaveActiveClass.split(' '),
+                ],
+                leave: this.leaveClass.split(' '),
+                leaveTo: this.leaveToClass.split(' '),
+            });
+
+            return Object.entries(transitionClassesArrays).reduce((transitionClasses, [phase, classes]) => {
+                transitionClasses[phase] = classes!.join(' ');
+
+                return transitionClasses;
+            }, {} as any) as TransitionClasses;
+        },
+        vueTransitionProps(): VueTransitionProps {
+            return {
+                duration: this.durations,
+                enterActiveClass: this.transitionClasses.enterActive,
+                enterClass: this.transitionClasses.enter,
+                enterToClass: this.transitionClasses.enterTo,
+                leaveActiveClass: this.transitionClasses.leaveActive,
+                leaveClass: this.transitionClasses.leave,
+                leaveToClass: this.transitionClasses.leaveTo,
+            };
+        },
+        vueTransitionListeners(): VueTransitionListeners {
+            return {
+                beforeLeave: el => this.$emit('before-leave', el),
+            };
+        },
+    },
+    methods: {
+        mergeAnimationClasses(classes: TransitionClassesArrays, animation: Animation): TransitionClassesArrays {
+            const animationClasses = this.resolveAnimationClasses(animation) || {};
+
+            for (const p in animationClasses) {
+                const phase = p as keyof TransitionClassesArrays;
+
+                classes[phase]!.push(...animationClasses[phase]!);
+            }
+
+            return classes;
+        },
+        resolveAnimationClasses(animation: Animation): TransitionClassesArrays {
+            switch (animation) {
+                case Animation.Fade:
+                    return {
+                        enter: ['opacity-0'],
+                        enterTo: ['opacity-100'],
+                        leave: ['opacity-100'],
+                        leaveTo: ['opacity-0'],
+                    };
+                case Animation.Scale:
+                    return {
+                        enterActive: ['transform'],
+                        enter: ['scale-90'],
+                        enterTo: ['scale-100'],
+                        leaveActive: ['transform'],
+                        leave: ['scale-100'],
+                        leaveTo: ['scale-90'],
+                    };
+                case Animation.ResizeWidth:
+                    return {
+                        enter: ['max-w-0'],
+                        enterTo: ['max-w-full'],
+                        leave: ['max-w-full'],
+                        leaveTo: ['max-w-0'],
+                    };
+                case Animation.SlideUp:
+                    return {
+                        enterActive: ['transform'],
+                        enter: ['translate-y-full'],
+                        enterTo: ['translate-y-0'],
+                        leaveActive: ['transform'],
+                        leave: ['translate-y-0'],
+                        leaveTo: ['translate-y-full'],
+                    };
+            }
+        },
+    },
+}));

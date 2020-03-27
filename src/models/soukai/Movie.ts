@@ -3,6 +3,7 @@ import { SolidModel, SolidEmbedsRelation } from 'soukai-solid';
 
 import WatchAction from '@/models/soukai/WatchAction';
 
+import Arr from '@/utils/Arr';
 import Str from '@/utils/Str';
 import Url from '@/utils/Url';
 
@@ -43,6 +44,10 @@ export default class Movie extends SolidModel {
         return this.actions && this.actions.length > 0;
     }
 
+    public get pending(): boolean {
+        return !this.watched;
+    }
+
     public get watchedAt(): Date | null {
         return this.watched ? this.actions[0].createdAt : null;
     }
@@ -58,16 +63,23 @@ export default class Movie extends SolidModel {
     }
 
     public async watch(date?: Date): Promise<void> {
-        const actionAttributes: Attributes = { object: this.url };
+        const action = new WatchAction({ object: this.url });
 
         if (date)
-            actionAttributes.createdAt = date;
+            action.createdAt = date;
 
-        const action = await this.actionsRelationship().create(actionAttributes);
+        try {
+            // TODO maybe this should be handled by soukai...
+            if (this.isRelationLoaded('actions'))
+                this.setRelationModels('actions', [...this.actions, action]);
 
-        // TODO maybe this should be handled by soukai...
-        if (this.isRelationLoaded('actions'))
-            this.setRelationModels('actions', [...this.actions, action]);
+            await this.actionsRelationship().save(action);
+        } catch (e) {
+            if (this.isRelationLoaded('actions'))
+                this.setRelationModels('actions', Arr.withoutItem(this.actions, action));
+
+            throw e;
+        }
     }
 
     protected newUrl(): string {
