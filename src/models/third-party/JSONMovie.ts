@@ -2,20 +2,13 @@ import { Attributes } from 'soukai';
 import dayjs from 'dayjs';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
-import Movie from '@/models/soukai/Movie';
+import Movie, { MovieJSON } from '@/models/soukai/Movie';
 import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 
 import Arr from '@/utils/Arr';
 import Time from '@/utils/Time';
 
-interface Data {
-    title: string;
-    description?: string;
-    releaseDate?: string;
-    posterUrl?: string;
-    watchedAt?: string;
-    externalUrls?: string[];
-}
+type Data = MovieJSON;
 
 export default class JSONMovie extends ThirdPartyMovie {
 

@@ -63,27 +63,12 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Modal from '@/components/mixins/Modal';
 
 import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 
-import { ModalOptions } from '@/services/UI';
-
-import AppModal from '@/components/AppModal.vue';
-
-export default Vue.extend({
-    components: {
-        AppModal,
-    },
+export default Modal.extend({
     props: {
-        id: {
-            type: String,
-            required: true,
-        },
-        options: {
-            type: Object as () => ModalOptions,
-            required: true,
-        },
         movie: {
             type: Object as () => ThirdPartyMovie,
             required: true,

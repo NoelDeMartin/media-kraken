@@ -1,21 +1,29 @@
-const enum Output {
+export const enum Format {
     Raw = 'raw',
 }
 
+export const enum MediaType {
+    JSON = 'application/json',
+}
+
 interface ActiveUpload {
-    output: Output;
+    output: Format;
     resolve?(result: string): void;
     reject?(error?: any): void;
 }
 
 interface UploadConfig {
-    output?: Output;
-    accept?: string;
+    output?: Format;
+    accept?: MediaType;
 }
 
 const BODY_CANCEL_EVENTS = ['focus', 'mousemove', 'touchmove'];
 
-class FilePicker {
+const MEDIA_TYPES_ACCEPT = {
+    [MediaType.JSON]: '.json',
+};
+
+class Files {
 
     private input: HTMLInputElement;
 
@@ -44,13 +52,26 @@ class FilePicker {
 
         const promise = this.initializeActiveUpload(config.output);
 
-        this.input.setAttribute('accept', config.accept || '*');
+        this.input.setAttribute('accept', MEDIA_TYPES_ACCEPT[config.accept!] || '*');
         this.input.click();
 
         return promise;
     }
 
-    private initializeActiveUpload(output: Output = Output.Raw): Promise<string> {
+    public download(filename: string, content: string, mediaType: MediaType = MediaType.JSON) {
+        const url = window.URL.createObjectURL(new Blob([content], {type: mediaType}));
+        const anchor = document.createElement('a');
+
+        anchor.style.display = 'none';
+        anchor.href = url;
+        anchor.download = filename;
+        document.body.appendChild(anchor);
+        anchor.click();
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(anchor);
+    }
+
+    private initializeActiveUpload(output: Format = Format.Raw): Promise<string> {
         this.activeUpload = { output };
 
         BODY_CANCEL_EVENTS.map(
@@ -87,7 +108,7 @@ class FilePicker {
         };
 
         switch(activeUpload.output) {
-            case Output.Raw:
+            case Format.Raw:
                 reader.readAsText(this.input.files[0]);
                 break;
         }
@@ -95,4 +116,4 @@ class FilePicker {
 
 }
 
-export default new FilePicker();
+export default new Files();

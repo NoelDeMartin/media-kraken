@@ -8,7 +8,7 @@ import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie.js';
 import Arr from '@/utils/Arr';
 import Time, { DebouncedFunction } from '@/utils/Time';
 
-import MovieModal from '@/modals/MovieModal.vue';
+import MovieModal from '@/components/modals/MovieModal.vue';
 
 const NON_WRITABLE_INPUT_TYPES = ['submit', 'reset', 'checkbox', 'radio'];
 

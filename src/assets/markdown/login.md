@@ -1,4 +1,4 @@
-# Which one should I choose?
+# How can I log in?
 
 ## Login with Solid
 

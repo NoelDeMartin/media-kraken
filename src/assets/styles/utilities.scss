@@ -3,7 +3,7 @@ $durations: '75', '100', '150', '200', '300', '500', '700', '1000';
 
 @each $duration in $durations {
 
-    .transition-delay-#{$duration} {
+    .delay-#{$duration} {
         transition-delay: #{$duration}ms;
     }
 

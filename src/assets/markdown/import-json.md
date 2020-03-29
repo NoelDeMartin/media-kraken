@@ -1,5 +1,5 @@
 # Import from JSON
 
-If you are not able to import your data with the other options, you can upload a JSON file. Consult the format of the data [here](%url%).
+If you are not able to import your data with the other options, you can upload a JSON file. This can be useful to take your data with you when you <button data-trigger="show-markdown:login" type="button" class="link">log in offline</button>. You can also adapt data from other sources, consult the required format [here](%url%).
 
-*Pro tip: If you want to inspect the format of a JSON file, you can use this wonderful [JSON Online Editor](https://jsoneditoronline.org).*
+*Pro tip: If you want to inspect the format of a JSON file, you can use this awesome [JSON Online Editor](https://jsoneditoronline.org).*

@@ -3,7 +3,7 @@
         :enabled="$ui.desktop"
         :leave-duration="200"
         :enter-duration="300"
-        enter-active-class="transition-delay-100"
+        enter-active-class="delay-100"
         animation="fade"
     >
         <div

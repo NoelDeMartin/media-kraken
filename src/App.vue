@@ -12,20 +12,20 @@
                 <div class="absolute inset-0 bg-gray-500 opacity-75" />
             </div>
         </BaseTransition>
-        <BaseTransition animations="fade scale">
+        <BaseTransitionGroup animations="fade scale">
             <aside
-                v-if="$ui.modals.length > 0"
-                class="fixed inset-0 p-4 z-50 flex items-center justify-center"
-                @click.self="$ui.closeModal($ui.modals[$ui.modals.length - 1].id)"
+                v-for="(modal, index) of $ui.modals"
+                :key="modal.id"
+                class="
+                    fixed inset-0 p-4 z-50 flex items-center justify-center
+                    transition-all transform ease-in duration-300
+                "
+                :class="{ 'opacity-0 scale-90': index < $ui.modals.length - 1 }"
+                @click.self="$ui.closeModal(modal.id)"
             >
-                <component
-                    :is="modal.component"
-                    v-for="modal of $ui.modals"
-                    :key="modal.id"
-                    v-bind="modal.props"
-                />
+                <component :is="modal.component" v-bind="modal.props" />
             </aside>
-        </BaseTransition>
+        </BaseTransitionGroup>
         <BaseTransitionGroup
             tag="aside"
             animations="slide-up fade"

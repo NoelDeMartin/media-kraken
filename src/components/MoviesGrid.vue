@@ -29,6 +29,10 @@ export default Vue.extend({
             type: Array as () => Movie[],
             required: true,
         },
+        withinCollection: {
+            type: Boolean,
+            default: false,
+        },
     },
     methods: {
         sendMovieToCollection(el: HTMLElement) {
@@ -37,7 +41,7 @@ export default Vue.extend({
             el.style.position = 'absolute';
             el.style.width = `${clientWidth}px`;
 
-            if (!this.$ui.mobile) {
+            if (!this.withinCollection && !this.$ui.mobile) {
                 this.positionAtMyCollection(el);
                 el.classList.add('sending-to-collection');
 
@@ -67,7 +71,7 @@ export default Vue.extend({
 
 <style lang="scss">
     .sending-to-collection {
-        transform: scale(.01) translate(-50%, -50%);
+        transform: scale(.1) translate(-50%, -50%);
         transform-origin: top left;
     }
 </style>

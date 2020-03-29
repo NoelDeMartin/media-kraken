@@ -13,7 +13,7 @@
             class="badge absolute top-0 right-0 -mt-1 w-10 h-10 flex items-center justify-center"
             style="margin-right:-.7rem"
             v-bind="movie.watched ? { class: 'watched' } : { type: 'button' }"
-            @click="movie.pending && markWatched()"
+            @click="movie.pending && markWatched($event)"
         >
             <BaseIcon name="bookmark" class="background absolute inset-0 w-10 h-10" />
             <BaseIcon v-if="movie.pending" name="time" class="icon-pending text-blue-600 w-4 h-4 z-10" />

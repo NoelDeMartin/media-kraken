@@ -1,19 +1,21 @@
 <template>
+    <!-- eslint-disable vue/no-v-html -->
     <AppModal :id="id" :options="options" :title="title">
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div v-if="body" class="markdown-content" v-html="body" />
+        <div
+            v-if="body"
+            class="markdown-content"
+            @click="contentClicked"
+            v-html="body"
+        />
         <LoadingCircle v-else class="w-8 h-8 text-primary-700" />
     </AppModal>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-
-import { ModalOptions } from '@/services/UI';
+import Modal from '@/components/mixins/Modal';
 
 import Markdown from '@/utils/Markdown';
 
-import AppModal from '@/components/AppModal.vue';
 import LoadingCircle from '@/components/LoadingCircle.vue';
 
 interface Data {
@@ -21,20 +23,11 @@ interface Data {
     body: string | null;
 }
 
-export default Vue.extend({
+export default Modal.extend({
     components: {
-        AppModal,
         LoadingCircle,
     },
     props: {
-        id: {
-            type: String,
-            required: true,
-        },
-        options: {
-            type: Object as () => ModalOptions,
-            required: true,
-        },
         content: {
             type: String,
             required: true,
@@ -54,6 +47,20 @@ export default Vue.extend({
         this.loadMarkdown(markdown.trim());
     },
     methods: {
+        contentClicked(e: Event) {
+            if (!(e.target instanceof HTMLElement) || !e.target.dataset.trigger)
+                return;
+
+            e.preventDefault();
+
+            const [action, ...args] = e.target.dataset.trigger.split(':');
+
+            switch (action) {
+                case 'show-markdown':
+                    this.$ui.openMarkdownModal(args[0]);
+                    return;
+            }
+        },
         loadMarkdown(markdown: string) {
             if (markdown.startsWith('# ')) {
                 const secondLineIndex = markdown.indexOf('\n');
@@ -88,7 +95,7 @@ export default Vue.extend({
             @apply text-sm text-gray-700 leading-relaxed;
         }
 
-        a {
+        a, button.link {
             @apply text-primary-700;
 
             &:hover {

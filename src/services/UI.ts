@@ -7,8 +7,8 @@ import Arr from '@/utils/Arr';
 import AsyncOperation from '@/utils/AsyncOperation';
 import UUID from '@/utils/UUID';
 
-import LoadingModal from '@/modals/LoadingModal.vue';
-import MarkdownModal from '@/modals/MarkdownModal.vue';
+import LoadingModal from '@/components/modals/LoadingModal.vue';
+import MarkdownModal from '@/components/modals/MarkdownModal.vue';
 
 enum Layout {
     Mobile = 'mobile',
@@ -26,6 +26,11 @@ interface State {
 
 interface ComputedState {
     layout: Layout;
+}
+
+interface ClickAwayListener {
+    isAway(target: HTMLElement): boolean;
+    callback: Function;
 }
 
 const screenBreakpoints: { [layout in Layout]?: number } = {
@@ -63,6 +68,8 @@ export default class UI extends Service<State, ComputedState> {
     private myCollection: HTMLElement | null = null;
 
     private clickListener: EventListener | null = null;
+    private removeMenuClickAwayListener: Function | null = null;
+    private clickAwayListeners: ClickAwayListener[] = [];
 
     public get layout(): Layout {
         return this.computedState.layout;
@@ -149,7 +156,28 @@ export default class UI extends Service<State, ComputedState> {
 
         this.setState({ menuOpen });
 
-        menuOpen ? this.startListeningClicks() : this.stopListeningClicks();
+        if (this.removeMenuClickAwayListener) {
+            this.removeMenuClickAwayListener();
+            return;
+        }
+
+        const listener: ClickAwayListener = {
+            isAway: target => (
+                this.menu !== target &&
+                !this.menu!.contains(target) &&
+                !this.menuTriggers.find(trigger => target === trigger || trigger.contains(target))
+            ),
+            callback: () => this.toggleMenu(),
+        };
+
+        this.updateClickAwayListeners([...this.clickAwayListeners, listener]);
+
+        this.removeMenuClickAwayListener = () => {
+            this.updateClickAwayListeners(
+                Arr.withoutItem(this.clickAwayListeners, listener),
+            );
+            this.removeMenuClickAwayListener = null;
+        };
     }
 
     public closeMenu() {
@@ -278,6 +306,17 @@ export default class UI extends Service<State, ComputedState> {
         }
     }
 
+    public onClickAway(elements: HTMLElement[], callback: Function): Function {
+        const listener: ClickAwayListener = {
+            isAway: target => !elements.find(element => element === target || element.contains(target)),
+            callback,
+        };
+
+        this.updateClickAwayListeners([...this.clickAwayListeners, listener]);
+
+        return () => this.updateClickAwayListeners(Arr.withoutItem(this.clickAwayListeners, listener));
+    }
+
     protected async init(): Promise<void> {
         await super.init();
 
@@ -323,6 +362,14 @@ export default class UI extends Service<State, ComputedState> {
         };
     }
 
+    private updateClickAwayListeners(listeners: ClickAwayListener[]) {
+        this.clickAwayListeners = listeners;
+
+        this.clickAwayListeners.length > 0
+            ? this.startListeningClicks()
+            : this.stopListeningClicks();
+    }
+
     private startListeningClicks() {
         if (this.clickListener)
             return;
@@ -330,14 +377,14 @@ export default class UI extends Service<State, ComputedState> {
         document.addEventListener('click', this.clickListener = e => {
             const target = e.target as HTMLElement;
 
-            if (
-                this.menu === target ||
-                this.menu!.contains(target) ||
-                this.menuTriggers.find(button => target === button || button.contains(target))
-            )
-                return;
+            for (const { isAway, callback } of this.clickAwayListeners) {
+                if (!isAway(target))
+                    continue;
 
-            this.toggleMenu();
+                callback();
+                e.preventDefault();
+                return;
+            }
         });
     }
 

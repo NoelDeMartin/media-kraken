@@ -4,8 +4,18 @@ import { SolidModel, SolidEmbedsRelation } from 'soukai-solid';
 import WatchAction from '@/models/soukai/WatchAction';
 
 import Arr from '@/utils/Arr';
+import Obj from '@/utils/Obj';
 import Str from '@/utils/Str';
 import Url from '@/utils/Url';
+
+export interface MovieJSON {
+    title: string;
+    description?: string;
+    releaseDate?: string;
+    posterUrl?: string;
+    watchedAt?: string;
+    externalUrls?: string[];
+}
 
 export default class Movie extends SolidModel {
 
@@ -39,6 +49,12 @@ export default class Movie extends SolidModel {
             items: { type: FieldType.String },
         },
     };
+
+    public title!: string;
+    public description?: string;
+    public releaseDate?: Date;
+    public posterUrl?: string;
+    public externalUrls!: string[];
 
     public get watched(): boolean {
         return this.actions && this.actions.length > 0;
@@ -80,6 +96,17 @@ export default class Movie extends SolidModel {
 
             throw e;
         }
+    }
+
+    public toJSON(): MovieJSON {
+        return Obj.withoutUndefined({
+            title: this.title,
+            description: this.description,
+            releaseDate: this.releaseDate ? this.releaseDate.toString() : undefined,
+            posterUrl: this.posterUrl,
+            watchedAt: this.watchedAt ? this.watchedAt.toString() : undefined,
+            externalUrls: this.externalUrls,
+        });
     }
 
     protected newUrl(): string {

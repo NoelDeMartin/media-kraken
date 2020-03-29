@@ -1,10 +1,10 @@
 import Vue from 'vue';
 
-const components = require.context('@/components/base', false, /\.vue$/);
+const requireComponent = require.context('@/components/base', false, /\.vue$/);
 
-for (const fileName of components.keys()) {
+for (const fileName of requireComponent.keys()) {
     const name = fileName.match(/^(?:\.\/)?(.+)\.vue$/)![1];
 
     if (typeof name !== 'undefined')
-        Vue.component(name, components(fileName).default);
+        Vue.component(name, requireComponent(fileName).default);
 }

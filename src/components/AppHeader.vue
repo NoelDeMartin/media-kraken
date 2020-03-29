@@ -6,7 +6,7 @@
                     :enter-duration="300"
                     :leave-duration="100"
                     animation="fade"
-                    enter-active-class="transition-delay-200"
+                    enter-active-class="delay-200"
                 >
                     <button
                         v-show="!$search.open"
@@ -22,7 +22,7 @@
                     :enter-duration="300"
                     :leave-duration="100"
                     animation="fade"
-                    enter-active-class="transition-delay-200"
+                    enter-active-class="delay-200"
                 >
                     <div
                         v-show="$ui.desktop || !$search.open"

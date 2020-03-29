@@ -1,6 +1,5 @@
 <template>
     <div>
-        <span class="block font-semibold mb-4 text-gray-800 text-sm">Importing options:</span>
         <div class="flex grid gap-4 grid-cols-fill-32 desktop:grid-cols-fill-40">
             <div v-for="source of sources" :key="source" class="relative ratio-1/1">
                 <div class="absolute inset-0 flex">
@@ -54,7 +53,7 @@ import JSONMovie from '@/models/third-party/JSONMovie';
 import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 import TVisoMovie from '@/models/third-party/TVisoMovie';
 
-import FilePicker from '@/utils/FilePicker';
+import Files, { MediaType } from '@/utils/Files';
 
 export default Vue.extend({
     data: () => ({
@@ -101,7 +100,7 @@ export default Vue.extend({
             }
         },
         async importMoviesFromJSON(): Promise<Movie[]> {
-            const data = await FilePicker.upload({ accept: '.json' });
+            const data = await Files.upload({ accept: MediaType.JSON });
             const thirdPartyMovies = JSON.parse(data)
                 .filter((movieData: any) => JSONMovie.isValidData(movieData))
                 .map((movieData: any) => new JSONMovie(movieData));
@@ -109,7 +108,7 @@ export default Vue.extend({
             return this.$media.importMovies(thirdPartyMovies);
         },
         async importMoviesFromTViso(): Promise<Movie[]> {
-            const data = await FilePicker.upload({ accept: '.json' });
+            const data = await Files.upload({ accept: MediaType.JSON });
             const thirdPartyMovies = JSON.parse(data)
                 .filter((movieData: any) => TVisoMovie.isValidData(movieData))
                 .map((movieData: any) => new TVisoMovie(movieData));

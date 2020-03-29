@@ -1,5 +1,5 @@
-import Vue from 'vue';
 import mixins from 'vue-typed-mixins';
+import Vue from 'vue';
 
 enum Animation {
     Fade = 'fade',
@@ -18,6 +18,7 @@ interface TransitionClasses {
 }
 
 interface VueTransitionProps {
+    appear: boolean;
     duration: number | { enter: number, leave: number };
     enterActiveClass: string;
     enterClass: string;
@@ -42,6 +43,10 @@ export default mixins(Vue.extend({
         enabled: {
             type: Boolean,
             default: true,
+        },
+        appear: {
+            type: Boolean,
+            default: false,
         },
         duration: {
             type: Number,
@@ -127,6 +132,7 @@ export default mixins(Vue.extend({
         },
         vueTransitionProps(): VueTransitionProps {
             return {
+                appear: this.appear,
                 duration: this.durations,
                 enterActiveClass: this.transitionClasses.enterActive,
                 enterClass: this.transitionClasses.enter,
@@ -159,17 +165,13 @@ export default mixins(Vue.extend({
                 case Animation.Fade:
                     return {
                         enter: ['opacity-0'],
-                        enterTo: ['opacity-100'],
-                        leave: ['opacity-100'],
                         leaveTo: ['opacity-0'],
                     };
                 case Animation.Scale:
                     return {
                         enterActive: ['transform'],
                         enter: ['scale-90'],
-                        enterTo: ['scale-100'],
                         leaveActive: ['transform'],
-                        leave: ['scale-100'],
                         leaveTo: ['scale-90'],
                     };
                 case Animation.ResizeWidth:
@@ -183,9 +185,7 @@ export default mixins(Vue.extend({
                     return {
                         enterActive: ['transform'],
                         enter: ['translate-y-full'],
-                        enterTo: ['translate-y-0'],
                         leaveActive: ['transform'],
-                        leave: ['translate-y-0'],
                         leaveTo: ['translate-y-full'],
                     };
             }

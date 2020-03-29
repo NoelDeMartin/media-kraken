@@ -9,29 +9,17 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-
-import { ModalOptions } from '@/services/UI';
+import Modal from '@/components/mixins/Modal';
 
 import Markdown from '@/utils/Markdown';
 
-import AppModal from '@/components/AppModal.vue';
 import LoadingCircle from '@/components/LoadingCircle.vue';
 
-export default Vue.extend({
+export default Modal.extend({
     components: {
-        AppModal,
         LoadingCircle,
     },
     props: {
-        id: {
-            type: String,
-            required: true,
-        },
-        options: {
-            type: Object as () => ModalOptions,
-            required: true,
-        },
         message: {
             type: String,
             default: 'Loading...',
