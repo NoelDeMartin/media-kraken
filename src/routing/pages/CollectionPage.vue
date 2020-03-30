@@ -1,23 +1,62 @@
 <template>
     <main>
-        <BasePageHeader class="-mx-2 mb-2">
-            <BaseMenu
-                slot="before"
-                :options="[
-                    { id: 'import', text: 'Import to collection', icon: 'upload', handle: importMedia },
-                    { id: 'export', text: 'Export collection', icon: 'download', handle: exportCollection },
-                ]"
-            >
+        <div class="relative flex items-center h-12 -mx-2 mb-2">
+            <BaseTransition animation="fade">
+                <div v-if="!$ui.mobile || !filtering" class="flex items-center">
+                    <BaseMenu
+                        slot="before"
+                        :options="[
+                            { id: 'import', text: 'Import to collection', icon: 'upload', handle: importMedia },
+                            { id: 'export', text: 'Export collection', icon: 'download', handle: exportCollection },
+                        ]"
+                    >
+                        <BaseButton
+                            icon="more"
+                            class="h-8 mr-1 hover:bg-black-overlay"
+                            style="padding:0; width:1.125rem"
+                        />
+                    </BaseMenu>
+                    <BasePageHeader>Collection ({{ $media.movies.length }})</BasePageHeader>
+                </div>
+            </BaseTransition>
+            <div class="absolute text-right right-0 top-1/2 transform -translate-y-1/2 px-2 w-full desktop:w-64">
+                <BaseTransition :duration="100" animations="fade resize-width">
+                    <input
+                        v-show="filtering"
+                        ref="filter"
+                        v-model="filter"
+                        placeholder="Filter movies..."
+                        class="
+                            w-full text-sm py-1 bg-transparent appearance-none border-b-2 border-primary-200
+                            focus:border-primary-300
+                        "
+                        @keyup.esc="filter = ''"
+                    >
+                </BaseTransition>
+            </div>
+            <BaseTransition :duration="100" animation="fade">
                 <BaseButton
-                    icon="more"
-                    class="h-8 mr-1 hover:bg-black-overlay"
-                    style="padding:0; width:1.125rem"
+                    v-show="!filtering"
+                    ref="filtersTrigger"
+                    icon="search"
+                    icon-class="w-4 h-4"
+                    class="absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-8 justify-center rounded-full hover:bg-black-overlay"
+                    style="padding:0"
+                    @click="showFilters"
                 />
-            </BaseMenu>
-
-            Collection ({{ $media.movies.length }})
-        </BasePageHeader>
-        <MoviesGrid :movies="$media.movies" :within-collection="true" />
+            </BaseTransition>
+        </div>
+        <BaseTransitionGroup :duration="100" animation="fade" class="relative">
+            <MoviesGrid
+                v-if="filteredMovies.length > 0"
+                key="movies"
+                :movies="filteredMovies"
+                :within-collection="true"
+            />
+            <div v-else key="empty" class="absolute flex items-center justify-center h-24 top-0 inset-x-0">
+                <span class="text-lg">Nothing matches "{{ filter }}"</span>
+            </div>
+        </BaseTransitionGroup>
     </main>
 </template>
 
@@ -31,11 +70,61 @@ import Files from '@/utils/Files';
 import MoviesGrid from '@/components/MoviesGrid.vue';
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 
+interface Data {
+    filter: string | null;
+    removeClickAwayListener: Function | null;
+}
+
 export default Vue.extend({
     components: {
         MoviesGrid,
     },
+    data: (): Data => ({
+        filter: null,
+        removeClickAwayListener: null,
+    }),
+    computed: {
+        filtering(): boolean {
+            return this.removeClickAwayListener !== null;
+        },
+        filteredMovies(): Movie[] {
+            const processMovies: (movies: Movie[]) => Movie[] = this.filtering
+                ? movies => movies.filter(movie => movie.title.toLowerCase().indexOf(this.filter!.toLowerCase()) !== -1)
+                : movies => movies.slice(0);
+
+            return processMovies(this.$media.movies).reverse();
+        },
+    },
+    created() {
+        if (this.$media.empty) {
+            this.$router.replace({ name: 'home' });
+        }
+    },
     methods: {
+        showFilters() {
+            if (this.removeClickAwayListener !== null)
+                return;
+
+            const input = this.$refs.filter as HTMLInputElement;
+            const trigger = (this.$refs.filtersTrigger as Vue).$el as HTMLButtonElement;
+
+            this.filter = '';
+            this.removeClickAwayListener = this.$ui.onClickAway(
+                [input, trigger],
+                () => this.filter!.length === 0 && this.hideFilters(),
+            );
+
+            this.$nextTick(() => input.focus());
+        },
+        hideFilters() {
+            if (this.removeClickAwayListener === null)
+                return;
+
+            this.removeClickAwayListener();
+
+            this.filter = null;
+            this.removeClickAwayListener = null;
+        },
         importMedia() {
             this.$ui.openModal(ImportMediaModal);
         },

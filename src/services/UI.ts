@@ -30,7 +30,7 @@ interface ComputedState {
 
 interface ClickAwayListener {
     isAway(target: HTMLElement): boolean;
-    callback: Function;
+    callback(): void | boolean;
 }
 
 const screenBreakpoints: { [layout in Layout]?: number } = {
@@ -158,26 +158,18 @@ export default class UI extends Service<State, ComputedState> {
 
         if (this.removeMenuClickAwayListener) {
             this.removeMenuClickAwayListener();
+            this.removeMenuClickAwayListener = null;
             return;
         }
 
-        const listener: ClickAwayListener = {
-            isAway: target => (
+        this.removeMenuClickAwayListener = this.onClickAway(
+            target => (
                 this.menu !== target &&
                 !this.menu!.contains(target) &&
                 !this.menuTriggers.find(trigger => target === trigger || trigger.contains(target))
             ),
-            callback: () => this.toggleMenu(),
-        };
-
-        this.updateClickAwayListeners([...this.clickAwayListeners, listener]);
-
-        this.removeMenuClickAwayListener = () => {
-            this.updateClickAwayListeners(
-                Arr.withoutItem(this.clickAwayListeners, listener),
-            );
-            this.removeMenuClickAwayListener = null;
-        };
+            () => this.toggleMenu(),
+        );
     }
 
     public closeMenu() {
@@ -306,9 +298,14 @@ export default class UI extends Service<State, ComputedState> {
         }
     }
 
-    public onClickAway(elements: HTMLElement[], callback: Function): Function {
+    public onClickAway(
+        elementsOrIsAway: HTMLElement[] | ((target: HTMLElement) => boolean),
+        callback: () => boolean | void,
+    ): Function {
         const listener: ClickAwayListener = {
-            isAway: target => !elements.find(element => element === target || element.contains(target)),
+            isAway: Array.isArray(elementsOrIsAway)
+                ? target => !elementsOrIsAway.find(element => element === target || element.contains(target))
+                : elementsOrIsAway,
             callback,
         };
 
@@ -381,7 +378,9 @@ export default class UI extends Service<State, ComputedState> {
                 if (!isAway(target))
                     continue;
 
-                callback();
+                if (callback() === false)
+                    continue;
+
                 e.preventDefault();
                 return;
             }

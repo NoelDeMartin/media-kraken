@@ -1,11 +1,7 @@
 <template>
-    <div class="flex items-center">
-        <slot name="before" />
-        <h1 class="text-xl font-medium my-4">
-            <slot />
-        </h1>
-        <slot name="after" />
-    </div>
+    <h1 class="text-xl font-medium my-4">
+        <slot />
+    </h1>
 </template>
 
 <script lang="ts">
