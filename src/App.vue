@@ -1,6 +1,9 @@
 <template>
-    <div class="font-montserrat antialiased font-normal text-base text-gray-900 leading-tight bg-gray-100">
-        <div class="flex flex-col min-h-screen">
+    <div
+        class="font-montserrat antialiased font-normal text-base text-gray-900 leading-tight bg-gray-100 max-h-screen"
+        :class="{ 'overflow-hidden': $ui.fixedScroll !== null }"
+    >
+        <div class="flex flex-col min-h-screen" :style="{ marginTop: `-${$ui.fixedScroll || 0}px` }">
             <AppHeader v-if="$auth.loggedIn" />
             <main class="flex flex-col flex-grow mx-auto max-w-content w-full px-4">
                 <router-view />

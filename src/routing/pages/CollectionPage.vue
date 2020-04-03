@@ -1,10 +1,15 @@
 <template>
     <main>
-        <div class="relative flex items-center h-12 -mx-2 mb-2">
-            <BaseTransition animation="fade">
+        <div id="collection-page-header" class="relative flex items-center -mx-2 mb-2">
+            <BaseTransition
+                :enter-duration="150"
+                :leave-duration="75"
+                animation="fade"
+                enter-active-class="delay-75"
+            >
                 <div v-if="!$ui.mobile || !filtering" class="flex items-center">
                     <BaseMenu
-                        slot="before"
+                        v-slot="{ toggle: toggleActionsMenu }"
                         :options="[
                             { id: 'import', text: 'Import to collection', icon: 'upload', handle: importMedia },
                             { id: 'export', text: 'Export collection', icon: 'download', handle: exportCollection },
@@ -14,13 +19,14 @@
                             icon="more"
                             class="h-8 mr-1 hover:bg-black-overlay"
                             style="padding:0; width:1.125rem"
+                            @click="toggleActionsMenu"
                         />
                     </BaseMenu>
                     <BasePageHeader>Collection ({{ $media.movies.length }})</BasePageHeader>
                 </div>
             </BaseTransition>
             <div class="absolute text-right right-0 top-1/2 transform -translate-y-1/2 px-2 w-full desktop:w-64">
-                <BaseTransition :duration="100" animations="fade resize-width">
+                <BaseTransition :duration="150" animations="fade resize-width">
                     <input
                         v-show="filtering"
                         ref="filter"
@@ -137,3 +143,9 @@ export default Vue.extend({
     },
 });
 </script>
+
+<style lang="scss">
+    #collection-page-header {
+        height: calc(theme('fontSize.xl') * theme('lineHeight.tight') + theme('spacing.4') * 2);
+    }
+</style>

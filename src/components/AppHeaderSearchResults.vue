@@ -33,7 +33,7 @@
                             </span>
                             <BaseIcon
                                 v-if="result.collectionUuid"
-                                class="w-4 h-4"
+                                class="flex-shrink-0 w-4 h-4"
                                 :class="{
                                     'text-green-600': result.watched,
                                     'text-blue-600': !result.watched,

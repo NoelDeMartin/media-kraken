@@ -12,7 +12,7 @@
             >
                 <span>{{ title }}</span>
             </div>
-            <img v-if="url" :src="url" class="absolute inset-0">
+            <img v-if="url" :src="url" class="absolute inset-0 w-full h-full">
         </div>
     </div>
 </template>

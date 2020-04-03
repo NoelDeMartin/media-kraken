@@ -22,10 +22,13 @@ interface State {
     menuOpen: boolean;
     modals: Modal[];
     snackbars: Snackbar[];
+    fixedScroll: number | null;
 }
 
 interface ComputedState {
     layout: Layout;
+    mobile: boolean;
+    showOverlay: boolean;
 }
 
 interface ClickAwayListener {
@@ -76,7 +79,7 @@ export default class UI extends Service<State, ComputedState> {
     }
 
     public get mobile(): boolean {
-        return this.layout === Layout.Mobile;
+        return this.computedState.mobile;
     }
 
     public get desktop(): boolean {
@@ -99,9 +102,12 @@ export default class UI extends Service<State, ComputedState> {
         return this.state.snackbars;
     }
 
+    public get fixedScroll(): number | null {
+        return this.state.fixedScroll;
+    }
+
     public get showOverlay(): boolean {
-        return (this.mobile && this.menuOpen)
-            || this.modals.length > 0;
+        return this.computedState.showOverlay;
     }
 
     private get menu(): HTMLElement | null {
@@ -330,6 +336,22 @@ export default class UI extends Service<State, ComputedState> {
 
             updateState();
         }
+
+        this.watchStore(
+            (_, { showOverlay }) => showOverlay,
+            showOverlay => {
+                if (!showOverlay) {
+                    const scrollY = this.fixedScroll;
+
+                    this.setState({ fixedScroll: null });
+                    this.app.$nextTick(() => window.scrollTo({ top: scrollY! }));
+
+                    return;
+                }
+
+                this.setState({ fixedScroll: window.scrollY });
+            },
+        );
     }
 
     protected getInitialState(): State {
@@ -341,6 +363,7 @@ export default class UI extends Service<State, ComputedState> {
             menuOpen: false,
             modals: [],
             snackbars: [],
+            fixedScroll: null,
         };
     }
 
@@ -355,6 +378,12 @@ export default class UI extends Service<State, ComputedState> {
                 }
 
                 return Layout.Mobile;
+            },
+            mobile(_: State, { layout }: ComputedState): boolean {
+                return layout === Layout.Mobile;
+            },
+            showOverlay({ modals, menuOpen }: State, { mobile }: ComputedState): boolean {
+                return (mobile && menuOpen) || modals.length > 0;
             },
         };
     }

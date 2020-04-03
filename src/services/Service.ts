@@ -3,7 +3,7 @@ import Vue from 'vue';
 import { Store } from 'vuex';
 
 export type ComputedStateDefinitions<State, ComputedState> = {
-    [ComputedProperty in keyof ComputedState]: (state: State) => ComputedState[ComputedProperty];
+    [ComputedProperty in keyof ComputedState]: (state: State, computed: ComputedState) => ComputedState[ComputedProperty];
 };
 
 export default abstract class Service<State = void, ComputedState = {}> {
@@ -46,6 +46,16 @@ export default abstract class Service<State = void, ComputedState = {}> {
             },
             getters: this.getComputedStateDefinitions(),
         });
+    }
+
+    protected watchStore<T>(
+        getter: (state: State, computed: ComputedState) => T,
+        callback: (oldValue: T, newValue: T) => void,
+    ): () => void {
+        return this.app.$store.watch(
+            (state, computed) => getter(state[this.constructor.name], computed),
+            callback,
+        );
     }
 
     protected getInitialState(): State {

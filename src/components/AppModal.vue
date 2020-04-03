@@ -1,10 +1,11 @@
 <template>
     <div
         role="dialog"
-        class="
-            flex flex-col relative rounded-lg max-w-content max-h-full
-            overflow-hidden overflow-y-auto shadow-xl bg-white
-        "
+        class="flex flex-col bg-white"
+        :class="{
+            'fixed inset-0': fullscreen,
+            'relative rounded-lg shadow-xl max-w-content max-h-full overflow-hidden overflow-y-auto': !fullscreen,
+        }"
         :aria-labelledby="title && `modal-${id}-title`"
         :aria-describedby="`modal-${id}-body`"
     >
@@ -22,8 +23,17 @@
                 <BaseIcon name="close" class="w-4 h-4 text-gray-800" />
             </button>
         </div>
-        <div :id="`modal-${id}-body`" class="px-4 pb-4" :class="{ 'pt-4': !title }">
+        <div
+            :id="`modal-${id}-body`"
+            class="flex flex-col flex-grow px-4"
+            :class="{
+                'pt-4': !title,
+                'pb-4': !fullscreen,
+                'overflow-y-scroll pb-0': fullscreen,
+            }"
+        >
             <slot />
+            <div v-if="fullscreen" class="flex-shrink-0 h-4" />
         </div>
     </div>
 </template>
@@ -46,6 +56,10 @@ export default Vue.extend({
         title: {
             type: String,
             default: null,
+        },
+        fullscreen: {
+            type: Boolean,
+            default: false,
         },
     },
 });

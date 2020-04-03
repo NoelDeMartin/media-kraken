@@ -87,6 +87,10 @@ export default Modal.extend({
             @apply mb-3;
         }
 
+        & > p:last-child {
+            @apply mb-0;
+        }
+
         h2 {
             @apply font-semibold text-primary-900;
         }

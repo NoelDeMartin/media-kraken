@@ -1,7 +1,7 @@
 <template>
     <div class="relative">
-        <div ref="trigger" @click="toggleMenu">
-            <slot />
+        <div ref="trigger">
+            <slot :toggle="toggleMenu" />
         </div>
         <BaseTransition :duration="100" animations="fade scale">
             <div

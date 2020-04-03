@@ -1,12 +1,32 @@
 <template>
-    <AppModal :id="id" :options="options" :header="false">
-        <div class="flex flex-col overflow-hidden desktop:flex-row">
-            <img
-                v-if="movie.posterUrl"
-                :src="movie.posterUrl"
-                class="h-64 max-h-full mr-4 border border-gray-400 hidden desktop:block"
-            >
-            <div class="flex flex-col max-h-full">
+    <AppModal :id="id" :options="options" :fullscreen="$ui.mobile">
+        <div class="flex flex-col flex-grow desktop:flex-row">
+            <div v-if="movie.posterUrl" class="relative -mx-4 -mt-4 mb-2 p-4 desktop:m-0 desktop:p-0">
+                <template v-if="$ui.mobile">
+                    <button
+                        type="button"
+                        class="absolute top-0 right-0 m-4 p-2 rounded-full z-10 bg-white-overlay"
+                        @click="$ui.closeModal(id)"
+                    >
+                        <BaseIcon name="close" class="w-4 h-4 text-gray-800" />
+                    </button>
+                    <div class="absolute inset-0 opacity-gradient-top">
+                        <div class="absolute inset-0 bg-gray-300" />
+                        <div
+                            class="absolute inset-0 opacity-75"
+                            :style="{
+                                filter: 'blur(.5px)',
+                                backgroundImage: `url('${movie.posterUrl}')`,
+                            }"
+                        />
+                    </div>
+                </template>
+                <MoviePoster
+                    class="w-24 rounded shadow flex-shrink-0 mr-4 desktop:w-64"
+                    :url="movie.posterUrl"
+                />
+            </div>
+            <div class="flex flex-col flex-grow max-h-full">
                 <div class="flex items-center mb-2">
                     <h2 class="text-xl font-semibold">
                         {{ movie.title }}
@@ -16,6 +36,7 @@
                     </h2>
                     <div class="flex-grow" />
                     <button
+                        v-if="$ui.desktop || !movie.posterUrl"
                         type="button"
                         class="p-2 rounded-lg self-start hover:bg-gray-300 desktop:self-center"
                         @click="$ui.closeModal(id)"
@@ -23,11 +44,6 @@
                         <BaseIcon name="close" class="w-4 h-4 text-gray-800" />
                     </button>
                 </div>
-                <img
-                    v-if="movie.posterUrl"
-                    :src="movie.posterUrl"
-                    class="h-64 self-start mb-2 border border-gray-400 desktop:hidden"
-                >
                 <p v-if="movie.description" class="text-sm text-gray-700 mb-2 leading-relaxed overflow-y-auto">
                     {{ movie.description }}
                 </p>
@@ -67,7 +83,10 @@ import Modal from '@/components/mixins/Modal';
 
 import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 
+import MoviePoster from '@/components/MoviePoster.vue';
+
 export default Modal.extend({
+    components: { MoviePoster },
     props: {
         movie: {
             type: Object as () => ThirdPartyMovie,

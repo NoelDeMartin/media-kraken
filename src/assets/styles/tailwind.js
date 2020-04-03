@@ -19,6 +19,7 @@ module.exports = {
 
             white: {
                 default: '#fff',
+                overlay: 'rgba(255, 255, 255, .25)',
             },
 
             gray: {

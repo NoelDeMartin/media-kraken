@@ -17,3 +17,8 @@ $durations: '75', '100', '150', '200', '300', '500', '700', '1000';
 .ratio-2\/3 {
     padding-top: 150%;
 }
+
+// Opacity masks
+.opacity-gradient-top {
+    mask-image: -webkit-gradient(linear, left top, left bottom, from(rgba(0,0,0,1)), to(rgba(0,0,0,0)));
+}

@@ -1,9 +1,8 @@
 <template>
-    <MoviesGrid
-        v-if="pendingMovies.length > 0"
-        class="mt-6"
-        :movies="pendingMovies"
-    />
+    <div v-if="pendingMovies.length > 0">
+        <BasePageHeader>Watch next:</BasePageHeader>
+        <MoviesGrid :movies="pendingMovies" />
+    </div>
 
     <div v-else-if="!$media.empty">
         <BasePageHeader>All done!</BasePageHeader>

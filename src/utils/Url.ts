@@ -1,3 +1,12 @@
+export interface UrlParts {
+    protocol?: string;
+    domain?: string;
+    port?: string;
+    path?: string;
+    query?: string;
+    fragment?: string;
+}
+
 class Url {
 
     public resolve(...parts: string[]): string {
@@ -49,6 +58,34 @@ class Url {
         const pathIndex = url.lastIndexOf('/');
 
         return pathIndex !== -1 ? url.substr(pathIndex + 1) : '';
+    }
+
+    public parseRootDomain(url: string): string | null {
+        const parts = this.parse(url);
+
+        if (!parts || !parts.domain)
+            return null;
+
+        return parts.domain.split('.').slice(-2).join('.');
+    }
+
+    public parse(url: string): UrlParts | null {
+        const match = url.trim().match(/^(([^:/?#]+):)?(\/\/([^/?#]*))?([^?#]*)(\?([^#]*))?(#(.*))?/);
+
+        if (!match)
+            return null;
+
+        const host = match[4] || '';
+        const [domain, port]: string[] = host.indexOf(':') === -1 ? [host] : host.split(':');
+
+        return {
+            protocol: match[2] || undefined,
+            domain: domain || undefined,
+            port: port || undefined,
+            path: match[5] || undefined,
+            query: match[7] || undefined,
+            fragment: match[9] || undefined,
+        };
     }
 
 }
