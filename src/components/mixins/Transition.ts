@@ -19,7 +19,7 @@ interface TransitionClasses {
 
 interface VueTransitionProps {
     appear: boolean;
-    duration: number | { enter: number, leave: number };
+    duration: number | { enter: number; leave: number };
     enterActiveClass: string;
     enterClass: string;
     enterToClass: string;
@@ -94,7 +94,7 @@ export default mixins(Vue.extend({
         },
     },
     computed: {
-        durations(): { enter: number, leave: number} {
+        durations(): { enter: number; leave: number} {
             return {
                 enter: this.enterDuration || this.duration,
                 leave: this.leaveDuration || this.duration,

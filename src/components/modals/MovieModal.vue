@@ -111,7 +111,7 @@ export default Modal.extend({
             );
 
             this.$ui.showSnackbar(
-                `**${this.movie.title}** has been added to your collection!`,
+                `**${movie.title}** has been added to your collection!`,
                 { transient: true },
             );
         },

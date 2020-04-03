@@ -3,7 +3,6 @@ import TypeRegistration from '@/models/soukai/TypeRegistration';
 import User from '@/models/users/User';
 
 import RDFStore from '@/utils/RDFStore';
-import UUID from '@/utils/UUID';
 
 export default class SolidUser extends User {
 

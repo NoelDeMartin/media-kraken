@@ -202,11 +202,11 @@ export default class Search extends Service<State> {
 
                 return {
                     title: movie.title,
-                    collectionUuid: collectionMovie ? collectionMovie.uuid : null,
+                    collectionUuid: collectionMovie?.uuid || null,
                     source: movie,
                     posterUrl: movie.posterUrl,
-                    releaseYear: movie.releaseDate ? movie.releaseDate.year() : undefined,
-                    watched: collectionMovie ? collectionMovie.watched : undefined,
+                    releaseYear: movie.releaseDate?.year(),
+                    watched: collectionMovie?.watched,
                 };
             });
 
@@ -238,7 +238,7 @@ export default class Search extends Service<State> {
         this.keyboardListener = null;
     }
 
-    private captureHotKey({ target, key, keyCode }: KeyboardEvent): boolean {
+    private captureHotKey({ target, key }: KeyboardEvent): boolean {
         if (
             !this.open &&
             Arr.contains(['s', '/'], key.toLowerCase()) &&

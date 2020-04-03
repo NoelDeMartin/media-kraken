@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const version = require('./package.json').version;
 const publicPath = process.env.NODE_ENV === 'production' ? '/media-kraken/' : '/';
+const title = 'Media Kraken';
+const description = 'Track your movies with Media Kraken and never miss a beat!';
 
 process.env.VUE_APP_VERSION = version;
 process.env.VUE_APP_PUBLIC_PATH = publicPath;
@@ -48,9 +51,18 @@ module.exports = {
             .test(/\.md$/)
             .use('raw-loader')
             .loader('raw-loader');
+
+        config
+            .plugin('html')
+            .tap(args => {
+                args[0].title = title;
+                args[0].description = description;
+
+                return args;
+            });
     },
     pwa: {
-        name: 'Media Kraken',
+        name: title,
         themeColor: '#4299E1',
         msTileColor: '#4299E1',
         manifestOptions: {

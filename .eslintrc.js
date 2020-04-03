@@ -6,7 +6,7 @@ module.exports = {
     extends: [
         'plugin:vue/recommended',
         'eslint:recommended',
-        '@vue/typescript',
+        '@vue/typescript/recommended',
     ],
     rules: {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
@@ -17,6 +17,21 @@ module.exports = {
         'space-before-function-paren': 'off',
         'semi': ['error', 'always'],
         'comma-dangle': ['error', 'always-multiline'],
+        '@typescript-eslint/explicit-member-accessibility': ['error', {
+            accessibility: 'explicit',
+            overrides: {
+                constructors: 'no-public',
+            },
+        }],
+        '@typescript-eslint/no-inferrable-types': 'off',
+        '@typescript-eslint/camelcase': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'off',
+        '@typescript-eslint/no-explicit-any': 'off',
+        '@typescript-eslint/no-unused-vars': ['error', {
+            varsIgnorePattern: '^_$',
+            argsIgnorePattern: '^_$',
+            caughtErrorsIgnorePattern: '^_$',
+        }],
     },
     parserOptions: {
         parser: '@typescript-eslint/parser',

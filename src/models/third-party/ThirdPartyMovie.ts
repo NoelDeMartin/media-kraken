@@ -1,4 +1,3 @@
-import { Attributes } from 'soukai';
 import { Dayjs } from 'dayjs';
 
 import Movie from '@/models/soukai/Movie';

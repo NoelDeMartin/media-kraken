@@ -74,7 +74,7 @@ export default class JSONMovie extends ThirdPartyMovie {
         return {
             title: this.title,
             description: this.description,
-            releaseDate: this.releaseDate ? this.releaseDate.toDate() : undefined,
+            releaseDate: this.releaseDate?.toDate(),
             posterUrl: this.posterUrl,
             externalUrls: this.externalUrls,
         };

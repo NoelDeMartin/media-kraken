@@ -4,7 +4,7 @@ class Markdown {
 
     private renderer: marked.Renderer = new marked.Renderer();
 
-    public constructor() {
+    constructor() {
         this.renderer.link = function (href, title, text) {
             const link = marked.Renderer.prototype.link.apply(this, [href, title, text]);
 

@@ -26,6 +26,8 @@ bootServices(Vue.instance)
 
         if (error) {
             alert('Something went wrong! (look at the console for details)');
+
+            // eslint-disable-next-line no-console
             console.error(error);
         }
     });

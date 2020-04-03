@@ -85,7 +85,7 @@ export default class AsyncOperation {
     private listener: Listener;
     private delayTimeout?: NodeJS.Timeout;
 
-    public constructor(listener?: Listener) {
+    constructor(listener?: Listener) {
         this.listener = listener || new DefaultListener;
     }
 

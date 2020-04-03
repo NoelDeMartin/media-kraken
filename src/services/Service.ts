@@ -27,6 +27,7 @@ export default abstract class Service<State = void, ComputedState = {}> {
         return this.app.$store.getters;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     protected async init(...args: any[]): Promise<void> {
         this.registerStoreModule(this.app.$store);
     }

@@ -87,11 +87,10 @@
 
 <script lang="ts">
 import Vue from 'vue';
-import { Dayjs } from 'dayjs';
-
-import Movie from '@/models/soukai/Movie';
 
 import Url from '@/utils/Url';
+
+import Movie from '@/models/soukai/Movie';
 
 import MoviePoster from '@/components/MoviePoster.vue';
 import NotFound from '@/components/NotFound.vue';

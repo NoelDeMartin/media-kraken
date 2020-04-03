@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const purgecss = require('@fullhuman/postcss-purgecss')({
     content: [
         './public/index.html',

@@ -5,22 +5,22 @@ declare module 'solid-auth-client' {
     type AsyncStorage = any;
 
     type loginOptions = {
-        callbackUri?: string,
-        popupUri?: string,
-        storage?: AsyncStorage,
+        callbackUri?: string;
+        popupUri?: string;
+        storage?: AsyncStorage;
     };
 
     export type Session = {
-        idp: string,
-        webId: string,
-        accessToken: string,
-        idToken: string,
-        clientId: string,
-        sessionKey: string,
+        idp: string;
+        webId: string;
+        accessToken: string;
+        idToken: string;
+        clientId: string;
+        sessionKey: string;
     };
 
     export class SolidAuthClient extends EventEmitter {
-        public fetch(input: RequestInfo, options?: Object): Promise<Response>;
+        public fetch(input: RequestInfo, options?: Record<string, any>): Promise<Response>;
 
         public login(idp: string, options?: loginOptions): Promise<Session | void>;
 

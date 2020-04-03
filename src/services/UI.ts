@@ -19,7 +19,7 @@ enum Layout {
 interface State {
     layoutMediaQueries: {
         [layout in Layout]: boolean;
-    },
+    };
     menuOpen: boolean;
     modals: Modal[];
     snackbars: Snackbar[];
@@ -233,6 +233,7 @@ export default class UI extends Service<State, ComputedState> {
     public showError(error: any): void {
         this.showSnackbar('Something went wrong!', { error: true, transient: true });
 
+        // eslint-disable-next-line no-console
         console.error(error);
     }
 
@@ -281,7 +282,7 @@ export default class UI extends Service<State, ComputedState> {
         this.setState({ snackbars: Arr.withoutIndex(this.snackbars, index) });
     }
 
-    async updateModel<Model extends SolidModel>(
+    public async updateModel<Model extends SolidModel>(
         model: Model,
         update: (model: Model) => Promise<any> | any,
         affectedAttributes: string[] = [],

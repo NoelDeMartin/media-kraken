@@ -50,7 +50,6 @@ import Movie from '@/models/soukai/Movie';
 
 import { MediaSource, mediaSourceNames } from '@/models/third-party/ThirdPartyMedia';
 import JSONMovie from '@/models/third-party/JSONMovie';
-import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 import TVisoMovie from '@/models/third-party/TVisoMovie';
 
 import Files, { MediaType } from '@/utils/Files';

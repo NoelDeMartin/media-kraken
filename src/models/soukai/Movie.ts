@@ -1,4 +1,4 @@
-import { FieldType, Attributes } from 'soukai';
+import { FieldType } from 'soukai';
 import { SolidModel, SolidEmbedsRelation } from 'soukai-solid';
 
 import WatchAction from '@/models/soukai/WatchAction';
@@ -102,9 +102,9 @@ export default class Movie extends SolidModel {
         return Obj.withoutUndefined({
             title: this.title,
             description: this.description,
-            releaseDate: this.releaseDate ? this.releaseDate.toString() : undefined,
+            releaseDate: this.releaseDate?.toString(),
             posterUrl: this.posterUrl,
-            watchedAt: this.watchedAt ? this.watchedAt.toString() : undefined,
+            watchedAt: this.watchedAt?.toString(),
             externalUrls: this.externalUrls,
         });
     }

@@ -1,7 +1,7 @@
 import $rdf, { IndexedFormula, Node, NamedNode, Statement } from 'rdflib';
 import SolidAuthClient from 'solid-auth-client';
 
-const knownPrefixes: { [prefix: string]: (ln: string) => NamedNode; } = {
+const knownPrefixes: { [prefix: string]: (ln: string) => NamedNode } = {
     solid: $rdf.Namespace('http://www.w3.org/ns/solid/terms#'),
     schema: $rdf.Namespace('https://schema.org/'),
     rdfs: $rdf.Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#'),
