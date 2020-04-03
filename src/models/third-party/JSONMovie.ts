@@ -72,8 +72,10 @@ export default class JSONMovie extends ThirdPartyMovie {
 
     private async getAttributes(): Promise<Attributes> {
         return {
-            title: this.data.title,
-            posterUrl: this.data.posterUrl,
+            title: this.title,
+            description: this.description,
+            releaseDate: this.releaseDate ? this.releaseDate.toDate() : undefined,
+            posterUrl: this.posterUrl,
             externalUrls: this.externalUrls,
         };
     }

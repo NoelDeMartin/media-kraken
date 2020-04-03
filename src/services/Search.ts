@@ -38,7 +38,7 @@ export default class Search extends Service<State> {
     private searchResultsContainer: HTMLElement | null = null;
 
     private keyboardListener: EventListener | null = null;
-    private clickListener: EventListener | null = null;
+    private removeClickAwayListener: Function | null = null;
 
     private debouncedSearch: DebouncedFunction = Time.debounce(() => this.updateSearchResults(), 400);
 
@@ -76,10 +76,13 @@ export default class Search extends Service<State> {
         if (this.searchInput === null || this.open)
             return;
 
-        this.startListeningClicks();
-
         this.setState({ open: true });
         this.app.$nextTick(() => this.searchInput!.focus());
+
+        this.removeClickAwayListener = this.app.$ui.onClickAway(
+            [this.searchInput, this.searchResultsContainer].filter(el => !!el) as HTMLElement[],
+            () => this.stop(),
+        );
     }
 
     public stop(): void {
@@ -93,9 +96,13 @@ export default class Search extends Service<State> {
             highlightedResultIndex: null,
         });
 
-        this.stopListeningClicks();
-
         this.debouncedSearch.cancel();
+
+        if (!this.removeClickAwayListener)
+            return;
+
+        this.removeClickAwayListener();
+        this.removeClickAwayListener = null;
     }
 
     public async update(query: string): Promise<void> {
@@ -229,37 +236,6 @@ export default class Search extends Service<State> {
         document.removeEventListener('keydown', this.keyboardListener);
 
         this.keyboardListener = null;
-    }
-
-    private startListeningClicks() {
-        if (this.clickListener)
-            return;
-
-        document.addEventListener('click', this.clickListener = e => {
-            const target = e.target as HTMLElement;
-
-            if (this.searchInput === target || this.searchInput!.contains(target))
-                return;
-
-            if (
-                this.searchResultsContainer !== null && (
-                    this.searchResultsContainer === target ||
-                    this.searchResultsContainer.contains(target)
-                )
-            )
-                return;
-
-            this.stop();
-        });
-    }
-
-    private stopListeningClicks() {
-        if (!this.clickListener)
-            return;
-
-        document.removeEventListener('click', this.clickListener);
-
-        this.clickListener = null;
     }
 
     private captureHotKey({ target, key, keyCode }: KeyboardEvent): boolean {

@@ -1,6 +1,6 @@
 <template>
     <main>
-        <div id="collection-page-header" class="relative flex items-center -mx-2 mb-2">
+        <div id="collection-page-header" class="relative flex items-center -mx-2">
             <BaseTransition
                 :enter-duration="150"
                 :leave-duration="75"

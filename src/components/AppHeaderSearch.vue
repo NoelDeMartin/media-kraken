@@ -54,7 +54,7 @@
             </div>
         </BaseTransition>
 
-        <AppHeaderSearchResults v-if="$search.open && $search.query.length > 0" />
+        <AppHeaderSearchResults v-show="$search.open && $search.query.length > 0" />
     </div>
 </template>
 

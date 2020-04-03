@@ -5,6 +5,7 @@ import Service, { ComputedStateDefinitions } from '@/services/Service';
 
 import Arr from '@/utils/Arr';
 import AsyncOperation from '@/utils/AsyncOperation';
+import EventBus from '@/utils/EventBus';
 import UUID from '@/utils/UUID';
 
 import LoadingModal from '@/components/modals/LoadingModal.vue';
@@ -154,24 +155,15 @@ export default class UI extends Service<State, ComputedState> {
         }
     }
 
-    public toggleMenu() {
-        if (!this.menu)
+    public openMenu() {
+        if (this.menuOpen)
             return;
 
-        const menuOpen = !this.menuOpen;
-
-        this.setState({ menuOpen });
-
-        if (this.removeMenuClickAwayListener) {
-            this.removeMenuClickAwayListener();
-            this.removeMenuClickAwayListener = null;
-            return;
-        }
+        this.setState({ menuOpen: true });
 
         this.removeMenuClickAwayListener = this.onClickAway(
             target => (
-                this.menu !== target &&
-                !this.menu!.contains(target) &&
+                (!this.menu || (this.menu !== target && !this.menu!.contains(target))) &&
                 !this.menuTriggers.find(trigger => target === trigger || trigger.contains(target))
             ),
             () => this.toggleMenu(),
@@ -182,7 +174,17 @@ export default class UI extends Service<State, ComputedState> {
         if (!this.menuOpen)
             return;
 
-        this.toggleMenu();
+        this.setState({ menuOpen: false });
+
+        if (!this.removeMenuClickAwayListener)
+            return;
+
+        this.removeMenuClickAwayListener();
+        this.removeMenuClickAwayListener = null;
+    }
+
+    public toggleMenu() {
+        this.menuOpen ? this.closeMenu() : this.openMenu();
     }
 
     public openMarkdownModal(content: string, replacements: any = {}): void {
@@ -323,35 +325,9 @@ export default class UI extends Service<State, ComputedState> {
     protected async init(): Promise<void> {
         await super.init();
 
-        for (const [layout, breakpoint] of Object.entries(screenBreakpoints)) {
-            const media = window.matchMedia(`(min-width: ${breakpoint}px)`);
-            const updateState = () => this.setState({
-                layoutMediaQueries: {
-                    ...this.state.layoutMediaQueries,
-                    [layout]: media.matches,
-                },
-            });
-
-            media.addListener(updateState);
-
-            updateState();
-        }
-
-        this.watchStore(
-            (_, { showOverlay }) => showOverlay,
-            showOverlay => {
-                if (!showOverlay) {
-                    const scrollY = this.fixedScroll;
-
-                    this.setState({ fixedScroll: null });
-                    this.app.$nextTick(() => window.scrollTo({ top: scrollY! }));
-
-                    return;
-                }
-
-                this.setState({ fixedScroll: window.scrollY });
-            },
-        );
+        this.watchWindowMedia();
+        this.watchOverlay();
+        this.watchAuth();
     }
 
     protected getInitialState(): State {
@@ -423,6 +399,44 @@ export default class UI extends Service<State, ComputedState> {
         document.removeEventListener('click', this.clickListener);
 
         this.clickListener = null;
+    }
+
+    private watchWindowMedia() {
+        for (const [layout, breakpoint] of Object.entries(screenBreakpoints)) {
+            const media = window.matchMedia(`(min-width: ${breakpoint}px)`);
+            const updateState = () => this.setState({
+                layoutMediaQueries: {
+                    ...this.state.layoutMediaQueries,
+                    [layout]: media.matches,
+                },
+            });
+
+            media.addListener(updateState);
+
+            updateState();
+        }
+    }
+
+    private watchOverlay() {
+        this.watchStore(
+            (_, { showOverlay }) => showOverlay,
+            showOverlay => {
+                if (!showOverlay) {
+                    const scrollY = this.fixedScroll;
+
+                    this.setState({ fixedScroll: null });
+                    this.app.$nextTick(() => window.scrollTo({ top: scrollY! }));
+
+                    return;
+                }
+
+                this.setState({ fixedScroll: window.scrollY });
+            },
+        );
+    }
+
+    private watchAuth() {
+        EventBus.on('logout', () => this.closeMenu());
     }
 
 }

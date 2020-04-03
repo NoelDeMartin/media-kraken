@@ -16,7 +16,7 @@ const enum DataMediaType {
     TVShow = 4,
 }
 
-enum DataStatus {
+enum Status {
     Watched = 'watched',
     Following = 'following',
     Pending = 'pending',
@@ -26,7 +26,7 @@ interface Data {
     title: string;
     imdb: string;
     type: DataMediaType;
-    status: DataStatus;
+    status: Status;
     checkedDate: string;
 }
 
@@ -36,7 +36,7 @@ export default class TVisoMovie extends ThirdPartyMovie {
         return typeof data.title === 'string'
             && typeof data.imdb === 'string'
             && data.type === DataMediaType.Movie
-            && Arr.contains(Object.values(DataStatus), data.status)
+            && Arr.contains(Object.values(Status), data.status)
             && (typeof data.checkedDate === 'string' && Time.isValidDateString(data.checkedDate));
     }
 
@@ -57,8 +57,7 @@ export default class TVisoMovie extends ThirdPartyMovie {
     public async import(container: MediaContainer): Promise<Movie> {
         const movie = await this.createMovie(container);
 
-        if (this.data.status === DataStatus.Watched)
-            await movie.watch(new Date(this.data.checkedDate));
+        await this.updateMovieStatus(movie);
 
         return movie;
     }
@@ -81,6 +80,16 @@ export default class TVisoMovie extends ThirdPartyMovie {
         });
 
         return tmdbMovie.import(container);
+    }
+
+    private async updateMovieStatus(movie: Movie): Promise<void> {
+        switch (this.data.status) {
+            case Status.Watched:
+                return movie.watch(new Date(this.data.checkedDate));
+            case Status.Pending:
+                await movie.update({ createdAt: new Date(this.data.checkedDate) });
+                return;
+        }
     }
 
 }
