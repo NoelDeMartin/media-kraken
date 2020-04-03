@@ -1,5 +1,7 @@
 import { Data as MovieData } from '@/models/third-party/TheMovieDBMovie';
 
+type GetMovieResponse = MovieData;
+
 interface FindResponse {
     movie_results: MovieData[];
 }
@@ -11,11 +13,11 @@ interface SearchMoviesResponse {
     results: MovieData[];
 }
 
-interface GetExternalMovieIds {
-    imdb_id: string | null;
-}
-
 class TheMovieDBApi {
+
+    public getMovie(id: number): Promise<GetMovieResponse> {
+        return this.request(`movie/${id}`);
+    }
 
     public find(externalId: string, options: object = {}): Promise<FindResponse> {
         return this.request(`find/${externalId}`, options);
@@ -23,10 +25,6 @@ class TheMovieDBApi {
 
     public searchMovies(query: string): Promise<SearchMoviesResponse> {
         return this.request('search/movie', { query });
-    }
-
-    public getExternalMovieIds(movieId: number): Promise<GetExternalMovieIds> {
-        return this.request(`movie/${movieId}/external_ids`);
     }
 
     private async request(path: string, parameters: object = {}): Promise<any> {

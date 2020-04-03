@@ -70,7 +70,7 @@ export default class JSONMovie extends ThirdPartyMovie {
         return movie;
     }
 
-    public async getAttributes(): Promise<Attributes> {
+    private async getAttributes(): Promise<Attributes> {
         return {
             title: this.data.title,
             posterUrl: this.data.posterUrl,

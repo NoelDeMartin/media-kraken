@@ -33,6 +33,4 @@ export default abstract class ThirdPartyMovie extends ThirdPartyMedia {
 
     public abstract import(container: MediaContainer): Promise<Movie>;
 
-    public abstract getAttributes(): Promise<Attributes>;
-
 }
