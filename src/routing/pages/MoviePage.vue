@@ -6,7 +6,7 @@
                     <div class="absolute inset-0 bg-gray-300" />
                     <div
                         v-if="movie.posterUrl"
-                        class="absolute inset-0 opacity-75"
+                        class="absolute inset-0 opacity-75 bg-cover"
                         :style="{
                             filter: 'blur(.5px)',
                             backgroundImage: `url('${movie.posterUrl}')`,

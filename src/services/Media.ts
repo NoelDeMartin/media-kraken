@@ -19,6 +19,8 @@ interface ImportListener {
 
 export default class Media extends Service<State> {
 
+    protected storeName: string = 'media';
+
     public get movies(): Movie[] {
         if (!this.state.moviesContainer)
             return [];

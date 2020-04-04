@@ -32,6 +32,8 @@ interface State {
 
 export default class Search extends Service<State> {
 
+    protected storeName: string = 'search';
+
     public searching: boolean = false;
 
     private searchInput: HTMLInputElement | null = null;
@@ -263,7 +265,7 @@ export default class Search extends Service<State> {
                 name === 'input' &&
                 !Arr.contains(
                     NON_WRITABLE_INPUT_TYPES,
-                    (element.getAttribute('type'))!.toLowerCase(),
+                    (element.getAttribute('type') || 'text').toLowerCase(),
                 )
             )
             || name === 'textarea'

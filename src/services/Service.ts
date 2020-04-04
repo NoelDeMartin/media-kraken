@@ -9,6 +9,7 @@ export type ComputedStateDefinitions<State, ComputedState> = {
 export default abstract class Service<State = void, ComputedState = {}> {
 
     protected app: Vue;
+    protected storeName: string = '';
 
     public readonly ready: Promise<void>;
 
@@ -20,7 +21,7 @@ export default abstract class Service<State = void, ComputedState = {}> {
     }
 
     protected get state(): State {
-        return this.app.$store.state[this.constructor.name] || this.getInitialState();
+        return this.app.$store.state[this.storeName] || this.getInitialState();
     }
 
     protected get computedState(): ComputedState {
@@ -38,7 +39,7 @@ export default abstract class Service<State = void, ComputedState = {}> {
         if (initialState === null)
             return;
 
-        store.registerModule(this.constructor.name, {
+        store.registerModule(this.storeName, {
             state: initialState,
             mutations: {
                 setState(state: State, newState: Partial<State>) {
@@ -54,7 +55,7 @@ export default abstract class Service<State = void, ComputedState = {}> {
         callback: (oldValue: T, newValue: T) => void,
     ): () => void {
         return this.app.$store.watch(
-            (state, computed) => getter(state[this.constructor.name], computed),
+            (state, computed) => getter(state[this.storeName], computed),
             callback,
         );
     }

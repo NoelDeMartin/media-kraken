@@ -22,6 +22,8 @@ interface HasUser {
 
 export default class Auth extends Service<State> {
 
+    protected storeName: string = 'auth';
+
     private solidAuthListener?: (session?: Session) => Promise<void>;
 
     public get loggedIn(): boolean {

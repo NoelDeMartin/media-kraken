@@ -3,6 +3,7 @@ const purgecss = require('@fullhuman/postcss-purgecss')({
     content: [
         './public/index.html',
         './src/**/*.vue',
+        './src/assets/markdown/*.md',
     ],
     defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
     whitelistPatterns: [/duration-\d+$/],

@@ -66,6 +66,8 @@ export interface SnackbarOptions {
 
 export default class UI extends Service<State, ComputedState> {
 
+    protected storeName: string = 'ui';
+
     private mobileMenu: HTMLElement | null = null;
     private desktopMenu: HTMLElement | null = null;
     private menuTriggers: HTMLButtonElement[] = [];

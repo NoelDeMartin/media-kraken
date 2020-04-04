@@ -31,7 +31,7 @@ export default class TheMovieDBMovie extends ThirdPartyMovie {
                 ? dayjs(data.release_date)
                 : undefined,
             posterUrl: data.poster_path
-                ? 'http://image.tmdb.org/t/p/w342' + data.poster_path
+                ? 'https://image.tmdb.org/t/p/w342' + data.poster_path
                 : undefined,
         });
 

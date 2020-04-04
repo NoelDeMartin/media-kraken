@@ -1,6 +1,4 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
-
 const path = require('path');
 const version = require('./package.json').version;
 const publicPath = process.env.NODE_ENV === 'production' ? '/media-kraken/' : '/';
@@ -21,15 +19,10 @@ module.exports = {
         '404': {
             title,
             entry: 'src/routing/github-404.ts',
-            chunks: ['404'],
+            chunks: [],
         },
     },
     configureWebpack: {
-        plugins: [
-            new ScriptExtHtmlWebpackPlugin({
-                inline: /js\/404\.([^.]+\.)?js$/,
-            }),
-        ],
         externals: {
             'node-fetch': 'fetch',
             'text-encoding': 'TextEncoder',

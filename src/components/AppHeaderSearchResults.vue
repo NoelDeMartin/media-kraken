@@ -22,8 +22,9 @@
                     >
                         <BaseIcon name="photo" class="w-5 h-5 text-gray-600" />
                         <div
+                            v-if="result.posterUrl"
                             class="bg-cover bg-center absolute inset-0 w-full h-full"
-                            :style="{ 'background-image': `url('${result.posterUrl}')` }"
+                            :style="{ backgroundImage: `url('${result.posterUrl}')` }"
                         />
                     </div>
                     <div class="flex flex-col items-start overflow-hidden">

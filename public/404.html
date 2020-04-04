@@ -19,5 +19,26 @@
             <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
         </noscript>
         Redirecting...
+        <script>
+            (function () {
+                function redirectTo(publicPath, baseUrl) {
+                    if (location.href === baseUrl)
+                        return;
+                    var url = new URL(location.href);
+                    var searchParams = {};
+                    url.searchParams.forEach(function (value, key) { return searchParams[key] = value; });
+                    localStorage.setItem('github-pages-redirect', JSON.stringify({
+                        path: url.pathname.substr(publicPath.length),
+                        hash: url.hash,
+                        query: searchParams,
+                    }));
+                    location.href = baseUrl;
+                }
+                var publicPath = document.body.dataset.publicPath;
+                var anchor = document.createElement('a');
+                anchor.href = publicPath;
+                redirectTo(publicPath, anchor.href);
+            })();
+        </script>
     </body>
 </html>
