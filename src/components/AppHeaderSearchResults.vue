@@ -93,7 +93,7 @@ export default Vue.extend({
             if (!result.collectionUuid)
                 return title;
 
-            const status = result.watched ? 'Watched' : 'Pending';
+            const status = result.watched ? 'Watched' : 'Not Watched';
 
             return `${title} (${status})`;
         },

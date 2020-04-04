@@ -1,12 +1,12 @@
 <template>
-    <div class="flex flex-col flex-grow items-center justify-center p-8">
+    <div class="flex flex-col flex-grow items-center justify-center py-8">
         <template v-if="!$auth.isLoggedIn()">
             <BaseIcon name="media-kraken" class="w-48 h-48" />
             <h1 class="mt-4 text-3xl font-semibold">
                 Media Kraken
             </h1>
             <div class="flex flex-col items-center mt-1">
-                <p class="text-sm text-gray-800 text-center mb-8">
+                <p class="text-sm text-gray-800 text-center leading-relaxed mb-6">
                     Keep track of the movies you want to watch and create your own collection!
                 </p>
                 <form v-if="identityProviderUrl !== null" class="self-stretch flex flex-col" @submit.prevent="submitLoginWithSolid">
@@ -22,7 +22,7 @@
                             "
                         >
                         <BaseButton
-                            :submit="true"
+                            submit
                             icon="solid-emblem"
                             class="
                                 bg-brand-solid h-10 shadow text-white mt-4
@@ -33,45 +33,59 @@
                             Login <span class="desktop:hidden">with Solid</span>
                         </BaseButton>
                     </div>
-                    <BaseButton
-                        class="self-center mt-2 text-sm text-primary-700 hover:bg-black-overlay"
-                        @click="identityProviderUrl = null"
-                    >
-                        Cancel
-                    </BaseButton>
+                    <div class="flex flex-col-reverse justify-between desktop:flex-row">
+                        <BaseLink
+                            button
+                            class="text-sm self-center mt-4 desktop:mt-2 desktop:self-start"
+                            @click="$ui.openMarkdownModal('application-storage')"
+                        >
+                            I need help
+                        </BaseLink>
+                        <BaseButton
+                            class="
+                                border border-primary-500 mt-4 text-sm text-primary-700 justify-center
+                                hover:bg-black-overlay desktop:mt-2
+                            "
+                            @click="identityProviderUrl = null"
+                        >
+                            Cancel
+                        </BaseButton>
+                    </div>
                 </form>
                 <template v-else>
-                    <div class="flex flex-col items-center desktop:flex-row">
+                    <div class="flex flex-col items-center">
+                        <p class="self-start text-gray-800 mb-3 text-sm">
+                            Where do you want to store your data?
+                        </p>
                         <BaseButton
                             icon="solid-emblem"
                             class="
-                                w-48 h-10 text-sm font-medium tracking-wide shadow
+                                w-64 h-10 mb-3 text-sm font-medium tracking-wide shadow
                                 bg-brand-solid text-white
                             "
-                            text-class="flex-grow"
                             @click="loginWithSolid"
                         >
-                            Login with Solid
+                            Use Solid POD
                         </BaseButton>
-                        <span class="m-2">or</span>
                         <BaseButton
-                            icon="offline"
+                            icon="browser"
                             class="
-                                w-48 h-10 text-sm font-medium tracking-wide shadow
-                                text-white bg-primary-500 hover:bg-primary-700
+                                w-64 h-10 text-sm font-medium tracking-wide shadow
+                                text-white bg-brand-browser
                             "
-                            text-class="flex-grow"
+                            icon-class="w-6 h-4 mr-2"
                             @click="loginOffline"
                         >
-                            Login Offline
+                            Use browser storage
                         </BaseButton>
+                        <BaseLink
+                            button
+                            class="self-center mt-4 text-sm"
+                            @click="$ui.openMarkdownModal('application-storage')"
+                        >
+                            Help me decide what to use
+                        </BaseLink>
                     </div>
-                    <BaseButton
-                        class="self-center mt-4 text-sm text-primary-700 hover:bg-black-overlay"
-                        @click="$ui.openMarkdownModal('login')"
-                    >
-                        Which one should I choose?
-                    </BaseButton>
                 </template>
             </div>
         </template>
@@ -128,6 +142,15 @@ export default Vue.extend({
 
         &:hover {
             background: #653add;
+        }
+
+    }
+
+    .bg-brand-browser {
+        @apply bg-blue-500;
+
+        &:hover {
+            @apply bg-blue-700;
         }
 
     }

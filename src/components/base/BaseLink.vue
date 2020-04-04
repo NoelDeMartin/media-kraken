@@ -1,6 +1,14 @@
 <template>
+    <button
+        v-if="button"
+        type="button"
+        class="inline-block text-primary-700 hover:underline hover:text-primary-900"
+        @click="$emit('click')"
+    >
+        <slot />
+    </button>
     <router-link
-        v-if="route"
+        v-else-if="route"
         class="inline-block text-primary-700 hover:underline hover:text-primary-900"
         :title="title"
         :to="routerTo"
@@ -35,6 +43,10 @@ export default Vue.extend({
         route: {
             type: String,
             default: null,
+        },
+        button: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {

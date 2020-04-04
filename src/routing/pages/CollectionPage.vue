@@ -56,8 +56,8 @@
             <MoviesGrid
                 v-if="filteredMovies.length > 0"
                 key="movies"
+                within-collection
                 :movies="filteredMovies"
-                :within-collection="true"
             />
             <div v-else key="empty" class="absolute flex items-center justify-center h-24 top-0 inset-x-0">
                 <span class="text-lg">Nothing matches "{{ filter }}"</span>
