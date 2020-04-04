@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const ScriptExtHtmlWebpackPlugin = require('script-ext-html-webpack-plugin');
+
 const path = require('path');
 const version = require('./package.json').version;
 const publicPath = process.env.NODE_ENV === 'production' ? '/media-kraken/' : '/';
@@ -10,7 +12,24 @@ process.env.VUE_APP_PUBLIC_PATH = publicPath;
 
 module.exports = {
     publicPath,
+    pages: {
+        'index': {
+            title,
+            description,
+            entry: 'src/main.ts',
+        },
+        '404': {
+            title,
+            entry: 'src/routing/github-404.ts',
+            chunks: ['404'],
+        },
+    },
     configureWebpack: {
+        plugins: [
+            new ScriptExtHtmlWebpackPlugin({
+                inline: /js\/404\.([^.]+\.)?js$/,
+            }),
+        ],
         externals: {
             'node-fetch': 'fetch',
             'text-encoding': 'TextEncoder',
@@ -52,14 +71,8 @@ module.exports = {
             .use('raw-loader')
             .loader('raw-loader');
 
-        config
-            .plugin('html')
-            .tap(args => {
-                args[0].title = title;
-                args[0].description = description;
-
-                return args;
-            });
+        config.plugins.delete('prefetch-404');
+        config.plugins.delete('preload-404');
     },
     pwa: {
         name: title,

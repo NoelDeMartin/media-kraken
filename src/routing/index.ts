@@ -1,4 +1,5 @@
-import { RouteConfig } from 'vue-router';
+import Vue from 'vue';
+import VueRouter, { RouteConfig } from 'vue-router';
 
 import CollectionPage from '@/routing/pages/CollectionPage.vue';
 import Error404Page from '@/routing/pages/Error404Page.vue';
@@ -6,7 +7,7 @@ import HomePage from '@/routing/pages/HomePage.vue';
 import LoginPage from '@/routing/pages/LoginPage.vue';
 import MoviePage from '@/routing/pages/MoviePage.vue';
 
-export default [
+export const routes = [
     { name: 'login', path: '/login', component: LoginPage },
     { name: 'home', path: '/', component: HomePage },
     { name: 'collection', path: '/collection', component: CollectionPage },
@@ -25,3 +26,25 @@ export default [
     },
     { path: '*', component: Error404Page },
 ] as RouteConfig[];
+
+export function initRouter(router: VueRouter) {
+    router.onReady(() => {
+        const githubPagesRedirect = localStorage.getItem('github-pages-redirect');
+
+        if (!githubPagesRedirect)
+            return;
+
+        localStorage.removeItem('github-pages-redirect');
+
+        router.replace(JSON.parse(githubPagesRedirect));
+    });
+
+    router.beforeEach((to, _, next) => {
+        if (to.name !== 'login' && Vue.instance && !Vue.instance.$auth.isLoggedIn()) {
+            next({ name: 'login' });
+            return;
+        }
+
+        next();
+    });
+}

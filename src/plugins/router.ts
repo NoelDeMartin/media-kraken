@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import routes from '@/routing';
+import { routes, initRouter } from '@/routing';
 
 Vue.use(VueRouter);
 
@@ -11,13 +11,6 @@ const router = new VueRouter({
     routes,
 });
 
-router.beforeEach((to, from, next) => {
-    if (to.name !== 'login' && Vue.instance && !Vue.instance.$auth.isLoggedIn()) {
-        next({ name: 'login' });
-        return;
-    }
-
-    next();
-});
+initRouter(router);
 
 export default router;
