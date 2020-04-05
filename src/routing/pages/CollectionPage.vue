@@ -71,8 +71,6 @@ import Vue from 'vue';
 
 import Movie from '@/models/soukai/Movie';
 
-import Files from '@/utils/Files';
-
 import MoviesGrid from '@/components/MoviesGrid.vue';
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 
@@ -135,10 +133,7 @@ export default Vue.extend({
             this.$ui.openModal(ImportMediaModal);
         },
         exportCollection() {
-            Files.download(
-                'my-collection.json',
-                JSON.stringify(this.$media.movies.map(movie => movie.toJSON())),
-            );
+            this.$media.exportCollection();
         },
     },
 });

@@ -129,7 +129,7 @@ export default Vue.extend({
             try {
                 await this.$auth.loginWithSolid(this.identityProviderUrl!);
             } catch (error) {
-                alert(error.message || 'Something went wrong');
+                this.$ui.showError(error);
             }
         },
     },

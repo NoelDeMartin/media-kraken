@@ -233,7 +233,10 @@ export default class UI extends Service<State, ComputedState> {
     }
 
     public showError(error: any): void {
-        this.showSnackbar('Something went wrong!', { error: true, transient: true });
+        this.showSnackbar(
+            error?.message || 'Something went wrong!',
+            { error: true, transient: true },
+        );
 
         // eslint-disable-next-line no-console
         console.error(error);

@@ -12,6 +12,8 @@ import EventBus from '@/utils/EventBus';
 import RDFStore from '@/utils/RDFStore';
 import Storage from '@/utils/Storage';
 
+import OfflineLogoutModal from '@/components/modals/OfflineLogoutModal.vue';
+
 interface State {
     user: User | null;
 }
@@ -57,14 +59,17 @@ export default class Auth extends Service<State> {
             throw new Error('Could not log in with Solid');
     }
 
-    public async logout(): Promise<void> {
+    public async logout(force: boolean = false): Promise<void> {
         if (!this.loggedIn)
             return;
 
-        if (this.user instanceof OfflineUser) {
-            if (!confirm('Logging out from offline mode will delete all your data, are you sure you want to proceed?'))
-                return;
+        if (this.isOffline && !this.app.$media.empty && !force) {
+            this.app.$ui.openModal(OfflineLogoutModal);
 
+            return;
+        }
+
+        if (this.user instanceof OfflineUser) {
             Storage.remove('user');
         } else if (this.user instanceof SolidUser) {
             await SolidAuthClient.logout();

@@ -24,11 +24,8 @@ export default abstract class User {
     }
 
     protected async getPreferredStorage(): Promise<string> {
-        if (this.storages.length === 1)
-            return this.storages[0];
-
         // TODO ask for preferred storage
-        throw new Error('ask for storage not implemented');
+        return this.storages[0];
     }
 
     protected abstract getMoviesContainer(storage: string): Promise<MediaContainer>;

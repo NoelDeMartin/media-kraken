@@ -19,4 +19,9 @@ export default mixins(Vue.extend({
             required: true,
         },
     },
+    methods: {
+        close() {
+            this.$ui.closeModal(this.id);
+        },
+    },
 }));

@@ -93,15 +93,16 @@
                             </a>
                         </div>
                         <button
+                            v-close-menu
                             type="button"
                             class="flex items-center text-gray-800 hover:underline"
                             :class="{
                                 'text-lg': $ui.mobile,
                                 'px-4 py-2 w-full text-sm': $ui.desktop,
                             }"
-                            @click="$auth.logout()"
+                            @click="logout"
                         >
-                            <BaseIcon name="logout" class="w-4 h-4 mr-2" /> <span>Logout</span>
+                            <BaseIcon name="logout" class="w-4 h-4 mr-2" /> <span>Log out</span>
                         </button>
                     </div>
                 </BaseTransition>
@@ -112,6 +113,8 @@
 
 <script lang="ts">
 import Vue from 'vue';
+
+import Time from '@/utils/Time';
 
 import SolidUser from '@/models/users/SolidUser';
 
@@ -145,6 +148,16 @@ export default Vue.extend({
         this.$ui.setDesktopMenu(null);
         this.$ui.removeMenuTrigger(this.$refs['button'] as HTMLButtonElement);
         this.$ui.setMyCollection(null);
+    },
+    methods: {
+        // TODO this shouldn't be necessary, debug further.
+        async logout() {
+            // If this isn't done, logging out in offline mode causes a weird UI
+            // interaction with the appearance animation of the confirmation modal.
+            await Time.wait(0);
+
+            this.$auth.logout();
+        },
     },
 });
 </script>

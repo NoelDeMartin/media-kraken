@@ -5,7 +5,7 @@
         class="w-full"
         title="Import media"
     >
-        <MediaImporter @imported="$ui.closeModal(id)" />
+        <MediaImporter @imported="close" />
     </AppModal>
 </template>
 

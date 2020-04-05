@@ -87,7 +87,7 @@ export default Vue.extend({
 
                 this.$emit('imported', movies);
             } catch (error) {
-                alert(error.message || 'Something went wrong');
+                this.$ui.showError(error);
             }
         },
         async importMovies(source: MediaSource): Promise<Movie[]> {

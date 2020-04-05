@@ -6,7 +6,7 @@
                     <button
                         type="button"
                         class="absolute top-0 right-0 m-4 p-2 rounded-full z-10 bg-white-overlay"
-                        @click="$ui.closeModal(id)"
+                        @click="close"
                     >
                         <BaseIcon name="close" class="w-4 h-4 text-gray-800" />
                     </button>
@@ -39,7 +39,7 @@
                         v-if="$ui.desktop || !movie.posterUrl"
                         type="button"
                         class="p-2 rounded-lg self-start hover:bg-gray-300 desktop:self-center"
-                        @click="$ui.closeModal(id)"
+                        @click="close"
                     >
                         <BaseIcon name="close" class="w-4 h-4 text-gray-800" />
                     </button>
@@ -58,7 +58,7 @@
                             class="bg-blue-500 text-white mr-2 hover:bg-blue-700"
                             text-class="font-semibold text-sm"
                             icon-class="w-4 h-4 mr-2"
-                            @click="addToCollection(false)"
+                            @click="addToCollection(false) && close()"
                         >
                             not watched
                         </BaseButton>
@@ -67,7 +67,7 @@
                             class="bg-green-500 text-white mr-2 hover:bg-green-700"
                             text-class="font-semibold text-sm"
                             icon-class="w-4 h-4 mr-2"
-                            @click="addToCollection(true)"
+                            @click="addToCollection(true) && close()"
                         >
                             watched
                         </BaseButton>
@@ -95,8 +95,6 @@ export default Modal.extend({
     },
     methods: {
         async addToCollection(watched: boolean) {
-            this.$ui.closeModal(this.id);
-
             const movie = await this.$ui.loading(
                 async () => {
                     const movie = await this.$media.importMovie(this.movie);

@@ -12,7 +12,6 @@ import TheMovieDBMovie from './TheMovieDBMovie';
 const enum DataMediaType {
     Series = 1,
     Movie = 2,
-    // TODO define what 3 means
     TVShow = 4,
 }
 

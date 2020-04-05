@@ -6,6 +6,7 @@ import User from '@/models/users/User';
 import Service from '@/services/Service';
 
 import EventBus from '@/utils/EventBus';
+import Files from '@/utils/Files';
 
 interface State {
     moviesContainer: MediaContainer | null;
@@ -70,6 +71,13 @@ export default class Media extends Service<State> {
         listener.onCompleted && listener.onCompleted(thirdPartyMovies.length, movies.length);
 
         return movies;
+    }
+
+    public exportCollection(): void {
+        Files.download(
+            'my-collection.json',
+            JSON.stringify(this.movies.map(movie => movie.toJSON())),
+        );
     }
 
     protected async init(): Promise<void> {

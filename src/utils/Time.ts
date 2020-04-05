@@ -36,6 +36,10 @@ class Time {
         return !isNaN(date.getTime());
     }
 
+    public wait(milliseconds: number): Promise<void> {
+        return new Promise(resolve => setTimeout(resolve, milliseconds));
+    }
+
 }
 
 export default new Time();
