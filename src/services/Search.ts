@@ -2,26 +2,15 @@ import Service from '@/services/Service';
 
 import TheMovieDBApi from '@/api/TheMovieDBApi';
 
-import TheMovieDBMovie from '@/models/third-party/TheMovieDBMovie';
-import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie.js';
-
 import Arr from '@/utils/Arr';
 import Time, { DebouncedFunction } from '@/utils/Time';
 
 import MovieModal from '@/components/modals/MovieModal.vue';
+import Movie from '@/models/soukai/Movie';
 
 const NON_WRITABLE_INPUT_TYPES = ['submit', 'reset', 'checkbox', 'radio'];
 
-export type SearchResult = MovieSearchResult;
-
-interface MovieSearchResult {
-    title: string;
-    collectionUuid: string | null;
-    source: ThirdPartyMovie;
-    posterUrl?: string;
-    releaseYear?: number;
-    watched?: boolean;
-}
+export type SearchResult = Movie;
 
 interface State {
     open: boolean;
@@ -174,13 +163,13 @@ export default class Search extends Service<State> {
     }
 
     public openResult(result: SearchResult): void {
-        if (result.collectionUuid) {
-            this.app.$router.push({ name: 'movie', params: { uuid: result.collectionUuid }});
+        if (result.exists()) {
+            this.app.$router.push({ name: 'movie', params: { uuid: result.uuid! }});
 
             return;
         }
 
-        this.app.$ui.openModal(MovieModal, { movie: result.source });
+        this.app.$ui.openModal(MovieModal, { movie: result });
 
         this.stop();
     }
@@ -197,25 +186,17 @@ export default class Search extends Service<State> {
     private async updateSearchResults() {
         const response = await TheMovieDBApi.searchMovies(this.query.trim());
 
-        const results: SearchResult[] = response.results.slice(0, 6)
-            .map(data => new TheMovieDBMovie(data))
-            .map(movie => {
-                const collectionMovie = this.app.$media.movies.find(m => Arr.contains(m.externalUrls, movie.url));
+        const results = response.map(thirdPartyMovie => {
+            const movie = thirdPartyMovie.toModel();
 
-                return {
-                    title: movie.title,
-                    collectionUuid: collectionMovie?.uuid || null,
-                    source: movie,
-                    posterUrl: movie.posterUrl,
-                    releaseYear: movie.releaseDate?.year(),
-                    watched: collectionMovie?.watched,
-                };
-            });
+            return this.app.$media.movies.find(collectionMovie => collectionMovie.is(movie))
+                || movie;
+        });
 
         this.searching = false;
         this.setState({
             results,
-            highlightedResultIndex: results.length > 0 ? 0 : null,
+            highlightedResultIndex: response.length > 0 ? 0 : null,
         });
     }
 

@@ -150,10 +150,10 @@ export default Vue.extend({
         this.$ui.setMyCollection(null);
     },
     methods: {
-        // TODO this shouldn't be necessary, debug further.
         async logout() {
             // If this isn't done, logging out in offline mode causes a weird UI
             // interaction with the appearance animation of the confirmation modal.
+            // TODO this shouldn't be necessary, debug further.
             await Time.wait(0);
 
             this.$auth.logout();

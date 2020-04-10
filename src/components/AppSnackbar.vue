@@ -10,8 +10,7 @@
         }"
     >
         <LoadingCircle v-if="options.loading" class="mr-3 w-6 h-6" />
-        <!-- eslint-disable-next-line vue/no-v-html -->
-        <div v-html="messageHtml" />
+        <MarkdownContent :content="message" />
     </div>
 </template>
 
@@ -20,15 +19,15 @@ import Vue from 'vue';
 
 import { SnackbarOptions } from '@/services/UI';
 
-import Markdown from '@/utils/Markdown';
-
 import LoadingCircle from '@/components/LoadingCircle.vue';
+import MarkdownContent from '@/components/MarkdownContent.vue';
 
 const TRANSIENT_DURATION = 5000;
 
 export default Vue.extend({
     components: {
         LoadingCircle,
+        MarkdownContent,
     },
     props: {
         id: {
@@ -42,11 +41,6 @@ export default Vue.extend({
         options: {
             type: Object as () => SnackbarOptions,
             required: true,
-        },
-    },
-    computed: {
-        messageHtml(): string {
-            return Markdown.render(this.message);
         },
     },
     mounted() {

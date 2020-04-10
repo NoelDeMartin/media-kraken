@@ -33,7 +33,7 @@
                                 {{ result.title }}
                             </span>
                             <BaseIcon
-                                v-if="result.collectionUuid"
+                                v-if="result.exists()"
                                 class="flex-shrink-0 w-4 h-4"
                                 :class="{
                                     'text-green-600': result.watched,
@@ -43,7 +43,7 @@
                             />
                         </div>
                         <span class="text-sm text-gray-700">
-                            {{ result.releaseYear || '-' }}
+                            {{ result.releaseDate ? result.releaseDate.getFullYear() : '-' }}
                         </span>
                     </div>
                 </button>
@@ -90,7 +90,7 @@ export default Vue.extend({
         resultButtonTitle(result: SearchResult): string {
             const title = result.title;
 
-            if (!result.collectionUuid)
+            if (!result.exists())
                 return title;
 
             const status = result.watched ? 'Watched' : 'Not Watched';

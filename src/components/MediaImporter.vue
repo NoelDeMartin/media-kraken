@@ -48,11 +48,20 @@ import Vue from 'vue';
 
 import Movie from '@/models/soukai/Movie';
 
-import { MediaSource, mediaSourceNames } from '@/models/third-party/ThirdPartyMedia';
 import JSONMovie from '@/models/third-party/JSONMovie';
 import TVisoMovie from '@/models/third-party/TVisoMovie';
 
 import Files, { MediaType } from '@/utils/Files';
+
+enum MediaSource {
+    TViso = 'tviso',
+    JSON = 'json',
+}
+
+const mediaSourceNames = {
+    [MediaSource.TViso]: 'TViso',
+    [MediaSource.JSON]: 'JSON',
+};
 
 export default Vue.extend({
     data: () => ({
@@ -74,21 +83,17 @@ export default Vue.extend({
     },
     methods: {
         async importMedia(source: MediaSource) {
-            try {
-                // TODO show progress
-                const movies = await this.$ui.loading(
-                    () => this.importMovies(source),
-                    'Importing movies...',
-                );
+            // TODO show progress
+            const movies = await this.$ui.loading(
+                () => this.importMovies(source),
+                'Importing movies...',
+            );
 
-                // TODO canceling file picker doesn't return nor reject
-                if (movies.length === 0)
-                    throw new Error('Nothing was imported');
+            // TODO this should be communicated differently
+            if (movies.length === 0)
+                throw new Error('Nothing was imported');
 
-                this.$emit('imported', movies);
-            } catch (error) {
-                this.$ui.showError(error);
-            }
+            this.$emit('imported', movies);
         },
         async importMovies(source: MediaSource): Promise<Movie[]> {
             switch (source) {
@@ -100,19 +105,33 @@ export default Vue.extend({
         },
         async importMoviesFromJSON(): Promise<Movie[]> {
             const data = await Files.upload({ accept: MediaType.JSON });
-            const thirdPartyMovies = JSON.parse(data)
-                .filter((movieData: any) => JSONMovie.isValidData(movieData))
-                .map((movieData: any) => new JSONMovie(movieData));
 
-            return this.$media.importMovies(thirdPartyMovies);
+            if (data === null)
+                return [];
+
+            const movies = JSON.parse(data)
+                .filter((movieData: any) => JSONMovie.isValidData(movieData))
+                .map((movieData: any) => new JSONMovie(movieData))
+                .map((thirdPartyMovie: JSONMovie) => thirdPartyMovie.toModel());
+
+            await this.$media.importMovies(movies);
+
+            return movies;
         },
         async importMoviesFromTViso(): Promise<Movie[]> {
             const data = await Files.upload({ accept: MediaType.JSON });
-            const thirdPartyMovies = JSON.parse(data)
-                .filter((movieData: any) => TVisoMovie.isValidData(movieData))
-                .map((movieData: any) => new TVisoMovie(movieData));
 
-            return this.$media.importMovies(thirdPartyMovies);
+            if (data === null)
+                return [];
+
+            const movies = JSON.parse(data)
+                .filter((movieData: any) => TVisoMovie.isValidData(movieData))
+                .map((movieData: any) => new TVisoMovie(movieData))
+                .map((thirdPartyMovie: TVisoMovie) => thirdPartyMovie.toModel());
+
+            await this.$media.importMovies(movies);
+
+            return movies;
         },
     },
 });

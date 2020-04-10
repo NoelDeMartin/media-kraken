@@ -69,6 +69,8 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import Str from '@/utils/Str';
+
 import Movie from '@/models/soukai/Movie';
 
 import MoviesGrid from '@/components/MoviesGrid.vue';
@@ -91,12 +93,16 @@ export default Vue.extend({
         filtering(): boolean {
             return this.removeClickAwayListener !== null;
         },
+        movies(): Movie[] {
+            return this.$media.movies.slice(0).reverse();
+        },
         filteredMovies(): Movie[] {
-            const processMovies: (movies: Movie[]) => Movie[] = this.filtering
-                ? movies => movies.filter(movie => movie.title.toLowerCase().indexOf(this.filter!.toLowerCase()) !== -1)
-                : movies => movies.slice(0);
+            if (!this.filtering)
+                return this.movies;
 
-            return processMovies(this.$media.movies).reverse();
+            const filterText = this.filter!.toLowerCase();
+
+            return this.movies.filter(movie => Str.contains(movie.title.toLowerCase(), filterText));
         },
     },
     created() {

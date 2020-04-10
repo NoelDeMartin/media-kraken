@@ -1,12 +1,6 @@
 <template>
-    <!-- eslint-disable vue/no-v-html -->
     <AppModal :id="id" :options="options" :title="title">
-        <div
-            v-if="body"
-            class="markdown-content"
-            @click="contentClicked"
-            v-html="body"
-        />
+        <MarkdownContent v-if="body" :content="body" class="markdown-modal-content" />
         <LoadingCircle v-else class="w-8 h-8 text-primary-700" />
     </AppModal>
 </template>
@@ -14,9 +8,8 @@
 <script lang="ts">
 import Modal from '@/components/mixins/Modal';
 
-import Markdown from '@/utils/Markdown';
-
 import LoadingCircle from '@/components/LoadingCircle.vue';
+import MarkdownContent from '@/components/MarkdownContent.vue';
 
 interface Data {
     title: string | null;
@@ -26,6 +19,7 @@ interface Data {
 export default Modal.extend({
     components: {
         LoadingCircle,
+        MarkdownContent,
     },
     props: {
         content: {
@@ -47,20 +41,6 @@ export default Modal.extend({
         this.loadMarkdown(markdown.trim());
     },
     methods: {
-        contentClicked(e: Event) {
-            if (!(e.target instanceof HTMLElement) || !e.target.dataset.trigger)
-                return;
-
-            e.preventDefault();
-
-            const [action, ...args] = e.target.dataset.trigger.split(':');
-
-            switch (action) {
-                case 'show-markdown':
-                    this.$ui.openMarkdownModal(args[0]);
-                    return;
-            }
-        },
         loadMarkdown(markdown: string) {
             if (markdown.startsWith('# ')) {
                 const secondLineIndex = markdown.indexOf('\n');
@@ -73,14 +53,14 @@ export default Modal.extend({
                 markdown = markdown.replace(`%${name}%`, value as any);
             }
 
-            this.body = Markdown.render(markdown);
+            this.body = markdown;
         },
     },
 });
 </script>
 
 <style lang="scss">
-    .markdown-content {
+    .markdown-modal-content {
         @apply flex flex-col;
 
         h2, h3, h4, p {

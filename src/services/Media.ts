@@ -1,12 +1,11 @@
+import EventBus from '@/utils/EventBus';
+import Files from '@/utils/Files';
+
 import MediaContainer from '@/models/soukai/MediaContainer';
 import Movie from '@/models/soukai/Movie';
-import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 import User from '@/models/users/User';
 
 import Service from '@/services/Service';
-
-import EventBus from '@/utils/EventBus';
-import Files from '@/utils/Files';
 
 interface State {
     moviesContainer: MediaContainer | null;
@@ -37,40 +36,30 @@ export default class Media extends Service<State> {
         return this.movies.length === 0;
     }
 
-    public async importMovie(thirdPartyMovie: ThirdPartyMovie): Promise<Movie> {
-        const [movie] = await this.importMovies([thirdPartyMovie]);
-
-        return movie;
-    }
-
-    public async importMovies(thirdPartyMovies: ThirdPartyMovie[], listener: ImportListener = {}): Promise<Movie[]> {
+    public async importMovies(movies: Movie[], listener: ImportListener = {}): Promise<void> {
         // TODO implement createMany in soukai
-        const movies: Movie[] = [];
 
         // TODO implement cancelling the import process
         // TODO show information on failed imports?
 
-        listener.onStart && listener.onStart(thirdPartyMovies.length);
+        listener.onStart && listener.onStart(movies.length);
 
-        for (const [i, thirdPartyMovie] of Object.entries(thirdPartyMovies)) {
-            const index = parseInt(i);
+        for (let index = 0; index < movies.length; index++) {
+            const movie = movies[index];
 
-            if (this.movies.find(movie => thirdPartyMovie.is(movie))) {
-                listener.onProgress && listener.onProgress(index, thirdPartyMovies.length, false);
+            if (this.movies.find(collectionMovie => collectionMovie.is(movie))) {
+                listener.onProgress && listener.onProgress(index, movies.length, false);
 
                 continue;
             }
 
-            const movie = await thirdPartyMovie.import(this.moviesContainer!);
+            await movie.completeAttributes();
+            await this.moviesContainer!.saveMovie(movie);
 
-            movies.push(movie);
-
-            listener.onProgress && listener.onProgress(index, thirdPartyMovies.length, true);
+            listener.onProgress && listener.onProgress(index, movies.length, true);
         }
 
-        listener.onCompleted && listener.onCompleted(thirdPartyMovies.length, movies.length);
-
-        return movies;
+        listener.onCompleted && listener.onCompleted(movies.length, movies.length);
     }
 
     public exportCollection(): void {

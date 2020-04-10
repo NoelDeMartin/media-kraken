@@ -1,4 +1,4 @@
-import Soukai, { MultiModelRelation, FieldType, Attributes } from 'soukai';
+import Soukai, { MultiModelRelation, FieldType } from 'soukai';
 import { SolidModel, SolidEngine } from 'soukai-solid';
 
 import Movie from '@/models/soukai/Movie';
@@ -21,10 +21,8 @@ export default class MediaContainer extends SolidModel {
         return this.contains(Movie);
     }
 
-    public async createMovie(attributes: Attributes): Promise<Movie> {
-        // TODO implement this.moviesRelationship().create(attributes); in soukai
-
-        const movie = new Movie(attributes);
+    public async saveMovie(movie: Movie): Promise<void> {
+        // TODO implement this.moviesRelationship().save(movie); in soukai
 
         await movie.save(this.url);
 
@@ -33,12 +31,8 @@ export default class MediaContainer extends SolidModel {
                 resourceUrls: [...this.resourceUrls, movie.url],
             });
 
-        movie.setRelationModels('actions', []);
-
         if (this.isRelationLoaded('movies'))
             this.setRelationModels('movies', [...this.movies || [], movie]);
-
-        return movie;
     }
 
 }

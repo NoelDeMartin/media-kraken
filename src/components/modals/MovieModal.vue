@@ -31,7 +31,7 @@
                     <h2 class="text-xl font-semibold">
                         {{ movie.title }}
                         <span v-if="movie.releaseDate" class="font-medium text-base">
-                            ({{ movie.releaseDate.year() }})
+                            ({{ movie.releaseDate.getFullYear() }})
                         </span>
                     </h2>
                     <div class="flex-grow" />
@@ -79,37 +79,35 @@
 </template>
 
 <script lang="ts">
+import Movie from '@/models/soukai/Movie';
+
 import Modal from '@/components/mixins/Modal';
-
-import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
-
 import MoviePoster from '@/components/MoviePoster.vue';
 
 export default Modal.extend({
     components: { MoviePoster },
     props: {
         movie: {
-            type: Object as () => ThirdPartyMovie,
+            type: Object as () => Movie,
             required: true,
         },
     },
     methods: {
         async addToCollection(watched: boolean) {
-            const movie = await this.$ui.loading(
+            const movie = this.movie;
+
+            await this.$ui.loading(
                 async () => {
-                    const movie = await this.$media.importMovie(this.movie);
-
-                    if (watched) {
+                    if (watched)
                         await movie.watch();
-                    }
 
-                    return movie;
+                    await this.$media.importMovies([movie]);
                 },
-                `Adding **${this.movie.title}** to your collection...`,
+                `Adding **${movie.title}** to your collection...`,
             );
 
             this.$ui.showSnackbar(
-                `**${movie.title}** has been added to your collection!`,
+                `[**${movie.title}**](route:/movies/${movie.uuid}) has been added to your collection!`,
                 { transient: true },
             );
         },

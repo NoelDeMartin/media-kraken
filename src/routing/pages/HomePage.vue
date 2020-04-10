@@ -40,7 +40,6 @@ export default Vue.extend({
         MoviesGrid,
     },
     computed: {
-        // TODO adding watched movie shouldn't trigger this! (or it should not cause a transition)
         pendingMovies(): Movie[] {
             return this.$media.movies.filter(movie => movie.pending).reverse().slice(0, 10);
         },

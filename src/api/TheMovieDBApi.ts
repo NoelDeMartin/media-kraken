@@ -1,4 +1,4 @@
-import { Data as MovieData } from '@/models/third-party/TheMovieDBMovie';
+import TheMovieDBMovie, { Data as MovieData } from '@/models/third-party/TheMovieDBMovie';
 
 type GetMovieResponse = MovieData;
 
@@ -15,19 +15,31 @@ interface SearchMoviesResponse {
 
 class TheMovieDBApi {
 
-    public getMovie(id: number): Promise<GetMovieResponse> {
-        return this.request(`movie/${id}`);
+    public getMovie(id: number): Promise<TheMovieDBMovie> {
+        return this
+            .request<GetMovieResponse>(`movie/${id}`)
+            .then(this.parseMovie);
     }
 
-    public find(externalId: string, options: object = {}): Promise<FindResponse> {
-        return this.request(`find/${externalId}`, options);
+    public find(externalId: string, options: object = {}): Promise<{ movies: TheMovieDBMovie[] }> {
+        return this
+            .request<FindResponse>(`find/${externalId}`, options)
+            .then(({ movie_results}) => ({
+                movies: movie_results.map(this.parseMovie),
+            }));
     }
 
-    public searchMovies(query: string): Promise<SearchMoviesResponse> {
-        return this.request('search/movie', { query });
+    public searchMovies(query: string): Promise<TheMovieDBMovie[]> {
+        return this
+            .request<SearchMoviesResponse>('search/movie', { query })
+            .then(({ results }) => results.map(this.parseMovie));
     }
 
-    private async request(path: string, parameters: object = {}): Promise<any> {
+    private parseMovie(data: MovieData): TheMovieDBMovie {
+        return new TheMovieDBMovie(data);
+    }
+
+    private async request<Response=any>(path: string, parameters: object = {}): Promise<Response> {
         const url = new URL('https://api.themoviedb.org/3/' + path);
 
         Object

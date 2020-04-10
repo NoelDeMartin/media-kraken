@@ -8,7 +8,7 @@ export const enum MediaType {
 
 interface ActiveUpload {
     output: Format;
-    resolve?(result: string): void;
+    resolve?(result: UploadResult): void;
     reject?(error?: any): void;
 }
 
@@ -16,6 +16,8 @@ interface UploadConfig {
     output?: Format;
     accept?: MediaType;
 }
+
+type UploadResult = string | null;
 
 const BODY_CANCEL_EVENTS = ['focus', 'mousemove', 'touchmove'];
 
@@ -29,7 +31,7 @@ class Files {
 
     private activeUpload?: ActiveUpload;
 
-    private cancelActiveUpload = () => {
+    private cancelActiveUpload = async () => {
         if (!this.activeUpload)
             return;
 
@@ -37,7 +39,8 @@ class Files {
             event => document.body.removeEventListener(event, this.cancelActiveUpload),
         );
 
-        setTimeout(() => delete this.activeUpload, 200);
+        this.activeUpload.resolve!(null);
+        delete this.activeUpload;
     }
 
     constructor() {
@@ -46,13 +49,15 @@ class Files {
         this.input.onchange = () => this.onInputChanged();
     }
 
-    public upload(config: UploadConfig = {}): Promise<string> {
+    public upload(config: UploadConfig = {}): Promise<UploadResult> {
         if (this.activeUpload)
             return Promise.reject('FileInput is already processing an upload');
 
+        this.input.setAttribute('value', '');
+        this.input.setAttribute('accept', MEDIA_TYPES_ACCEPT[config.accept!] || '*');
+
         const promise = this.initializeActiveUpload(config.output);
 
-        this.input.setAttribute('accept', MEDIA_TYPES_ACCEPT[config.accept!] || '*');
         this.input.click();
 
         return promise;
@@ -71,14 +76,14 @@ class Files {
         document.body.removeChild(anchor);
     }
 
-    private initializeActiveUpload(output: Format = Format.Raw): Promise<string> {
+    private initializeActiveUpload(output: Format = Format.Raw): Promise<UploadResult> {
         this.activeUpload = { output };
 
         BODY_CANCEL_EVENTS.map(
             event => document.body.addEventListener(event, this.cancelActiveUpload),
         );
 
-        return new Promise<string>((resolve, reject) => {
+        return new Promise<UploadResult>((resolve, reject) => {
             this.activeUpload!.resolve = resolve;
             this.activeUpload!.reject = reject;
         });

@@ -17,7 +17,10 @@ Vue.instance = new Vue({
 bootServices(Vue.instance)
     .catch(error => error)
     .then(error => {
-        const { $auth, $router } = Vue.instance;
+        const { $ui, $auth, $router } = Vue.instance;
+
+        window.onunhandledrejection = (event: PromiseRejectionEvent) => $ui.showError(event.reason);
+        window.onerror = error => $ui.showError(error);
 
         if (!$auth.loggedIn && $router.currentRoute.name !== 'login')
             $router.replace({ name: 'login' });

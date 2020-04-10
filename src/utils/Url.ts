@@ -76,7 +76,7 @@ class Url {
             return null;
 
         const host = match[4] || '';
-        const [domain, port]: string[] = host.indexOf(':') === -1 ? [host] : host.split(':');
+        const [domain, port]: string[] = host.split(':');
 
         return {
             protocol: match[2] || undefined,

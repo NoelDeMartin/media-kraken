@@ -1,12 +1,15 @@
-import { FieldType } from 'soukai';
+import { FieldType, Model } from 'soukai';
 import { SolidModel, SolidEmbedsRelation } from 'soukai-solid';
-
-import WatchAction from '@/models/soukai/WatchAction';
 
 import Arr from '@/utils/Arr';
 import Obj from '@/utils/Obj';
 import Str from '@/utils/Str';
 import Url from '@/utils/Url';
+
+import TheMovieDBApi from '@/api/TheMovieDBApi';
+
+import TheMovieDBMovie from '@/models/third-party/TheMovieDBMovie';
+import WatchAction from '@/models/soukai/WatchAction';
 
 export interface MovieJSON {
     title: string;
@@ -56,8 +59,10 @@ export default class Movie extends SolidModel {
     public posterUrl?: string;
     public externalUrls!: string[];
 
+    public actions?: WatchAction[];
+
     public get watched(): boolean {
-        return this.actions && this.actions.length > 0;
+        return !!this.actions && this.actions.length > 0;
     }
 
     public get pending(): boolean {
@@ -65,7 +70,7 @@ export default class Movie extends SolidModel {
     }
 
     public get watchedAt(): Date | null {
-        return this.watched ? this.actions[0].createdAt : null;
+        return this.watched ? this.actions![0].createdAt : null;
     }
 
     public get uuid(): string | null {
@@ -74,11 +79,71 @@ export default class Movie extends SolidModel {
             : null;
     }
 
+    public get imdbUrl(): string | null {
+        return this.externalUrls.find(url => Str.contains(url, 'imdb.com')) || null;
+    }
+
+    public get tmdbUrl(): string | null {
+        return this.externalUrls.find(url => Str.contains(url, 'themoviedb.org')) || null;
+    }
+
+    public get imdbId(): string | null {
+        if (!this.imdbUrl)
+            return null;
+
+        const matches = this.imdbUrl.match(/https:\/\/www\.imdb\.com\/title\/([^/]+)/);
+
+        return matches ? matches[1] : null;
+    }
+
+    public get tmdbId(): number | null {
+        if (!this.tmdbUrl)
+            return null;
+
+        const matches = this.tmdbUrl.match(/https:\/\/www\.themoviedb\.org\/movie\/(\d+)/);
+
+        return matches ? parseInt(matches[1]) : null;
+    }
+
+    public is(movie: Movie): boolean {
+        return !!this.externalUrls.find(url => Arr.contains(movie.externalUrls, url));
+    }
+
     public actionsRelationship(): SolidEmbedsRelation<Movie, WatchAction, typeof WatchAction> {
         return this.embeds(WatchAction) as any;
     }
 
-    public async watch(date?: Date): Promise<void> {
+    public async save<T extends Model>(containerUrl?: string): Promise<T> {
+        const result = await super.save<T>(containerUrl);
+
+        if (this.isRelationLoaded('actions'))
+            await Promise.all(this.actions!.map(action => this.actionsRelationship().save(action)));
+
+        return result;
+    }
+
+    public async completeAttributes(): Promise<void> {
+        if (this.imdbId && this.tmdbId)
+            return;
+
+        const tmdbMovie = await this.resolveTMDBMovie();
+
+        if (!tmdbMovie)
+            return;
+
+        const newAttributes = tmdbMovie.toModel().getAttributes();
+
+        // TODO implement model.setAttributes(...); in soukai
+        for (const [key, value] of Object.entries(newAttributes)) {
+            this.setAttribute(key, value);
+        }
+    }
+
+    public async watch(date?: Date | string): Promise<WatchAction> {
+        // TODO implement model.mintUrl() in soukai-solid (or do it in constructor)
+        if (!this.hasAttribute(Movie.primaryKey))
+            this.setAttribute(Movie.primaryKey, this.newUrl());
+
         const action = new WatchAction({ object: this.url });
 
         if (date)
@@ -87,12 +152,17 @@ export default class Movie extends SolidModel {
         try {
             // TODO maybe this should be handled by soukai...
             if (this.isRelationLoaded('actions'))
-                this.setRelationModels('actions', [...this.actions, action]);
+                this.setRelationModels('actions', [...this.actions!, action]);
+
+            if (!this.exists())
+                return action;
 
             await this.actionsRelationship().save(action);
+
+            return action;
         } catch (e) {
             if (this.isRelationLoaded('actions'))
-                this.setRelationModels('actions', Arr.withoutItem(this.actions, action));
+                this.setRelationModels('actions', Arr.withoutItem(this.actions!, action));
 
             throw e;
         }
@@ -111,6 +181,27 @@ export default class Movie extends SolidModel {
 
     protected newUrl(): string {
         return Url.resolve(this.classDef.collection, Str.slug(this.title));
+    }
+
+    private async resolveTMDBMovie(): Promise<TheMovieDBMovie | null> {
+        if (this.tmdbId)
+            return TheMovieDBApi.getMovie(this.tmdbId);
+
+        if (this.imdbId) {
+            const { movies } = await TheMovieDBApi.find(
+                this.imdbId,
+                { external_source: 'imdb_id' },
+            );
+
+            if (!movies || movies.length === 0)
+                return null;
+
+            movies[0].data.imdb_id = this.imdbId;
+
+            return movies[0];
+        }
+
+        return null;
     }
 
 }

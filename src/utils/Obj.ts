@@ -1,5 +1,17 @@
 class Obj {
 
+    public without<T, K extends keyof T>(
+        obj: T, keys: K[],
+    ): Omit<T, keyof { [k in K]: any }> {
+        const newObject: T = { ...obj };
+
+        for (const key of keys) {
+            delete newObject[key];
+        }
+
+        return newObject;
+    }
+
     public withoutUndefined<T>(obj: T): T {
         return this.flattenEntries(
             Object
