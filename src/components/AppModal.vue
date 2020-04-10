@@ -17,7 +17,7 @@
             <button
                 v-if="options.cancellable"
                 type="button"
-                class="p-2 -my-2 rounded-lg hover:bg-gray-300"
+                class="p-2 ml-2 -my-2 rounded-lg hover:bg-gray-300"
                 @click="$ui.closeModal(id)"
             >
                 <BaseIcon name="close" class="w-4 h-4 text-gray-800" />

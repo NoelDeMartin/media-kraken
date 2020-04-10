@@ -19,6 +19,7 @@ bootServices(Vue.instance)
     .then(error => {
         const { $ui, $auth, $router } = Vue.instance;
 
+        Vue.config.errorHandler = error => $ui.showError(error);
         window.onunhandledrejection = (event: PromiseRejectionEvent) => $ui.showError(event.reason);
         window.onerror = error => $ui.showError(error);
 

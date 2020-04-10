@@ -24,7 +24,9 @@
                 "
             >
                 <div v-if="$ui.mobile" class="flex items-center">
-                    <UserAvatar class="w-16 h-16 mr-4 flex-shrink-0 rounded-full text-primary-900 outline-none shadow-solid" />
+                    <UserAvatar
+                        class="w-16 h-16 mr-4 flex-shrink-0 rounded-full text-primary-900 outline-none shadow-solid"
+                    />
                     <div class="flex flex-col overflow-hidden">
                         <span class="truncate text-lg font-bold">
                             {{ $auth.user.name }}
@@ -79,7 +81,10 @@
                             '-mt-4': $ui.desktop && !$auth.user.avatarUrl,
                         }"
                     >
-                        <div v-if="$ui.desktop && !$auth.isOffline" class="flex flex-col p-4 overflow-hidden bg-gray-200 border-b border-gray-300">
+                        <div
+                            v-if="$ui.desktop && !$auth.isOffline"
+                            class="flex flex-col p-4 overflow-hidden bg-gray-200 border-b border-gray-300"
+                        >
                             <span class="truncate font-bold mb-1">
                                 {{ $auth.user.name }}
                             </span>

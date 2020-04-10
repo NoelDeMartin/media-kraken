@@ -1,5 +1,20 @@
 class Obj {
 
+    public only<T, K extends keyof T>(
+        obj: T, keys: K[],
+    ): { [k in K]: T[k] } {
+        const newObject: any = {};
+
+        for (const key of keys) {
+            if (!(key in obj))
+                continue;
+
+            newObject[key] = obj[key];
+        }
+
+        return newObject;
+    }
+
     public without<T, K extends keyof T>(
         obj: T, keys: K[],
     ): Omit<T, keyof { [k in K]: any }> {

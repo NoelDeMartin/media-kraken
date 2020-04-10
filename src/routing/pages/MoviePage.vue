@@ -15,7 +15,10 @@
                     <BaseIcon
                         v-else
                         name="photo"
-                        class="absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-auto text-gray-500"
+                        class="
+                            absolute inset-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1/3 h-auto
+                            text-gray-500
+                        "
                     />
                 </div>
                 <MoviePoster

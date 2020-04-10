@@ -20,8 +20,8 @@ export default mixins(Vue.extend({
         },
     },
     methods: {
-        close() {
-            this.$ui.closeModal(this.id);
+        close(force: boolean = false) {
+            this.$ui.closeModal(this.id, force);
         },
     },
 }));

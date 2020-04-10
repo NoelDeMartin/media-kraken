@@ -8,7 +8,10 @@
             />
             <div
                 v-if="title"
-                class="absolute inset-0 flex font-medium leading-relaxed text-sm items-end justify-center text-center p-4"
+                class="
+                    absolute inset-0 flex items-end justify-center p-4
+                    text-sm text-center font-medium leading-relaxed
+                "
             >
                 <span>{{ title }}</span>
             </div>

@@ -7,7 +7,7 @@
             <button
                 type="button"
                 class="mr-1 hover:underline hover:text-primary-900"
-                @click="$ui.openMarkdownModal('about')"
+                @click="$ui.openFileMarkdownModal('about')"
             >
                 about
             </button>

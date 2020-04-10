@@ -4,11 +4,11 @@ import { SolidModel, SolidEmbedsRelation } from 'soukai-solid';
 import Arr from '@/utils/Arr';
 import Obj from '@/utils/Obj';
 import Str from '@/utils/Str';
+import TMDBMoviesParser from '@/utils/parsers/TMDBMoviesParser';
 import Url from '@/utils/Url';
 
-import TheMovieDBApi from '@/api/TheMovieDBApi';
+import TheMovieDBApi, { TMDBMovie } from '@/api/TheMovieDBApi';
 
-import TheMovieDBMovie from '@/models/third-party/TheMovieDBMovie';
 import WatchAction from '@/models/soukai/WatchAction';
 
 export interface MovieJSON {
@@ -131,7 +131,7 @@ export default class Movie extends SolidModel {
         if (!tmdbMovie)
             return;
 
-        const newAttributes = tmdbMovie.toModel().getAttributes();
+        const newAttributes = TMDBMoviesParser.parse(tmdbMovie).getAttributes();
 
         // TODO implement model.setAttributes(...); in soukai
         for (const [key, value] of Object.entries(newAttributes)) {
@@ -180,25 +180,30 @@ export default class Movie extends SolidModel {
     }
 
     protected newUrl(): string {
-        return Url.resolve(this.classDef.collection, Str.slug(this.title));
+        let slug = Str.slug(this.title);
+
+        if (this.releaseDate?.getFullYear())
+            slug += '-' + this.releaseDate.getFullYear();
+
+        return Url.resolve(this.classDef.collection, slug);
     }
 
-    private async resolveTMDBMovie(): Promise<TheMovieDBMovie | null> {
+    private async resolveTMDBMovie(): Promise<TMDBMovie | null> {
         if (this.tmdbId)
             return TheMovieDBApi.getMovie(this.tmdbId);
 
         if (this.imdbId) {
-            const { movies } = await TheMovieDBApi.find(
+            const { movie_results } = await TheMovieDBApi.find(
                 this.imdbId,
                 { external_source: 'imdb_id' },
             );
 
-            if (!movies || movies.length === 0)
+            if (!movie_results || movie_results.length === 0)
                 return null;
 
-            movies[0].data.imdb_id = this.imdbId;
+            movie_results[0].imdb_id = this.imdbId;
 
-            return movies[0];
+            return movie_results[0];
         }
 
         return null;

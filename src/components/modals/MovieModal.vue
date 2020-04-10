@@ -101,7 +101,8 @@ export default Modal.extend({
                     if (watched)
                         await movie.watch();
 
-                    await this.$media.importMovies([movie]);
+                    await movie.completeAttributes();
+                    await this.$media.moviesContainer!.saveMovie(movie);
                 },
                 `Adding **${movie.title}** to your collection...`,
             );

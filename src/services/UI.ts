@@ -189,8 +189,8 @@ export default class UI extends Service<State, ComputedState> {
         this.menuOpen ? this.closeMenu() : this.openMenu();
     }
 
-    public openMarkdownModal(content: string, replacements: any = {}): void {
-        this.openModal(MarkdownModal, { content, replacements });
+    public openFileMarkdownModal(file: string, replacements: any = {}): void {
+        this.openModal(MarkdownModal, { file, replacements });
     }
 
     public openModal(component: Component, props: object = {}, partialOptions: Partial<ModalOptions> = {}): Modal {

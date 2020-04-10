@@ -18,7 +18,7 @@
                         type="button"
                         class="absolute top-0 right-0 m-2 text-blue-400 hover:text-blue-600"
                         title="Get help about this import method"
-                        @click="$ui.openMarkdownModal('import-' + source, helpReplacements[source])"
+                        @click="$ui.openFileMarkdownModal('import-' + source, helpReplacements[source])"
                     >
                         <BaseIcon name="question" class="w-5 h-5" />
                     </button>
@@ -46,29 +46,19 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import Movie from '@/models/soukai/Movie';
-
-import JSONMovie from '@/models/third-party/JSONMovie';
-import TVisoMovie from '@/models/third-party/TVisoMovie';
+import { MediaSource } from '@/services/Media';
 
 import Files, { MediaType } from '@/utils/Files';
-
-enum MediaSource {
-    TViso = 'tviso',
-    JSON = 'json',
-}
-
-const mediaSourceNames = {
-    [MediaSource.TViso]: 'TViso',
-    [MediaSource.JSON]: 'JSON',
-};
 
 export default Vue.extend({
     data: () => ({
         sources: Object.values(MediaSource),
     }),
     computed: {
-        mediaSourceNames: () => mediaSourceNames,
+        mediaSourceNames: () => ({
+            [MediaSource.TViso]: 'TViso',
+            [MediaSource.JSON]: 'JSON',
+        }),
         helpReplacements(): any {
             const repositoryUrl = 'https://github.com/NoelDeMartin/media-kraken';
             const filePath = 'src/models/third-party/JSONMovie.ts';
@@ -83,55 +73,17 @@ export default Vue.extend({
     },
     methods: {
         async importMedia(source: MediaSource) {
-            // TODO show progress
-            const movies = await this.$ui.loading(
-                () => this.importMovies(source),
-                'Importing movies...',
-            );
+            const filecontents = await Files.upload({ accept: MediaType.JSON });
+            if (filecontents === null)
+                return;
 
-            // TODO this should be communicated differently
-            if (movies.length === 0)
-                throw new Error('Nothing was imported');
+            const data = JSON.parse(filecontents);
+            if (!Array.isArray(data))
+                throw new Error('Invalid file format, expecting array');
 
-            this.$emit('imported', movies);
-        },
-        async importMovies(source: MediaSource): Promise<Movie[]> {
-            switch (source) {
-                case MediaSource.TViso:
-                    return this.importMoviesFromTViso();
-                case MediaSource.JSON:
-                    return this.importMoviesFromJSON();
-            }
-        },
-        async importMoviesFromJSON(): Promise<Movie[]> {
-            const data = await Files.upload({ accept: MediaType.JSON });
+            await this.$media.importMovies(data, source);
 
-            if (data === null)
-                return [];
-
-            const movies = JSON.parse(data)
-                .filter((movieData: any) => JSONMovie.isValidData(movieData))
-                .map((movieData: any) => new JSONMovie(movieData))
-                .map((thirdPartyMovie: JSONMovie) => thirdPartyMovie.toModel());
-
-            await this.$media.importMovies(movies);
-
-            return movies;
-        },
-        async importMoviesFromTViso(): Promise<Movie[]> {
-            const data = await Files.upload({ accept: MediaType.JSON });
-
-            if (data === null)
-                return [];
-
-            const movies = JSON.parse(data)
-                .filter((movieData: any) => TVisoMovie.isValidData(movieData))
-                .map((movieData: any) => new TVisoMovie(movieData))
-                .map((thirdPartyMovie: TVisoMovie) => thirdPartyMovie.toModel());
-
-            await this.$media.importMovies(movies);
-
-            return movies;
+            this.$emit('imported');
         },
     },
 });

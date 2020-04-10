@@ -1,42 +1,37 @@
-import TheMovieDBMovie, { Data as MovieData } from '@/models/third-party/TheMovieDBMovie';
-
-type GetMovieResponse = MovieData;
+type GetMovieResponse = TMDBMovie;
 
 interface FindResponse {
-    movie_results: MovieData[];
+    movie_results: TMDBMovie[];
 }
 
 interface SearchMoviesResponse {
     page: number;
     total_results: number;
     total_pages: number;
-    results: MovieData[];
+    results: TMDBMovie[];
+}
+
+export interface TMDBMovie {
+    id: number;
+    title: string;
+    overview?: string | null;
+    release_date?: string;
+    poster_path?: string | null;
+    imdb_id?: string | null;
 }
 
 class TheMovieDBApi {
 
-    public getMovie(id: number): Promise<TheMovieDBMovie> {
-        return this
-            .request<GetMovieResponse>(`movie/${id}`)
-            .then(this.parseMovie);
+    public getMovie(id: number): Promise<GetMovieResponse> {
+        return this.request(`movie/${id}`);
     }
 
-    public find(externalId: string, options: object = {}): Promise<{ movies: TheMovieDBMovie[] }> {
-        return this
-            .request<FindResponse>(`find/${externalId}`, options)
-            .then(({ movie_results}) => ({
-                movies: movie_results.map(this.parseMovie),
-            }));
+    public find(externalId: string, options: object = {}): Promise<FindResponse> {
+        return this.request(`find/${externalId}`, options);
     }
 
-    public searchMovies(query: string): Promise<TheMovieDBMovie[]> {
-        return this
-            .request<SearchMoviesResponse>('search/movie', { query })
-            .then(({ results }) => results.map(this.parseMovie));
-    }
-
-    private parseMovie(data: MovieData): TheMovieDBMovie {
-        return new TheMovieDBMovie(data);
+    public searchMovies(query: string): Promise<SearchMoviesResponse> {
+        return this.request('search/movie', { query });
     }
 
     private async request<Response=any>(path: string, parameters: object = {}): Promise<Response> {

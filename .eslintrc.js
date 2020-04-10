@@ -12,11 +12,15 @@ module.exports = {
         'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
         'indent': ['error', 4, { SwitchCase: 1, MemberExpression: 'off' }],
-        'vue/html-indent': ['error', 4],
-        'vue/max-attributes-per-line': ['error', { singleline: 3 }],
         'space-before-function-paren': 'off',
         'semi': ['error', 'always'],
         'comma-dangle': ['error', 'always-multiline'],
+        'max-len': ['error', {
+            code: 120,
+            ignoreUrls: true,
+        }],
+        'vue/html-indent': ['error', 4],
+        'vue/max-attributes-per-line': ['error', { singleline: 3 }],
         '@typescript-eslint/explicit-member-accessibility': ['error', {
             accessibility: 'explicit',
             overrides: {

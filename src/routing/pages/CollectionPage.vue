@@ -46,7 +46,10 @@
                     ref="filtersTrigger"
                     icon="search"
                     icon-class="w-4 h-4"
-                    class="absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-8 justify-center rounded-full hover:bg-black-overlay"
+                    class="
+                        absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-8 justify-center rounded-full
+                        hover:bg-black-overlay
+                    "
                     style="padding:0"
                     @click="showFilters"
                 />
@@ -73,8 +76,8 @@ import Str from '@/utils/Str';
 
 import Movie from '@/models/soukai/Movie';
 
+import ImportOptionsModal from '@/components/modals/ImportOptionsModal.vue';
 import MoviesGrid from '@/components/MoviesGrid.vue';
-import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 
 interface Data {
     filter: string | null;
@@ -136,7 +139,7 @@ export default Vue.extend({
             this.removeClickAwayListener = null;
         },
         importMedia() {
-            this.$ui.openModal(ImportMediaModal);
+            this.$ui.openModal(ImportOptionsModal);
         },
         exportCollection() {
             this.$media.exportCollection();

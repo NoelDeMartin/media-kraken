@@ -1,19 +1,18 @@
+import { TMDBMovie } from '@/api/TheMovieDBApi';
+
 import Movie from '@/models/soukai/Movie';
-import ThirdPartyMovie from '@/models/third-party/ThirdPartyMovie';
 
-export interface Data {
-    id: number;
-    title: string;
-    overview?: string | null;
-    release_date?: string;
-    poster_path?: string | null;
-    imdb_id?: string | null;
-}
+import { MediaParser } from '@/services/Media';
 
-export default class TheMovieDBMovie extends ThirdPartyMovie<Data> {
+type Data = TMDBMovie;
 
-    public toModel(): Movie {
-        const data = this.data;
+class TMDBMoviesParser implements MediaParser<Data, Movie> {
+
+    public validate(_: any): void {
+        throw new Error('TMDB movies validation is not implemented');
+    }
+
+    public parse(data: Data): Movie {
         const movie = new Movie({
             title: data.title,
             description: data.overview,
@@ -33,3 +32,5 @@ export default class TheMovieDBMovie extends ThirdPartyMovie<Data> {
     }
 
 }
+
+export default new TMDBMoviesParser();

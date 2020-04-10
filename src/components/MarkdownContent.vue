@@ -36,10 +36,13 @@ export default Vue.extend({
 
             switch (action) {
                 case 'show-markdown':
-                    this.$ui.openMarkdownModal(args[0]);
+                    this.$ui.openFileMarkdownModal(args[0]);
                     return;
                 case 'route':
                     this.$router.push(args[0]);
+                    return;
+                case 'custom':
+                    this.$emit('custom-trigger', args.join(':'));
                     return;
             }
         },

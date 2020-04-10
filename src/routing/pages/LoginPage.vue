@@ -9,7 +9,11 @@
                 <p class="text-sm text-gray-800 text-center leading-relaxed mb-6">
                     Keep track of the movies you want to watch and create your own collection!
                 </p>
-                <form v-if="identityProviderUrl !== null" class="self-stretch flex flex-col" @submit.prevent="submitLoginWithSolid">
+                <form
+                    v-if="identityProviderUrl !== null"
+                    class="self-stretch flex flex-col"
+                    @submit.prevent="submitLoginWithSolid"
+                >
                     <div class="flex flex-col desktop:flex-row">
                         <input
                             ref="solid-input"

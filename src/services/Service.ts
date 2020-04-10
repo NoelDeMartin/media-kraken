@@ -3,7 +3,8 @@ import Vue from 'vue';
 import { Store } from 'vuex';
 
 export type ComputedStateDefinitions<State, ComputedState> = {
-    [ComputedProperty in keyof ComputedState]: (state: State, computed: ComputedState) => ComputedState[ComputedProperty];
+    [ComputedProperty in keyof ComputedState]:
+        (state: State, computed: ComputedState) => ComputedState[ComputedProperty];
 };
 
 export default abstract class Service<State = void, ComputedState = {}> {

@@ -1,5 +1,13 @@
+import { SolidModel } from 'soukai-solid';
+
 import EventBus from '@/utils/EventBus';
 import Files from '@/utils/Files';
+import JSONMoviesParser from '@/utils/parsers/JSONMoviesParser';
+import Time from '@/utils/Time';
+import TVisoMoviesParser from '@/utils/parsers/TVisoMoviesParser';
+
+import MediaValidationError from '@/errors/MediaValidationError';
+import UnsuitableMediaError from '@/errors/IgnoreMediaError';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
 import Movie from '@/models/soukai/Movie';
@@ -7,14 +15,45 @@ import User from '@/models/users/User';
 
 import Service from '@/services/Service';
 
+import ImportProgressModal from '@/components/modals/ImportProgressModal.vue';
+import ImportResultModal from '@/components/modals/ImportResultModal.vue';
+
 interface State {
     moviesContainer: MediaContainer | null;
+    importOperation: ImportOperation | null;
 }
 
-interface ImportListener {
-    onStart?(totalRaw: number): void;
-    onProgress?(current: number, totalRaw: number, imported: boolean): void;
-    onCompleted?(totalRaw: number, totalImported: number): void;
+interface ImportOperation {
+    current: number;
+    total: number;
+    cancelled: boolean;
+}
+
+export interface ImportOperationLog {
+    added: Movie[];
+    ignored: {
+        reason: string;
+        data: any;
+    }[];
+    invalid: {
+        reasons: string[];
+        data: any;
+    }[];
+    failed: {
+        error: Error;
+        data: any;
+    }[];
+    unprocessed: any[];
+}
+
+export interface MediaParser<Data, Model extends SolidModel> {
+    validate(data: any): void;
+    parse(data: Data): Model;
+}
+
+export enum MediaSource {
+    TViso = 'tviso',
+    JSON = 'json',
 }
 
 export default class Media extends Service<State> {
@@ -36,30 +75,100 @@ export default class Media extends Service<State> {
         return this.movies.length === 0;
     }
 
-    public async importMovies(movies: Movie[], listener: ImportListener = {}): Promise<void> {
-        // TODO implement createMany in soukai
+    public get importOperation(): ImportOperation | null {
+        return this.state.importOperation;
+    }
 
-        // TODO implement cancelling the import process
-        // TODO show information on failed imports?
+    public async importMovies(data: {}[], source: any): Promise<void> {
+        if (this.state.importOperation)
+            throw new Error('Import already in progress');
 
-        listener.onStart && listener.onStart(movies.length);
+        const { id: progressModalId } = this.app.$ui.openModal(ImportProgressModal);
 
-        for (let index = 0; index < movies.length; index++) {
-            const movie = movies[index];
+        const parser = this.getMoviesParser(source);
+        const operation: ImportOperation = {
+            current: 0,
+            total: data.length,
+            cancelled: false,
+        };
+        const log: ImportOperationLog = {
+            added: [],
+            ignored: [],
+            invalid: [],
+            failed: [],
+            unprocessed: [],
+        };
 
-            if (this.movies.find(collectionMovie => collectionMovie.is(movie))) {
-                listener.onProgress && listener.onProgress(index, movies.length, false);
+        this.setState({ importOperation: operation });
 
-                continue;
+        for (const movieData of data) {
+            if (operation.cancelled) {
+                log.unprocessed = data.slice(operation.current);
+                break;
             }
 
-            await movie.completeAttributes();
-            await this.moviesContainer!.saveMovie(movie);
+            operation.current++;
 
-            listener.onProgress && listener.onProgress(index, movies.length, true);
+            try {
+                try {
+                    parser.validate(movieData);
+                } catch (error) {
+                    if (!(error instanceof MediaValidationError))
+                        throw error;
+
+                    if (error instanceof UnsuitableMediaError) {
+                        log.ignored.push({
+                            reason: error.reason,
+                            data: movieData,
+                        });
+                        continue;
+                    }
+
+                    log.invalid.push({
+                        reasons: error.reasons,
+                        data: movieData,
+                    });
+                    continue;
+                }
+
+                const movie = parser.parse(movieData);
+
+                const collectionMovie = this.movies.find(collectionMovie => collectionMovie.is(movie));
+                if (collectionMovie) {
+                    log.ignored.push({
+                        reason: 'You already have this in your collection',
+                        data: movieData,
+                    });
+                    continue;
+                }
+
+                await movie.completeAttributes();
+                await this.moviesContainer!.saveMovie(movie);
+
+                log.added.push(movie);
+            } catch (error) {
+                log.failed.push({
+                    error,
+                    data: movieData,
+                });
+            }
         }
 
-        listener.onCompleted && listener.onCompleted(movies.length, movies.length);
+        this.setState({ importOperation: null });
+
+        // If this isn't done, showing the result modal causes a weird UI interaction
+        // TODO this shouldn't be necessary, debug further.
+        Time.wait(0).then(() => {
+            this.app.$ui.closeModal(progressModalId);
+            this.app.$ui.openModal(ImportResultModal, { log }, { cancellable: false });
+        });
+    }
+
+    public cancelImport(): void {
+        if (!this.importOperation)
+            return;
+
+        this.importOperation.cancelled = true;
     }
 
     public exportCollection(): void {
@@ -82,7 +191,10 @@ export default class Media extends Service<State> {
     }
 
     protected getInitialState(): State {
-        return { moviesContainer: null };
+        return {
+            moviesContainer: null,
+            importOperation: null,
+        };
     }
 
     private async load(user: User): Promise<void> {
@@ -105,6 +217,15 @@ export default class Media extends Service<State> {
 
     private async unload(): Promise<void> {
         this.setState({ moviesContainer: null });
+    }
+
+    private getMoviesParser(source: MediaSource): MediaParser<any, Movie> {
+        switch (source) {
+            case MediaSource.TViso:
+                return TVisoMoviesParser;
+            case MediaSource.JSON:
+                return JSONMoviesParser;
+        }
     }
 
 }

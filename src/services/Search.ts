@@ -4,6 +4,7 @@ import TheMovieDBApi from '@/api/TheMovieDBApi';
 
 import Arr from '@/utils/Arr';
 import Time, { DebouncedFunction } from '@/utils/Time';
+import TMDBMoviesParser from '@/utils/parsers/TMDBMoviesParser';
 
 import MovieModal from '@/components/modals/MovieModal.vue';
 import Movie from '@/models/soukai/Movie';
@@ -186,8 +187,8 @@ export default class Search extends Service<State> {
     private async updateSearchResults() {
         const response = await TheMovieDBApi.searchMovies(this.query.trim());
 
-        const results = response.map(thirdPartyMovie => {
-            const movie = thirdPartyMovie.toModel();
+        const results = response.results.map(data => {
+            const movie = TMDBMoviesParser.parse(data);
 
             return this.app.$media.movies.find(collectionMovie => collectionMovie.is(movie))
                 || movie;
@@ -196,7 +197,7 @@ export default class Search extends Service<State> {
         this.searching = false;
         this.setState({
             results,
-            highlightedResultIndex: response.length > 0 ? 0 : null,
+            highlightedResultIndex: results.length > 0 ? 0 : null,
         });
     }
 

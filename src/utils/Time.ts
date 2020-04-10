@@ -31,6 +31,9 @@ class Time {
     }
 
     public isValidDateString(value: string): boolean {
+        if (typeof value !== 'string')
+            return false;
+
         const date = new Date(value);
 
         return !isNaN(date.getTime());

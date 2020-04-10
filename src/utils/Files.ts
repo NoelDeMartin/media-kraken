@@ -1,3 +1,5 @@
+import Time from '@/utils/Time';
+
 export const enum Format {
     Raw = 'raw',
 }
@@ -79,14 +81,18 @@ class Files {
     private initializeActiveUpload(output: Format = Format.Raw): Promise<UploadResult> {
         this.activeUpload = { output };
 
-        BODY_CANCEL_EVENTS.map(
-            event => document.body.addEventListener(event, this.cancelActiveUpload),
-        );
+        // Make sure this doesn't start listening before the file picker modal opens
+        Time.wait(200)
+            .then(() => BODY_CANCEL_EVENTS.map(event => this.registerCancelUploadListener(event)));
 
         return new Promise<UploadResult>((resolve, reject) => {
             this.activeUpload!.resolve = resolve;
             this.activeUpload!.reject = reject;
         });
+    }
+
+    private registerCancelUploadListener(event: string): void {
+        document.body.addEventListener(event, this.cancelActiveUpload);
     }
 
     private onInputChanged(): void {

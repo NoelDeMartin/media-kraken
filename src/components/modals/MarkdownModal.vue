@@ -1,6 +1,11 @@
 <template>
     <AppModal :id="id" :options="options" :title="title">
-        <MarkdownContent v-if="body" :content="body" class="markdown-modal-content" />
+        <MarkdownContent
+            v-if="body"
+            :content="body"
+            class="markdown-modal-content"
+            @custom-trigger="handleCustomTrigger($event)"
+        />
         <LoadingCircle v-else class="w-8 h-8 text-primary-700" />
     </AppModal>
 </template>
@@ -22,13 +27,22 @@ export default Modal.extend({
         MarkdownContent,
     },
     props: {
+        file: {
+            type: String,
+            default: null,
+        },
         content: {
             type: String,
-            required: true,
+            default: null,
         },
         replacements: {
             type: Object,
             default: () => ({}),
+        },
+        handleCustomTrigger: {
+            type: Function as unknown as () => (trigger: string) => void,
+            // eslint-disable-next-line @typescript-eslint/no-empty-function
+            default: () => () => {},
         },
     },
     data: (): Data => ({
@@ -36,9 +50,11 @@ export default Modal.extend({
         body: null,
     }),
     async created() {
-        const { default: markdown } = await import(`@/assets/markdown/${this.content}.md`);
+        const markdown = this.file
+            ? (await import(`@/assets/markdown/${this.file}.md`)).default
+            : (this.content || '');
 
-        this.loadMarkdown(markdown.trim());
+        this.loadMarkdown(markdown);
     },
     methods: {
         loadMarkdown(markdown: string) {
@@ -75,8 +91,20 @@ export default Modal.extend({
             @apply font-semibold text-primary-900;
         }
 
-        p {
+        li, p {
             @apply text-sm text-gray-700 leading-relaxed;
+        }
+
+        ul, ol {
+            @apply list-inside;
+        }
+
+        ul {
+            @apply list-disc;
+        }
+
+        ol {
+            @apply list-decimal;
         }
 
         a, button.link {
@@ -86,6 +114,11 @@ export default Modal.extend({
                 @apply text-primary-900 underline;
             }
 
+        }
+
+        code {
+            @apply block bg-gray-200 p-2 text-xs rounded mt-1 mb-4;
+            word-break: break-all;
         }
 
     }
