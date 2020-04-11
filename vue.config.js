@@ -1,7 +1,9 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 const version = require('./package.json').version;
-const publicPath = process.env.NODE_ENV === 'production' ? '/media-kraken/' : '/';
+const isProduction = process.env.NODE_ENV === 'production';
+const isTesting = process.env.NODE_ENV === 'testing';
+const publicPath = isProduction ? '/media-kraken/' : '/';
 const title = 'Media Kraken';
 const description = 'Track your movies with Media Kraken and never miss a beat!';
 
@@ -14,7 +16,7 @@ module.exports = {
         'index': {
             title,
             description,
-            entry: 'src/main.ts',
+            entry: isTesting ? 'src/main.testing.ts' : 'src/main.ts',
         },
         '404': {
             title,

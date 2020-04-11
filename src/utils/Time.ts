@@ -7,7 +7,7 @@ export interface DebouncedFunction {
 class Time {
 
     public debounce(callback: Function, delay: number): DebouncedFunction {
-        let timeout: NodeJS.Timeout | null = null;
+        let timeout: any | null = null;
 
         return {
             call(...args: any[]) {

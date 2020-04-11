@@ -1,0 +1,39 @@
+{
+    "extends": "../tsconfig.json",
+    "compilerOptions": {
+        "target": "es2019",
+        "esModuleInterop": false,
+        "types": [
+            "cypress",
+            "faker",
+            "jest",
+            "node",
+            "rdflib",
+            "webpack-env"
+        ],
+        "baseUrl": ".",
+        "paths": {
+            "@/*": [
+                "../src/*"
+            ],
+            "@tests/*": [
+                "../tests/*"
+            ],
+            "@cy/*": [
+                "./*"
+            ]
+        },
+    },
+    "include": [
+        "./**/*.ts",
+        "../src/**/*.ts",
+        "../src/**/*.tsx",
+        "../src/**/*.vue",
+        "../tests/**/*.ts",
+        "../tests/**/*.tsx"
+    ],
+    "exclude": [
+        "node_modules",
+        "../**/*.test.ts"
+    ]
+}

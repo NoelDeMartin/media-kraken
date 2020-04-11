@@ -1,4 +1,4 @@
-# Media Kraken
+# Media Kraken [![Github Actions Status](https://github.com/noeldemartin/media-kraken/workflows/Testing/badge.svg)](https://github.com/noeldemartin/media-kraken/actions)
 
 Movies media tracker application.
 

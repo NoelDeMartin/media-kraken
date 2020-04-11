@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-class EventBus {
+export class EventBus {
 
     private bus = new Vue();
 

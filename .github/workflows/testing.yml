@@ -1,0 +1,18 @@
+name: Testing
+
+on: [push]
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - uses: actions/setup-node@v1
+    - name: Install Dependencies
+      run: npm ci
+    - name: Run Linting
+      run: npm run lint
+    - name: Run Unit Tests
+      run: npm test
+    - name: Run Integration Tests
+      run: npm run cy:test
