@@ -1,21 +1,44 @@
+import SolidAuthClient from 'solid-auth-client';
+import Soukai from 'soukai';
 import Vue from 'vue';
+
+import { AppLibraries } from '@/types/global';
+
+import OfflineUser from '@/models/users/OfflineUser';
+import User from '@/models/users/User';
 
 import { start } from './bootstrap';
 
 window.Runtime = {
-    start,
 
-    require<Module=any>(name: string): Module {
-        const libs: any = {
-            'solid-auth-client': require('solid-auth-client'),
-            'soukai': require('soukai'),
-        };
-
-        return libs[name];
+    lib<K extends keyof AppLibraries>(name: K): AppLibraries[K] {
+        switch (name) {
+            case 'soukai':
+                return Soukai;
+            case 'solid-auth-client':
+                return SolidAuthClient;
+        }
     },
 
-    service<Service=any>(_: keyof Vue): Service {
+    service<K extends keyof Vue>(name: K): Vue[K] {
         return Vue.instance[name];
+    },
+
+    start,
+
+    login(name: string, persist: boolean = false): User {
+        const user = new OfflineUser(name);
+
+        Vue.instance.$store.commit('auth.setState', { user });
+        Vue.instance.$events.emit('login', user);
+
+        if (Vue.instance.$router.currentRoute.name === 'login')
+            Vue.instance.$router.replace({ name: 'home' });
+
+        if (persist)
+            localStorage.setItem('user', JSON.stringify(user.toJSON()));
+
+        return user;
     },
 
 };

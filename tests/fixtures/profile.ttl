@@ -1,0 +1,8 @@
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix pim: <http://www.w3.org/ns/pim/space#> .
+@prefix solid: <http://www.w3.org/ns/solid/terms#> .
+
+<>
+    foaf:name "John Doe" ;
+    pim:storage </> ;
+    solid:publicTypeIndex </settings/publicTypeIndex.ttl> .

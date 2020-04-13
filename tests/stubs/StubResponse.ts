@@ -1,5 +1,10 @@
 export default class StubResponse implements Response {
 
+    public static isResponse(obj: any): obj is Response {
+        return obj instanceof StubResponse
+            || ('body' in obj && 'status' in obj && 'headers' in obj);
+    }
+
     public static success(content: string = ''): StubResponse {
         return new StubResponse(200, content);
     }

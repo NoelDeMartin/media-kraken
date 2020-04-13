@@ -43,7 +43,7 @@ export default abstract class Service<State = void, ComputedState = {}> {
         store.registerModule(this.storeName, {
             state: initialState,
             mutations: {
-                setState(state: State, newState: Partial<State>) {
+                [`${this.storeName}.setState`]: (state: State, newState: Partial<State>) => {
                     Object.assign(state, newState);
                 },
             },
@@ -70,7 +70,7 @@ export default abstract class Service<State = void, ComputedState = {}> {
     }
 
     protected setState(newState: Partial<State>): void {
-        this.app.$store.commit('setState', newState);
+        this.app.$store.commit(`${this.storeName}.setState`, newState);
     }
 
 }

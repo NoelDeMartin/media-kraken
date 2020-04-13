@@ -1,5 +1,10 @@
 <template>
-    <div class="absolute top-full inset-x-0 -mt-2 bg-white border shadow rounded-lg overflow-hidden z-20">
+    <div
+        role="region"
+        aria-label="Search results"
+        aria-live="polite"
+        class="absolute top-full inset-x-0 -mt-2 bg-white border shadow rounded-lg overflow-hidden z-20"
+    >
         <ul>
             <li v-for="result of $search.results" :key="result.id">
                 <button
@@ -93,7 +98,7 @@ export default Vue.extend({
             if (!result.exists())
                 return title;
 
-            const status = result.watched ? 'Watched' : 'Not Watched';
+            const status = result.watched ? 'Watched' : 'Watch later';
 
             return `${title} (${status})`;
         },

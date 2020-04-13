@@ -60,7 +60,7 @@
                             icon-class="w-4 h-4 mr-2"
                             @click="addToCollection(false) && close()"
                         >
-                            not watched
+                            watch later
                         </BaseButton>
                         <BaseButton
                             icon="checkmark"

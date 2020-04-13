@@ -53,7 +53,7 @@
                                     name="time"
                                     class="w-3 h-3 mr-1 group-hover:hidden"
                                 />
-                                <span class="group-hover:hidden">not watched</span>
+                                <span class="group-hover:hidden">watch later</span>
                             </template>
 
                             <BaseIcon

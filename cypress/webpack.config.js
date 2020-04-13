@@ -19,6 +19,14 @@ module.exports = {
                     loader: 'ts-loader',
                 }],
             },
+            {
+                test: /\.ttl$/,
+                use: [
+                    {
+                        loader: 'raw-loader',
+                    },
+                ],
+            },
         ],
     },
 };

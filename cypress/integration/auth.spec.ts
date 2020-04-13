@@ -1,95 +1,54 @@
 import Faker from 'faker';
 
-import { SolidAuthClient } from 'solid-auth-client';
-
-import StubResponse from '@tests/stubs/StubResponse';
+import movies from '@tests/fixtures/movies.ttl';
+import profile from '@tests/fixtures/profile.ttl';
+import typeIndex from '@tests/fixtures/typeIndex.ttl';
 
 describe('Authentication', () => {
 
-    beforeEach(() => {
-        cy.visit('/');
-    });
+    beforeEach(() => cy.visit('/'));
 
     it ('Logs in using browser storage', () => {
+        // Arrange
         cy.start({ useRealEngines: true });
 
+        // Act
         cy.contains('Use browser storage').click();
 
-        cy.contains('Welcome!').should('be.visible');
+        // Assert
+        cy.see('Welcome!');
     });
 
     it('Logs in using Solid POD', () => {
+        // Arrange
+        let sessionListener: Function;
         const domain = Faker.internet.domainName();
-        const name = Faker.name.firstName() + ' ' + Faker.name.lastName();
-        const session = {
-            idp: `https://${domain}`,
-            webId: `https://${domain}/me`,
-            accessToken: 'accessToken',
-            idToken: 'idToken',
-            clientId: 'clientId',
-            sessionKey: 'sessionKey',
-        };
 
-        cy.require<SolidAuthClient>('solid-auth-client')
-            .then(SolidAuthClient => {
-                let sessionListener: Function;
+        cy.lib('solid-auth-client').then(SolidAuthClient => {
+            cy.stub(SolidAuthClient, 'trackSession', l => sessionListener = l);
+            cy.stub(SolidAuthClient, 'login', () => sessionListener({
+                idp: `https://${domain}`,
+                webId: `https://${domain}/me`,
+                accessToken: 'accessToken',
+                idToken: 'idToken',
+                clientId: 'clientId',
+                sessionKey: 'sessionKey',
+            }));
+        });
 
-                cy.stub(SolidAuthClient, 'trackSession', listener => sessionListener = listener);
-                cy.stub(SolidAuthClient, 'login', url => {
-                    if (url !== `https://${domain}`)
-                        return;
-
-                    sessionListener(session);
-                });
-                cy.stub(SolidAuthClient, 'fetch', url => {
-                    switch (url) {
-                        case `https://${domain}/me`:
-                            return Promise.resolve(StubResponse.success(`
-                                @prefix foaf: <http://xmlns.com/foaf/0.1/> .
-                                @prefix pim: <http://www.w3.org/ns/pim/space#> .
-                                @prefix solid: <http://www.w3.org/ns/solid/terms#> .
-
-                                <${session.webId}>
-                                    foaf:name "${name}" ;
-                                    pim:storage </> ;
-                                    solid:publicTypeIndex </settings/publicTypeIndex.ttl> .
-                            `));
-                        case `https://${domain}/settings/publicTypeIndex.ttl`:
-                            return Promise.resolve(StubResponse.success(`
-                                @prefix : <#> .
-                                @prefix solid: <http://www.w3.org/ns/solid/terms#> .
-                                @prefix schema: <https://schema.org/> .
-
-                                <> a solid:TypeIndex .
-
-                                :movies
-                                    a solid:TypeRegistration ;
-                                    solid:forClass schema:Movie ;
-                                    solid:instanceContainer </movies/> .
-                            `));
-                        case `https://${domain}/movies/`:
-                            return Promise.resolve(StubResponse.success(`
-                                @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-                                @prefix ldp: <http://www.w3.org/ns/ldp#> .
-
-                                <>
-                                    rdfs:label "Movies" ;
-                                    a ldp:Resource ;
-                                    a ldp:Container .
-                            `));
-                        default:
-                            return Promise.resolve(StubResponse.notFound());
-                    }
-                });
-            });
+        cy.fetchRoute('/me', profile);
+        cy.fetchRoute('/settings/publicTypeIndex.ttl', typeIndex);
+        cy.fetchRoute('/movies/', movies);
 
         cy.start({ useRealEngines: true });
 
+        // Act
         cy.contains('Use Solid POD').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
         cy.contains('Login').click();
 
-        cy.contains('Welcome!').should('be.visible');
+        // Assert
+        cy.see('Welcome!');
     });
 
 });
