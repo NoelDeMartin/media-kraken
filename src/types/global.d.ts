@@ -19,6 +19,7 @@ declare global {
 
     interface Window {
         Runtime?: TestingRuntime;
+        impatientKrakenTimeout?: number;
     }
 
 }
