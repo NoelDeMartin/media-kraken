@@ -22,7 +22,7 @@
                             @click="toggleActionsMenu"
                         />
                     </BaseMenu>
-                    <BasePageHeader>Collection ({{ $media.movies.length }})</BasePageHeader>
+                    <BasePageHeader>Collection ({{ filteredMovies.length }})</BasePageHeader>
                 </div>
             </BaseTransition>
             <div class="absolute text-right right-0 top-1/2 transform -translate-y-1/2 px-2 w-full desktop:w-64">
@@ -96,22 +96,23 @@ export default Vue.extend({
         filtering(): boolean {
             return this.removeClickAwayListener !== null;
         },
-        movies(): Movie[] {
+        allMovies(): Movie[] {
             return this.$media.movies.slice(0).reverse();
         },
         filteredMovies(): Movie[] {
             if (!this.filtering)
-                return this.movies;
+                return this.allMovies;
 
-            const filterText = this.filter!.toLowerCase();
+            const filterText = Str.slug(this.filter!, '');
 
-            return this.movies.filter(movie => Str.contains(movie.title.toLowerCase(), filterText));
+            return this.allMovies.filter(movie => Str.contains(Str.slug(movie.title, ''), filterText));
         },
     },
     created() {
-        if (this.$media.empty) {
-            this.$router.replace({ name: 'home' });
-        }
+        if (!this.$media.empty)
+            return;
+
+        this.$router.replace({ name: 'home' });
     },
     methods: {
         showFilters() {

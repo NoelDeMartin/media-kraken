@@ -79,6 +79,15 @@ export default class Movie extends SolidModel {
             : null;
     }
 
+    public get slug(): string {
+        let slug = Str.slug(this.title);
+
+        if (this.releaseDate?.getFullYear())
+            slug += '-' + this.releaseDate.getFullYear();
+
+        return slug;
+    }
+
     public get imdbUrl(): string | null {
         return this.externalUrls.find(url => Str.contains(url, 'imdb.com')) || null;
     }
@@ -106,7 +115,8 @@ export default class Movie extends SolidModel {
     }
 
     public is(movie: Movie): boolean {
-        return !!this.externalUrls.find(url => Arr.contains(movie.externalUrls, url));
+        return this.slug === movie.slug
+            || !!this.externalUrls.find(url => Arr.contains(movie.externalUrls, url));
     }
 
     public actionsRelationship(): SolidEmbedsRelation<Movie, WatchAction, typeof WatchAction> {
@@ -180,12 +190,7 @@ export default class Movie extends SolidModel {
     }
 
     protected newUrl(): string {
-        let slug = Str.slug(this.title);
-
-        if (this.releaseDate?.getFullYear())
-            slug += '-' + this.releaseDate.getFullYear();
-
-        return Url.resolve(this.classDef.collection, slug);
+        return Url.resolve(this.classDef.collection, this.slug);
     }
 
     private async resolveTMDBMovie(): Promise<TMDBMovie | null> {

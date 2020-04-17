@@ -20,7 +20,7 @@ export default Transition.extend({
     },
     render(h: CreateElement): VNode {
         if (!this.enabled)
-            return this.$slots.default as any as VNode;
+            return h(this.tag, this.$slots.default);
 
         return h(
             'transition-group',

@@ -102,6 +102,8 @@ export default class Media extends Service<State> {
         this.setState({ importOperation: operation });
 
         for (const movieData of data) {
+            await Time.waitAnimationFrame();
+
             if (operation.cancelled) {
                 log.unprocessed = data.slice(operation.current);
                 break;
@@ -182,9 +184,8 @@ export default class Media extends Service<State> {
         await super.init();
         await this.app.$auth.ready;
 
-        if (this.app.$auth.isLoggedIn()) {
+        if (this.app.$auth.isLoggedIn())
             await this.load(this.app.$auth.user);
-        }
 
         EventBus.on('login', this.load.bind(this));
         EventBus.on('logout', this.unload.bind(this));

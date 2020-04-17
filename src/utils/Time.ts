@@ -43,6 +43,10 @@ class Time {
         return new Promise(resolve => setTimeout(resolve, milliseconds));
     }
 
+    public waitAnimationFrame(): Promise<void> {
+        return new Promise(resolve => requestAnimationFrame(() => resolve()));
+    }
+
 }
 
 export default new Time();

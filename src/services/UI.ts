@@ -37,7 +37,7 @@ interface ClickAwayListener {
     callback(): void | boolean;
 }
 
-const screenBreakpoints: { [layout in Layout]?: number } = {
+export const screenBreakpoints: { [layout in Layout]?: number } = {
     [Layout.Desktop]: 640,
 };
 
