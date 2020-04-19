@@ -44,6 +44,7 @@ class TVisoMoviesParser implements MediaParser<Data, Movie> {
     }
 
     public parse(data: Data): Movie {
+        const checkedAt = new Date(data.checkedDate);
         const movie = new Movie({
             title: data.title,
             externalUrls: data.imdb !== null
@@ -52,15 +53,11 @@ class TVisoMoviesParser implements MediaParser<Data, Movie> {
         });
 
         movie.setRelationModels('actions', []);
+        movie.createdAt = checkedAt;
+        movie.updatedAt = checkedAt;
 
-        switch (data.status) {
-            case Status.Pending:
-                movie.createdAt = data.checkedDate;
-                break;
-            case Status.Watched:
-                movie.watch(data.checkedDate);
-                break;
-        }
+        if (data.status === Status.Watched)
+            movie.watch(checkedAt);
 
         return movie;
     }

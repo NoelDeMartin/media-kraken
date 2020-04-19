@@ -97,7 +97,9 @@ export default Vue.extend({
             return this.removeClickAwayListener !== null;
         },
         allMovies(): Movie[] {
-            return this.$media.movies.slice(0).reverse();
+            return this.$media.movies
+                .slice(0)
+                .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
         },
         filteredMovies(): Movie[] {
             if (!this.filtering)

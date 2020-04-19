@@ -37,7 +37,7 @@ async function removeLoading() {
     document.body.classList.remove('loading');
 
     if (!window.impatientKrakenTimeout)
-        await Time.wait(300);
+        await Time.wait(1000);
 
     else {
         clearTimeout(window.impatientKrakenTimeout);

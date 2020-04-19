@@ -58,6 +58,8 @@ export default class Movie extends SolidModel {
     public releaseDate?: Date;
     public posterUrl?: string;
     public externalUrls!: string[];
+    public createdAt!: Date;
+    public updatedAt!: Date;
 
     public actions?: WatchAction[];
 
@@ -149,7 +151,7 @@ export default class Movie extends SolidModel {
         }
     }
 
-    public async watch(date?: Date | string): Promise<WatchAction> {
+    public async watch(date?: Date): Promise<WatchAction> {
         // TODO implement model.mintUrl() in soukai-solid (or do it in constructor)
         if (!this.hasAttribute(Movie.primaryKey))
             this.setAttribute(Movie.primaryKey, this.newUrl());

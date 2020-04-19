@@ -107,7 +107,7 @@
                             }"
                             @click="logout"
                         >
-                            <BaseIcon name="logout" class="w-4 h-4 mr-2" /> <span>Log out</span>
+                            <BaseIcon name="logout" class="w-4 h-4 mr-2" /> <span class="truncate">Log out</span>
                         </button>
                     </div>
                 </BaseTransition>

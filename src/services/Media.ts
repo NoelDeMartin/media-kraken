@@ -83,7 +83,9 @@ export default class Media extends Service<State> {
         if (this.state.importOperation)
             throw new Error('Import already in progress');
 
-        const { id: progressModalId } = this.app.$ui.openModal(ImportProgressModal);
+        const { id: progressModalId } = this.app.$ui.openModal(ImportProgressModal, {}, {
+            cancellable: false,
+        });
 
         const parser = this.getMoviesParser(source);
         const operation: ImportOperation = {
@@ -161,7 +163,7 @@ export default class Media extends Service<State> {
         // If this isn't done, showing the result modal causes a weird UI interaction
         // TODO this shouldn't be necessary, debug further.
         Time.wait(0).then(() => {
-            this.app.$ui.closeModal(progressModalId);
+            this.app.$ui.closeModal(progressModalId, true);
             this.app.$ui.openModal(ImportResultModal, { log }, { cancellable: false });
         });
     }

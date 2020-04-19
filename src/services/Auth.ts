@@ -118,7 +118,9 @@ export default class Auth extends Service<State> {
         if (user instanceof OfflineUser) {
             Soukai.useEngine(new LocalStorageEngine('media-kraken'));
         } else if (user instanceof SolidUser) {
-            Soukai.useEngine(new SolidEngine(SolidAuthClient.fetch.bind(SolidAuthClient)));
+            Soukai.useEngine(new SolidEngine(SolidAuthClient.fetch.bind(SolidAuthClient), {
+                useCache: true,
+            }));
         }
 
         EventBus.emit('login', user);
@@ -131,6 +133,8 @@ export default class Auth extends Service<State> {
         if (this.loggedIn) {
             if (this.user instanceof OfflineUser) {
                 (Soukai.engine as LocalStorageEngine).clear();
+            } else if (this.user instanceof SolidUser) {
+                (Soukai.engine as SolidEngine).cache.clear();
             }
 
             this.setState({ user: null });

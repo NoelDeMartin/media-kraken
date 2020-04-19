@@ -8,7 +8,7 @@
                 @inspect="inspectWatched"
             >
                 <strong class="font-semibold">{{ watchedMovies.length }}</strong>
-                movies that you've watched have been added to your collection.
+                watched movies have been added to your collection.
             </ImportResultModalItem>
             <ImportResultModalItem
                 v-if="pendingMovies.length > 0"
@@ -17,7 +17,7 @@
                 @inspect="inspectPending"
             >
                 <strong class="font-semibold">{{ pendingMovies.length }}</strong>
-                movies that you haven't watched yet have been added to your collection.
+                movies to watch later have been added to your collection.
             </ImportResultModalItem>
             <ImportResultModalItem
                 v-if="log.ignored.length > 0"

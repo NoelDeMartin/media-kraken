@@ -35,7 +35,7 @@ class JSONMoviesParser implements MediaParser<Data, Movie> {
         movie.setRelationModels('actions', []);
 
         if (data.watchedAt)
-            movie.watch(data.watchedAt);
+            movie.watch(new Date(data.watchedAt));
 
         return movie;
     }
