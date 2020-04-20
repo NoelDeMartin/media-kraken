@@ -32,7 +32,10 @@ export default class Search extends Service<State> {
     private keyboardListener: EventListener | null = null;
     private removeClickAwayListener: Function | null = null;
 
-    private debouncedSearch: DebouncedFunction = Time.debounce(() => this.updateSearchResults(), 400);
+    private search: DebouncedFunction<[]> = Time.debounce(
+        () => this.updateSearchResults(),
+        400,
+    );
 
     public get query(): string {
         return this.state.query;
@@ -88,7 +91,7 @@ export default class Search extends Service<State> {
             highlightedResultIndex: null,
         });
 
-        this.debouncedSearch.cancel();
+        this.search.cancel();
 
         if (!this.removeClickAwayListener)
             return;
@@ -106,9 +109,13 @@ export default class Search extends Service<State> {
 
         this.searching = query.trim().length > 0;
 
-        this.searching
-            ? this.debouncedSearch.call()
-            : this.debouncedSearch.cancel();
+        if (!this.searching) {
+            this.search.cancel();
+
+            return;
+        }
+
+        this.search();
     }
 
     public highlightResult(result: SearchResult): void {

@@ -1,33 +1,21 @@
-export interface DebouncedFunction {
-    call(...args: any[]): void;
-    resolve(...args: any[]): void;
+export interface DebouncedFunction<Args extends any[]> {
+    (...args: Args): void;
     cancel(): void;
 }
 
 class Time {
 
-    public debounce(callback: Function, delay: number): DebouncedFunction {
-        let timeout: any | null = null;
+    public debounce<Args extends any[]>(callback: (...args: Args) => any, delay: number): DebouncedFunction<Args> {
+        let timeout: any;
 
-        return {
-            call(...args: any[]) {
-                this.cancel();
-
-                timeout = setTimeout(() => this.resolve(...args), delay);
-            },
-            resolve(...args: any[]) {
-                timeout = null;
-
-                callback(...args);
-            },
-            cancel() {
-                if (timeout === null)
-                    return;
-
-                clearTimeout(timeout);
-                timeout = null;
-            },
+        const debouncedCallback: DebouncedFunction<Args> = (...args: Args) => {
+            debouncedCallback.cancel();
+            timeout = setTimeout(() => callback(...args), delay);
         };
+
+        debouncedCallback.cancel = () => clearTimeout(timeout);
+
+        return debouncedCallback;
     }
 
     public isValidDateString(value: string): boolean {
