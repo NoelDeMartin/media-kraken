@@ -1,13 +1,21 @@
-import User from '@/models/users/User';
-import MediaContainer from '@/models/soukai/MediaContainer';
+import Soukai, { IndexedDBEngine } from 'soukai';
 
-interface OfflineUserJSON {
+import MediaContainer from '@/models/soukai/MediaContainer';
+import User from '@/models/users/User';
+
+export interface OfflineUserJSON {
     name: string;
     avatar_url: string | null;
     storages: string[];
 }
 
-export default class OfflineUser extends User {
+export default class OfflineUser extends User<OfflineUserJSON> {
+
+    public static isOfflineUserJSON(json: object): json is OfflineUserJSON {
+        return 'name' in json
+            && 'avatar_url' in json
+            && 'storages' in json;
+    }
 
     public static fromJSON(json: OfflineUserJSON): OfflineUser {
         return new OfflineUser(json.name, json.avatar_url, json.storages);
@@ -19,6 +27,14 @@ export default class OfflineUser extends User {
         storages: string[] = ['local/'],
     ) {
         super(name, avatarUrl, storages);
+    }
+
+    public initSoukaiEngine(): void {
+        Soukai.useEngine(new IndexedDBEngine('media-kraken'));
+    }
+
+    public clearClientData(): void {
+        (Soukai.engine as IndexedDBEngine).purgeDatabase();
     }
 
     public toJSON(): OfflineUserJSON {

@@ -26,7 +26,7 @@ window.Runtime = {
 
     start,
 
-    login(name: string, persist: boolean = false): User {
+    login(name: string): User {
         const user = new OfflineUser(name);
 
         Vue.instance.$store.commit('auth.setState', { user });
@@ -35,8 +35,7 @@ window.Runtime = {
         if (Vue.instance.$router.currentRoute.name === 'login')
             Vue.instance.$router.replace({ name: 'home' });
 
-        if (persist)
-            localStorage.setItem('user', JSON.stringify(user.toJSON()));
+        localStorage.setItem('user', JSON.stringify(user.toJSON()));
 
         return user;
     },

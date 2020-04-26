@@ -1,16 +1,14 @@
 import MediaContainer from '@/models/soukai/MediaContainer';
 
-export interface MediaContainers {
-    movies: MediaContainer;
-}
+import { MediaContainers } from '@/services/Media';
 
-export default abstract class User {
+export default abstract class User<JSON extends object=object> {
 
     public name: string;
     public avatarUrl: string | null;
     public storages: string[];
 
-    constructor(name: string, avatarUrl: string | null, storages: string[]) {
+    protected constructor(name: string, avatarUrl: string | null, storages: string[]) {
         this.name = name;
         this.avatarUrl = avatarUrl;
         this.storages = storages;
@@ -22,6 +20,12 @@ export default abstract class User {
 
         return { movies };
     }
+
+    public abstract toJSON(): JSON;
+
+    public abstract initSoukaiEngine(): void;
+
+    public abstract clearClientData(): void;
 
     protected async getPreferredStorage(): Promise<string> {
         // TODO ask for preferred storage

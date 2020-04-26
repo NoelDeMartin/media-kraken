@@ -5,7 +5,7 @@ import MediaValidationError from '@/errors/MediaValidationError';
 import Obj from '@/utils/Obj';
 import Time from '@/utils/Time';
 
-import { MediaParser } from '@/services/Media';
+import { MediaParser } from '@/utils/parsers';
 
 type Data = MovieJSON;
 

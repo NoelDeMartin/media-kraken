@@ -6,7 +6,7 @@ import Time from '@/utils/Time';
 
 import Movie from '@/models/soukai/Movie';
 
-import { MediaParser } from '@/services/Media';
+import { MediaParser } from '@/utils/parsers';
 
 const enum DataMediaType {
     Series = 1,

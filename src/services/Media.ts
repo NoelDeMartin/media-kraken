@@ -1,5 +1,6 @@
-import { SolidModel } from 'soukai-solid';
+import Soukai, { IndexedDBEngine } from 'soukai';
 
+import { MediaParser } from '@/utils/parsers';
 import EventBus from '@/utils/EventBus';
 import Files from '@/utils/Files';
 import JSONMoviesParser from '@/utils/parsers/JSONMoviesParser';
@@ -13,6 +14,7 @@ import MediaContainer from '@/models/soukai/MediaContainer';
 import Movie from '@/models/soukai/Movie';
 import User from '@/models/users/User';
 
+import { loadMedia } from '@/workers';
 import Service from '@/services/Service';
 
 import ImportProgressModal from '@/components/modals/ImportProgressModal.vue';
@@ -46,9 +48,8 @@ export interface ImportOperationLog {
     unprocessed: any[];
 }
 
-export interface MediaParser<Data, Model extends SolidModel> {
-    validate(data: any): void;
-    parse(data: Data): Model;
+export interface MediaContainers {
+    movies: MediaContainer;
 }
 
 export enum MediaSource {
@@ -201,19 +202,10 @@ export default class Media extends Service<State> {
     }
 
     private async load(user: User): Promise<void> {
-        const { movies: moviesContainer } = await user.initContainers();
+        if (Soukai.engine instanceof IndexedDBEngine)
+            Soukai.engine.closeConnections();
 
-        if (!moviesContainer.isRelationLoaded('movies'))
-            await moviesContainer.loadRelation('movies');
-
-        const actionPromises = moviesContainer.movies!.map(async movie => {
-            if (movie.isRelationLoaded('actions'))
-                return;
-
-            await movie.loadRelation('actions');
-        });
-
-        await Promise.all(actionPromises);
+        const { movies: moviesContainer } = await loadMedia(user.toJSON());
 
         this.setState({ moviesContainer });
     }

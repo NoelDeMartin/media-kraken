@@ -19,7 +19,7 @@
                 class="border border-primary-500 mt-4 text-sm text-primary-700 justify-center hover:bg-black-overlay"
                 @click="$media.cancelImport()"
             >
-                Cancel
+                Stop
             </BaseButton>
         </div>
     </AppModal>

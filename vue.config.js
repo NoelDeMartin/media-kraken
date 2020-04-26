@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
+const WorkerPlugin = require('worker-plugin');
+
 const path = require('path');
 const version = require('./package.json').version;
 const isProduction = process.env.NODE_ENV === 'production';
@@ -16,7 +18,7 @@ module.exports = {
         'index': {
             title,
             description,
-            entry: isTesting ? 'src/main.testing.ts' : 'src/main.ts',
+            entry: isTesting ? 'src/index.testing.ts' : 'src/index.ts',
         },
         '404': {
             title,
@@ -41,6 +43,9 @@ module.exports = {
                 }
                 : {},
         },
+        plugins: [
+            new WorkerPlugin(),
+        ],
     },
     chainWebpack: (config) => {
         // This is necessary to use npm link for development:

@@ -2,7 +2,7 @@ import { TMDBMovie } from '@/api/TheMovieDBApi';
 
 import Movie from '@/models/soukai/Movie';
 
-import { MediaParser } from '@/services/Media';
+import { MediaParser } from '@/utils/parsers';
 
 type Data = TMDBMovie;
 

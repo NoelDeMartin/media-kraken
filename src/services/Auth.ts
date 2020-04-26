@@ -1,6 +1,4 @@
-import { SolidEngine } from 'soukai-solid';
 import SolidAuthClient, { Session } from 'solid-auth-client';
-import Soukai, { LocalStorageEngine } from 'soukai';
 
 import Service from '@/services/Service';
 
@@ -113,15 +111,9 @@ export default class Auth extends Service<State> {
         if (this.loggedIn)
             return;
 
-        this.setState({ user });
+        await user.initSoukaiEngine();
 
-        if (user instanceof OfflineUser) {
-            Soukai.useEngine(new LocalStorageEngine('media-kraken'));
-        } else if (user instanceof SolidUser) {
-            Soukai.useEngine(new SolidEngine(SolidAuthClient.fetch.bind(SolidAuthClient), {
-                useCache: true,
-            }));
-        }
+        this.setState({ user });
 
         EventBus.emit('login', user);
 
@@ -130,17 +122,14 @@ export default class Auth extends Service<State> {
     }
 
     protected async logoutUser(): Promise<void> {
-        if (this.loggedIn) {
-            if (this.user instanceof OfflineUser) {
-                (Soukai.engine as LocalStorageEngine).clear();
-            } else if (this.user instanceof SolidUser) {
-                (Soukai.engine as SolidEngine).cache.clear();
-            }
+        if (!this.loggedIn)
+            return;
 
-            this.setState({ user: null });
+        this.user!.clearClientData();
 
-            EventBus.emit('logout');
-        }
+        this.setState({ user: null });
+
+        EventBus.emit('logout');
     }
 
     private async onSolidSessionUpdated(session: Session | void): Promise<void> {

@@ -1,4 +1,4 @@
-import { Engine, InMemoryEngine, LocalStorageEngine } from 'soukai';
+import { Engine, IndexedDBEngine } from 'soukai';
 
 import { AppLibraries } from '@/types/global';
 
@@ -6,7 +6,6 @@ import StubResponse from '@tests/stubs/StubResponse';
 import TestingEngine from '@tests/engines/TestingEngine';
 
 interface Config {
-    persistSessions?: boolean;
     useRealEngines?: boolean;
 }
 
@@ -16,14 +15,13 @@ function getRuntime(): Cypress.Chainable<TestingRuntime> {
     return cy.window().its('Runtime').then(runtime => runtime!);
 }
 
-function setupTestingEngine(config: Config): void {
+function setupTestingEngine(): void {
     getRuntime().then(runtime => {
         const Soukai = runtime.lib('soukai');
-        const engine = new TestingEngine(
-            config.persistSessions
-                ? new LocalStorageEngine('media-kraken')
-                : new InMemoryEngine,
-        );
+        const idbEngine = new IndexedDBEngine('media-kraken');
+        const engine = new TestingEngine(idbEngine);
+
+        idbEngine.purgeDatabase();
 
         Soukai.useEngine(engine);
 
@@ -47,7 +45,7 @@ const customCommands = {
           .then(SolidAuthClient => cy.stub(SolidAuthClient, 'fetch', fetchStub));
 
         if (!config.useRealEngines)
-            setupTestingEngine(config);
+            setupTestingEngine();
 
         getRuntime().then(runtime => runtime.start());
     },
@@ -62,12 +60,10 @@ const customCommands = {
     },
 
     login(): void {
-        cy.get<Config>('@config').then(config => {
-            getRuntime().then(runtime => {
-                const user = runtime.login('Cypress', config.persistSessions);
+        getRuntime().then(runtime => {
+            const user = runtime.login('Cypress');
 
-                cy.wrap(user).as('user');
-            });
+            cy.wrap(user).as('user');
         });
     },
 

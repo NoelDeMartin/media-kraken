@@ -1,20 +1,77 @@
+import { SolidEngine, Fetch } from 'soukai-solid';
+import SolidAuthClient from 'solid-auth-client';
+import Soukai from 'soukai';
+
 import MediaContainer from '@/models/soukai/MediaContainer';
 import TypeRegistration from '@/models/soukai/TypeRegistration';
 import User from '@/models/users/User';
 
 import RDFStore from '@/utils/RDFStore';
 
-export default class SolidUser extends User {
+export interface SolidUserJSON {
+    id: string;
+    name: string;
+    avatar_url: string | null;
+    storages: string[];
+}
+
+export default class SolidUser extends User<SolidUserJSON> {
+
+    public static isSolidUserJSON(json: object): json is SolidUserJSON {
+        return 'id' in json
+            && 'name' in json
+            && 'avatar_url' in json
+            && 'storages' in json;
+    }
+
+    public static async fromJSON(json: SolidUserJSON): Promise<SolidUser> {
+        return new SolidUser(
+            json.id,
+            json.name,
+            json.avatar_url,
+            json.storages,
+            await RDFStore.fromUrl(json.id),
+        );
+    }
 
     public readonly id: string;
 
     private store: RDFStore;
+    private fetch: Fetch;
 
-    constructor(id: string, name: string, avatarUrl: string | null, storages: string[], store: RDFStore) {
+    constructor(
+        id: string,
+        name: string,
+        avatarUrl: string | null,
+        storages: string[],
+        store: RDFStore,
+    ) {
         super(name, avatarUrl, storages);
 
         this.id = id;
         this.store = store;
+        this.fetch = SolidAuthClient.fetch.bind(SolidAuthClient);
+    }
+
+    public initSoukaiEngine(): void {
+        Soukai.useEngine(new SolidEngine(this.fetch, { useCache: true }));
+    }
+
+    public clearClientData(): void {
+        (Soukai.engine as SolidEngine).cache.clear();
+    }
+
+    public setFetch(fetch: Fetch): void {
+        this.fetch = fetch;
+    }
+
+    public toJSON(): SolidUserJSON {
+        return {
+            id: this.id,
+            name: this.name,
+            avatar_url: this.avatarUrl,
+            storages: this.storages,
+        };
     }
 
     protected async getMoviesContainer(storage: string): Promise<MediaContainer> {

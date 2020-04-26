@@ -34,7 +34,7 @@
                 @inspect="inspectUnprocessed"
             >
                 <strong class="font-semibold">{{ log.unprocessed.length }}</strong>
-                weren't processed because you cancelled the operation.
+                weren't processed because you stopped the operation.
             </ImportResultModalItem>
             <ImportResultModalItem
                 v-if="log.invalid.length > 0"
