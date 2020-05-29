@@ -4,29 +4,17 @@ import MediaContainer from '@/models/soukai/MediaContainer';
 import User from '@/models/users/User';
 
 export interface OfflineUserJSON {
-    name: string;
-    avatar_url: string | null;
-    storages: string[];
+    offline: true;
 }
 
 export default class OfflineUser extends User<OfflineUserJSON> {
 
-    public static isOfflineUserJSON(json: object): json is OfflineUserJSON {
-        return 'name' in json
-            && 'avatar_url' in json
-            && 'storages' in json;
+    public static isOfflineUserJSON(json: any): json is OfflineUserJSON {
+        return 'offline' in json && json.offline;
     }
 
-    public static fromJSON(json: OfflineUserJSON): OfflineUser {
-        return new OfflineUser(json.name, json.avatar_url, json.storages);
-    }
-
-    constructor(
-        name: string = 'Local (offline)',
-        avatarUrl: string | null = null,
-        storages: string[] = ['local/'],
-    ) {
-        super(name, avatarUrl, storages);
+    constructor() {
+        super('Browser Storage', null, ['browser-storage://']);
     }
 
     public initSoukaiEngine(): void {
@@ -38,17 +26,13 @@ export default class OfflineUser extends User<OfflineUserJSON> {
     }
 
     public toJSON(): OfflineUserJSON {
-        return {
-            name: this.name,
-            avatar_url: this.avatarUrl,
-            storages: this.storages,
-        };
+        return { offline: true };
     }
 
     protected async getMoviesContainer(storage: string): Promise<MediaContainer> {
         const moviesContainer = await MediaContainer.find<MediaContainer>(storage + 'movies/');
 
-        return  moviesContainer
+        return moviesContainer
             || MediaContainer.at(storage).create({ name: 'Movies' });
     }
 

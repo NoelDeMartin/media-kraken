@@ -9,7 +9,7 @@ class JSONUserParser {
             return SolidUser.fromJSON(json);
 
         if (OfflineUser.isOfflineUserJSON(json))
-            return OfflineUser.fromJSON(json);
+            return new OfflineUser();
 
         throw new Error('Invalid User JSON');
     }

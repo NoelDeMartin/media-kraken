@@ -207,6 +207,8 @@ export default class Media extends Service<State> {
 
         const { movies: moviesContainer } = await loadMedia(user.toJSON());
 
+        Movie.collection = moviesContainer.url;
+
         this.setState({ moviesContainer });
     }
 

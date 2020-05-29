@@ -14,7 +14,7 @@ declare global {
         lib<K extends keyof AppLibraries>(name: K): AppLibraries[K];
         service<K extends keyof Vue>(name: K): Vue[K];
         start(): Promise<void>;
-        login(name: string): User;
+        login(): User;
     }
 
     interface Window {

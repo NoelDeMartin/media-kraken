@@ -1,4 +1,4 @@
-import { Engine, EngineAttributes, Filters, Documents } from 'soukai';
+import { Engine, EngineDocument, EngineFilters, EngineDocumentsCollection, EngineUpdates } from 'soukai';
 
 import Time from '@/utils/Time';
 
@@ -20,33 +20,28 @@ export default class TestingEngine implements Engine {
         this.delay = delay;
     }
 
-    public async create(collection: string, attributes: EngineAttributes, id?: string): Promise<string> {
+    public async create(collection: string, document: EngineDocumentsCollection, id?: string): Promise<string> {
         await this.executeModifications();
 
-        return this.engine.create(collection, attributes, id);
+        return this.engine.create(collection, document, id);
     }
 
-    public async readOne(collection: string, id: string): Promise<EngineAttributes> {
+    public async readOne(collection: string, id: string): Promise<EngineDocument> {
         await this.executeModifications();
 
         return this.engine.readOne(collection, id);
     }
 
-    public async readMany(collection: string, filters?: Filters): Promise<Documents> {
+    public async readMany(collection: string, filters?: EngineFilters): Promise<EngineDocumentsCollection> {
         await this.executeModifications();
 
         return this.engine.readMany(collection, filters);
     }
 
-    public async update(
-        collection: string,
-        id: string,
-        updatedAttributes: EngineAttributes,
-        removedAttributes: string[],
-    ): Promise<void> {
+    public async update(collection: string, id: string, updates: EngineUpdates): Promise<void> {
         await this.executeModifications();
 
-        return this.engine.update(collection, id, updatedAttributes, removedAttributes);
+        return this.engine.update(collection, id, updates);
     }
 
     public async delete(collection: string, id: string): Promise<void> {

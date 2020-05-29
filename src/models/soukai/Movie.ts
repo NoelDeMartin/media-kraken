@@ -1,5 +1,5 @@
-import { FieldType, Model } from 'soukai';
-import { SolidModel, SolidEmbedsRelation } from 'soukai-solid';
+import { FieldType, MultiModelRelation } from 'soukai';
+import { SolidModel, SolidHasManyRelation } from 'soukai-solid';
 
 import Arr from '@/utils/Arr';
 import Obj from '@/utils/Obj';
@@ -62,6 +62,7 @@ export default class Movie extends SolidModel {
     public updatedAt!: Date;
 
     public actions?: WatchAction[];
+    public relatedActions!: SolidHasManyRelation<Movie, WatchAction, typeof WatchAction>;
 
     public get watched(): boolean {
         return !!this.actions && this.actions.length > 0;
@@ -121,17 +122,8 @@ export default class Movie extends SolidModel {
             || !!this.externalUrls.find(url => Arr.contains(movie.externalUrls, url));
     }
 
-    public actionsRelationship(): SolidEmbedsRelation<Movie, WatchAction, typeof WatchAction> {
-        return this.embeds(WatchAction) as any;
-    }
-
-    public async save<T extends Model>(containerUrl?: string): Promise<T> {
-        const result = await super.save<T>(containerUrl);
-
-        if (this.isRelationLoaded('actions'))
-            await Promise.all(this.actions!.map(action => this.actionsRelationship().save(action)));
-
-        return result;
+    public actionsRelationship(): MultiModelRelation {
+        return this.hasMany(WatchAction, 'object');
     }
 
     public async completeAttributes(): Promise<void> {
@@ -151,33 +143,8 @@ export default class Movie extends SolidModel {
         }
     }
 
-    public async watch(date?: Date): Promise<WatchAction> {
-        // TODO implement model.mintUrl() in soukai-solid (or do it in constructor)
-        if (!this.hasAttribute(Movie.primaryKey))
-            this.setAttribute(Movie.primaryKey, this.newUrl());
-
-        const action = new WatchAction({ object: this.url });
-
-        if (date)
-            action.createdAt = date;
-
-        try {
-            // TODO maybe this should be handled by soukai...
-            if (this.isRelationLoaded('actions'))
-                this.setRelationModels('actions', [...this.actions!, action]);
-
-            if (!this.exists())
-                return action;
-
-            await this.actionsRelationship().save(action);
-
-            return action;
-        } catch (e) {
-            if (this.isRelationLoaded('actions'))
-                this.setRelationModels('actions', Arr.withoutItem(this.actions!, action));
-
-            throw e;
-        }
+    public watch(date?: Date): Promise<WatchAction> {
+        return this.relatedActions.create({ createdAt: date }, true);
     }
 
     public toJSON(): MovieJSON {

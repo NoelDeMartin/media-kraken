@@ -26,8 +26,8 @@ window.Runtime = {
 
     start,
 
-    login(name: string): User {
-        const user = new OfflineUser(name);
+    login(): User {
+        const user = new OfflineUser();
 
         Vue.instance.$store.commit('auth.setState', { user });
         Vue.instance.$events.emit('login', user);

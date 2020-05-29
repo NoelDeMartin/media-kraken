@@ -27,7 +27,7 @@ class WatchAction {
 }
 
 WatchAction --> "1" Movie
-Movie --> "*" WatchAction : embeds
+Movie --> "*" WatchAction : hasMany
 MediaContainer --> "*" Movie : contains
 
 @enduml

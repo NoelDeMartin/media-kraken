@@ -22,28 +22,18 @@ export default abstract class WebWorker<Parameters extends any[], Result> {
             async ({ data: { name, payload } }: { data: WebWorkerMessage }) => {
                 switch (name) {
                     case 'start':
-                        try {
-                            const result = await this.work(...payload);
-
-                            this.postMessage('done', result);
-                        } catch (e) {
-                            console.error(e);
-
-                            this.postMessage('failed', e.message || 'Unknown error');
-                        }
+                        this.start(...payload);
                         break;
                     case 'operation-completed': {
                         const [ id, result ] = payload;
 
-                        this.operations[id]?.resolve(result);
-                        delete this.operations[id];
+                        this.resolveOperation(id, result);
                         break;
                     }
                     case 'operation-failed': {
                         const [ id, error ] = payload;
 
-                        this.operations[id]?.reject(error);
-                        delete this.operations[id];
+                        this.rejectOperation(id, error);
                         break;
                     }
                     default:
@@ -77,5 +67,28 @@ export default abstract class WebWorker<Parameters extends any[], Result> {
     }
 
     protected abstract work(...params: Parameters): Promise<Result>;
+
+    public async start(...parameters: Parameters): Promise<void> {
+        try {
+            const result = await this.work(...parameters);
+
+            this.postMessage('done', result);
+        } catch (e) {
+            // eslint-disable-next-line no-console
+            console.error(e);
+
+            this.postMessage('failed', e.message || 'Unknown error');
+        }
+    }
+
+    private resolveOperation(id: string, result: any): void {
+        this.operations[id]?.resolve(result);
+        delete this.operations[id];
+    }
+
+    private rejectOperation(id: string, error: any): void {
+        this.operations[id]?.reject(error);
+        delete this.operations[id];
+    }
 
 }

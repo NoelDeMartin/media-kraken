@@ -58,7 +58,7 @@ export default class SolidUser extends User<SolidUserJSON> {
     }
 
     public clearClientData(): void {
-        (Soukai.engine as SolidEngine).cache.clear();
+        (Soukai.engine as any).cache.clear();
     }
 
     public setFetch(fetch: Fetch): void {

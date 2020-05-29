@@ -99,7 +99,7 @@ export default class Auth extends Service<State> {
         }
 
         if (user !== null) {
-            await this.loginUser(OfflineUser.fromJSON(user));
+            await this.loginUser(new OfflineUser());
         }
     }
 

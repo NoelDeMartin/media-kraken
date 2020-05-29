@@ -61,7 +61,7 @@ const customCommands = {
 
     login(): void {
         getRuntime().then(runtime => {
-            const user = runtime.login('Cypress');
+            const user = runtime.login();
 
             cy.wrap(user).as('user');
         });

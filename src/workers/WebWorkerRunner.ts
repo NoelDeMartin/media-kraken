@@ -53,6 +53,8 @@ export default class WebWorkerRunner<Parameters extends any[], Result> {
                     this.postMessage('operation-completed', id, result);
                 } catch (e) {
                     this.postMessage('operation-failed', id, e.message || 'Unknown error');
+
+                    // eslint-disable-next-line no-console
                     console.error(e);
                 }
                 break;

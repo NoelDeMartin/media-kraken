@@ -24,7 +24,7 @@ export default class WatchAction extends SolidModel {
     };
 
     public movieRelationship(): SingleModelRelation {
-        return this.isEmbeddedBy(Movie);
+        return this.belongsTo(Movie, 'object');
     }
 
 }
