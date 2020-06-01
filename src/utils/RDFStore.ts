@@ -7,13 +7,15 @@ const knownPrefixes: { [prefix: string]: (ln: string) => NamedNode } = {
     rdfs: $rdf.Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#'),
     foaf: $rdf.Namespace('http://xmlns.com/foaf/0.1/'),
     pim: $rdf.Namespace('http://www.w3.org/ns/pim/space#'),
+    purl: $rdf.Namespace('http://purl.org/dc/terms/'),
 };
 
 export default class RDFStore {
 
     public static async fromUrl(url: string): Promise<RDFStore> {
+        const options = { headers: { 'Accept': 'text/turtle' } };
         const store = $rdf.graph();
-        const data = await SolidAuthClient.fetch(url).then(res => res.text());
+        const data = await SolidAuthClient.fetch(url, options).then(res => res.text());
 
         $rdf.parse(data, store, url, null as any, null as any);
 

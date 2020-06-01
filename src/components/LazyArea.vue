@@ -1,6 +1,6 @@
 <template>
     <div>
-        <slot v-if="force || visible" />
+        <slot v-if="forceVisible || visible" />
         <slot v-else name="placeholder" />
     </div>
 </template>
@@ -15,7 +15,7 @@ interface Data {
 
 export default Vue.extend({
     props: {
-        force: {
+        forceVisible: {
             type: Boolean,
             default: false,
         },

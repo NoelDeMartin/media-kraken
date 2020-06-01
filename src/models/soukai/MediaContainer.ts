@@ -1,11 +1,9 @@
 import Soukai, { MultiModelRelation, FieldType } from 'soukai';
-import { SolidModel, SolidEngine } from 'soukai-solid';
+import { SolidEngine, SolidContainerModel } from 'soukai-solid';
 
 import Movie from '@/models/soukai/Movie';
 
-export default class MediaContainer extends SolidModel {
-
-    public static ldpContainer = true;
+export default class MediaContainer extends SolidContainerModel {
 
     public static fields = {
         name: {

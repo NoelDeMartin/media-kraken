@@ -1,5 +1,6 @@
 <template>
     <div
+        v-if="booted"
         class="font-montserrat antialiased font-normal text-base text-gray-900 leading-tight bg-gray-100 max-h-screen"
         :class="{ 'overflow-hidden': $ui.fixedScroll !== null }"
     >
@@ -53,6 +54,8 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import EventBus from '@/utils/EventBus';
+
 import AppSnackbar from '@/components/AppSnackbar.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import AppHeader from '@/components/AppHeader.vue';
@@ -62,6 +65,10 @@ export default Vue.extend({
         AppSnackbar,
         AppFooter,
         AppHeader,
+    },
+    data: () => ({ booted: false }),
+    created() {
+        EventBus.once('booted', () => this.booted = true);
     },
 });
 </script>

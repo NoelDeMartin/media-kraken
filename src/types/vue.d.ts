@@ -1,5 +1,3 @@
-import { EventBus } from '@/utils/EventBus';
-
 import Auth from '@/services/Auth';
 import Config from '@/services/Config';
 import Media from '@/services/Media';
@@ -14,7 +12,6 @@ declare module 'vue/types/vue' {
         $media: Media;
         $search: Search;
         $ui: UI;
-        $events: EventBus;
     }
 
     interface VueConstructor<V extends Vue = Vue> {

@@ -2,6 +2,7 @@ import Vue from 'vue';
 
 import App from '@/App.vue';
 
+import { setUpPolyfills } from '@/utils/polyfills';
 import EventBus from '@/utils/EventBus';
 import Time from '@/utils/Time';
 
@@ -9,6 +10,8 @@ import '@/components/base';
 
 import { bootServices } from '@/services';
 import plugins from '@/plugins';
+
+setUpPolyfills(window);
 
 Vue.config.productionTip = false;
 Vue.instance = new Vue({
@@ -48,7 +51,7 @@ async function removeLoading() {
 }
 
 export async function start(): Promise<void> {
-    Vue.instance.$events = EventBus;
+    Vue.instance.$mount('#app');
 
     await bootServices(Vue.instance).catch(error => {
         alert('Something went wrong! (look at the console for details)');
@@ -59,7 +62,6 @@ export async function start(): Promise<void> {
 
     prepareErrorHandlers();
     prepareInitialRoute();
-
-    Vue.instance.$mount('#app');
+    EventBus.emit('booted');
     removeLoading();
 }

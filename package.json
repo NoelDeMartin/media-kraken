@@ -15,11 +15,12 @@
     "cy:test": "start-server-and-test test:serve http://localhost:8080 cy:run"
   },
   "dependencies": {
+    "idb": "^5.0.4",
     "rdflib": "^0.19.1",
     "register-service-worker": "^1.6.2",
     "solid-auth-client": "^2.4.1",
-    "soukai": "next",
-    "soukai-solid": "next",
+    "soukai": "^0.2.0-dev.7620ff9a5fa6005f4b8a47c9b79615762cfcb545",
+    "soukai-solid": "^0.2.1-dev.eebfa8f4f832e3b655421009c36998367927393e",
     "tailwindcss": "^1.2.0",
     "vue": "^2.6.10",
     "vue-router": "^3.1.5",
@@ -47,7 +48,7 @@
     "faker": "^4.1.0",
     "jest": "^25.3.0",
     "marked": "^0.8.2",
-    "node-sass": "^4.13.1",
+    "node-sass": "^4.14.1",
     "nodemon": "^2.0.2",
     "raw-loader": "^4.0.0",
     "sass-loader": "^8.0.2",

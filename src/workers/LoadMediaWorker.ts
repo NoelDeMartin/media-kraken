@@ -2,8 +2,12 @@ import Soukai, { IndexedDBEngine } from 'soukai';
 
 import '@/plugins/soukai';
 
+import MediaContainer from '@/models/soukai/MediaContainer';
+import ModelsCache from '@/models/ModelsCache';
+import Movie from '@/models/soukai/Movie';
 import SolidUser from '@/models/users/SolidUser';
 import User from '@/models/users/User';
+import WatchAction from '@/models/soukai/WatchAction';
 
 import JSONUserParser from '@/utils/parsers/JSONUserParser';
 
@@ -14,17 +18,66 @@ export type Result = void;
 
 export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
 
+    private user!: User;
+    private moviesContainer!: MediaContainer;
+
     protected async work(userJson: object): Promise<Result> {
-        const user = await this.resolveUser(userJson);
+        await this.initStorage(userJson);
+        await this.loadMoviesContainer();
+        await this.loadMovies();
 
-        await user.initSoukaiEngine();
+        if (Soukai.engine instanceof IndexedDBEngine)
+            Soukai.engine.closeConnections();
+    }
 
-        const { movies: moviesContainer } = await user.initContainers();
+    private async initStorage(userJson: object): Promise<void> {
+        this.user = await this.resolveUser(userJson);
+
+        await this.user.initSoukaiEngine();
+    }
+
+    private async loadMoviesContainer(): Promise<void> {
+        const { movies: moviesContainer } = await this.user.resolveMediaContainers();
 
         this.postMessage('movies-container-loaded', moviesContainer.getAttributes());
 
-        if (!moviesContainer.isRelationLoaded('movies'))
-            await moviesContainer.loadRelation('movies');
+        this.moviesContainer = moviesContainer;
+    }
+
+    private async loadMovies(): Promise<void> {
+        const moviesContainer = this.moviesContainer;
+
+        if (!moviesContainer.isRelationLoaded('movies')) {
+            const cachedMovies: Movie[] = [];
+            const nonCachedMovieUrls = new Set(moviesContainer.resourceUrls);
+
+            await Promise.all(moviesContainer.documents.map(async document => {
+                const movie = await ModelsCache.getFromDocument<Movie>(
+                    document,
+                    Movie,
+                    { actions: WatchAction },
+                );
+
+                if (movie === null)
+                    return;
+
+                cachedMovies.push(movie);
+                nonCachedMovieUrls.delete(document.url);
+            }));
+
+            const updatedMovies = await Movie.from(moviesContainer.url).all<Movie>({
+                $in: [...nonCachedMovieUrls],
+            });
+
+            await Promise.all(updatedMovies.map(async movie => {
+                if (!movie.isRelationLoaded('actions'))
+                    await movie.loadRelation('actions');
+
+                await ModelsCache.remember(movie, { actions: movie.actions! });
+            }));
+
+            moviesContainer.setRelationModels('movies', [...cachedMovies, ...updatedMovies]);
+        }
 
         const actionPromises = moviesContainer.movies!.map(async movie => {
             if (!movie.isRelationLoaded('actions'))
@@ -38,9 +91,6 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         });
 
         await Promise.all(actionPromises);
-
-        if (Soukai.engine instanceof IndexedDBEngine)
-            Soukai.engine.closeConnections();
     }
 
     private async resolveUser(userJson: object): Promise<User> {

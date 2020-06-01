@@ -2,9 +2,10 @@ import SolidAuthClient, { Session } from 'solid-auth-client';
 
 import Service from '@/services/Service';
 
-import User from '@/models/users/User';
+import ModelsCache from '@/models/ModelsCache';
 import OfflineUser from '@/models/users/OfflineUser';
 import SolidUser from '@/models/users/SolidUser';
+import User from '@/models/users/User';
 
 import EventBus from '@/utils/EventBus';
 import RDFStore from '@/utils/RDFStore';
@@ -125,6 +126,7 @@ export default class Auth extends Service<State> {
         if (!this.loggedIn)
             return;
 
+        ModelsCache.clear();
         this.user!.clearClientData();
 
         this.setState({ user: null });
@@ -146,8 +148,12 @@ export default class Auth extends Service<State> {
         const name = store.statement(webId, 'foaf:name');
         const avatarUrl = store.statement(webId, 'foaf:img');
         const storages = store.statements(webId, 'pim:storage');
+        const typeIndexStatement = store.statement(webId, 'solid:publicTypeIndex');
 
         // TODO load extended profile to find additional storages
+
+        if (!typeIndexStatement)
+            throw new Error("Couldn't find solid:publicTypeIndex in profile");
 
         if (storages.length === 0)
             throw new Error("Couldn't find pim:storage in profile");
@@ -158,7 +164,7 @@ export default class Auth extends Service<State> {
                 name ? name.object.value : 'Unknown',
                 avatarUrl ? avatarUrl.object.value : null,
                 storages.map(storage => storage.object.value),
-                store,
+                typeIndexStatement.object.value,
             ),
         );
     }

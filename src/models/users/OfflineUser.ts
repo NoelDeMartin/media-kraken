@@ -1,3 +1,4 @@
+import { SolidDocument } from 'soukai-solid';
 import Soukai, { IndexedDBEngine } from 'soukai';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
@@ -14,7 +15,7 @@ export default class OfflineUser extends User<OfflineUserJSON> {
     }
 
     constructor() {
-        super('Browser Storage', null, ['browser-storage://']);
+        super('Browser Storage', null);
     }
 
     public initSoukaiEngine(): void {
@@ -29,11 +30,18 @@ export default class OfflineUser extends User<OfflineUserJSON> {
         return { offline: true };
     }
 
-    protected async getMoviesContainer(storage: string): Promise<MediaContainer> {
-        const moviesContainer = await MediaContainer.find<MediaContainer>(storage + 'movies/');
+    protected async getMoviesContainerDocument(): Promise<SolidDocument | null> {
+        // TODO implement this and add documents to container instance to
+        // leverage caching speed improvements
+
+        return null;
+    }
+
+    protected async initMoviesContainer(): Promise<MediaContainer> {
+        const moviesContainer = await MediaContainer.find<MediaContainer>('browser-storage://movies/');
 
         return moviesContainer
-            || MediaContainer.at(storage).create({ name: 'Movies' });
+            || MediaContainer.at('browser-storage://').create({ name: 'Movies' });
     }
 
 }

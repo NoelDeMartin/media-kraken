@@ -3,7 +3,7 @@
         <LazyArea
             v-for="(chunk, chunkIndex) of movieChunks"
             :key="chunkIndex"
-            :force="chunk.force"
+            :force-visible="chunk.forceVisible"
             :class="chunk.wrapperClass"
         >
             <div slot="placeholder" :style="chunk.placeholderStyle" />
@@ -43,7 +43,7 @@ interface Data {
 
 interface MoviesChunk {
     movies: Movie[];
-    force: boolean;
+    forceVisible: boolean;
     wrapperClass: string;
     placeholderStyle: string;
 }
@@ -115,7 +115,7 @@ export default Vue.extend({
 
                 chunks.push({
                     movies,
-                    force: offset === 0,
+                    forceVisible: offset === 0,
                     wrapperClass: offset === 0 ? '' : 'mt-3',
                     placeholderStyle: `height:${placeholderHeight}px`,
                 });

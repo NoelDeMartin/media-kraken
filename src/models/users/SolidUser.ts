@@ -1,4 +1,4 @@
-import { SolidEngine, Fetch } from 'soukai-solid';
+import { SolidEngine, Fetch, SolidDocument } from 'soukai-solid';
 import SolidAuthClient from 'solid-auth-client';
 import Soukai from 'soukai';
 
@@ -7,12 +7,14 @@ import TypeRegistration from '@/models/soukai/TypeRegistration';
 import User from '@/models/users/User';
 
 import RDFStore from '@/utils/RDFStore';
+import Url from '@/utils/Url';
 
 export interface SolidUserJSON {
     id: string;
     name: string;
     avatar_url: string | null;
     storages: string[];
+    typeIndexUrl: string;
 }
 
 export default class SolidUser extends User<SolidUserJSON> {
@@ -21,7 +23,8 @@ export default class SolidUser extends User<SolidUserJSON> {
         return 'id' in json
             && 'name' in json
             && 'avatar_url' in json
-            && 'storages' in json;
+            && 'storages' in json
+            && 'typeIndexUrl' in json;
     }
 
     public static async fromJSON(json: SolidUserJSON): Promise<SolidUser> {
@@ -30,35 +33,34 @@ export default class SolidUser extends User<SolidUserJSON> {
             json.name,
             json.avatar_url,
             json.storages,
-            await RDFStore.fromUrl(json.id),
+            json.typeIndexUrl,
         );
     }
 
     public readonly id: string;
 
-    private store: RDFStore;
+    private storages: string[];
+    private typeIndexUrl: string;
     private fetch: Fetch;
+    private moviesContainerUrl?: string | null;
 
     constructor(
         id: string,
         name: string,
         avatarUrl: string | null,
         storages: string[],
-        store: RDFStore,
+        typeIndexUrl: string,
     ) {
-        super(name, avatarUrl, storages);
+        super(name, avatarUrl);
 
         this.id = id;
-        this.store = store;
+        this.storages = storages;
+        this.typeIndexUrl = typeIndexUrl;
         this.fetch = SolidAuthClient.fetch.bind(SolidAuthClient);
     }
 
     public initSoukaiEngine(): void {
-        Soukai.useEngine(new SolidEngine(this.fetch, { useCache: true }));
-    }
-
-    public clearClientData(): void {
-        (Soukai.engine as any).cache.clear();
+        Soukai.useEngine(new SolidEngine(this.fetch));
     }
 
     public setFetch(fetch: Fetch): void {
@@ -71,40 +73,37 @@ export default class SolidUser extends User<SolidUserJSON> {
             name: this.name,
             avatar_url: this.avatarUrl,
             storages: this.storages,
+            typeIndexUrl: this.typeIndexUrl,
         };
     }
 
-    protected async getMoviesContainer(storage: string): Promise<MediaContainer> {
-        const typeIndexStatement = this.store.statement(this.id, 'solid:publicTypeIndex');
+    protected async getMoviesContainerDocument(): Promise<SolidDocument | null> {
+        const url = await this.getMoviesContainerUrl();
 
-        if (!typeIndexStatement)
-            throw new Error("Couldn't find solid:publicTypeIndex in profile");
-
-        const typeIndexUrl = typeIndexStatement.object.value;
-        const moviesContainer = await this.getMoviesContainerFromTypeIndex(typeIndexUrl);
-
-        return moviesContainer || this.createMoviesContainer(storage, typeIndexUrl);
-    }
-
-    protected async getMoviesContainerFromTypeIndex(typeIndexUrl: string): Promise<MediaContainer | null> {
-        const store = await RDFStore.fromUrl(typeIndexUrl);
-
-        const moviesContainerType = store
-            .nodes('rdfs:type', 'solid:TypeRegistration')
-            .find(node =>
-                store.contains(node, 'solid:forClass', 'schema:Movie')  &&
-                store.contains(node, 'solid:instanceContainer'),
-            );
-
-        if (!moviesContainerType)
+        if (!url)
             return null;
 
-        return MediaContainer.find<MediaContainer>(
-            store.statement(moviesContainerType, 'solid:instanceContainer')!.object.value,
-        );
+        const store = await RDFStore.fromUrl(Url.parentDirectory(url!));
+        const modified = store.statement(url, 'purl:modified');
+
+        if (!modified)
+            return null;
+
+        return new SolidDocument({ url, updatedAt: new Date(modified.object.value) }, true);
     }
 
-    protected async createMoviesContainer(storage: string, typeIndexUrl: string): Promise<MediaContainer> {
+    protected async initMoviesContainer(): Promise<MediaContainer> {
+        const url = await this.getMoviesContainerUrl();
+        const moviesContainer = url
+            ? await MediaContainer.find<MediaContainer>(url)
+            : null;
+
+        return moviesContainer || this.createMoviesContainer();
+    }
+
+    protected async createMoviesContainer(): Promise<MediaContainer> {
+        // TODO ask for preferred storage
+        const storage = this.storages[0];
         const moviesContainer = new MediaContainer({ name: 'Movies' });
 
         await moviesContainer.save(storage);
@@ -114,11 +113,30 @@ export default class SolidUser extends User<SolidUserJSON> {
             instanceContainer: moviesContainer.url,
         });
 
-        await typeRegistration.save(typeIndexUrl);
+        await typeRegistration.save(this.typeIndexUrl);
 
         moviesContainer.setRelationModels('movies', []);
 
         return moviesContainer;
+    }
+
+    private async getMoviesContainerUrl(): Promise<string | null> {
+        if (typeof this.moviesContainerUrl === 'undefined') {
+            const store = await RDFStore.fromUrl(this.typeIndexUrl);
+
+            const moviesContainerType = store
+                .nodes('rdfs:type', 'solid:TypeRegistration')
+                .find(node =>
+                    store.contains(node, 'solid:forClass', 'schema:Movie')  &&
+                    store.contains(node, 'solid:instanceContainer'),
+                );
+
+            this.moviesContainerUrl = moviesContainerType
+                ? store.statement(moviesContainerType, 'solid:instanceContainer')!.object.value
+                : null;
+        }
+
+        return this.moviesContainerUrl;
     }
 
 }
