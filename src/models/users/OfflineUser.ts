@@ -1,6 +1,8 @@
 import { SolidDocument } from 'soukai-solid';
 import Soukai, { IndexedDBEngine } from 'soukai';
 
+import Storage from '@/utils/Storage';
+
 import MediaContainer from '@/models/soukai/MediaContainer';
 import User from '@/models/users/User';
 
@@ -10,6 +12,10 @@ export interface OfflineUserJSON {
 
 export default class OfflineUser extends User<OfflineUserJSON> {
 
+    public static isLoggedIn(): boolean {
+        return Storage.get('offline-user', false);
+    }
+
     public static isOfflineUserJSON(json: any): json is OfflineUserJSON {
         return 'offline' in json && json.offline;
     }
@@ -18,12 +24,18 @@ export default class OfflineUser extends User<OfflineUserJSON> {
         super('Browser Storage', null);
     }
 
-    public initSoukaiEngine(): void {
-        Soukai.useEngine(new IndexedDBEngine('media-kraken'));
+    public async login(): Promise<void> {
+        Storage.set('offline-user', true);
     }
 
-    public clearClientData(): void {
+    public async logout(): Promise<void> {
         (Soukai.engine as IndexedDBEngine).purgeDatabase();
+
+        Storage.remove('offline-user');
+    }
+
+    public initSoukaiEngine(): void {
+        Soukai.useEngine(new IndexedDBEngine('media-kraken'));
     }
 
     public toJSON(): OfflineUserJSON {

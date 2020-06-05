@@ -1,5 +1,3 @@
-import SolidAuthClient, { Session } from 'solid-auth-client';
-
 import Service from '@/services/Service';
 
 import ModelsCache from '@/models/ModelsCache';
@@ -8,8 +6,6 @@ import SolidUser from '@/models/users/SolidUser';
 import User from '@/models/users/User';
 
 import EventBus from '@/utils/EventBus';
-import RDFStore from '@/utils/RDFStore';
-import Storage from '@/utils/Storage';
 
 import OfflineLogoutModal from '@/components/modals/OfflineLogoutModal.vue';
 
@@ -24,8 +20,6 @@ interface HasUser {
 export default class Auth extends Service<State> {
 
     protected storeName: string = 'auth';
-
-    private solidAuthListener?: (session?: Session) => Promise<void>;
 
     public get loggedIn(): boolean {
         return !!this.state.user;
@@ -44,17 +38,13 @@ export default class Auth extends Service<State> {
     }
 
     public async loginOffline(): Promise<void> {
-        const user = new OfflineUser();
-
-        await this.loginUser(user);
-
-        Storage.set('user', user.toJSON());
+        await this.updateUser(new OfflineUser());
     }
 
     public async loginWithSolid(idp: string): Promise<void> {
-        const result = await SolidAuthClient.login(idp);
+        const loggedIn = await SolidUser.login(idp);
 
-        if (result === null)
+        if (!loggedIn)
             throw new Error('Could not log in with Solid');
     }
 
@@ -68,105 +58,54 @@ export default class Auth extends Service<State> {
             return;
         }
 
-        if (this.user instanceof OfflineUser) {
-            Storage.remove('user');
-        } else if (this.user instanceof SolidUser) {
-            await SolidAuthClient.logout();
-        }
-
-        this.logoutUser();
-
-        if (this.app.$router.currentRoute.name !== 'login')
-            this.app.$router.push({ name: 'login' });
+        this.updateUser(null);
     }
 
     protected async init(): Promise<void> {
         await super.init();
 
-        const user = Storage.get('user');
-        this.solidAuthListener = this.onSolidSessionUpdated.bind(this);
+        await SolidUser.trackSession(solidUser => {
+            if (!!this.user && !(this.user instanceof SolidUser)) {
+                return;
+            }
 
-        try {
-            await SolidAuthClient.currentSession().then(session => this.onSolidSessionUpdated(session));
+            this.updateUser(solidUser);
+        });
 
-            SolidAuthClient.trackSession(this.solidAuthListener);
-        } catch (error) {
-            // TODO handle session expiration properly instead of communicating
-            // this like an error
-            alert("We couldn't validate your credentials, please login again");
-
-            await SolidAuthClient.logout();
-            this.logoutUser();
-        }
-
-        if (user !== null) {
-            await this.loginUser(new OfflineUser());
-        }
+        if (OfflineUser.isLoggedIn())
+            await this.updateUser(new OfflineUser());
     }
 
     protected getInitialState(): State {
         return { user: null };
     }
 
-    protected async loginUser(user: User): Promise<void> {
-        if (this.loggedIn)
+    protected async updateUser(newUser: User | null = null): Promise<void> {
+        const previousUser = this.user;
+
+        if (newUser === previousUser)
             return;
 
-        await user.initSoukaiEngine();
+        this.setState({ user: newUser });
 
-        this.setState({ user });
+        if (!newUser) {
+            previousUser!.logout();
+            ModelsCache.clear();
 
-        EventBus.emit('login', user);
+            EventBus.emit('logout');
+
+            if (this.app.$router.currentRoute.name !== 'login')
+                this.app.$router.push({ name: 'login' });
+
+            return;
+        }
+
+        await newUser.login();
 
         if (this.app.$router.currentRoute.name === 'login')
             this.app.$router.replace({ name: 'home' });
-    }
 
-    protected async logoutUser(): Promise<void> {
-        if (!this.loggedIn)
-            return;
-
-        ModelsCache.clear();
-        this.user!.clearClientData();
-
-        this.setState({ user: null });
-
-        EventBus.emit('logout');
-    }
-
-    private async onSolidSessionUpdated(session: Session | void): Promise<void> {
-        if (session && !this.user) {
-            await this.loginFromSession(session);
-        } else if (!session && this.user instanceof SolidUser) {
-            this.logoutUser();
-        }
-    }
-
-    private async loginFromSession({ webId }: Session): Promise<void> {
-        const store = await RDFStore.fromUrl(webId);
-
-        const name = store.statement(webId, 'foaf:name');
-        const avatarUrl = store.statement(webId, 'foaf:img');
-        const storages = store.statements(webId, 'pim:storage');
-        const typeIndexStatement = store.statement(webId, 'solid:publicTypeIndex');
-
-        // TODO load extended profile to find additional storages
-
-        if (!typeIndexStatement)
-            throw new Error("Couldn't find solid:publicTypeIndex in profile");
-
-        if (storages.length === 0)
-            throw new Error("Couldn't find pim:storage in profile");
-
-        await this.loginUser(
-            new SolidUser(
-                webId,
-                name ? name.object.value : 'Unknown',
-                avatarUrl ? avatarUrl.object.value : null,
-                storages.map(storage => storage.object.value),
-                typeIndexStatement.object.value,
-            ),
-        );
+        EventBus.emit('login', newUser);
     }
 
 }

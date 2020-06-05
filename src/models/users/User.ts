@@ -21,13 +21,17 @@ export default abstract class User<JSON extends object=object> {
         return { movies: cachedMovies || await this.initAndRememberMoviesContainer() };
     }
 
-    public abstract toJSON(): JSON;
+    public async login(): Promise<void> {
+        //
+    }
+
+    public async logout(): Promise<void> {
+        //
+    }
 
     public abstract initSoukaiEngine(): void;
 
-    public clearClientData(): void {
-        //
-    }
+    public abstract toJSON(): JSON;
 
     protected abstract getMoviesContainerDocument(): Promise<SolidDocument | null>;
 

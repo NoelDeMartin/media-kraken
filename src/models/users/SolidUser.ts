@@ -1,5 +1,5 @@
 import { SolidEngine, Fetch, SolidDocument } from 'soukai-solid';
-import SolidAuthClient from 'solid-auth-client';
+import SolidAuthClient, { Session } from 'solid-auth-client';
 import Soukai from 'soukai';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
@@ -7,6 +7,7 @@ import TypeRegistration from '@/models/soukai/TypeRegistration';
 import User from '@/models/users/User';
 
 import RDFStore from '@/utils/RDFStore';
+import Storage from '@/utils/Storage';
 import Url from '@/utils/Url';
 
 export interface SolidUserJSON {
@@ -18,6 +19,38 @@ export interface SolidUserJSON {
 }
 
 export default class SolidUser extends User<SolidUserJSON> {
+
+    public static async trackSession(listener: (user: SolidUser | null) => void): Promise<void> {
+        const onSessionUpdated = async (session: Session | void) => {
+            if (!session) {
+                listener(null);
+                return;
+            }
+
+            const user = await this.fromSession(session);
+
+            listener(user);
+        };
+
+        try {
+            await SolidAuthClient.currentSession().then(onSessionUpdated);
+
+            SolidAuthClient.trackSession(onSessionUpdated);
+        } catch (error) {
+            // TODO handle session expiration properly instead of communicating
+            // this like an error
+            alert("We couldn't validate your credentials, please login again");
+
+            await SolidAuthClient.logout();
+            listener(null);
+        }
+    }
+
+    public static async login(idp: string): Promise<boolean> {
+        const session = await SolidAuthClient.login(idp);
+
+        return !!session;
+    }
 
     public static isSolidUserJSON(json: object): json is SolidUserJSON {
         return 'id' in json
@@ -34,6 +67,31 @@ export default class SolidUser extends User<SolidUserJSON> {
             json.avatar_url,
             json.storages,
             json.typeIndexUrl,
+        );
+    }
+
+    public static async fromSession({ webId }: Session): Promise<SolidUser> {
+        const store = await RDFStore.fromUrl(webId);
+
+        const name = store.statement(webId, 'foaf:name');
+        const avatarUrl = store.statement(webId, 'foaf:img');
+        const storages = store.statements(webId, 'pim:storage');
+        const typeIndexStatement = store.statement(webId, 'solid:publicTypeIndex');
+
+        // TODO load extended profile to find additional storages
+
+        if (!typeIndexStatement)
+            throw new Error("Couldn't find solid:publicTypeIndex in profile");
+
+        if (storages.length === 0)
+            throw new Error("Couldn't find pim:storage in profile");
+
+        return new SolidUser(
+            webId,
+            name ? name.object.value : 'Unknown',
+            avatarUrl ? avatarUrl.object.value : null,
+            storages.map(storage => storage.object.value),
+            typeIndexStatement.object.value,
         );
     }
 
@@ -61,6 +119,14 @@ export default class SolidUser extends User<SolidUserJSON> {
 
     public initSoukaiEngine(): void {
         Soukai.useEngine(new SolidEngine(this.fetch));
+    }
+
+    public async logout(): Promise<void> {
+        await SolidAuthClient.logout();
+
+        // Clean up storage
+        // @see https://github.com/solid/solid-auth-client/issues/96
+        Storage.remove('solid-auth-client');
     }
 
     public setFetch(fetch: Fetch): void {
