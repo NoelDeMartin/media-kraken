@@ -80,7 +80,7 @@ class ModelsCache {
         const connection = await this.getConnection();
         const transaction = connection.transaction('models-cache', 'readwrite');
 
-        transaction.store.add(data, url);
+        transaction.store.put(data, url);
 
         await transaction.done;
     }
