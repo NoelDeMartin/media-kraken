@@ -2,6 +2,7 @@
 @prefix ldp: <http://www.w3.org/ns/ldp#> .
 
 <>
-    rdfs:label "Movies" ;
     a ldp:Resource ;
-    a ldp:Container .
+    a ldp:Container ;
+    rdfs:label "Movies" ;
+    ldp:contains <./taxi-driver-1976.ttl> .

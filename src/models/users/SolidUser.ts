@@ -20,6 +20,16 @@ export interface SolidUserJSON {
 
 export default class SolidUser extends User<SolidUserJSON> {
 
+    private static _fetch?: Fetch;
+
+    private static get fetch(): Fetch {
+        return this._fetch || SolidAuthClient.fetch.bind(SolidAuthClient);
+    }
+
+    public static setFetch(fetch: Fetch): void {
+        this._fetch = fetch;
+    }
+
     public static async trackSession(listener: (user: SolidUser | null) => void): Promise<void> {
         const onSessionUpdated = async (session: Session | void) => {
             if (!session) {
@@ -71,7 +81,7 @@ export default class SolidUser extends User<SolidUserJSON> {
     }
 
     public static async fromSession({ webId }: Session): Promise<SolidUser> {
-        const store = await RDFStore.fromUrl(webId);
+        const store = await RDFStore.fromUrl(this.fetch, webId);
 
         const name = store.statement(webId, 'foaf:name');
         const avatarUrl = store.statement(webId, 'foaf:img');
@@ -99,7 +109,6 @@ export default class SolidUser extends User<SolidUserJSON> {
 
     private storages: string[];
     private typeIndexUrl: string;
-    private fetch: Fetch;
     private moviesContainerUrl?: string | null;
 
     constructor(
@@ -114,11 +123,14 @@ export default class SolidUser extends User<SolidUserJSON> {
         this.id = id;
         this.storages = storages;
         this.typeIndexUrl = typeIndexUrl;
-        this.fetch = SolidAuthClient.fetch.bind(SolidAuthClient);
+    }
+
+    private get classDef(): typeof SolidUser {
+        return (this.constructor as typeof SolidUser);
     }
 
     public initSoukaiEngine(): void {
-        Soukai.useEngine(new SolidEngine(this.fetch));
+        Soukai.useEngine(new SolidEngine(this.classDef.fetch));
     }
 
     public async logout(): Promise<void> {
@@ -127,10 +139,6 @@ export default class SolidUser extends User<SolidUserJSON> {
         // Clean up storage
         // @see https://github.com/solid/solid-auth-client/issues/96
         Storage.remove('solid-auth-client');
-    }
-
-    public setFetch(fetch: Fetch): void {
-        this.fetch = fetch;
     }
 
     public toJSON(): SolidUserJSON {
@@ -149,7 +157,7 @@ export default class SolidUser extends User<SolidUserJSON> {
         if (!url)
             return null;
 
-        const store = await RDFStore.fromUrl(Url.parentDirectory(url!));
+        const store = await RDFStore.fromUrl(this.classDef.fetch, Url.parentDirectory(url!));
         const modified = store.statement(url, 'purl:modified');
 
         if (!modified)
@@ -188,17 +196,16 @@ export default class SolidUser extends User<SolidUserJSON> {
 
     private async getMoviesContainerUrl(): Promise<string | null> {
         if (typeof this.moviesContainerUrl === 'undefined') {
-            const store = await RDFStore.fromUrl(this.typeIndexUrl);
+            const store = await RDFStore.fromUrl(this.classDef.fetch, this.typeIndexUrl);
 
-            const moviesContainerType = store
-                .nodes('rdfs:type', 'solid:TypeRegistration')
-                .find(node =>
-                    store.contains(node, 'solid:forClass', 'schema:Movie')  &&
-                    store.contains(node, 'solid:instanceContainer'),
+            const moviesContainerType = store.statements(null, 'rdfs:type', 'solid:TypeRegistration')
+                .find(statement =>
+                    store.contains(statement.subject.value, 'solid:forClass', 'schema:Movie')  &&
+                    store.contains(statement.subject.value, 'solid:instanceContainer'),
                 );
 
             this.moviesContainerUrl = moviesContainerType
-                ? store.statement(moviesContainerType, 'solid:instanceContainer')!.object.value
+                ? store.statement(moviesContainerType.subject.value, 'solid:instanceContainer')!.object.value
                 : null;
         }
 

@@ -1,87 +1,83 @@
-import $rdf, { IndexedFormula, Node, NamedNode, Statement } from 'rdflib';
-import SolidAuthClient from 'solid-auth-client';
+import { Fetch } from 'soukai-solid';
+import { Parser as TurtleParser } from 'n3';
+import { Quad } from 'rdf-js';
 
-const knownPrefixes: { [prefix: string]: (ln: string) => NamedNode } = {
-    solid: $rdf.Namespace('http://www.w3.org/ns/solid/terms#'),
-    schema: $rdf.Namespace('https://schema.org/'),
-    rdfs: $rdf.Namespace('http://www.w3.org/1999/02/22-rdf-syntax-ns#'),
-    foaf: $rdf.Namespace('http://xmlns.com/foaf/0.1/'),
-    pim: $rdf.Namespace('http://www.w3.org/ns/pim/space#'),
-    purl: $rdf.Namespace('http://purl.org/dc/terms/'),
+const knownPrefixes: { [prefix: string]: string } = {
+    solid: 'http://www.w3.org/ns/solid/terms#',
+    schema: 'https://schema.org/',
+    rdfs: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+    foaf: 'http://xmlns.com/foaf/0.1/',
+    pim: 'http://www.w3.org/ns/pim/space#',
+    purl: 'http://purl.org/dc/terms/',
 };
 
 export default class RDFStore {
 
-    public static async fromUrl(url: string): Promise<RDFStore> {
+    public static async fromUrl(fetch: Fetch, url: string): Promise<RDFStore> {
         const options = { headers: { 'Accept': 'text/turtle' } };
-        const store = $rdf.graph();
-        const data = await SolidAuthClient.fetch(url, options).then(res => res.text());
+        const quads: Quad[] = [];
+        const parser = new TurtleParser({
+            baseIRI: url,
+            format: 'text/turtle',
+        });
 
-        $rdf.parse(data, store, url, null as any, null as any);
+        const data = await fetch(url, options).then(res => res.text());
 
-        return new RDFStore(store);
+        return new Promise((resolve, reject) => {
+            parser.parse(data, (error, quad) => {
+                if (error) {
+                    reject(error);
+                    return;
+                }
+
+                if (!quad) {
+                    resolve(new RDFStore(quads));
+                    return;
+                }
+
+                quads.push(quad);
+            });
+        });
     }
 
-    private store: IndexedFormula;
+    private _statements: Quad[];
 
-    constructor(store: IndexedFormula) {
-        this.store = store;
+    private constructor(statements: Quad[]) {
+        this._statements = statements;
     }
 
-    public nodes(predicate: any = null, object: any = null): Node[] {
-        return this.store.each(
-            null as any,
-            this.resolveIRI(predicate),
-            this.resolveIRI(object),
-            null as any,
+    public statements(subject: any = null, predicate: any = null, object: any = null): Quad[] {
+        return this._statements.filter(
+            statement =>
+                (subject === null || statement.subject.value === this.resolveIRI(subject)) &&
+                (predicate === null || statement.predicate.value === this.resolveIRI(predicate)) &&
+                (object === null || statement.object.value === this.resolveIRI(object)),
         );
     }
 
-    public node(predicate: any = null, object: any = null): Node | null {
-        return this.store.any(
-            null as any,
-            this.resolveIRI(predicate),
-            this.resolveIRI(object),
-            null as any,
-        );
-    }
-
-    public statements(subject: any = null, predicate: any = null, object: any = null): Statement[] {
-        return this.store.statementsMatching(
-            this.resolveIRI(subject),
-            this.resolveIRI(predicate),
-            this.resolveIRI(object),
-            null as any,
-            false,
-        );
-    }
-
-    public statement(subject: any = null, predicate: any = null, object: any = null): Statement | null {
-        const statements = this.store.statementsMatching(
-            this.resolveIRI(subject),
-            this.resolveIRI(predicate),
-            this.resolveIRI(object),
-            null as any,
-            true,
-        );
-
-        return statements.length > 0 ? statements[0] : null;
+    public statement(subject: any = null, predicate: any = null, object: any = null): Quad | null {
+        return this._statements.find(
+            statement =>
+                (subject === null || statement.subject.value === this.resolveIRI(subject)) &&
+                (predicate === null || statement.predicate.value === this.resolveIRI(predicate)) &&
+                (object === null || statement.object.value === this.resolveIRI(object)),
+        ) || null;
     }
 
     public contains(subject: any = null, predicate: any = null, object: any = null): boolean {
-        return !!this.statement(subject, predicate, object);
+        return this.statement(subject, predicate, object) !== null;
     }
 
-    private resolveIRI(iri: any): NamedNode {
-        if (typeof iri !== 'string')
+    private resolveIRI(iri: any): string {
+        if (typeof iri !== 'string' || iri.startsWith('http'))
             return iri;
 
-        const iriParts = iri.split(':');
+        const [prefix, name] = iri.split(':');
 
-        if (iriParts.length === 2 && iriParts[0] in knownPrefixes)
-            return knownPrefixes[iriParts[0]](iriParts[1]);
+        if (!!name && prefix in knownPrefixes)
+            return knownPrefixes[prefix] + name;
 
-        return $rdf.sym(iri);
+        return iri;
     }
 
 }

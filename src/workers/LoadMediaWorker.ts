@@ -1,4 +1,4 @@
-import Soukai, { IndexedDBEngine } from 'soukai';
+import Soukai from 'soukai';
 
 import '@/plugins/soukai';
 
@@ -25,9 +25,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         await this.initStorage(userJson);
         await this.loadMoviesContainer();
         await this.loadMovies();
-
-        if (Soukai.engine instanceof IndexedDBEngine)
-            Soukai.engine.closeConnections();
+        await Soukai.closeConnections();
     }
 
     private async initStorage(userJson: object): Promise<void> {
@@ -97,7 +95,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         const user = await JSONUserParser.parse(userJson);
 
         if (user instanceof SolidUser)
-            user.setFetch((...params: any[]) => this.solidFetch(...params));
+            SolidUser.setFetch((...params: any[]) => this.solidFetch(...params));
 
         return user;
     }

@@ -2,7 +2,7 @@ import { Engine, IndexedDBEngine } from 'soukai';
 
 import { AppLibraries } from '@/types/global';
 
-import StubResponse from '@tests/stubs/StubResponse';
+import Http from '@tests/utils/Http';
 import TestingEngine from '@tests/engines/TestingEngine';
 
 interface Config {
@@ -31,8 +31,18 @@ function setupTestingEngine(): void {
 
 export function fetchStub(url: string): Promise<Response> {
     const match = fetchRoutes.find(route => route.urlPattern.test(url));
+    const response = match?.response;
 
-    return Promise.resolve(match?.response || StubResponse.notFound());
+    if (typeof response === 'string')
+        return Promise.resolve(Http.success(response));
+
+    if (Http.isResponse(response))
+        return Promise.resolve(response);
+
+    if (typeof response === 'object')
+        return Promise.resolve(Http.success(JSON.stringify(response)));
+
+    return Promise.resolve(Http.notFound());
 }
 
 const customCommands = {
@@ -99,17 +109,15 @@ const customCommands = {
         if (!(urlPattern instanceof RegExp))
             urlPattern = new RegExp(urlPattern);
 
-        if (typeof response === 'string')
-            response = StubResponse.success(response);
-
-        if (!StubResponse.isResponse(response))
-            response = StubResponse.success(JSON.stringify(response));
-
         fetchRoutes.push({ urlPattern, response });
     },
 
     see(text: string): void {
         cy.contains(text).should('be.visible');
+    },
+
+    seeImage(url: string): void {
+        cy.get<HTMLElement>(`img[src="${url}"]`).should('be.visible');
     },
 
     ariaLabel(label: string): Cypress.Chainable<JQuery<HTMLElement>> {

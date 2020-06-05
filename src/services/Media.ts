@@ -1,4 +1,4 @@
-import Soukai, { IndexedDBEngine } from 'soukai';
+import Soukai from 'soukai';
 
 import { MediaParser } from '@/utils/parsers';
 import EventBus from '@/utils/EventBus';
@@ -202,8 +202,7 @@ export default class Media extends Service<State> {
     }
 
     private async load(user: User): Promise<void> {
-        if (Soukai.engine instanceof IndexedDBEngine)
-            Soukai.engine.closeConnections();
+        await Soukai.closeConnections();
 
         const { movies: moviesContainer } = await loadMedia(user.toJSON());
 
