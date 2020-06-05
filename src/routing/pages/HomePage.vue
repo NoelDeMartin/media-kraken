@@ -1,5 +1,12 @@
 <template>
-    <div v-if="pendingMovies.length > 0">
+    <div v-if="!$media.loaded">
+        <!--
+            Show empty page when loading, it should not take long and it's
+            better than showing a loader that'll disappear too fast.
+        -->
+    </div>
+
+    <div v-else-if="pendingMovies.length > 0">
         <BasePageHeader>Watch next:</BasePageHeader>
         <MoviesGrid :movies="pendingMovies" />
     </div>

@@ -57,6 +57,7 @@
                     v-show="$ui.desktop"
                     ref="button"
                     type="button"
+                    aria-label="Settings"
                     :class="{
                         'rounded-full text-primary-900 focus:outline-none focus:shadow-solid': $auth.user.avatarUrl,
                         'text-gray-700 hover:text-gray-800': !$auth.user.avatarUrl,

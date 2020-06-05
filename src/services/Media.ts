@@ -1,5 +1,3 @@
-import Soukai from 'soukai';
-
 import { MediaParser } from '@/utils/parsers';
 import EventBus from '@/utils/EventBus';
 import Files from '@/utils/Files';
@@ -70,6 +68,10 @@ export default class Media extends Service<State> {
 
     public get moviesContainer(): MediaContainer | null {
         return this.state.moviesContainer;
+    }
+
+    public get loaded(): boolean {
+        return this.moviesContainer !== null;
     }
 
     public get empty(): boolean {
@@ -202,9 +204,9 @@ export default class Media extends Service<State> {
     }
 
     private async load(user: User): Promise<void> {
-        await Soukai.closeConnections();
-
         const { movies: moviesContainer } = await loadMedia(user.toJSON());
+
+        await user.initSoukaiEngine();
 
         Movie.collection = moviesContainer.url;
 
