@@ -292,7 +292,9 @@ export default class UI extends Service<State, ComputedState> {
         update: (model: Model) => Promise<any> | any,
         affectedAttributes: string[] = [],
     ): Promise<void> {
-        const operation = new AsyncOperation();
+        const operation = new AsyncOperation({
+            onFailed: error => this.showError(error),
+        });
         const initialAttributes = affectedAttributes.map(attribute => model.getAttribute(attribute));
 
         try {

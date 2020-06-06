@@ -1,3 +1,4 @@
+import { Session } from 'solid-auth-client';
 import Faker from 'faker';
 
 import movies from '@tests/fixtures/movies.ttl';
@@ -6,13 +7,24 @@ import taxiDriverJson from '@tests/fixtures/taxi-driver-1976.json';
 import taxiDriverTurtle from '@tests/fixtures/taxi-driver-1976.ttl';
 import typeIndex from '@tests/fixtures/typeIndex.ttl';
 
-function stubSolidLogin(domain: string) {
-    let sessionListener: Function;
+interface SolidLoginContext {
+    listener?: Function;
+    session?: Session;
+}
 
+function stubSolidLogin(
+    domain: string,
+    context: SolidLoginContext = {},
+): SolidLoginContext {
     cy.lib('solid-auth-client').then(SolidAuthClient => {
-        cy.stub(SolidAuthClient, 'trackSession', l => sessionListener = l);
+        cy.stub(SolidAuthClient, 'trackSession', listener => {
+            context.listener = listener;
+
+            if (context.session)
+                listener(context.session);
+        });
         cy.stub(SolidAuthClient, 'login', () => {
-            const session = {
+            context.session = {
                 idp: `https://${domain}`,
                 webId: `https://${domain}/me`,
                 accessToken: 'accessToken',
@@ -21,9 +33,7 @@ function stubSolidLogin(domain: string) {
                 sessionKey: 'sessionKey',
             };
 
-            sessionListener(session);
-
-            return session;
+            context.listener && context.listener(context.session);
         });
     });
 
@@ -31,6 +41,8 @@ function stubSolidLogin(domain: string) {
     cy.fetchRoute('/settings/publicTypeIndex.ttl', typeIndex);
     cy.fetchRoute('/movies/taxi-driver-1976.ttl', taxiDriverTurtle);
     cy.fetchRoute('/movies/', movies);
+
+    return context;
 }
 
 describe('Authentication', () => {
@@ -53,6 +65,7 @@ describe('Authentication', () => {
         cy.start({ useRealEngines: true });
         cy.contains('Use browser storage').click();
         cy.see('Welcome!');
+        cy.restart();
 
         // Act
         cy.ariaLabel('Settings').click();
@@ -83,14 +96,18 @@ describe('Authentication', () => {
     it('Logs out with Solid and clears client data', () => {
         // Arrange
         const domain = Faker.internet.domainName();
-
-        stubSolidLogin(domain);
+        const loginContext = stubSolidLogin(domain);
 
         cy.start({ useRealEngines: true });
         cy.contains('Use Solid POD').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
         cy.contains('Login').click();
         cy.seeImage(taxiDriverJson.image);
+        cy.reload();
+
+        stubSolidLogin(domain, loginContext);
+
+        cy.start({ useRealEngines: true });
 
         // Act
         cy.ariaLabel('Settings').click();

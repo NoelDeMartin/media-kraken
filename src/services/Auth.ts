@@ -42,10 +42,7 @@ export default class Auth extends Service<State> {
     }
 
     public async loginWithSolid(idp: string): Promise<void> {
-        const loggedIn = await SolidUser.login(idp);
-
-        if (!loggedIn)
-            throw new Error('Could not log in with Solid');
+        await SolidUser.login(idp);
     }
 
     public async logout(force: boolean = false): Promise<void> {
@@ -83,6 +80,9 @@ export default class Auth extends Service<State> {
     protected async updateUser(newUser: User | null = null): Promise<void> {
         const previousUser = this.user;
 
+        if (!newUser)
+            ModelsCache.clear();
+
         if (newUser === previousUser)
             return;
 
@@ -90,7 +90,6 @@ export default class Auth extends Service<State> {
 
         if (!newUser) {
             previousUser!.logout();
-            ModelsCache.clear();
 
             EventBus.emit('logout');
 

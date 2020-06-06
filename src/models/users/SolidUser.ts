@@ -56,10 +56,8 @@ export default class SolidUser extends User<SolidUserJSON> {
         }
     }
 
-    public static async login(idp: string): Promise<boolean> {
-        const session = await SolidAuthClient.login(idp);
-
-        return !!session;
+    public static async login(idp: string): Promise<void> {
+        await SolidAuthClient.login(idp);
     }
 
     public static isSolidUserJSON(json: object): json is SolidUserJSON {

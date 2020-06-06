@@ -63,6 +63,9 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
                 nonCachedMovieUrls.delete(document.url);
             }));
 
+            // TODO this will only find movies that have the same url as the document,
+            // so things like https://example.org/movies/jumanji#it won't work
+
             const updatedMovies = await Movie.from(moviesContainer.url).all<Movie>({
                 $in: [...nonCachedMovieUrls],
             });

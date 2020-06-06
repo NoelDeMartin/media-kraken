@@ -43,7 +43,9 @@ export default abstract class User<JSON extends object=object> {
         if (!moviesContainerDocument)
             return null;
 
-        // Reading containers causes their modified date to be updated in node-soli-server.
+        // TODO measure reading time and update updatedAt for better estimates
+
+        // Reading containers causes their modified date to be updated in node-solid-server.
         // So we will assume that a modification made within 2 minutes of prepping the
         // cache was caused by a read.
         const ageThreshold = 60000;

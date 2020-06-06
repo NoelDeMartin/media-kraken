@@ -144,7 +144,7 @@ export default class Movie extends SolidModel {
     }
 
     public watch(date?: Date): Promise<WatchAction> {
-        return this.relatedActions.create({ createdAt: date }, true);
+        return this.relatedActions.create(Obj.withoutUndefined({ createdAt: date }), true);
     }
 
     public toJSON(): MovieJSON {
