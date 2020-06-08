@@ -27,7 +27,7 @@ export default Vue.extend({
 
             const trigger = this.getEventTrigger(e.target);
 
-            if (!trigger)
+            if (!trigger || trigger.startsWith('http'))
                 return;
 
             e.preventDefault();

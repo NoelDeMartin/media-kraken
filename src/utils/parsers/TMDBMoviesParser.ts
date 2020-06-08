@@ -8,11 +8,11 @@ type Data = TMDBMovie;
 
 class TMDBMoviesParser implements MediaParser<Data, Movie> {
 
-    public validate(_: any): void {
+    public async validate(_: any): Promise<void> {
         throw new Error('TMDB movies validation is not implemented');
     }
 
-    public parse(data: Data): Movie {
+    public async parse(data: Data): Promise<Movie> {
         const movie = new Movie({
             title: data.title,
             description: data.overview,

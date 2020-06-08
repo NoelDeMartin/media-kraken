@@ -29,8 +29,7 @@ const MEDIA_TYPES_ACCEPT = {
 
 class Files {
 
-    private input: HTMLInputElement;
-
+    private input!: HTMLInputElement;
     private activeUpload?: ActiveUpload;
 
     private cancelActiveUpload = async () => {
@@ -45,9 +44,8 @@ class Files {
         delete this.activeUpload;
     }
 
-    constructor() {
-        this.input = document.createElement('input');
-        this.input.setAttribute('type', 'file');
+    public setInput(input: HTMLInputElement): void {
+        this.input = input;
         this.input.onchange = () => this.onInputChanged();
     }
 

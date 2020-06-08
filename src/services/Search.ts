@@ -193,13 +193,13 @@ export default class Search extends Service<State> {
 
     private async updateSearchResults() {
         const response = await TheMovieDBApi.searchMovies(this.query.trim());
-
-        const results = response.results.map(data => {
-            const movie = TMDBMoviesParser.parse(data);
+        const promisedResults = response.results.map(async data => {
+            const movie = await TMDBMoviesParser.parse(data);
 
             return this.app.$media.movies.find(collectionMovie => collectionMovie.is(movie))
                 || movie;
         });
+        const results = await Promise.all(promisedResults);
 
         this.searching = false;
         this.setState({

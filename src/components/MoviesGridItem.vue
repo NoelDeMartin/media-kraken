@@ -3,7 +3,7 @@
         <router-link
             :to="{ name: 'movie', params: { uuid: movie.uuid } }"
             :title="movie.title"
-            class="group"
+            class="block group"
         >
             <MoviePoster :url="movie.posterUrl" :title="movie.title" />
             <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-25" />

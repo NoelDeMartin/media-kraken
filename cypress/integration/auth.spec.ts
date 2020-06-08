@@ -49,9 +49,9 @@ describe('Authentication', () => {
 
     beforeEach(() => cy.visit('/'));
 
-    it ('Logs in using browser storage', () => {
+    it('Logs in using browser storage', () => {
         // Arrange
-        cy.start({ useRealEngines: true });
+        cy.startApp();
 
         // Act
         cy.contains('Use browser storage').click();
@@ -62,10 +62,10 @@ describe('Authentication', () => {
 
     it('Logs out with browser storage and clears client data', () => {
         // Arrange
-        cy.start({ useRealEngines: true });
+        cy.startApp();
         cy.contains('Use browser storage').click();
         cy.see('Welcome!');
-        cy.restart();
+        cy.reload();
 
         // Act
         cy.ariaLabel('Settings').click();
@@ -82,7 +82,7 @@ describe('Authentication', () => {
 
         stubSolidLogin(domain);
 
-        cy.start({ useRealEngines: true });
+        cy.startApp();
 
         // Act
         cy.contains('Use Solid POD').click();
@@ -98,16 +98,16 @@ describe('Authentication', () => {
         const domain = Faker.internet.domainName();
         const loginContext = stubSolidLogin(domain);
 
-        cy.start({ useRealEngines: true });
+        cy.startApp();
         cy.contains('Use Solid POD').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
         cy.contains('Login').click();
         cy.seeImage(taxiDriverJson.image);
-        cy.reload();
+        cy.visit('/');
 
         stubSolidLogin(domain, loginContext);
 
-        cy.start({ useRealEngines: true });
+        cy.startApp();
 
         // Act
         cy.ariaLabel('Settings').click();

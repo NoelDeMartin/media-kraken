@@ -1,8 +1,6 @@
 import { SolidAuthClient } from 'solid-auth-client';
 import { Soukai } from 'soukai';
 
-import User from '@/models/users/User';
-
 interface AppLibraries {
     'soukai': Soukai;
     'solid-auth-client': SolidAuthClient;
@@ -11,10 +9,10 @@ interface AppLibraries {
 declare global {
 
     interface TestingRuntime {
-        lib<K extends keyof AppLibraries>(name: K): AppLibraries[K];
-        service<K extends keyof Vue>(name: K): Vue[K];
         start(): Promise<void>;
-        login(): User;
+        login(): Promise<void>;
+        service<K extends keyof Vue>(name: K): Vue[K];
+        lib<K extends keyof AppLibraries>(name: K): AppLibraries[K];
     }
 
     interface Window {

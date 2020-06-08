@@ -51,13 +51,21 @@ export default class SolidUser extends User<SolidUserJSON> {
             // this like an error
             alert("We couldn't validate your credentials, please login again");
 
-            await SolidAuthClient.logout();
+            await this.logout();
             listener(null);
         }
     }
 
     public static async login(idp: string): Promise<void> {
         await SolidAuthClient.login(idp);
+    }
+
+    public static async logout(): Promise<void> {
+        await SolidAuthClient.logout();
+
+        // Clean up storage
+        // @see https://github.com/solid/solid-auth-client/issues/96
+        Storage.remove('solid-auth-client');
     }
 
     public static isSolidUserJSON(json: object): json is SolidUserJSON {
@@ -132,11 +140,7 @@ export default class SolidUser extends User<SolidUserJSON> {
     }
 
     public async logout(): Promise<void> {
-        await SolidAuthClient.logout();
-
-        // Clean up storage
-        // @see https://github.com/solid/solid-auth-client/issues/96
-        Storage.remove('solid-auth-client');
+        await this.classDef.logout();
     }
 
     public toJSON(): SolidUserJSON {

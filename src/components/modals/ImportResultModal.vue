@@ -17,7 +17,7 @@
                 @inspect="inspectPending"
             >
                 <strong class="font-semibold">{{ pendingMovies.length }}</strong>
-                movies to watch later have been added to your collection.
+                movies have been added to your collection to watch later.
             </ImportResultModalItem>
             <ImportResultModalItem
                 v-if="log.ignored.length > 0"

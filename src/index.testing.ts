@@ -4,14 +4,15 @@ import Vue from 'vue';
 
 import { AppLibraries } from '@/types/global';
 
-import EventBus from '@/utils/EventBus';
-
-import OfflineUser from '@/models/users/OfflineUser';
-import User from '@/models/users/User';
-
 import { start } from './bootstrap';
 
 window.Runtime = {
+
+    start,
+
+    login: () => Vue.instance.$auth.loginOffline(),
+
+    service: <K extends keyof Vue>(name: K): Vue[K] => Vue.instance[name],
 
     lib<K extends keyof AppLibraries>(name: K): AppLibraries[K] {
         switch (name) {
@@ -20,27 +21,6 @@ window.Runtime = {
             case 'solid-auth-client':
                 return SolidAuthClient;
         }
-    },
-
-    service<K extends keyof Vue>(name: K): Vue[K] {
-        return Vue.instance[name];
-    },
-
-    start,
-
-    login(): User {
-        const user = new OfflineUser();
-
-        Vue.instance.$store.commit('auth.setState', { user });
-
-        EventBus.emit('login', user);
-
-        if (Vue.instance.$router.currentRoute.name === 'login')
-            Vue.instance.$router.replace({ name: 'home' });
-
-        localStorage.setItem('user', JSON.stringify(user.toJSON()));
-
-        return user;
     },
 
 };

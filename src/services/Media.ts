@@ -1,7 +1,7 @@
 import { MediaParser } from '@/utils/parsers';
 import EventBus from '@/utils/EventBus';
 import Files from '@/utils/Files';
-import JSONMoviesParser from '@/utils/parsers/JSONMoviesParser';
+import JSONLDMoviesParser from '@/utils/parsers/JSONLDMoviesParser';
 import Time from '@/utils/Time';
 import TVisoMoviesParser from '@/utils/parsers/TVisoMoviesParser';
 
@@ -52,7 +52,7 @@ export interface MediaContainers {
 
 export enum MediaSource {
     TViso = 'tviso',
-    JSON = 'json',
+    JSONLD = 'jsonld',
 }
 
 export default class Media extends Service<State> {
@@ -82,7 +82,7 @@ export default class Media extends Service<State> {
         return this.state.importOperation;
     }
 
-    public async importMovies(data: {}[], source: any): Promise<void> {
+    public async importMovies(data: object[], source: any): Promise<void> {
         if (this.state.importOperation)
             throw new Error('Import already in progress');
 
@@ -118,7 +118,7 @@ export default class Media extends Service<State> {
 
             try {
                 try {
-                    parser.validate(movieData);
+                    await parser.validate(movieData);
                 } catch (error) {
                     if (!(error instanceof MediaValidationError))
                         throw error;
@@ -138,7 +138,7 @@ export default class Media extends Service<State> {
                     continue;
                 }
 
-                const movie = parser.parse(movieData);
+                const movie = await parser.parse(movieData);
 
                 const collectionMovie = this.movies.find(collectionMovie => collectionMovie.is(movie));
                 if (collectionMovie) {
@@ -149,7 +149,7 @@ export default class Media extends Service<State> {
                     continue;
                 }
 
-                await movie.completeAttributes();
+                await movie.fetchAttributes();
                 await this.moviesContainer!.saveMovie(movie);
 
                 log.added.push(movie);
@@ -181,7 +181,7 @@ export default class Media extends Service<State> {
     public exportCollection(): void {
         Files.download(
             'my-collection.json',
-            JSON.stringify(this.movies.map(movie => movie.toJSON())),
+            JSON.stringify(this.movies.map(movie => movie.toJsonLD())),
         );
     }
 
@@ -221,8 +221,8 @@ export default class Media extends Service<State> {
         switch (source) {
             case MediaSource.TViso:
                 return TVisoMoviesParser;
-            case MediaSource.JSON:
-                return JSONMoviesParser;
+            case MediaSource.JSONLD:
+                return JSONLDMoviesParser;
         }
     }
 

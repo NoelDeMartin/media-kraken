@@ -57,15 +57,15 @@ export default Vue.extend({
     computed: {
         mediaSourceNames: () => ({
             [MediaSource.TViso]: 'TViso',
-            [MediaSource.JSON]: 'JSON',
+            [MediaSource.JSONLD]: 'JSON-LD',
         }),
         helpReplacements(): any {
             const repositoryUrl = 'https://github.com/NoelDeMartin/media-kraken';
-            const filePath = 'src/models/third-party/JSONMovie.ts';
+            const filePath = 'docs#data-schema';
             const branch = this.$config.isDevelopment ? 'master' : this.$config.version;
 
             return {
-                json: {
+                jsonld: {
                     url: `${repositoryUrl}/blob/${branch}/${filePath}`,
                 },
             };

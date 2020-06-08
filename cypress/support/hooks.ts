@@ -1,1 +1,1 @@
-beforeEach(() => cy.resetIndexedDB());
+beforeEach(() => cy.resetBrowser());

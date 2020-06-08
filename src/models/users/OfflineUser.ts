@@ -29,7 +29,7 @@ export default class OfflineUser extends User<OfflineUserJSON> {
     }
 
     public async logout(): Promise<void> {
-        (Soukai.engine as IndexedDBEngine).purgeDatabase();
+        await (Soukai.engine as IndexedDBEngine).purgeDatabase();
 
         Storage.remove('offline-user');
     }

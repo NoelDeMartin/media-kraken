@@ -1,32 +1,15 @@
-import { Engine, IndexedDBEngine } from 'soukai';
+import { IndexedDBEngine } from 'soukai';
 
 import { AppLibraries } from '@/types/global';
 
-import Http from '@tests/utils/Http';
-import TestingEngine from '@tests/engines/TestingEngine';
+import ModelsCache from '@/models/ModelsCache';
 
-interface Config {
-    useRealEngines?: boolean;
-}
+import Http from '@tests/utils/Http';
 
 const fetchRoutes: { urlPattern: RegExp; response: any }[] = [];
 
 function getRuntime(): Cypress.Chainable<TestingRuntime> {
     return cy.window().its('Runtime').then(runtime => runtime!);
-}
-
-function setupTestingEngine(): void {
-    getRuntime().then(runtime => {
-        const Soukai = runtime.lib('soukai');
-        const idbEngine = new IndexedDBEngine('media-kraken');
-        const engine = new TestingEngine(idbEngine);
-
-        idbEngine.purgeDatabase();
-
-        Soukai.useEngine(engine);
-
-        cy.wrap(engine).as('soukaiEngine');
-    });
 }
 
 export function fetchStub(url: string): Promise<Response> {
@@ -47,26 +30,27 @@ export function fetchStub(url: string): Promise<Response> {
 
 const customCommands = {
 
-    start(config: Config = {}): void {
-        cy.wrap(config).as('config');
+    startApp(): void {
         cy.window()
           .then(window => cy.stub(window, 'fetch', fetchStub));
         cy.lib('solid-auth-client')
           .then(SolidAuthClient => cy.stub(SolidAuthClient, 'fetch', fetchStub));
 
-        if (!config.useRealEngines)
-            setupTestingEngine();
-
         getRuntime().then(runtime => runtime.start());
     },
 
-    restart(): void {
-        cy.reload();
-        cy.get<Config>('@config').then(config => cy.start(config));
+    login(): void {
+        getRuntime().then(runtime => runtime.login());
     },
 
-    resetIndexedDB(): void {
+    resetBrowser(): void {
+        ModelsCache.clear();
         (new IndexedDBEngine('media-kraken')).purgeDatabase();
+        cy.window().then(window => window.Runtime?.lib('soukai').closeConnections());
+    },
+
+    lib<K extends keyof AppLibraries>(name: K): Cypress.Chainable<AppLibraries[K]> {
+        return getRuntime().then(runtime => runtime.lib(name));
     },
 
     indexedDBShouldBeEmpty() {
@@ -108,46 +92,6 @@ const customCommands = {
         });
     },
 
-    lib<K extends keyof AppLibraries>(name: K): Cypress.Chainable<AppLibraries[K]> {
-        return getRuntime().then(runtime => runtime.lib(name));
-    },
-
-    login(): void {
-        getRuntime().then(runtime => {
-            const user = runtime.login();
-
-            cy.wrap(user).as('user');
-        });
-    },
-
-    spyEngine(): void {
-        cy.get<Engine>('@soukaiEngine').then(engine => {
-            cy.wrap({
-                create: cy.spy(engine, 'create'),
-                readOne: cy.spy(engine, 'readOne'),
-                readMany: cy.spy(engine, 'readMany'),
-                update: cy.spy(engine, 'update'),
-                delete: cy.spy(engine, 'delete'),
-            }).as('soukaiEngineSpies');
-        });
-    },
-
-    engineSpiesExpectations(
-        expectations: { [method in keyof Engine]?: (spy: Cypress.Agent<sinon.SinonSpy>) => void },
-    ): void {
-        cy.get('@soukaiEngineSpies').then(spies => {
-            for (const method in spies) {
-                const spy = spies[method] as any as Cypress.Agent<sinon.SinonSpy>;
-
-                if (method in expectations) {
-                    expectations[method as keyof Engine]!(spy);
-                } else {
-                    expect(spy).to.not.have.been.called;
-                }
-            }
-        });
-    },
-
     fetchRoute(urlPattern: RegExp | string, response: Response | any): void {
         if (!(urlPattern instanceof RegExp))
             urlPattern = new RegExp(urlPattern);
@@ -171,10 +115,42 @@ const customCommands = {
         return cy.get<HTMLElement>(`[role="${role}"]`);
     },
 
+    buttonWithTitle(title: string): Cypress.Chainable<JQuery<HTMLElement>> {
+        return cy.get<HTMLElement>(`button[title="${title}"]`);
+    },
+
+    uploadFixture(name: string): void {
+        let blob: Blob;
+
+        cy.fixture(name)
+            .then(content => {
+                return Cypress.Blob.base64StringToBlob(
+                    btoa(JSON.stringify(content)),
+                    'application/json',
+                );
+            })
+            .then(b => blob = b);
+
+        cy.get<HTMLInputElement>('#file-picker').then(input => {
+            const file = new File([blob], name);
+            const dataTransfer = new DataTransfer();
+
+            dataTransfer.items.add(file);
+
+            input[0].files = dataTransfer.files;
+            input.trigger('change', { force: true });
+        });
+    },
+
 };
 
 for (const command in customCommands) {
     Cypress.Commands.add(command, (customCommands as any)[command]);
 }
+
+Cypress.Commands.overwrite('reload', originalReload => {
+    originalReload();
+    cy.startApp();
+});
 
 export default customCommands;

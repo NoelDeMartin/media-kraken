@@ -30,7 +30,7 @@ interface Data {
 
 class TVisoMoviesParser implements MediaParser<Data, Movie> {
 
-    public validate(data: any): void {
+    public async validate(data: any): Promise<void> {
         if (data.type !== DataMediaType.Movie)
             throw new UnsuitableMediaError('Not a movie');
 
@@ -43,7 +43,7 @@ class TVisoMoviesParser implements MediaParser<Data, Movie> {
             throw new MediaValidationError(['Invalid format']);
     }
 
-    public parse(data: Data): Movie {
+    public async parse(data: Data): Promise<Movie> {
         const checkedAt = new Date(data.checkedDate);
         const movie = new Movie({
             title: data.title,

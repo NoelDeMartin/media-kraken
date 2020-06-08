@@ -51,14 +51,16 @@ async function removeLoading() {
 }
 
 export async function start(): Promise<void> {
-    Vue.instance.$mount('#app');
-
-    await bootServices(Vue.instance).catch(error => {
+    const servicesBooted = bootServices(Vue.instance).catch(error => {
         alert('Something went wrong! (look at the console for details)');
 
         // eslint-disable-next-line no-console
         console.error(error);
     });
+
+    Vue.instance.$mount('#app');
+
+    await servicesBooted;
 
     prepareErrorHandlers();
     prepareInitialRoute();

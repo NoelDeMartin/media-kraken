@@ -126,7 +126,11 @@ export default class Movie extends SolidModel {
         return this.hasMany(WatchAction, 'object');
     }
 
-    public async completeAttributes(): Promise<void> {
+    public async fetchAttributes(): Promise<void> {
+        delete this.url;
+
+        this.actions?.map(action => delete action.url);
+
         if (this.imdbId && this.tmdbId)
             return;
 
@@ -135,7 +139,8 @@ export default class Movie extends SolidModel {
         if (!tmdbMovie)
             return;
 
-        const newAttributes = TMDBMoviesParser.parse(tmdbMovie).getAttributes();
+        const newMovie = await TMDBMoviesParser.parse(tmdbMovie);
+        const newAttributes = newMovie.getAttributes();
 
         // TODO implement model.setAttributes(...); in soukai
         for (const [key, value] of Object.entries(newAttributes)) {
