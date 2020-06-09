@@ -44,6 +44,7 @@ const customCommands = {
     },
 
     resetBrowser(): void {
+        fetchRoutes.length = 0;
         ModelsCache.clear();
         (new IndexedDBEngine('media-kraken')).purgeDatabase();
         cy.window().then(window => window.Runtime?.lib('soukai').closeConnections());
@@ -103,8 +104,8 @@ const customCommands = {
         cy.contains(text).should('be.visible');
     },
 
-    seeImage(url: string): void {
-        cy.get<HTMLElement>(`img[src="${url}"]`).should('be.visible');
+    seeImage(url: string, options: Partial<Cypress.Timeoutable> = {}): void {
+        cy.get<HTMLElement>(`img[src="${url}"]`, options).should('be.visible');
     },
 
     ariaLabel(label: string): Cypress.Chainable<JQuery<HTMLElement>> {

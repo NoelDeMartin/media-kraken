@@ -11,15 +11,6 @@ import TheMovieDBApi, { TMDBMovie } from '@/api/TheMovieDBApi';
 
 import WatchAction from '@/models/soukai/WatchAction';
 
-export interface MovieJSON {
-    title: string;
-    description?: string;
-    releaseDate?: string;
-    posterUrl?: string;
-    watchedAt?: string;
-    externalUrls?: string[];
-}
-
 export default class Movie extends SolidModel {
 
     public static rdfContexts = {
@@ -126,11 +117,7 @@ export default class Movie extends SolidModel {
         return this.hasMany(WatchAction, 'object');
     }
 
-    public async fetchAttributes(): Promise<void> {
-        delete this.url;
-
-        this.actions?.map(action => delete action.url);
-
+    public async fetchMissingAttributes(): Promise<void> {
         if (this.imdbId && this.tmdbId)
             return;
 
@@ -150,17 +137,6 @@ export default class Movie extends SolidModel {
 
     public watch(date?: Date): Promise<WatchAction> {
         return this.relatedActions.create(Obj.withoutUndefined({ createdAt: date }), true);
-    }
-
-    public toJSON(): MovieJSON {
-        return Obj.withoutUndefined({
-            title: this.title,
-            description: this.description,
-            releaseDate: this.releaseDate?.toString(),
-            posterUrl: this.posterUrl,
-            watchedAt: this.watchedAt?.toString(),
-            externalUrls: this.externalUrls,
-        });
     }
 
     protected newUrl(): string {

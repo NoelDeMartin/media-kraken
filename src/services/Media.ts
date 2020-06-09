@@ -149,7 +149,7 @@ export default class Media extends Service<State> {
                     continue;
                 }
 
-                await movie.fetchAttributes();
+                await movie.fetchMissingAttributes();
                 await this.moviesContainer!.saveMovie(movie);
 
                 log.added.push(movie);

@@ -58,6 +58,9 @@ describe('Authentication', () => {
 
         // Assert
         cy.see('Welcome!');
+
+        cy.reload();
+        cy.see('Welcome!');
     });
 
     it('Logs out with browser storage and clears client data', () => {
@@ -65,7 +68,6 @@ describe('Authentication', () => {
         cy.startApp();
         cy.contains('Use browser storage').click();
         cy.see('Welcome!');
-        cy.reload();
 
         // Act
         cy.ariaLabel('Settings').click();
@@ -79,8 +81,7 @@ describe('Authentication', () => {
     it('Logs in with Solid', () => {
         // Arrange
         const domain = Faker.internet.domainName();
-
-        stubSolidLogin(domain);
+        const loginContext = stubSolidLogin(domain);
 
         cy.startApp();
 
@@ -90,24 +91,25 @@ describe('Authentication', () => {
         cy.contains('Login').click();
 
         // Assert
-        cy.seeImage(taxiDriverJson.image);
+        cy.seeImage(taxiDriverJson.image, { timeout: 10000 });
+
+        cy.visit('/collection');
+        stubSolidLogin(domain, loginContext);
+        cy.startApp();
+        cy.seeImage(taxiDriverJson.image, { timeout: 10000 });
     });
 
     it('Logs out with Solid and clears client data', () => {
         // Arrange
         const domain = Faker.internet.domainName();
-        const loginContext = stubSolidLogin(domain);
+
+        stubSolidLogin(domain);
 
         cy.startApp();
         cy.contains('Use Solid POD').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
         cy.contains('Login').click();
-        cy.seeImage(taxiDriverJson.image);
-        cy.visit('/');
-
-        stubSolidLogin(domain, loginContext);
-
-        cy.startApp();
+        cy.seeImage(taxiDriverJson.image, { timeout: 10000 });
 
         // Act
         cy.ariaLabel('Settings').click();
