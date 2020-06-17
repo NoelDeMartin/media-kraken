@@ -1,7 +1,13 @@
 class Str {
 
     public slug(text: string, separator: string = '-'): string {
-        text = text.trim().toLowerCase().replace(/[^\d\w]/g, separator);
+        text = text
+            .trim()
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .replace(/[^\d\w\s]/g, '')
+            .toLowerCase()
+            .replace(/\s+/g, separator);
 
         if (separator.length > 0)
             text = text.replace(new RegExp(`${separator}+`, 'g'), separator);
