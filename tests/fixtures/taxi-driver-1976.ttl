@@ -5,4 +5,4 @@
     a schema:Movie ;
     a ldp:Resource ;
     schema:name "Taxi Driver" ;
-    schema:image "https://image.tmdb.org/t/p/w342/ekstpH614fwDX8DUln1a2Opz0N8.jpg" .
+    schema:image "https://image.tmdb.org/t/p/w500/ekstpH614fwDX8DUln1a2Opz0N8.jpg" .

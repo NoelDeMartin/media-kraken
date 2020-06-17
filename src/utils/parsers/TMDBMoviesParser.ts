@@ -23,7 +23,7 @@ class TMDBMoviesParser implements MediaParser<Data, Movie> {
         movie.setRelationModels('actions', []);
 
         if (data.poster_path)
-            movie.posterUrl = `https://image.tmdb.org/t/p/w342${data.poster_path}`;
+            movie.posterUrl = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
 
         if (data.imdb_id)
             movie.externalUrls.push(`https://www.imdb.com/title/${data.imdb_id}`);
