@@ -133,6 +133,8 @@ export default class Movie extends SolidModel {
         for (const [key, value] of Object.entries(newAttributes)) {
             this.setAttribute(key, value);
         }
+
+        this.regenerateUrls();
     }
 
     public watch(date?: Date): Promise<WatchAction> {
@@ -162,6 +164,17 @@ export default class Movie extends SolidModel {
         }
 
         return null;
+    }
+
+    private regenerateUrls(): void {
+        if (!this.url || this.exists() || !this.isDocumentRoot())
+            return;
+
+        const documentActions = (this.actions || [])
+            .filter(action => action.url && action.url.startsWith(this.url));
+
+        this.mintUrl();
+        documentActions.forEach(action => action.mintUrl(this.url));
     }
 
 }
