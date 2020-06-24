@@ -82,7 +82,7 @@ export default class Media extends Service<State> {
         return this.state.importOperation;
     }
 
-    public async importMovies(data: object[], source: any): Promise<void> {
+    public async importMovies(data: object[], source: MediaSource): Promise<void> {
         if (this.state.importOperation)
             throw new Error('Import already in progress');
 
@@ -211,6 +211,8 @@ export default class Media extends Service<State> {
         Movie.collection = moviesContainer.url;
 
         this.setState({ moviesContainer });
+
+        EventBus.emit('media-loaded');
     }
 
     private async unload(): Promise<void> {

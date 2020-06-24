@@ -141,7 +141,10 @@ export default class Movie extends SolidModel {
         return this.relatedActions.create(Obj.withoutUndefined({ createdAt: date }), true);
     }
 
-    protected newUrl(): string {
+    protected newUrl(documentUrl?: string): string {
+        if (documentUrl)
+            return documentUrl + '#' + this.slug;
+
         return Url.resolve(this.classDef.collection, this.slug);
     }
 

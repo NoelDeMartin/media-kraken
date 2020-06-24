@@ -13,6 +13,7 @@
                         ref="menu-button"
                         type="button"
                         class="absolute left-0 p-4 rounded text-black z-10 hover:bg-gray-300 desktop:hidden"
+                        aria-label="Open menu"
                         @click="$ui.toggleMenu()"
                     >
                         <BaseIcon name="menu" class="w-6 h-6" />

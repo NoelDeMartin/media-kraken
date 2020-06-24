@@ -6,14 +6,14 @@ import ModelsCache from '@/models/ModelsCache';
 
 import Http from '@tests/utils/Http';
 
-const fetchRoutes: { urlPattern: RegExp; response: any }[] = [];
+const fetchRoutes: { match(url: string): boolean; response: any }[] = [];
 
 function getRuntime(): Cypress.Chainable<TestingRuntime> {
     return cy.window().its('Runtime').then(runtime => runtime!);
 }
 
 export function fetchStub(url: string): Promise<Response> {
-    const match = fetchRoutes.find(route => route.urlPattern.test(url));
+    const match = fetchRoutes.find(route => route.match(url));
     const response = match?.response;
 
     if (typeof response === 'string')
@@ -52,6 +52,10 @@ const customCommands = {
 
     lib<K extends keyof AppLibraries>(name: K): Cypress.Chainable<AppLibraries[K]> {
         return getRuntime().then(runtime => runtime.lib(name));
+    },
+
+    addMovie(jsonld: object): void {
+        getRuntime().then(runtime => runtime.addMovie(jsonld));
     },
 
     indexedDBShouldBeEmpty() {
@@ -93,11 +97,15 @@ const customCommands = {
         });
     },
 
-    fetchRoute(urlPattern: RegExp | string, response: Response | any): void {
-        if (!(urlPattern instanceof RegExp))
-            urlPattern = new RegExp(urlPattern);
-
-        fetchRoutes.push({ urlPattern, response });
+    fetchRoute(pattern: RegExp | string, response: Response | any): void {
+        fetchRoutes.push({
+            match(url) {
+                return pattern instanceof RegExp
+                    ? pattern.test(url)
+                    : url.indexOf(pattern) !== -1;
+            },
+            response,
+        });
     },
 
     see(text: string): void {
@@ -118,6 +126,10 @@ const customCommands = {
 
     buttonWithTitle(title: string): Cypress.Chainable<JQuery<HTMLElement>> {
         return cy.get<HTMLElement>(`button[title="${title}"]`);
+    },
+
+    anchorWithTitle(title: string): Cypress.Chainable<JQuery<HTMLElement>> {
+        return cy.get<HTMLElement>(`a[title="${title}"]`);
     },
 
     uploadFixture(name: string): void {

@@ -1,11 +1,11 @@
 import { Session } from 'solid-auth-client';
 import Faker from 'faker';
 
-import movies from '@tests/fixtures/movies.ttl';
-import profile from '@tests/fixtures/profile.ttl';
-import taxiDriverJson from '@tests/fixtures/taxi-driver-1976.json';
-import taxiDriverTurtle from '@tests/fixtures/taxi-driver-1976.ttl';
-import typeIndex from '@tests/fixtures/typeIndex.ttl';
+import movies from '@tests/fixtures/turtle/movies.ttl';
+import profile from '@tests/fixtures/turtle/profile.ttl';
+import taxiDriver from '@tests/fixtures/json/taxi-driver.json';
+import taxiDriverTurtle from '@tests/fixtures/turtle/taxi-driver-1976.ttl';
+import typeIndex from '@tests/fixtures/turtle/typeIndex.ttl';
 
 interface SolidLoginContext {
     listener?: Function;
@@ -91,12 +91,12 @@ describe('Authentication', () => {
         cy.contains('Login').click();
 
         // Assert
-        cy.seeImage(taxiDriverJson.image, { timeout: 10000 });
+        cy.seeImage(taxiDriver.image, { timeout: 10000 });
 
         cy.visit('/collection');
         stubSolidLogin(domain, loginContext);
         cy.startApp();
-        cy.seeImage(taxiDriverJson.image, { timeout: 10000 });
+        cy.seeImage(taxiDriver.image, { timeout: 10000 });
     });
 
     it('Logs out with Solid and clears client data', () => {
@@ -109,7 +109,7 @@ describe('Authentication', () => {
         cy.contains('Use Solid POD').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
         cy.contains('Login').click();
-        cy.seeImage(taxiDriverJson.image, { timeout: 10000 });
+        cy.seeImage(taxiDriver.image, { timeout: 10000 });
 
         // Act
         cy.ariaLabel('Settings').click();
@@ -118,6 +118,20 @@ describe('Authentication', () => {
         // Assert
         cy.indexedDBShouldBeEmpty();
         cy.localStorageShouldBeEmpty();
+    });
+
+    it('Logs out in mobile layout', () => {
+        // Arrange
+        cy.viewport('samsung-s10');
+        cy.startApp();
+        cy.login();
+
+        // Act
+        cy.ariaLabel('Open menu').click();
+        cy.contains('Log out').click();
+
+        // Assert
+        cy.url().should('include', '/login');
     });
 
 });

@@ -13,6 +13,7 @@ declare global {
         login(): Promise<void>;
         service<K extends keyof Vue>(name: K): Vue[K];
         lib<K extends keyof AppLibraries>(name: K): AppLibraries[K];
+        addMovie(jsonld: object): Promise<void>;
     }
 
     interface Window {

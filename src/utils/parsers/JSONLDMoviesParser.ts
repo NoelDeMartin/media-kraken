@@ -33,8 +33,12 @@ class JSONLDMoviesParser implements MediaParser<object, Movie> {
 
         delete movie.url;
 
-        if (movie.isRelationLoaded('actions'))
-            movie.actions!.map(action => delete action.url);
+        (movie.actions || []).forEach(action => {
+            delete action.url;
+            delete action.object;
+
+            movie.relatedActions.addModelToStoreInSameDocument(action);
+        });
 
         return movie;
     }

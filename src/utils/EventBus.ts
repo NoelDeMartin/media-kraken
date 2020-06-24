@@ -20,6 +20,10 @@ export class EventBus {
         this.bus.$emit(event, payload);
     }
 
+    public until(event: string): Promise<void> {
+        return new Promise(resolve => this.once(event, resolve));
+    }
+
 }
 
 export default new EventBus();

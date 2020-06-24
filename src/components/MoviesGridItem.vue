@@ -2,7 +2,7 @@
     <div class="movies-grid-item relative">
         <router-link
             :to="{ name: 'movie', params: { uuid: movie.uuid } }"
-            :title="movie.title"
+            :title="linkTitle"
             class="block group"
         >
             <MoviePoster :url="movie.posterUrl" :title="movie.title" />
@@ -39,9 +39,16 @@ export default Vue.extend({
             required: true,
         },
     },
+    computed: {
+        linkTitle(): string {
+            const status = this.movie.watched ? 'Watched' : 'Watch later';
+
+            return `${this.movie.title} (${status})`;
+        },
+    },
     methods: {
         async markWatched(e: Event) {
-            if (!this.movie || this.movie.watched)
+            if (this.movie.watched)
                 return;
 
             e.preventDefault();
