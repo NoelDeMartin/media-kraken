@@ -102,7 +102,7 @@ export default Modal.extend({
                         await movie.watch();
 
                     await movie.fetchMissingAttributes();
-                    await this.$media.moviesContainer!.saveMovie(movie);
+                    await this.$media.moviesContainer!.relatedMovies.save(movie);
                 },
                 `Adding **${movie.title}** to your collection...`,
             );

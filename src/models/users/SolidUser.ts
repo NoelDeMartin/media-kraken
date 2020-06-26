@@ -94,8 +94,6 @@ export default class SolidUser extends User<SolidUserJSON> {
         const storages = store.statements(webId, 'pim:storage');
         const typeIndexStatement = store.statement(webId, 'solid:publicTypeIndex');
 
-        // TODO load extended profile to find additional storages
-
         if (!typeIndexStatement)
             throw new Error("Couldn't find solid:publicTypeIndex in profile");
 

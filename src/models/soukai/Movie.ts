@@ -126,14 +126,9 @@ export default class Movie extends SolidModel {
         if (!tmdbMovie)
             return;
 
-        const newMovie = await TMDBMoviesParser.parse(tmdbMovie);
-        const newAttributes = newMovie.getAttributes();
+        const movie = await TMDBMoviesParser.parse(tmdbMovie);
 
-        // TODO implement model.setAttributes(...); in soukai
-        for (const [key, value] of Object.entries(newAttributes)) {
-            this.setAttribute(key, value);
-        }
-
+        this.setAttributes(movie.getAttributes());
         this.regenerateUrls();
     }
 

@@ -6,7 +6,6 @@ import WatchAction from '@/models/soukai/WatchAction';
 
 import { MediaContainers } from '@/services/Media';
 
-// TODO check that this doesn't make worker code end up in the main bundle
 import { Parameters, Result } from './LoadMediaWorker';
 import WebWorkerRunner from './WebWorkerRunner';
 

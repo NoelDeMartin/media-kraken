@@ -1,5 +1,5 @@
-import Soukai, { MultiModelRelation, FieldType } from 'soukai';
-import { SolidEngine, SolidContainerModel } from 'soukai-solid';
+import { MultiModelRelation, FieldType } from 'soukai';
+import { SolidContainerModel, SolidContainsRelation } from 'soukai-solid';
 
 import Movie from '@/models/soukai/Movie';
 
@@ -14,23 +14,10 @@ export default class MediaContainer extends SolidContainerModel {
     };
 
     public movies?: Movie[];
+    public relatedMovies!: SolidContainsRelation<MediaContainer, Movie, typeof Movie>;
 
     public moviesRelationship(): MultiModelRelation {
         return this.contains(Movie);
-    }
-
-    public async saveMovie(movie: Movie): Promise<void> {
-        // TODO implement this.moviesRelationship().save(movie); in soukai
-
-        await movie.save(this.url);
-
-        if (!(Soukai.engine instanceof SolidEngine))
-            await this.update({
-                resourceUrls: [...this.resourceUrls, movie.url],
-            });
-
-        if (this.isRelationLoaded('movies'))
-            this.setRelationModels('movies', [...this.movies || [], movie]);
     }
 
 }

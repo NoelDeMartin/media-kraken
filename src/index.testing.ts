@@ -41,7 +41,7 @@ window.Runtime = {
         if (!media.loaded)
             await EventBus.until('media-loaded');
 
-        await media.moviesContainer!.saveMovie(movie);
+        await media.moviesContainer!.relatedMovies.save(movie);
     },
 
 };

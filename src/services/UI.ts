@@ -6,6 +6,7 @@ import Service, { ComputedStateDefinitions } from '@/services/Service';
 import Arr from '@/utils/Arr';
 import AsyncOperation from '@/utils/AsyncOperation';
 import EventBus from '@/utils/EventBus';
+import Obj from '@/utils/Obj';
 import UUID from '@/utils/UUID';
 
 import LoadingModal from '@/components/modals/LoadingModal.vue';
@@ -295,7 +296,7 @@ export default class UI extends Service<State, ComputedState> {
         const operation = new AsyncOperation({
             onFailed: error => this.showError(error),
         });
-        const initialAttributes = affectedAttributes.map(attribute => model.getAttribute(attribute));
+        const initialAttributes = Obj.only(model.getAttributes(), affectedAttributes);
 
         try {
             operation.start();
@@ -305,12 +306,9 @@ export default class UI extends Service<State, ComputedState> {
 
             operation.complete();
         } catch (error) {
-            operation.fail(error);
+            model.setAttributes(initialAttributes);
 
-            // TODO implement model.setAttributes(...); in soukai
-            affectedAttributes.forEach((attribute, index) => {
-                model.setAttribute(attribute, initialAttributes[index]);
-            });
+            operation.fail(error);
         }
     }
 
