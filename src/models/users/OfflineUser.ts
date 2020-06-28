@@ -1,4 +1,3 @@
-import { SolidDocument } from 'soukai-solid';
 import Soukai, { IndexedDBEngine } from 'soukai';
 
 import Storage from '@/utils/Storage';
@@ -42,9 +41,8 @@ export default class OfflineUser extends User<OfflineUserJSON> {
         return { offline: true };
     }
 
-    protected async getMoviesContainerDocument(): Promise<SolidDocument | null> {
-        // TODO implement this and add documents to container instance to
-        // leverage caching speed improvements
+    protected async getCachedMoviesContainer(): Promise<MediaContainer | null> {
+        // TODO implement to leverage caching speed improvements in offline mode.
 
         return null;
     }

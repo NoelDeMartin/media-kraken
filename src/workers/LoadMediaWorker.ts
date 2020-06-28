@@ -1,3 +1,4 @@
+import { SolidDocument } from 'soukai-solid';
 import Soukai from 'soukai';
 
 import '@/plugins/soukai';
@@ -7,7 +8,6 @@ import ModelsCache from '@/models/ModelsCache';
 import Movie from '@/models/soukai/Movie';
 import SolidUser from '@/models/users/SolidUser';
 import User from '@/models/users/User';
-import WatchAction from '@/models/soukai/WatchAction';
 
 import JSONUserParser from '@/utils/parsers/JSONUserParser';
 
@@ -47,35 +47,44 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
 
         if (!moviesContainer.isRelationLoaded('movies')) {
             const cachedMovies: Movie[] = [];
-            const nonCachedMovieUrls = new Set(moviesContainer.resourceUrls);
+            const nonCachedDocumentUrls = new Set(moviesContainer.resourceUrls);
 
             await Promise.all(moviesContainer.documents.map(async document => {
-                const movie = await ModelsCache.getFromDocument<Movie>(
-                    document,
-                    Movie,
-                    { actions: WatchAction },
-                );
+                const movie = await ModelsCache.getFromDocument(document);
 
                 if (movie === null)
                     return;
 
-                cachedMovies.push(movie);
-                nonCachedMovieUrls.delete(document.url);
+                if (movie.modelClass !== Movie) {
+                    nonCachedDocumentUrls.delete(document.url);
+
+                    return;
+                }
+
+                nonCachedDocumentUrls.delete(document.url);
+                cachedMovies.push(movie as Movie);
             }));
 
             // TODO this will only find movies that have the same url as the document,
             // so things like https://example.org/movies/jumanji#it won't work
 
             const updatedMovies = await Movie.from(moviesContainer.url).all<Movie>({
-                $in: [...nonCachedMovieUrls],
+                $in: [...nonCachedDocumentUrls],
             });
 
             await Promise.all(updatedMovies.map(async movie => {
+                nonCachedDocumentUrls.delete(movie.url);
+
                 if (!movie.isRelationLoaded('actions'))
                     await movie.loadRelation('actions');
 
                 await ModelsCache.remember(movie, { actions: movie.actions! });
             }));
+
+            await Promise.all(
+                [...nonCachedDocumentUrls]
+                    .map(documentUrl => ModelsCache.remember(new SolidDocument({ url: documentUrl }))),
+            );
 
             moviesContainer.setRelationModels('movies', [...cachedMovies, ...updatedMovies]);
         }

@@ -1,55 +1,70 @@
-import { Attributes } from 'soukai';
+import Soukai, { Attributes } from 'soukai';
 import { openDB, IDBPDatabase, DBSchema, deleteDB } from 'idb';
 import { SolidModel, SolidDocument } from 'soukai-solid';
 
-interface CachedModelData {
-    attributes?: Attributes;
-    relationAttributes?:  MapObject<Attributes[]>;
+interface CachedModelTimestamp {
     updatedAt: Date;
+}
+
+interface CachedModelData extends CachedModelTimestamp {
+    modelName: string;
+    attributes: Attributes;
+    relationModelNames: MapObject<string>;
+    relationAttributes:  MapObject<Attributes[]>;
 }
 
 interface DatabaseSchema extends DBSchema {
     'models-cache': {
-        value: CachedModelData;
+        value: CachedModelTimestamp | CachedModelData;
         key: string;
     };
+}
+
+function isCachedModelData(obj: CachedModelTimestamp | CachedModelData): obj is CachedModelData {
+    return 'modelName' in obj;
 }
 
 class ModelsCache {
 
     private connection?: IDBPDatabase<DatabaseSchema>;
 
-    public async getFromDocument<M extends SolidModel>(
-        document: SolidDocument,
-        modelClass: typeof SolidModel,
-        relatedModelClasses: MapObject<typeof SolidModel> = {},
-        validAge: number = 0,
-    ): Promise<M | null> {
+    public async getFromDocument(document: SolidDocument, validAge: number = 0): Promise<SolidModel | null> {
         const existingData = await this.getModelData(document.url);
-        const data = existingData || { updatedAt: null };
-        const existingDataTime = data.updatedAt?.getTime() || 0;
 
-        if (document.updatedAt.getTime() - existingDataTime <= validAge)
-            return this.deserializeModel(data as CachedModelData, modelClass, relatedModelClasses) as M;
+        if (
+            existingData &&
+            Math.abs(document.updatedAt.getTime() - existingData.updatedAt.getTime()) <= validAge
+        )
+            return this.deserializeModel(existingData);
+
+        const data: CachedModelTimestamp = existingData || { updatedAt: document.updatedAt };
 
         data.updatedAt = document.updatedAt;
 
-        if ('attributes' in data)
+        if (isCachedModelData(data)) {
+            delete data.modelName;
             delete data.attributes;
-
-        if ('relationAttributes' in data)
+            delete data.relationModelNames;
             delete data.relationAttributes;
+        }
 
-        await this.setModelData(document.url, data as CachedModelData);
+        await this.setModelData(document.url, data);
 
         return null;
     }
 
-    public async remember(model: SolidModel, relatedModels: MapObject<SolidModel[]> = {}): Promise<void> {
-        const data = await this.getModelData(model.url);
+    public async remember(
+        model: SolidModel,
+        relatedModels: MapObject<SolidModel[]> = {},
+        updatedAt: Date | null = null,
+    ): Promise<void> {
+        let data = await this.getModelData(model.url);
 
-        if (!data)
+        if (!data && updatedAt === null)
             return;
+
+        data = data || { updatedAt } as CachedModelTimestamp;
+        data.updatedAt = updatedAt || data.updatedAt;
 
         this.serializeModel(data, model, relatedModels);
 
@@ -65,7 +80,7 @@ class ModelsCache {
         await deleteDB('media-kraken');
     }
 
-    private async getModelData(url: string): Promise<CachedModelData | null> {
+    private async getModelData(url: string): Promise<CachedModelTimestamp | CachedModelData | null> {
         try {
             const connection = await this.getConnection();
             const transaction = connection.transaction('models-cache', 'readonly');
@@ -76,7 +91,7 @@ class ModelsCache {
         }
     }
 
-    private async setModelData(url: string, data: CachedModelData): Promise<void> {
+    private async setModelData(url: string, data: CachedModelTimestamp | CachedModelData): Promise<void> {
         const connection = await this.getConnection();
         const transaction = connection.transaction('models-cache', 'readwrite');
 
@@ -85,8 +100,22 @@ class ModelsCache {
         await transaction.done;
     }
 
-    private serializeModel(data: CachedModelData, model: SolidModel, relatedModels: MapObject<SolidModel[]>): void {
+    private serializeModel(
+        timestampData: CachedModelTimestamp,
+        model: SolidModel,
+        relatedModels: MapObject<SolidModel[]>,
+    ): void {
+        const data = timestampData as CachedModelData;
+
+        data.modelName = model.modelClass.modelName;
         data.attributes = model.getAttributes();
+        data.relationModelNames = Object
+            .keys(relatedModels)
+            .reduce((relationModelNames, relation) => {
+                relationModelNames[relation] = model.getRelation(relation)!.relatedClass.modelName;
+
+                return relationModelNames;
+            }, {} as MapObject<string>);
         data.relationAttributes = Object
             .entries(relatedModels)
             .reduce((relationAttributes, [relation, models]) => {
@@ -96,20 +125,21 @@ class ModelsCache {
             }, {} as MapObject<Attributes[]>);
     }
 
-    private deserializeModel(
-        data: CachedModelData,
-        modelClass: typeof SolidModel,
-        relatedModelClasses: MapObject<typeof SolidModel>,
-    ): SolidModel | null {
-        if (!('attributes' in data))
+    private deserializeModel(data: CachedModelTimestamp | CachedModelData): SolidModel | null {
+        if (!isCachedModelData(data))
             return null;
 
-        const model = new modelClass(data.attributes, true);
+        const modelClass = Soukai.model(data.modelName) as typeof SolidModel;
+        const model = modelClass.newInstance(data.attributes, true);
 
-        for (const [relationName, relatedModelClass] of Object.entries(relatedModelClasses)) {
+        for (const [relation, relatedModelsAttributes] of Object.entries(data.relationAttributes)) {
             model.setRelationModels(
-                relationName,
-                data.relationAttributes![relationName].map(attributes => new relatedModelClass(attributes, true)),
+                relation,
+                relatedModelsAttributes.map(attributes => {
+                    const relatedModelClass = Soukai.model(data.relationModelNames[relation]) as typeof SolidModel;
+
+                    return relatedModelClass.newInstance(attributes, true);
+                }),
             );
         }
 

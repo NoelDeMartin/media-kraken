@@ -140,7 +140,7 @@ export default class Movie extends SolidModel {
         if (documentUrl)
             return documentUrl + '#' + this.slug;
 
-        return Url.resolve(this.classDef.collection, this.slug);
+        return Url.resolve(this.modelClass.collection, this.slug);
     }
 
     private async resolveTMDBMovie(): Promise<TMDBMovie | null> {
