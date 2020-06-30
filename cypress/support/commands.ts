@@ -6,15 +6,23 @@ import ModelsCache from '@/models/ModelsCache';
 
 import Http from '@tests/utils/Http';
 
+type FetchCall = { url: string; options: any };
+
 const fetchRoutes: { match(url: string): boolean; response: any }[] = [];
+const fetchCalls: { [url: string]: FetchCall[] } = {};
 
 function getRuntime(): Cypress.Chainable<TestingRuntime> {
     return cy.window().its('Runtime').then(runtime => runtime!);
 }
 
-export function fetchStub(url: string): Promise<Response> {
+export function fetchStub(url: string, options: any): Promise<Response> {
     const match = fetchRoutes.find(route => route.match(url));
     const response = match?.response;
+
+    fetchCalls[url] = [
+        ...(fetchCalls[url] || []),
+        { url, options },
+    ];
 
     if (typeof response === 'string')
         return Promise.resolve(Http.success(response));
@@ -45,6 +53,7 @@ const customCommands = {
 
     resetBrowser(): void {
         fetchRoutes.length = 0;
+        Object.keys(fetchCalls).forEach(url => delete fetchCalls[url]);
         ModelsCache.clear();
         (new IndexedDBEngine('media-kraken')).purgeDatabase();
         cy.window().then(window => window.Runtime?.lib('soukai').closeConnections());
@@ -108,8 +117,14 @@ const customCommands = {
         });
     },
 
-    see(text: string): void {
-        cy.contains(text).should('be.visible');
+    // TODO replace this with aliases instead
+    // see: https://github.com/cypress-io/cypress-example-recipes/blob/master/examples/server-communication__xhr-assertions/cypress/integration/multiple-requests.js
+    getFetchCalls(): Cypress.Chainable<{ [url: string]: FetchCall[] }> {
+        return cy.wrap(fetchCalls);
+    },
+
+    see(text: string): Cypress.Chainable<undefined> {
+        return cy.contains(text).should('be.visible');
     },
 
     seeImage(url: string, options: Partial<Cypress.Timeoutable> = {}): void {

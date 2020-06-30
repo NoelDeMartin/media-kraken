@@ -5,4 +5,4 @@
 <>
     foaf:name "John Doe" ;
     pim:storage </> ;
-    solid:publicTypeIndex </settings/publicTypeIndex.ttl> .
+    solid:privateTypeIndex </settings/privateTypeIndex.ttl> .

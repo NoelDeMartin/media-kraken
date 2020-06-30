@@ -100,10 +100,10 @@ export default class SolidUser extends User<SolidUserJSON> {
         const name = store.statement(webId, 'foaf:name');
         const avatarUrl = store.statement(webId, 'foaf:img');
         const storages = store.statements(webId, 'pim:storage');
-        const typeIndexStatement = store.statement(webId, 'solid:publicTypeIndex');
+        const typeIndexStatement = store.statement(webId, 'solid:privateTypeIndex');
 
         if (!typeIndexStatement)
-            throw new Error("Couldn't find solid:publicTypeIndex in profile");
+            throw new Error("Couldn't find solid:privateTypeIndex in profile");
 
         if (storages.length === 0)
             throw new Error("Couldn't find pim:storage in profile");
@@ -219,17 +219,24 @@ export default class SolidUser extends User<SolidUserJSON> {
         // TODO ask for preferred storage
         const storage = this.storages[0];
         const moviesContainer = new MediaContainer({ name: 'Movies' });
-
-        await moviesContainer.save(storage);
-
-        const typeRegistration = new TypeRegistration({
-            forClass: 'https://schema.org/Movie',
-            instanceContainer: moviesContainer.url,
-        });
-
-        await typeRegistration.save(this.typeIndexUrl);
+        const rdfsClasses = [
+            'https://schema.org/Movie',
+            'https://schema.org/WatchAction',
+        ];
 
         moviesContainer.setRelationModels('movies', []);
+
+        await moviesContainer.save(storage);
+        await Promise.all(rdfsClasses.map(rdfsClass => {
+            const typeRegistration = new TypeRegistration({
+                forClass: rdfsClass,
+                instanceContainer: moviesContainer.url,
+            });
+
+            typeRegistration.mintUrl(this.typeIndexUrl);
+
+            return typeRegistration.save(this.typeIndexUrl);
+        }));
 
         return moviesContainer;
     }

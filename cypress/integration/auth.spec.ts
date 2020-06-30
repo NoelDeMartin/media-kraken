@@ -1,21 +1,29 @@
 import { Session } from 'solid-auth-client';
 import Faker from 'faker';
 
+import emptyTypeIndex from '@tests/fixtures/turtle/emptyTypeIndex.ttl';
 import movies from '@tests/fixtures/turtle/movies.ttl';
+import populatedTypeIndex from '@tests/fixtures/turtle/populatedTypeIndex.ttl';
 import profile from '@tests/fixtures/turtle/profile.ttl';
 import taxiDriver from '@tests/fixtures/json/taxi-driver.json';
 import taxiDriverTurtle from '@tests/fixtures/turtle/taxi-driver-1976.ttl';
-import typeIndex from '@tests/fixtures/turtle/typeIndex.ttl';
 
 interface SolidLoginContext {
     listener?: Function;
     session?: Session;
 }
 
-function stubSolidLogin(
+function stubSolidAuth(
     domain: string,
-    context: SolidLoginContext = {},
+    options: {
+        context?: SolidLoginContext;
+        signup?: boolean;
+    } = {},
 ): SolidLoginContext {
+    const context = options.context || {};
+    const signup = options.signup ?? false;
+    const typeIndex = signup ? emptyTypeIndex : populatedTypeIndex;
+
     cy.lib('solid-auth-client').then(SolidAuthClient => {
         cy.stub(SolidAuthClient, 'trackSession', listener => {
             context.listener = listener;
@@ -38,9 +46,12 @@ function stubSolidLogin(
     });
 
     cy.fetchRoute('/me', profile);
-    cy.fetchRoute('/settings/publicTypeIndex.ttl', typeIndex);
-    cy.fetchRoute('/movies/taxi-driver-1976.ttl', taxiDriverTurtle);
-    cy.fetchRoute('/movies/', movies);
+    cy.fetchRoute('/settings/privateTypeIndex.ttl', typeIndex);
+
+    if (!signup) {
+        cy.fetchRoute('/movies/taxi-driver-1976.ttl', taxiDriverTurtle);
+        cy.fetchRoute('/movies/', movies);
+    }
 
     return context;
 }
@@ -49,7 +60,7 @@ describe('Authentication', () => {
 
     beforeEach(() => cy.visit('/'));
 
-    it('Logs in using browser storage', () => {
+    it('Signs up with browser storage', () => {
         // Arrange
         cy.startApp();
 
@@ -78,10 +89,38 @@ describe('Authentication', () => {
         cy.localStorageShouldBeEmpty();
     });
 
+    it('Signs up with Solid', () => {
+        // Arrange
+        const domain = Faker.internet.domainName();
+
+        stubSolidAuth(domain, { signup: true });
+
+        cy.startApp();
+
+        // Act
+        cy.contains('Use Solid POD').click();
+        cy.get('input[placeholder="Solid POD url"]').type(domain);
+        cy.contains('Login').click();
+
+        // Assert
+        cy.see('Welcome!').then(() => cy.getFetchCalls().then(calls => {
+            const typeCalls = calls[`https://${domain}/settings/privateTypeIndex.ttl`];
+
+            expect(typeCalls).to.have.lengthOf(5);
+
+            expect(typeCalls[1].options.method || 'GET').to.eq('GET');
+            expect(typeCalls[2].options.method || 'GET').to.eq('GET');
+            expect(typeCalls[3].options.method || 'GET').to.eq('PATCH');
+            expect(typeCalls[3].options.body).to.contain('<https://schema.org/Movie>');
+            expect(typeCalls[4].options.method || 'GET').to.eq('PATCH');
+            expect(typeCalls[4].options.body).to.contain('<https://schema.org/WatchAction>');
+        }));
+    });
+
     it('Logs in with Solid', () => {
         // Arrange
         const domain = Faker.internet.domainName();
-        const loginContext = stubSolidLogin(domain);
+        const loginContext = stubSolidAuth(domain);
 
         cy.startApp();
 
@@ -94,7 +133,7 @@ describe('Authentication', () => {
         cy.seeImage(taxiDriver.image, { timeout: 10000 });
 
         cy.visit('/collection');
-        stubSolidLogin(domain, loginContext);
+        stubSolidAuth(domain, { context: loginContext });
         cy.startApp();
         cy.seeImage(taxiDriver.image, { timeout: 10000 });
     });
@@ -103,7 +142,7 @@ describe('Authentication', () => {
         // Arrange
         const domain = Faker.internet.domainName();
 
-        stubSolidLogin(domain);
+        stubSolidAuth(domain);
 
         cy.startApp();
         cy.contains('Use Solid POD').click();
