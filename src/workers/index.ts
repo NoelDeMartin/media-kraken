@@ -6,13 +6,19 @@ import WatchAction from '@/models/soukai/WatchAction';
 
 import { MediaContainers } from '@/services/Media';
 
+import UnauthorizedError from '@/errors/UnauthorizedError';
+
 import { Parameters, Result } from './LoadMediaWorker';
 import WebWorkerRunner from './WebWorkerRunner';
 
 export async function loadMedia(...params: Parameters): Promise<MediaContainers> {
+    let error: any = null;
     const containers: Partial<MediaContainers> = {};
     const worker = new Worker('@/workers/LoadMediaWorker.index.ts', { type: 'module' });
     const runner = new WebWorkerRunner<Parameters, Result>(worker, {
+        onUnauthorized() {
+            error = new UnauthorizedError;
+        },
         onMoviesContainerLoaded(attributes: Attributes) {
             containers.movies = new MediaContainer(attributes, true);
             containers.movies.setRelationModels('movies', []);
@@ -34,6 +40,9 @@ export async function loadMedia(...params: Parameters): Promise<MediaContainers>
     });
 
     await runner.run(...params);
+
+    if (error)
+        throw error;
 
     return containers as MediaContainers;
 }

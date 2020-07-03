@@ -2,6 +2,8 @@ import { Fetch } from 'soukai-solid';
 import { Parser as TurtleParser } from 'n3';
 import { Quad } from 'rdf-js';
 
+import UnauthorizedError from '@/errors/UnauthorizedError';
+
 const knownPrefixes: { [prefix: string]: string } = {
     solid: 'http://www.w3.org/ns/solid/terms#',
     schema: 'https://schema.org/',
@@ -21,7 +23,13 @@ export default class RDFStore {
             format: 'text/turtle',
         });
 
-        const data = await fetch(url, options).then(res => res.text());
+        const response = await fetch(url, options);
+
+        if (response.status === 401) {
+            throw new UnauthorizedError;
+        }
+
+        const data = await response.text();
 
         return new Promise((resolve, reject) => {
             parser.parse(data, (error, quad) => {

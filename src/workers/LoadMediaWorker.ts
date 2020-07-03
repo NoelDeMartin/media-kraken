@@ -9,6 +9,8 @@ import Movie from '@/models/soukai/Movie';
 import SolidUser from '@/models/users/SolidUser';
 import User from '@/models/users/User';
 
+import UnauthorizedError from '@/errors/UnauthorizedError';
+
 import JSONUserParser from '@/utils/parsers/JSONUserParser';
 
 import WebWorker from './WebWorker';
@@ -22,10 +24,21 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
     private moviesContainer!: MediaContainer;
 
     protected async work(userJson: object): Promise<Result> {
-        await this.initStorage(userJson);
-        await this.loadMoviesContainer();
-        await this.loadMovies();
-        await Soukai.closeConnections();
+        try {
+            await this.initStorage(userJson);
+            await this.loadMoviesContainer();
+            await this.loadMovies();
+        } catch (error) {
+            if (error instanceof UnauthorizedError) {
+                this.postMessage('unauthorized');
+
+                return;
+            }
+
+            throw error;
+        } finally {
+            await Soukai.closeConnections();
+        }
     }
 
     private async initStorage(userJson: object): Promise<void> {

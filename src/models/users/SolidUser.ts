@@ -55,8 +55,6 @@ export default class SolidUser extends User<SolidUserJSON> {
 
             SolidAuthClient.trackSession(onSessionUpdated);
         } catch (error) {
-            // TODO handle session expiration properly instead of communicating
-            // this like an error
             alert("We couldn't validate your credentials, please login again");
 
             await this.logout();

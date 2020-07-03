@@ -58,6 +58,13 @@ export default class Auth extends Service<State> {
         this.updateUser(null);
     }
 
+    public handleUnauthorized(): void {
+        if (this.app.$route.name === 'unauthorized')
+            return;
+
+        this.app.$router.push({ name: 'unauthorized' });
+    }
+
     protected async init(): Promise<void> {
         await super.init();
 

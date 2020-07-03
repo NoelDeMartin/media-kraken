@@ -6,6 +6,7 @@ import Time from '@/utils/Time';
 import TVisoMoviesParser from '@/utils/parsers/TVisoMoviesParser';
 
 import MediaValidationError from '@/errors/MediaValidationError';
+import UnauthorizedError from '@/errors/UnauthorizedError';
 import UnsuitableMediaError from '@/errors/IgnoreMediaError';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
@@ -204,15 +205,25 @@ export default class Media extends Service<State> {
     }
 
     private async load(user: User): Promise<void> {
-        const { movies: moviesContainer } = await loadMedia(user.toJSON());
+        try {
+            const { movies: moviesContainer } = await loadMedia(user.toJSON());
 
-        await user.initSoukaiEngine();
+            await user.initSoukaiEngine();
 
-        Movie.collection = moviesContainer.url;
+            Movie.collection = moviesContainer.url;
 
-        this.setState({ moviesContainer });
+            this.setState({ moviesContainer });
 
-        EventBus.emit('media-loaded');
+            EventBus.emit('media-loaded');
+        } catch (error) {
+            if (error instanceof UnauthorizedError) {
+                this.app.$auth.handleUnauthorized();
+
+                return;
+            }
+
+            throw error;
+        }
     }
 
     private async unload(): Promise<void> {
