@@ -2,7 +2,6 @@ import { FieldType, MultiModelRelation } from 'soukai';
 import { SolidModel, SolidHasManyRelation } from 'soukai-solid';
 
 import Arr from '@/utils/Arr';
-import Obj from '@/utils/Obj';
 import Str from '@/utils/Str';
 import TMDBMoviesParser from '@/utils/parsers/TMDBMoviesParser';
 import Url from '@/utils/Url';
@@ -133,7 +132,9 @@ export default class Movie extends SolidModel {
     }
 
     public watch(date?: Date): Promise<WatchAction> {
-        return this.relatedActions.create(Obj.withoutUndefined({ createdAt: date }), true);
+        date = date || new Date();
+
+        return this.relatedActions.create({ startTime: date, endTime: date }, true);
     }
 
     protected newUrl(documentUrl?: string): string {

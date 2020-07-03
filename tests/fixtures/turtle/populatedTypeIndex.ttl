@@ -8,3 +8,8 @@
     a solid:TypeRegistration ;
     solid:forClass schema:Movie ;
     solid:instanceContainer </movies/> .
+
+:movies
+    a solid:TypeRegistration ;
+    solid:forClass schema:WatchAction ;
+    solid:instanceContainer </movies/> .

@@ -21,6 +21,8 @@ export default class WatchAction extends SolidModel {
             rdfProperty: 'schema:object',
             required: true,
         },
+        startTime: FieldType.Date,
+        endTime: FieldType.Date,
     };
 
     public movieRelationship(): SingleModelRelation {
