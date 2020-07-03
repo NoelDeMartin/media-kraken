@@ -68,17 +68,17 @@ describe('Authentication', () => {
         cy.contains('Use browser storage').click();
 
         // Assert
-        cy.see('Welcome!');
+        cy.see('Welcome to Media Kraken!');
 
         cy.reload();
-        cy.see('Welcome!');
+        cy.see('Welcome to Media Kraken!');
     });
 
     it('Logs out with browser storage and clears client data', () => {
         // Arrange
         cy.startApp();
         cy.contains('Use browser storage').click();
-        cy.see('Welcome!');
+        cy.see('Welcome to Media Kraken!');
 
         // Act
         cy.ariaLabel('Settings').click();
@@ -103,7 +103,7 @@ describe('Authentication', () => {
         cy.contains('Login').click();
 
         // Assert
-        cy.see('Welcome!').then(() => cy.getFetchCalls().then(calls => {
+        cy.see('Welcome to Media Kraken!').then(() => cy.getFetchCalls().then(calls => {
             const typeCalls = calls[`https://${domain}/settings/privateTypeIndex.ttl`];
 
             expect(typeCalls).to.have.lengthOf(5);

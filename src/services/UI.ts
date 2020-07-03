@@ -42,11 +42,12 @@ export const screenBreakpoints: { [layout in Layout]?: number } = {
     [Layout.Desktop]: 640,
 };
 
-export interface Modal {
+export interface Modal<R=any> {
     id: string;
     component: Component;
     options: ModalOptions;
     props: object;
+    result: Promise<R | null>;
 }
 
 export interface ModalOptions {
@@ -73,6 +74,7 @@ export default class UI extends Service<State, ComputedState> {
     private desktopMenu: HTMLElement | null = null;
     private menuTriggers: HTMLButtonElement[] = [];
     private myCollection: HTMLElement | null = null;
+    private modalResolves: MapObject<Function> = {};
 
     private clickListener: EventListener | null = null;
     private removeMenuClickAwayListener: Function | null = null;
@@ -194,8 +196,13 @@ export default class UI extends Service<State, ComputedState> {
         this.openModal(MarkdownModal, { file, replacements });
     }
 
-    public openModal(component: Component, props: object = {}, partialOptions: Partial<ModalOptions> = {}): Modal {
+    public openModal<R>(
+        component: Component,
+        props: object = {},
+        partialOptions: Partial<ModalOptions> = {},
+    ): Modal<R> {
         const id = UUID.generate();
+        const result = new Promise<R>(resolve => this.modalResolves[id] = resolve);
         const options = {
             cancellable: true,
             ...partialOptions,
@@ -204,6 +211,7 @@ export default class UI extends Service<State, ComputedState> {
             id,
             options,
             component,
+            result,
             props: {
                 ...props,
                 id,
@@ -230,7 +238,23 @@ export default class UI extends Service<State, ComputedState> {
         if (!force && !this.modals[index].options.cancellable)
             return;
 
+        if (id in this.modalResolves) {
+            this.modalResolves[id]();
+
+            delete this.modalResolves[id];
+        }
+
         this.setState({ modals: Arr.withoutIndex(this.modals, index) });
+    }
+
+    public resolveModal(id: string, result: any) {
+        if (id in this.modalResolves) {
+            this.modalResolves[id](result);
+
+            delete this.modalResolves[id];
+        }
+
+        this.closeModal(id, true);
     }
 
     public showError(error: any): void {

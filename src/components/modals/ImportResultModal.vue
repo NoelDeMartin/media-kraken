@@ -91,7 +91,7 @@ export default Modal.extend({
     },
     methods: {
         inspectWatched() {
-            let logs = '# Details of imported movies that you\'ve watched\n';
+            let logs = '# These movies have been imported as watched\n';
             let counter = 0;
 
             for (const movie of this.watchedMovies) {
@@ -101,7 +101,7 @@ export default Modal.extend({
             this.$ui.openModal(MarkdownModal, { content: logs });
         },
         inspectPending() {
-            let logs = '# Details of imported movies that you haven\'t watched yet\n';
+            let logs = '# These movies have been imported to watch later\n';
             let counter = 0;
 
             for (const movie of this.pendingMovies) {
@@ -111,7 +111,7 @@ export default Modal.extend({
             this.$ui.openModal(MarkdownModal, { content: logs });
         },
         inspectIgnored() {
-            let logs = '# Details of ignored data\n';
+            let logs = '# The following movies have been ignored\n';
             let counter = 0;
 
             for (const { reason, data } of this.log.ignored) {
@@ -122,7 +122,7 @@ export default Modal.extend({
             this.$ui.openModal(MarkdownModal, { content: logs });
         },
         inspectUnprocessed() {
-            let logs = '# Details of unprocessed data\n';
+            let logs = '# The following movies have not been processed\n';
             let counter = 0;
 
             for (const data of this.log.unprocessed) {
@@ -132,7 +132,7 @@ export default Modal.extend({
             this.$ui.openModal(MarkdownModal, { content: logs });
         },
         inspectInvalid() {
-            let logs = '# Details of validation errors\n';
+            let logs = '# The following items were not valid movies\n';
             let counter = 0;
 
             for (const { reasons, data } of this.log.invalid) {
@@ -143,7 +143,7 @@ export default Modal.extend({
             this.$ui.openModal(MarkdownModal, { content: logs });
         },
         inspectFailed() {
-            let logs = '# Details of failed imports\n';
+            let logs = '# The following movies caused some errors\n';
             let counter = 0;
 
             for (const { error, data } of this.log.failed) {

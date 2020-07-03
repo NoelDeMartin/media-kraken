@@ -18,6 +18,7 @@ import Service from '@/services/Service';
 
 import ImportProgressModal from '@/components/modals/ImportProgressModal.vue';
 import ImportResultModal from '@/components/modals/ImportResultModal.vue';
+import IMDBMoviesParser from '@/utils/parsers/IMDBMoviesParser';
 
 interface State {
     moviesContainer: MediaContainer | null;
@@ -52,8 +53,9 @@ export interface MediaContainers {
 }
 
 export enum MediaSource {
-    TViso = 'tviso',
+    IMDB = 'imdb',
     JSONLD = 'jsonld',
+    TViso = 'tviso',
 }
 
 export default class Media extends Service<State> {
@@ -236,6 +238,8 @@ export default class Media extends Service<State> {
                 return TVisoMoviesParser;
             case MediaSource.JSONLD:
                 return JSONLDMoviesParser;
+            case MediaSource.IMDB:
+                return IMDBMoviesParser;
         }
     }
 

@@ -15,6 +15,7 @@
                         <BaseIcon :name="source" class="w-24 h-24" />
                     </button>
                     <button
+                        v-if="source !== 'imdb'"
                         type="button"
                         class="absolute top-0 right-0 m-2 text-blue-400 hover:text-blue-600"
                         title="Get help about this import method"
@@ -24,21 +25,6 @@
                     </button>
                 </div>
             </div>
-            <div class="relative ratio-1/1">
-                <a
-                    target="_blank"
-                    href="https://github.com/noeldemartin/media-kraken/issues/new?title=Add+new+import+option"
-                    class="
-                        absolute inset-0 flex flex-col items-center justify-center p-4
-                        shadow border border-gray-400 hover:bg-gray-300
-                    "
-                >
-                    <BaseIcon name="github" class="w-16 h-16 text-gray-800" />
-                    <span class="mt-4 text-gray-700 text-center font-medium">
-                        Others
-                    </span>
-                </a>
-            </div>
         </div>
     </div>
 </template>
@@ -47,6 +33,8 @@
 import Vue from 'vue';
 
 import { MediaSource } from '@/services/Media';
+
+import ImportMoviesData from '@/components/modals/ImportMoviesData.vue';
 
 import Files, { MediaType } from '@/utils/Files';
 
@@ -58,6 +46,7 @@ export default Vue.extend({
         mediaSourceNames: () => ({
             [MediaSource.TViso]: 'TViso',
             [MediaSource.JSONLD]: 'JSON-LD',
+            [MediaSource.IMDB]: 'IMDB',
         }),
         helpReplacements(): any {
             const repositoryUrl = 'https://github.com/NoelDeMartin/media-kraken';
@@ -73,17 +62,39 @@ export default Vue.extend({
     },
     methods: {
         async importMedia(source: MediaSource) {
+            const data = await this.getSourceData(source);
+
+            if (data.length === 0)
+                return;
+
+            await this.$media.importMovies(data, source);
+
+            this.$emit('imported');
+        },
+        async getSourceData(source: MediaSource): Promise<object[]> {
+            switch (source) {
+                case MediaSource.IMDB:
+                    return this.getDataFromModal();
+                default:
+                    return this.getDataFromFile();
+            }
+        },
+        async getDataFromFile(): Promise<object[]> {
             const filecontents = await Files.upload({ accept: MediaType.JSON });
             if (filecontents === null)
-                return;
+                return [];
 
             const data = JSON.parse(filecontents);
             if (!Array.isArray(data))
                 throw new Error('Invalid file format, expecting array');
 
-            await this.$media.importMovies(data, source);
+            return data;
+        },
+        async getDataFromModal(): Promise<object[]> {
+            const modal = this.$ui.openModal<object[]>(ImportMoviesData);
+            const data = await modal.result;
 
-            this.$emit('imported');
+            return data || [];
         },
     },
 });

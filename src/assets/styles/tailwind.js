@@ -95,6 +95,7 @@ module.exports = {
             }),
             maxWidth: {
                 '0': '0',
+                'readable': '640px',
                 'content': '900px',
             },
             gridTemplateColumns: theme => ({
