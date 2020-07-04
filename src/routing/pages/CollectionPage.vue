@@ -11,8 +11,8 @@
                     <BaseMenu
                         v-slot="{ toggle: toggleActionsMenu }"
                         :options="[
-                            { id: 'import', text: 'Import to collection', icon: 'upload', handle: importMedia },
-                            { id: 'export', text: 'Export collection', icon: 'download', handle: exportCollection },
+                            { text: 'Import to collection', icon: 'upload', handle: importMedia },
+                            { text: 'Export collection', icon: 'download', handle: exportCollection },
                         ]"
                     >
                         <BaseButton

@@ -7,7 +7,19 @@
     </div>
 
     <div v-else-if="pendingMovies.length > 0">
-        <BasePageHeader>Watch next:</BasePageHeader>
+        <div class="flex justify-between items-center">
+            <BasePageHeader>Watch next:</BasePageHeader>
+            <BaseMenu
+                v-slot="{ toggle: toggleActionsMenu }"
+                direction="top-right"
+                :options="sortOptions"
+            >
+                <button class="flex items-center" @click="toggleActionsMenu">
+                    <span class="mr-1 text-sm">{{ sortingText }}</span>
+                    <BaseIcon name="cheveron-down" class="w-5 h-5" />
+                </button>
+            </BaseMenu>
+        </div>
         <MoviesGrid :movies="pendingMoviesSummary" />
         <p v-if="pendingMovies.length > pendingMoviesSummary.length" class="mt-3 leading-relaxed max-w-readable">
             You have more movies to watch in <BaseLink route="collection">
@@ -63,19 +75,55 @@ import Movie from '@/models/soukai/Movie';
 
 import { MediaSource } from '@/services/Media';
 
+import Storage from '@/utils/Storage';
+
 import imdbTop100Data from '@/assets/data/imdb-top-100.json';
 
+import { MenuOption } from '@/components/base/BaseMenu.vue';
 import MediaImporter from '@/components/MediaImporter.vue';
 import MoviesGrid from '@/components/MoviesGrid.vue';
+
+const enum Sorting {
+    MostRecent = 'most-recent',
+    Oldest = 'oldest',
+}
+
+interface SortMenuOption extends MenuOption {
+    sorting: Sorting;
+}
 
 export default Vue.extend({
     components: {
         MediaImporter,
         MoviesGrid,
     },
+    data: () => ({ sorting: Storage.get('home-sorting', Sorting.MostRecent) }),
     computed: {
+        sortOptions(): SortMenuOption[] {
+            const handle = ({ sorting }: SortMenuOption) => {
+                this.sorting = sorting;
+
+                Storage.set('home-sorting', sorting);
+            };
+
+            return [
+                { sorting: Sorting.MostRecent, text: 'Most recent first', icon: 'arrow-thick-up', handle },
+                { sorting: Sorting.Oldest, text: 'Oldest first', icon: 'arrow-thick-down', handle },
+            ];
+        },
+        sortingText(): string {
+            return this.sortOptions.find(option => option.sorting === this.sorting)!.text;
+        },
         pendingMovies(): Movie[] {
-            return this.$media.movies.filter(movie => movie.pending).reverse();
+            const pendingMovies = this.$media.movies.filter(movie => movie.pending);
+
+            pendingMovies.sort((a: Movie, b: Movie) => a.createdAt.getTime() - b.createdAt.getTime());
+
+            if (this.sorting === Sorting.MostRecent) {
+                pendingMovies.reverse();
+            }
+
+            return pendingMovies;
         },
         pendingMoviesSummary(): Movie[] {
             return this.pendingMovies.slice(0, 10);

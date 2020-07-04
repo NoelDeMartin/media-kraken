@@ -7,7 +7,11 @@
             <div
                 v-show="open"
                 ref="menu"
-                class="origin-top-left absolute left-0 mt-2 w-56 rounded-md shadow-lg z-20"
+                class="absolute mt-2 w-56 rounded-md shadow-lg z-20"
+                :class="{
+                    'origin-top-left left-0': direction === 'top-left',
+                    'origin-top-right right-0': direction === 'top-right',
+                }"
             >
                 <div class="rounded-md bg-white shadow-xs">
                     <div v-for="(option, index) of options" :key="index" class="py-1">
@@ -38,10 +42,10 @@ interface Data {
     removeClickAwayListener: Function | null;
 }
 
-interface MenuOption {
+export interface MenuOption {
     text: string;
     icon?: string;
-    handle(): void;
+    handle(option: MenuOption): void;
 }
 
 export default Vue.extend({
@@ -49,6 +53,10 @@ export default Vue.extend({
         options: {
             type: Array as () => MenuOption[],
             required: true,
+        },
+        direction: {
+            type: String,
+            default: 'top-left',
         },
     },
     data: (): Data => ({
@@ -82,10 +90,10 @@ export default Vue.extend({
             this.removeClickAwayListener();
             this.removeClickAwayListener = null;
         },
-        triggerOption({ handle }: MenuOption) {
+        triggerOption(option: MenuOption) {
             this.closeMenu();
 
-            handle();
+            option.handle(option);
         },
     },
 });
