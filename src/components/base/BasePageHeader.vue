@@ -1,5 +1,5 @@
 <template>
-    <h1 class="text-xl font-medium my-4">
+    <h1 class="text-xl font-medium my-4 truncate">
         <slot />
     </h1>
 </template>

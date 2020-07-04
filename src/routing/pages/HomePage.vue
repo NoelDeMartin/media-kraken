@@ -10,11 +10,11 @@
         <div class="flex justify-between items-center">
             <BasePageHeader>Watch next:</BasePageHeader>
             <BaseMenu
-                v-slot="{ toggle: toggleActionsMenu }"
+                v-slot="{ toggle: toggleSortingMenu }"
                 direction="top-right"
-                :options="sortOptions"
+                :options="sortingOptions"
             >
-                <button class="flex items-center" @click="toggleActionsMenu">
+                <button class="flex items-center" @click="toggleSortingMenu">
                     <span class="mr-1 text-sm">{{ sortingText }}</span>
                     <BaseIcon name="cheveron-down" class="w-5 h-5" />
                 </button>
@@ -99,7 +99,7 @@ export default Vue.extend({
     },
     data: () => ({ sorting: Storage.get('home-sorting', Sorting.MostRecent) }),
     computed: {
-        sortOptions(): SortMenuOption[] {
+        sortingOptions(): SortMenuOption[] {
             const handle = ({ sorting }: SortMenuOption) => {
                 this.sorting = sorting;
 
@@ -112,7 +112,7 @@ export default Vue.extend({
             ];
         },
         sortingText(): string {
-            return this.sortOptions.find(option => option.sorting === this.sorting)!.text;
+            return this.sortingOptions.find(option => option.sorting === this.sorting)!.text;
         },
         pendingMovies(): Movie[] {
             const pendingMovies = this.$media.movies.filter(movie => movie.pending);

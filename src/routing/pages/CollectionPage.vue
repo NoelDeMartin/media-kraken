@@ -7,7 +7,7 @@
                 animation="fade"
                 enter-active-class="delay-75"
             >
-                <div v-if="!$ui.mobile || !filtering" class="flex items-center">
+                <div v-if="!$ui.mobile || !searching" class="flex items-center">
                     <BaseMenu
                         v-slot="{ toggle: toggleActionsMenu }"
                         :options="[
@@ -25,35 +25,51 @@
                     <BasePageHeader>Collection ({{ filteredMovies.length }})</BasePageHeader>
                 </div>
             </BaseTransition>
-            <div class="absolute text-right right-0 top-1/2 transform -translate-y-1/2 px-2 w-full desktop:w-64">
+            <div class="flex-grow" />
+            <BaseMenu
+                v-slot="{ toggle: toggleWatchedFilterMenu }"
+                :direction="searching ? 'top-left' : 'top-right'"
+                :options="watchedFilterOptions"
+            >
+                <button class="flex items-center ml-2" @click="toggleWatchedFilterMenu">
+                    <span class="mr-1 text-sm hidden whitespace-no-wrap desktop:block">{{ watchedFilterText }}</span>
+                    <span class="mr-1 text-sm whitespace-no-wrap desktop:hidden">{{ watchedFilterMobileText }}</span>
+                    <BaseIcon name="cheveron-down" class="w-5 h-5" />
+                </button>
+            </BaseMenu>
+            <div
+                class="relative transition-all duration-150"
+                :class="{ 'w-full mx-2 desktop:w-64': searching, 'w-8': !searching }"
+            >
+                <BaseTransition :duration="100" animation="fade">
+                    <BaseButton
+                        v-show="!searching"
+                        ref="filtersTrigger"
+                        icon="search"
+                        icon-class="w-4 h-4"
+                        class="
+                            absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-8 justify-center rounded-full
+                            hover:bg-black-overlay
+                        "
+                        style="padding:0"
+                        @click="showFilters"
+                    />
+                </BaseTransition>
                 <BaseTransition :duration="150" animations="fade resize-width">
                     <input
-                        v-show="filtering"
-                        ref="filter"
-                        v-model="filter"
-                        placeholder="Filter movies..."
+                        v-show="searching"
+                        ref="searchFilter"
+                        v-model="searchFilter"
+                        placeholder="Search in your collection..."
                         class="
-                            w-full text-sm py-1 bg-transparent appearance-none border-b-2 border-primary-200
+                            absolute w-full right-0 top-1/2 transform -translate-y-1/2
+                            text-sm py-1 bg-transparent appearance-none border-b-2 border-primary-200
                             focus:border-primary-300
                         "
-                        @keyup.esc="filter = ''"
+                        @keyup.esc="searchFilter = ''"
                     >
                 </BaseTransition>
             </div>
-            <BaseTransition :duration="100" animation="fade">
-                <BaseButton
-                    v-show="!filtering"
-                    ref="filtersTrigger"
-                    icon="search"
-                    icon-class="w-4 h-4"
-                    class="
-                        absolute right-0 top-1/2 transform -translate-y-1/2 w-8 h-8 justify-center rounded-full
-                        hover:bg-black-overlay
-                    "
-                    style="padding:0"
-                    @click="showFilters"
-                />
-            </BaseTransition>
         </div>
         <BaseTransitionGroup :duration="100" animation="fade" class="relative">
             <MoviesGrid
@@ -63,7 +79,7 @@
                 :movies="filteredMovies"
             />
             <div v-else key="empty" class="absolute flex items-center justify-center h-24 top-0 inset-x-0">
-                <span class="text-lg">Nothing matches "{{ filter }}"</span>
+                <span class="text-lg">Nothing matches "{{ searchFilter }}"</span>
             </div>
         </BaseTransitionGroup>
     </main>
@@ -76,11 +92,24 @@ import Str from '@/utils/Str';
 
 import Movie from '@/models/soukai/Movie';
 
+import { MenuOption } from '@/components/base/BaseMenu.vue';
 import ImportOptionsModal from '@/components/modals/ImportOptionsModal.vue';
 import MoviesGrid from '@/components/MoviesGrid.vue';
 
+const enum WatchedFilter {
+    All = 'all',
+    Watched = 'watched',
+    WatchLater = 'watch-later',
+}
+
+interface WatchFilterMenuOptions extends MenuOption {
+    watchedFilter: WatchedFilter;
+    mobileText: string;
+}
+
 interface Data {
-    filter: string | null;
+    watchedFilter: WatchedFilter;
+    searchFilter: string | null;
     removeClickAwayListener: Function | null;
 }
 
@@ -89,11 +118,47 @@ export default Vue.extend({
         MoviesGrid,
     },
     data: (): Data => ({
-        filter: null,
+        watchedFilter: WatchedFilter.All,
+        searchFilter: null,
         removeClickAwayListener: null,
     }),
     computed: {
-        filtering(): boolean {
+        watchedFilterOptions(): WatchFilterMenuOptions[] {
+            const handle = ({ watchedFilter }: WatchFilterMenuOptions) => {
+                this.watchedFilter = watchedFilter;
+            };
+
+            return [
+                {
+                    watchedFilter: WatchedFilter.All,
+                    text: 'All movies',
+                    mobileText: 'All',
+                    icon: 'view-list',
+                    handle,
+                },
+                {
+                    watchedFilter: WatchedFilter.Watched,
+                    text: 'Watched movies',
+                    mobileText: 'Watched',
+                    icon: 'checkmark',
+                    handle,
+                },
+                {
+                    watchedFilter: WatchedFilter.WatchLater,
+                    text: 'Movies to watch later',
+                    mobileText: 'Watch later',
+                    icon: 'time',
+                    handle,
+                },
+            ];
+        },
+        watchedFilterText(): string {
+            return this.watchedFilterOptions.find(option => option.watchedFilter === this.watchedFilter)!.text;
+        },
+        watchedFilterMobileText(): string {
+            return this.watchedFilterOptions.find(option => option.watchedFilter === this.watchedFilter)!.mobileText;
+        },
+        searching(): boolean {
             return this.removeClickAwayListener !== null;
         },
         allMovies(): Movie[] {
@@ -102,12 +167,24 @@ export default Vue.extend({
                 .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
         },
         filteredMovies(): Movie[] {
-            if (!this.filtering)
-                return this.allMovies;
+            let filteredMovies = this.allMovies;
 
-            const filterText = Str.slug(this.filter!, '');
+            switch (this.watchedFilter) {
+                case WatchedFilter.Watched:
+                    filteredMovies = filteredMovies.filter(movie => movie.watched);
+                    break;
+                case WatchedFilter.WatchLater:
+                    filteredMovies = filteredMovies.filter(movie => !movie.watched);
+                    break;
+            }
 
-            return this.allMovies.filter(movie => Str.contains(Str.slug(movie.title, ''), filterText));
+            if (this.searching) {
+                const filterText = Str.slug(this.searchFilter!, '');
+
+                filteredMovies = filteredMovies.filter(movie => Str.contains(movie.uuid!.replace('-',''), filterText));
+            }
+
+            return filteredMovies;
         },
     },
     created() {
@@ -121,13 +198,13 @@ export default Vue.extend({
             if (this.removeClickAwayListener !== null)
                 return;
 
-            const input = this.$refs.filter as HTMLInputElement;
+            const input = this.$refs.searchFilter as HTMLInputElement;
             const trigger = (this.$refs.filtersTrigger as Vue).$el as HTMLButtonElement;
 
-            this.filter = '';
+            this.searchFilter = '';
             this.removeClickAwayListener = this.$ui.onClickAway(
                 [input, trigger],
-                () => this.filter!.length === 0 && this.hideFilters(),
+                () => this.searchFilter!.length === 0 && this.hideFilters(),
             );
 
             this.$nextTick(() => input.focus());
@@ -138,7 +215,7 @@ export default Vue.extend({
 
             this.removeClickAwayListener();
 
-            this.filter = null;
+            this.searchFilter = null;
             this.removeClickAwayListener = null;
         },
         importMedia() {
