@@ -107,8 +107,8 @@ export default Vue.extend({
             };
 
             return [
-                { sorting: Sorting.MostRecent, text: 'Most recent first', icon: 'arrow-thick-up', handle },
-                { sorting: Sorting.Oldest, text: 'Oldest first', icon: 'arrow-thick-down', handle },
+                { sorting: Sorting.MostRecent, text: 'Most recent first', icon: 'hot', handle },
+                { sorting: Sorting.Oldest, text: 'Oldest first', icon: 'hour-glass', handle },
             ];
         },
         sortingText(): string {
