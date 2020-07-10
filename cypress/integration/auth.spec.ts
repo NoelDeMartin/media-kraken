@@ -60,6 +60,21 @@ describe('Authentication', () => {
 
     beforeEach(() => cy.visit('/'));
 
+    it('Helps visitors decide what to use', () => {
+        // Arrange
+        cy.startApp();
+
+        // Act
+        cy.contains('Help me decide what to use').click();
+
+        // Assert
+        cy.see('If you want to secure your data and access it from other devices, you should use Solid.');
+        cy.see(
+            'If you only want to try the app or you don\'t want to synchronize with other devices, ' +
+            'you should use browser storage.',
+        );
+    });
+
     it('Signs up with browser storage', () => {
         // Arrange
         cy.startApp();
@@ -98,7 +113,7 @@ describe('Authentication', () => {
         cy.startApp();
 
         // Act
-        cy.contains('Use Solid POD').click();
+        cy.contains('Use Solid').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
         cy.contains('Login').click();
 
@@ -125,7 +140,7 @@ describe('Authentication', () => {
         cy.startApp();
 
         // Act
-        cy.contains('Use Solid POD').click();
+        cy.contains('Use Solid').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
         cy.contains('Login').click();
 
@@ -145,7 +160,7 @@ describe('Authentication', () => {
         stubSolidAuth(domain);
 
         cy.startApp();
-        cy.contains('Use Solid POD').click();
+        cy.contains('Use Solid').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
         cy.contains('Login').click();
         cy.seeImage(taxiDriver.image, { timeout: 10000 });

@@ -49,12 +49,14 @@
             To start adding movies to your collection, you can import them from the following sources:
         </p>
         <MediaImporter class="mb-8" />
-        <p class="mb-4 leading-relaxed max-w-readable">
+        <p class="mb-6 leading-relaxed max-w-readable">
             If you don't have anything to import, just press "s" and start searching.
         </p>
-        <p class="mb-2 leading-relaxed max-w-readable">
-            <span class="font-medium">Still not sure what to do?</span> Ok, let's get started with
-            the 100 Top Rated Movies from IMDB:
+        <h2 class="mb-4 font-medium text-lg">
+            Still not sure what to do?
+        </h2>
+        <p class="mb-4 leading-relaxed max-w-readable">
+            Ok, let's get started importing the 100 Top Rated Movies from IMDB:
         </p>
         <BaseButton
             class="
@@ -63,7 +65,7 @@
             "
             @click="importImdbTop100Movies()"
         >
-            Import 100 Top Rated Movies
+            Import 100 Top Rated Movies from IMDB
         </BaseButton>
     </div>
 </template>

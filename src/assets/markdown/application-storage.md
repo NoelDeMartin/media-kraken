@@ -1,6 +1,6 @@
 # Application Storage
 
-## Solid POD
+## Solid
 
 If you want to secure your data and access it from other devices, you should use Solid.
 

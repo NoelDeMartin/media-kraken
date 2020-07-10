@@ -41,7 +41,7 @@
                         <BaseLink
                             button
                             class="text-sm self-center mt-4 desktop:mt-2 desktop:self-start"
-                            @click="$ui.openMarkdownModal('application-storage')"
+                            @click="$ui.openFileMarkdownModal('application-storage')"
                         >
                             I need help
                         </BaseLink>
@@ -69,7 +69,7 @@
                             "
                             @click="loginWithSolid"
                         >
-                            Use Solid POD
+                            Use Solid
                         </BaseButton>
                         <BaseButton
                             icon="browser"
@@ -85,7 +85,7 @@
                         <BaseLink
                             button
                             class="self-center mt-4 text-sm"
-                            @click="$ui.openMarkdownModal('application-storage')"
+                            @click="$ui.openFileMarkdownModal('application-storage')"
                         >
                             Help me decide what to use
                         </BaseLink>

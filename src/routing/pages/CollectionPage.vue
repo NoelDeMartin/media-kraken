@@ -1,5 +1,5 @@
 <template>
-    <main>
+    <div class="flex flex-col flex-grow w-full">
         <div id="collection-page-header" class="relative flex items-center -mx-2">
             <BaseTransition
                 :enter-duration="150"
@@ -71,18 +71,16 @@
                 </BaseTransition>
             </div>
         </div>
-        <BaseTransitionGroup :duration="100" animation="fade" class="relative">
-            <MoviesGrid
-                v-if="filteredMovies.length > 0"
-                key="movies"
-                within-collection
-                :movies="filteredMovies"
-            />
-            <div v-else key="empty" class="absolute flex items-center justify-center h-24 top-0 inset-x-0">
-                <span class="text-lg">Nothing matches "{{ searchFilter }}"</span>
-            </div>
-        </BaseTransitionGroup>
-    </main>
+        <MoviesGrid
+            v-if="filteredMovies.length > 0"
+            key="movies"
+            within-collection
+            :movies="filteredMovies"
+        />
+        <div v-else class="flex flex-grow items-center justify-center h-24 top-0 inset-x-0">
+            <span class="text-lg">No movies found.</span>
+        </div>
+    </div>
 </template>
 
 <script lang="ts">
