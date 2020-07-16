@@ -2,32 +2,54 @@
 
 skinparam monochrome true
 skinparam shadowing false
+hide circle
 
-class MediaContainer {
-    {field} **@type** ldp:Container
-    {method} **name:** rdfs:label
-    {method} **createdAt:** purl:created
-    {method} **updatedAt:** purl:modified
+class **MediaContainer** {
+    ..**rdfsClasses**..
+
+    + ldp:Container
+
+    ..**fields**..
+
+    + **name:** rdfs:label
+    + **createdAt:** purl:created
+    + **updatedAt:** purl:modified
+
 }
 
-class Movie {
-    {field} **@type** ldp:Resource
-    {field} **@type** schema:Movie
-    {method} **title:** schema:name
-    {method} **posterUrl:** schema:image
-    {method} **externalUrls[]:** schema:sameAs
-    {method} **createdAt:** purl:created
-    {method} **updatedAt:** purl:modified
+class **Movie** {
+    ..**rdfsClasses**..
+
+    + schema:Movie
+
+    ..**fields**..
+
+    + **title:** schema:name
+    + **description:** schema:description
+    + **releaseDate:** schema:datePublished
+    + **posterUrl:** schema:image
+    + **externalUrls[]:** schema:sameAs
+    + **createdAt:** purl:created
+    + **updatedAt:** purl:modified
+
 }
 
-class WatchAction {
-    {field} **@type** schema:WatchAction
-    {method} **object:** schema:object
-    {method} **createdAt:** purl:created
+class **WatchAction** {
+    ..**rdfsClasses**..
+
+    + schema:WatchAction
+
+    ..**fields**..
+
+    + **object:** schema:object
+    + **startTime:** schema:startTime
+    + **endTime:** schema:endTime
+    + **createdAt:** purl:created
+
 }
 
-WatchAction --> "1" Movie
-Movie --> "*" WatchAction : hasMany
-MediaContainer --> "*" Movie : contains
+"**MediaContainer**" -> "**Movie**" : contains
+"**Movie**" -> "**WatchAction**" : hasMany(object)
+"**WatchAction**" -> "**Movie**" : belongsToOne(object)
 
 @enduml
