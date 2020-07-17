@@ -21,6 +21,7 @@ interface State {
     layoutMediaQueries: {
         [layout in Layout]: boolean;
     };
+    headerHidden: boolean;
     menuOpen: boolean;
     modals: Modal[];
     snackbars: Snackbar[];
@@ -92,6 +93,10 @@ export default class UI extends Service<State, ComputedState> {
         return this.layout === Layout.Desktop;
     }
 
+    public get headerHidden(): boolean {
+        return this.state.headerHidden;
+    }
+
     public get menuOpen(): boolean {
         return this.state.menuOpen;
     }
@@ -158,6 +163,14 @@ export default class UI extends Service<State, ComputedState> {
         } finally {
             this.closeModal(modal.id, true);
         }
+    }
+
+    public showHeader() {
+        this.setState({ headerHidden: false });
+    }
+
+    public hideHeader() {
+        this.setState({ headerHidden: true });
     }
 
     public openMenu() {
@@ -366,6 +379,7 @@ export default class UI extends Service<State, ComputedState> {
                 [Layout.Mobile]: true,
                 [Layout.Desktop]: false,
             },
+            headerHidden: false,
             menuOpen: false,
             modals: [],
             snackbars: [],

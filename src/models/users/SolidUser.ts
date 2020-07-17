@@ -35,8 +35,11 @@ export default class SolidUser extends User<SolidUserJSON> {
         let activeSessionWebId: string | null = null;
         const onSessionUpdated = async (session: Session | void) => {
             if (!session) {
-                activeSessionWebId = null;
-                listener(null);
+                if (activeSessionWebId !== null) {
+                    activeSessionWebId = null;
+                    listener(null);
+                }
+
                 return;
             }
 
@@ -58,7 +61,6 @@ export default class SolidUser extends User<SolidUserJSON> {
             alert("We couldn't validate your credentials, please login again");
 
             await this.logout();
-            listener(null);
         }
     }
 

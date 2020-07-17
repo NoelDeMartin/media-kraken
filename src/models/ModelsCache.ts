@@ -71,6 +71,10 @@ class ModelsCache {
         await this.setModelData(model.url, data);
     }
 
+    public async forget(url: string): Promise<void> {
+        await this.deleteModelData(url);
+    }
+
     public async clear(): Promise<void> {
         if (this.connection) {
             this.connection.close();
@@ -96,6 +100,15 @@ class ModelsCache {
         const transaction = connection.transaction('models-cache', 'readwrite');
 
         transaction.store.put(data, url);
+
+        await transaction.done;
+    }
+
+    private async deleteModelData(url: string): Promise<void> {
+        const connection = await this.getConnection();
+        const transaction = connection.transaction('models-cache', 'readwrite');
+
+        transaction.store.delete(url);
 
         await transaction.done;
     }

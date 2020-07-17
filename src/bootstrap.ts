@@ -9,6 +9,7 @@ import Time from '@/utils/Time';
 import '@/components/base';
 
 import { bootServices } from '@/services';
+import { getForcedRoute } from '@/routing';
 import plugins from '@/plugins';
 
 setUpPolyfills(window);
@@ -28,12 +29,13 @@ function prepareErrorHandlers() {
 }
 
 function prepareInitialRoute() {
-    const { $auth, $router } = Vue.instance;
+    const { $router } = Vue.instance;
+    const initialRoute = getForcedRoute();
 
-    if ($auth.loggedIn || $router.currentRoute.name === 'login')
+    if (initialRoute === null || $router.currentRoute.name === initialRoute)
         return;
 
-    $router.replace({ name: 'login' });
+    $router.replace({ name: initialRoute });
 }
 
 async function removeLoading() {
