@@ -38,34 +38,33 @@
         </p>
     </div>
 
-    <div v-else class="flex flex-col flex-grow w-full">
+    <div v-else class="flex flex-col flex-grow w-full max-w-readable mx-auto mb-4">
         <BasePageHeader>Welcome to Media Kraken!</BasePageHeader>
-        <p class="mb-3 leading-relaxed max-w-readable">
-            I will help you keep track of your movies so that you don't have to. But there's a catch,
-            you'll only find <span class="font-medium">your movies</span> here. I won't do like those sites
-            that make suggestions and show you what's new. Only you can put movies in your collection!
+        <p class="text-gray-800 mb-3 leading-relaxed">
+            I will help you keep track of your movies so that you don't miss a beat. But there's a catch,
+            you'll only find <span class="font-medium">your movies</span> here. And only you can put movies
+            in your collection!
         </p>
-        <p class="mb-3 leading-relaxed max-w-readable">
-            To start adding movies to your collection, you can import them from the following sources:
-        </p>
-        <MediaImporter class="mb-8" />
-        <p class="mb-6 leading-relaxed max-w-readable">
-            If you don't have anything to import, just press "s" and start searching.
-        </p>
-        <h2 class="mb-4 font-medium text-lg">
-            Still not sure what to do?
-        </h2>
-        <p class="mb-4 leading-relaxed max-w-readable">
-            Ok, let's get started importing the 100 Top Rated Movies from IMDB:
+        <p class="text-gray-800 mb-3 leading-relaxed">
+            Let's get started. Do you have any movies that you would like to add to your collection?
         </p>
         <BaseButton
             class="
-                border border-primary-500 text-sm text-primary-700 justify-center max-w-readable
+                border border-primary-500 text-sm text-primary-700 justify-center my-4
                 hover:bg-black-overlay
             "
-            @click="importImdbTop100Movies()"
+            @click="importMedia"
         >
-            Import 100 Top Rated Movies from IMDB
+            Yes, I have some movies I'd like to import
+        </BaseButton>
+        <BaseButton
+            class="
+                border border-primary-500 text-sm text-primary-700 justify-center
+                hover:bg-black-overlay
+            "
+            @click="seedCollection"
+        >
+            No, just give me something to watch
         </BaseButton>
     </div>
 </template>
@@ -75,15 +74,12 @@ import Vue from 'vue';
 
 import Movie from '@/models/soukai/Movie';
 
-import { MediaSource } from '@/services/Media';
-
 import Storage from '@/utils/Storage';
 
-import imdbTop100Data from '@/assets/data/imdb-top-100.json';
-
 import { MenuOption } from '@/components/base/BaseMenu.vue';
-import MediaImporter from '@/components/MediaImporter.vue';
+import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 import MoviesGrid from '@/components/MoviesGrid.vue';
+import SeedCollectionModal from '@/components/modals/SeedCollectionModal.vue';
 
 const enum Sorting {
     MostRecent = 'most-recent',
@@ -96,7 +92,6 @@ interface SortMenuOption extends MenuOption {
 
 export default Vue.extend({
     components: {
-        MediaImporter,
         MoviesGrid,
     },
     data: () => ({ sorting: Storage.get('home-sorting', Sorting.MostRecent) }),
@@ -132,8 +127,11 @@ export default Vue.extend({
         },
     },
     methods: {
-        importImdbTop100Movies() {
-            this.$media.importMovies(imdbTop100Data, MediaSource.IMDB);
+        importMedia() {
+            this.$ui.openModal(ImportMediaModal);
+        },
+        seedCollection() {
+            this.$ui.openModal(SeedCollectionModal);
         },
     },
 });

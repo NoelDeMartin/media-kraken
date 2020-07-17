@@ -5,7 +5,7 @@
     >
         <template v-if="booted">
             <div class="flex flex-col min-h-screen" :style="{ marginTop: `-${$ui.fixedScroll || 0}px` }">
-                <AppHeader v-if="$media.loaded" />
+                <AppHeader v-if="$media.loaded && !$ui.headerHidden" />
                 <main class="flex flex-col flex-grow mx-auto max-w-content w-full px-4">
                     <router-view />
                 </main>

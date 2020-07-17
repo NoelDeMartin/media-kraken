@@ -6,7 +6,7 @@
             </BaseLink> and <strong>your data will be deleted</strong> when you log out. If you want to make sure that
             it isn't lost, you can <BaseLink button @click="$media.exportCollection()">
                 export your collection
-            </BaseLink> and you'll be able to import it later.
+            </BaseLink> and you'll be able to import it later (using JSON-LD import).
         </p>
 
         <div class="flex justify-end mt-4">

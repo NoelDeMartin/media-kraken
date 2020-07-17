@@ -57,6 +57,7 @@ describe('Media', () => {
 
     it('Imports movies from JSON-LD', () => {
         // Act
+        cy.contains('Yes, I have some movies I\'d like to import').click();
         cy.buttonWithTitle('Import from JSON-LD').click();
         cy.uploadFixture('collection.json');
 

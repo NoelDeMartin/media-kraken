@@ -1,5 +1,13 @@
 <template>
-    <div>
+    <AppModal
+        :id="id"
+        :options="options"
+        class="w-full"
+        title="Import Movies"
+    >
+        <p class="text-gray-700 leading-relaxed mb-3">
+            You can import movies from the following sources:
+        </p>
         <div class="flex grid gap-4 grid-cols-fill-32 desktop:grid-cols-fill-40">
             <div v-for="source of sources" :key="source" class="relative ratio-1/1">
                 <div class="absolute inset-0 flex">
@@ -26,26 +34,37 @@
                 </div>
             </div>
         </div>
-    </div>
+        <p class="text-gray-700 leading-relaxed my-3">
+            If you can't import your movies with any of these options, please
+            <BaseLink url="https://github.com/NoelDeMartin/media-kraken/issues/new?title=Support+importing+movies+from+...">
+                let me know
+            </BaseLink> and I'll help you.
+        </p>
+        <p class="text-gray-700 leading-relaxed">
+            In the meantime, you can probably find your movies <BaseLink button @click="openSearch">
+                using the search in the header
+            </BaseLink>.
+        </p>
+    </AppModal>
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
-
 import { MediaSource } from '@/services/Media';
 
-import ImportMoviesData from '@/components/modals/ImportMoviesData.vue';
+import ImportIMDBMoviesModal from '@/components/modals/ImportIMDBMoviesModal.vue';
+import Modal from '@/components/mixins/Modal';
 
 import Files, { MediaType } from '@/utils/Files';
+import Time from '@/utils/Time';
 
-export default Vue.extend({
+export default Modal.extend({
     data: () => ({
         sources: Object.values(MediaSource),
     }),
     computed: {
         mediaSourceNames: () => ({
-            [MediaSource.TViso]: 'TViso',
             [MediaSource.JSONLD]: 'JSON-LD',
+            [MediaSource.TViso]: 'TViso',
             [MediaSource.IMDB]: 'IMDB',
         }),
         helpReplacements(): any {
@@ -61,6 +80,14 @@ export default Vue.extend({
         },
     },
     methods: {
+        async openSearch() {
+            this.close();
+
+            // Wait for the modal to be hidden.
+            await Time.wait(350);
+
+            this.$search.start();
+        },
         async importMedia(source: MediaSource) {
             const data = await this.getSourceData(source);
 
@@ -69,7 +96,7 @@ export default Vue.extend({
 
             await this.$media.importMovies(data, source);
 
-            this.$emit('imported');
+            this.close();
         },
         async getSourceData(source: MediaSource): Promise<object[]> {
             switch (source) {
@@ -91,7 +118,7 @@ export default Vue.extend({
             return data;
         },
         async getDataFromModal(): Promise<object[]> {
-            const modal = this.$ui.openModal<object[]>(ImportMoviesData);
+            const modal = this.$ui.openModal<object[]>(ImportIMDBMoviesModal);
             const data = await modal.result;
 
             return data || [];

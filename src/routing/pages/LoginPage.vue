@@ -7,7 +7,7 @@
             </h1>
             <div class="flex flex-col items-center mt-1">
                 <p class="text-sm text-gray-800 text-center leading-relaxed mb-6">
-                    Keep track of the movies you want to watch and create your own collection!
+                    Keep track of your movies and create your own collection!
                 </p>
                 <form
                     v-if="identityProviderUrl !== null"

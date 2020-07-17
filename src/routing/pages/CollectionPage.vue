@@ -91,7 +91,7 @@ import Str from '@/utils/Str';
 import Movie from '@/models/soukai/Movie';
 
 import { MenuOption } from '@/components/base/BaseMenu.vue';
-import ImportOptionsModal from '@/components/modals/ImportOptionsModal.vue';
+import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 import MoviesGrid from '@/components/MoviesGrid.vue';
 
 const enum WatchedFilter {
@@ -217,7 +217,7 @@ export default Vue.extend({
             this.removeClickAwayListener = null;
         },
         importMedia() {
-            this.$ui.openModal(ImportOptionsModal);
+            this.$ui.openModal(ImportMediaModal);
         },
         exportCollection() {
             this.$media.exportCollection();

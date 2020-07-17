@@ -53,9 +53,9 @@ export interface MediaContainers {
 }
 
 export enum MediaSource {
-    IMDB = 'imdb',
     JSONLD = 'jsonld',
     TViso = 'tviso',
+    IMDB = 'imdb',
 }
 
 export default class Media extends Service<State> {
