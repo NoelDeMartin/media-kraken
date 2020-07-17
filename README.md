@@ -1,4 +1,4 @@
-# Media Kraken [![Build Status](https://semaphoreci.com/api/v1/noeldemartin/media-kraken/branches/master/badge.svg)](https://semaphoreci.com/noeldemartin/media-kraken)
+# Media Kraken [![Build Status](https://semaphoreci.com/api/v1/noeldemartin/media-kraken/branches/main/badge.svg)](https://semaphoreci.com/noeldemartin/media-kraken)
 
 Track your movies with Media Kraken.
 

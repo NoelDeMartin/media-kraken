@@ -51,7 +51,7 @@ export default Vue.extend({
         helpReplacements(): any {
             const repositoryUrl = 'https://github.com/NoelDeMartin/media-kraken';
             const filePath = 'docs#data-schema';
-            const branch = this.$config.isDevelopment ? 'master' : this.$config.version;
+            const branch = this.$config.isDevelopment ? 'main' : this.$config.version;
 
             return {
                 jsonld: {
