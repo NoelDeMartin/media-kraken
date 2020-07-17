@@ -28,13 +28,24 @@
         </p>
     </div>
 
-    <div v-else-if="!$media.empty">
-        <BasePageHeader>All done!</BasePageHeader>
+    <div
+        v-else-if="!$media.empty"
+        class="max-w-readable mx-auto text-center items-center flex flex-col flex-grow justify-center -mt-10"
+    >
+        <BasePageHeader>
+            All done!
+        </BasePageHeader>
+        <div class="bg-green-300 rounded-full p-3 mb-4">
+            <BaseIcon name="checkmark" class="w-12 h-12 text-green-600" />
+        </div>
         <p class="leading-relaxed">
             You don't have anything pending to watch! Check <BaseLink route="collection">
                 your collection
             </BaseLink> to rewatch some of your favourites
-            or press "s" to find something new.
+            or <span class="hidden desktop:inline-block">press "s" to find something new</span>
+            <BaseLink button class="desktop:hidden" @click.stop="$search.start()">
+                find something new
+            </BaseLink>.
         </p>
     </div>
 

@@ -77,8 +77,9 @@
             within-collection
             :movies="filteredMovies"
         />
-        <div v-else class="flex flex-grow items-center justify-center h-24 top-0 inset-x-0">
-            <span class="text-lg">No movies found.</span>
+        <div v-else class="flex flex-col flex-grow items-center justify-center h-24 top-0 inset-x-0">
+            <BaseIcon name="search-empty" class="w-16 h-16 text-gray-700 mb-4" />
+            <span class="text-lg">No movies found matching these filters.</span>
         </div>
     </div>
 </template>

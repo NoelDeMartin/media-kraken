@@ -3,7 +3,7 @@
         v-if="button"
         type="button"
         class="inline-block text-primary-700 hover:underline hover:text-primary-900"
-        @click="$emit('click')"
+        @click="$emit('click', $event)"
     >
         <slot />
     </button>
