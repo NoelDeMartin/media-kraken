@@ -10,12 +10,14 @@ import UnauthorizedError from '@/errors/UnauthorizedError';
 import UnsuitableMediaError from '@/errors/IgnoreMediaError';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
+import ModelsCache from '@/models/ModelsCache';
 import Movie from '@/models/soukai/Movie';
 import User from '@/models/users/User';
 
 import { loadMedia } from '@/workers';
 import Service from '@/services/Service';
 
+import Arr from '@/utils/Arr';
 import ImportProgressModal from '@/components/modals/ImportProgressModal.vue';
 import ImportResultModal from '@/components/modals/ImportResultModal.vue';
 import IMDBMoviesParser from '@/utils/parsers/IMDBMoviesParser';
@@ -172,6 +174,16 @@ export default class Media extends Service<State> {
             this.app.$ui.closeModal(progressModalId, true);
             this.app.$ui.openModal(ImportResultModal, { log }, { cancellable: false });
         });
+    }
+
+    public async removeMovie(movie: Movie, movieUrl: string): Promise<void> {
+        if (!this.loaded)
+            return;
+
+        Arr.removeItem(this.moviesContainer!.movies!, movie);
+
+        await ModelsCache.forget(this.moviesContainer!.url);
+        await ModelsCache.forget(movieUrl);
     }
 
     public cancelImport(): void {

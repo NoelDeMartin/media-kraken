@@ -4,6 +4,15 @@ class Arr {
         return arr.indexOf(item) !== -1;
     }
 
+    public removeItem<T>(items: T[], item: T): T {
+        const index = items.indexOf(item);
+
+        if (index !== -1)
+            items.splice(index, 1);
+
+        return item;
+    }
+
     public unique<T>(arr: T[]): T[] {
         return arr.filter((item, index) => arr.indexOf(item) === index);
     }

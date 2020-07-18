@@ -28,42 +28,61 @@
                 />
             </div>
             <div class="flex flex-col flex-grow">
-                <h1 class="text-2xl font-semibold mb-1 mt-2 desktop:mt-0">
-                    {{ movie.title }}
-                    <span v-if="movie.releaseDate" class="font-medium text-lg">
-                        ({{ movie.releaseDate.getFullYear() }})
-                    </span>
-                </h1>
-                <div class="text-sm mb-3">
-                    <component
-                        :is="movie.watched ? 'div' : 'button'"
-                        class="group leading-normal"
-                        v-bind="movie.watched ? {} : { type: 'button' }"
-                        v-on="movie.watched ? {} : { click: markWatched }"
-                    >
-                        <div
-                            class="flex items-center"
-                            :class="{
-                                'text-green-700': movie.watched,
-                                'text-blue-700 group-hover:text-green-700': movie.pending,
-                            }"
-                        >
-                            <template v-if="movie.pending">
-                                <BaseIcon
-                                    name="time"
-                                    class="w-3 h-3 mr-1 group-hover:hidden"
-                                />
-                                <span class="group-hover:hidden">watch later</span>
-                            </template>
+                <div class="flex justify-between">
+                    <div class="flex flex-col">
+                        <h1 class="text-2xl font-semibold mb-1 mt-2 desktop:mt-0">
+                            {{ movie.title }}
+                            <span v-if="movie.releaseDate" class="font-medium text-lg">
+                                ({{ movie.releaseDate.getFullYear() }})
+                            </span>
+                        </h1>
+                        <div class="text-sm mb-3">
+                            <component
+                                :is="movie.watched ? 'div' : 'button'"
+                                class="group leading-normal"
+                                v-bind="movie.watched ? {} : { type: 'button' }"
+                                v-on="movie.watched ? {} : { click: markWatched }"
+                            >
+                                <div
+                                    class="flex items-center"
+                                    :class="{
+                                        'text-green-700': movie.watched,
+                                        'text-blue-700 group-hover:text-green-700': movie.pending,
+                                    }"
+                                >
+                                    <template v-if="movie.pending">
+                                        <BaseIcon
+                                            name="time"
+                                            class="w-3 h-3 mr-1 group-hover:hidden"
+                                        />
+                                        <span class="group-hover:hidden">watch later</span>
+                                    </template>
 
-                            <BaseIcon
-                                name="checkmark"
-                                class="w-3 h-3 mr-1"
-                                :class="{ 'hidden group-hover:block': movie.pending }"
-                            />
-                            <span :class="{ 'hidden group-hover:block': movie.pending }">watched</span>
+                                    <BaseIcon
+                                        name="checkmark"
+                                        class="w-3 h-3 mr-1"
+                                        :class="{ 'hidden group-hover:block': movie.pending }"
+                                    />
+                                    <span :class="{ 'hidden group-hover:block': movie.pending }">watched</span>
+                                </div>
+                            </component>
                         </div>
-                    </component>
+                    </div>
+                    <BaseMenu
+                        v-slot="{ toggle: toggleActionsMenu }"
+                        direction="top-right"
+                        :options="[
+                            { text: 'Delete', icon: 'trash', handle: deleteMovie },
+                        ]"
+                    >
+                        <BaseButton
+                            icon="more"
+                            aria-label="Open actions menu"
+                            class="w-8 h-8 -mr-2 mt-2 desktop:mt-0 hover:bg-black-overlay"
+                            style="padding:0"
+                            @click="toggleActionsMenu"
+                        />
+                    </BaseMenu>
                 </div>
                 <p class="leading-relaxed text-gray-700">
                     {{ movie.description || 'No description.' }}
@@ -74,7 +93,7 @@
                             <BaseIcon
                                 v-if="externalModel.icon"
                                 :name="externalModel.icon"
-                                class="h-5 w-auto"
+                                class="w-auto h-5"
                             />
                             <span v-else class="text-sm text-primary-700 hover:underline hover:text-primary-900">
                                 view at {{ externalModel.domain }}
@@ -145,6 +164,30 @@ export default Vue.extend({
                 return;
 
             await this.$ui.updateModel(this.movie, movie => movie.watch());
+        },
+        async deleteMovie() {
+            if (!this.movie)
+                return;
+
+            if (!confirm('Are you sure you want to delete this movie?'))
+                return;
+
+            this.$router.push({ name: this.$media.movies.length === 1 ? 'home' : 'collection' });
+
+            await this.$ui.loading(
+                async () => {
+                    const movieUrl = this.movie!.url;
+
+                    await this.movie!.delete();
+                    await this.$media.removeMovie(this.movie!, movieUrl);
+                },
+                `Deleting **${this.movie.title}**...`,
+            );
+
+            this.$ui.showSnackbar(
+                `**${this.movie.title}** has been removed from your collection.`,
+                { transient: true },
+            );
         },
     },
 });

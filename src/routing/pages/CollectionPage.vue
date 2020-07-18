@@ -17,6 +17,7 @@
                     >
                         <BaseButton
                             icon="more"
+                            aria-label="Open actions menu"
                             class="w-8 h-8 -ml-1 hover:bg-black-overlay"
                             style="padding-left:.4375rem;padding-right:.4375rem"
                             @click="toggleActionsMenu"

@@ -1,7 +1,7 @@
 <template>
     <button
         :type="submit ? 'submit' : 'button'"
-        class="flex items-center px-4 py-2 rounded-md"
+        class="flex items-center justify-center px-4 py-2 rounded-md"
         @click="$emit('click', $event)"
     >
         <BaseIcon

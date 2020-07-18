@@ -4,6 +4,7 @@ import jawsTmdbSearchResult from '@tests/fixtures/tmdb/jaws-search-result.json';
 import loveExposure from '@tests/fixtures/json/love-exposure.json';
 import loveExposureTmdb from '@tests/fixtures/tmdb/love-exposure.json';
 import loveExposureTmdbSearchResult from '@tests/fixtures/tmdb/love-exposure-search-result.json';
+import spirit from '@tests/fixtures/json/spirit.json';
 import spiritLD from '@tests/fixtures/jsonld/spirit.json';
 import symbol from '@tests/fixtures/json/symbol.json';
 
@@ -101,6 +102,25 @@ describe('Media', () => {
         // Assert
         cy.see('Collection (1)');
         cy.url().should('include', '/collection');
+    });
+
+    it('Deletes movies', () => {
+        // Arrange
+        let confirmed = false;
+
+        cy.on('window:confirm', () => confirmed = true);
+        cy.addMovie(spiritLD);
+        cy.contains('My Collection').click();
+        cy.anchorWithTitle(`${spirit.name} (Watched)`).click();
+
+        // Act
+        cy.ariaLabel('Open actions menu').click();
+        cy.contains('Delete').click();
+
+        // Assert
+        cy.see(`${spirit.name} has been removed from your collection.`).then(() => {
+            expect(confirmed).to.be.true;
+        });
     });
 
 });
