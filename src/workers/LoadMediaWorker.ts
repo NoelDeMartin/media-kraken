@@ -11,12 +11,15 @@ import User from '@/models/users/User';
 
 import UnauthorizedError from '@/errors/UnauthorizedError';
 
+import Arr from '@/utils/Arr';
 import JSONUserParser from '@/utils/parsers/JSONUserParser';
 
 import WebWorker from './WebWorker';
 
 export type Parameters = [object];
 export type Result = void;
+
+const MOVIES_CHUNK_SIZE = 10;
 
 export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
 
@@ -81,9 +84,15 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
             // TODO this will only find movies that have the same url as the document,
             // so things like https://example.org/movies/jumanji#it won't work
 
-            const updatedMovies = await Movie.from(moviesContainer.url).all<Movie>({
-                $in: [...nonCachedDocumentUrls],
-            });
+            const updatedMovies = [];
+
+            for (const chunkUrls of Arr.chunk([...nonCachedDocumentUrls], MOVIES_CHUNK_SIZE)) {
+                const chunkMovies = await Movie.from(moviesContainer.url).all<Movie>({
+                    $in: chunkUrls,
+                });
+
+                updatedMovies.push(...chunkMovies);
+            }
 
             await Promise.all(updatedMovies.map(async movie => {
                 nonCachedDocumentUrls.delete(movie.url);

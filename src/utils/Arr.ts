@@ -1,7 +1,21 @@
 class Arr {
 
+    public chunk<T>(arr: T[], chunkSize: number): T[][] {
+        const chunks = [];
+
+        for (let i = 0; i < arr.length; i += chunkSize) {
+            chunks.push(arr.slice(i, i+chunkSize));
+        }
+
+        return chunks;
+    }
+
     public contains<T>(arr: T[], item: T): boolean {
         return arr.indexOf(item) !== -1;
+    }
+
+    public flatten<T>(items: T[][]): T[] {
+        return items.reduce((flattenedItems, nestedItems) => [...flattenedItems, ...nestedItems], []);
     }
 
     public removeItem<T>(items: T[], item: T): T {

@@ -21,7 +21,10 @@
             </BaseMenu>
         </div>
         <MoviesGrid :movies="pendingMoviesSummary" />
-        <p v-if="pendingMovies.length > pendingMoviesSummary.length" class="mt-3 leading-relaxed max-w-readable">
+        <p
+            v-if="pendingMovies.length > pendingMoviesSummary.length"
+            class="mt-3 leading-relaxed max-w-readable text-center desktop:text-left"
+        >
             You have more movies to watch in <BaseLink route="collection">
                 your collection
             </BaseLink>.

@@ -138,7 +138,10 @@ export default class SolidUser extends User<SolidUserJSON> {
     }
 
     public initSoukaiEngine(): void {
-        Soukai.useEngine(new SolidEngine(SolidUser.fetch));
+        // TODO implement maxGlobbingSize config option
+        Soukai.useEngine(new SolidEngine(SolidUser.fetch, {
+            globbingBatchSize: null,
+        }));
     }
 
     public async logout(): Promise<void> {
