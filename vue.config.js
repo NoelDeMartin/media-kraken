@@ -8,6 +8,7 @@ const isTesting = process.env.NODE_ENV === 'testing';
 const publicPath = isProduction ? '/media-kraken/' : '/';
 const title = 'Media Kraken';
 const description = 'Track your movies with Media Kraken and never miss a beat!';
+const baseUrl = 'https://noeldemartin.github.io/media-kraken/';
 
 process.env.VUE_APP_VERSION = version;
 process.env.VUE_APP_PUBLIC_PATH = publicPath;
@@ -18,10 +19,12 @@ module.exports = {
         'index': {
             title,
             description,
+            baseUrl,
             entry: isTesting ? 'src/index.testing.ts' : 'src/index.ts',
         },
         '404': {
             title,
+            baseUrl,
             entry: 'src/routing/github-404.ts',
             chunks: [],
         },
