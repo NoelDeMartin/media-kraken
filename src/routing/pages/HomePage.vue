@@ -14,7 +14,7 @@
                 direction="top-right"
                 :options="sortingOptions"
             >
-                <button class="flex items-center" @click="toggleSortingMenu">
+                <button class="flex items-center h-8" @click="toggleSortingMenu">
                     <span class="mr-1 text-sm">{{ sortingText }}</span>
                     <BaseIcon name="cheveron-down" class="w-5 h-5" />
                 </button>

@@ -47,7 +47,7 @@
                         ref="my-collection"
                         v-close-menu
                         route="collection"
-                        class="font-semibold desktop:text-sm desktop:mr-4"
+                        class="flex items-center h-8 font-semibold desktop:text-sm desktop:mr-4"
                         :class="{ 'underline': $route.name === 'collection' }"
                     >
                         My Collection
@@ -58,9 +58,11 @@
                     ref="button"
                     type="button"
                     aria-label="Settings"
+                    :style="$auth.user.avatarUrl ? '' : 'margin-left:-.375rem;margin-right:-.375rem'"
                     :class="{
                         'rounded-full text-primary-900 focus:outline-none focus:shadow-solid': $auth.user.avatarUrl,
-                        'text-gray-700 hover:text-gray-800': !$auth.user.avatarUrl,
+                        'flex w-8 h-8 text-gray-700 items-center justify-center hover:text-gray-800':
+                            !$auth.user.avatarUrl,
                     }"
                     @click="$ui.toggleMenu()"
                 >

@@ -17,8 +17,8 @@
                     >
                         <BaseButton
                             icon="more"
-                            class="h-8 mr-1 hover:bg-black-overlay"
-                            style="padding:0; width:1.125rem"
+                            class="w-8 h-8 -ml-1 hover:bg-black-overlay"
+                            style="padding-left:.4375rem;padding-right:.4375rem"
                             @click="toggleActionsMenu"
                         />
                     </BaseMenu>
@@ -31,7 +31,7 @@
                 :direction="searching ? 'top-left' : 'top-right'"
                 :options="watchedFilterOptions"
             >
-                <button class="flex items-center ml-2" @click="toggleWatchedFilterMenu">
+                <button class="flex items-center h-8 ml-2" @click="toggleWatchedFilterMenu">
                     <span class="mr-1 text-sm hidden whitespace-no-wrap desktop:block">{{ watchedFilterText }}</span>
                     <span class="mr-1 text-sm whitespace-no-wrap desktop:hidden">{{ watchedFilterMobileText }}</span>
                     <BaseIcon name="cheveron-down" class="w-5 h-5" />
