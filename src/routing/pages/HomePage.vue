@@ -105,13 +105,13 @@ export default Vue.extend({
     components: {
         MoviesGrid,
     },
-    data: () => ({ sorting: Storage.get('home-sorting', Sorting.MostRecent) }),
+    data: () => ({ sorting: Storage.get('media-kraken-home-sorting', Sorting.MostRecent) }),
     computed: {
         sortingOptions(): SortMenuOption[] {
             const handle = ({ sorting }: SortMenuOption) => {
                 this.sorting = sorting;
 
-                Storage.set('home-sorting', sorting);
+                Storage.set('media-kraken-home-sorting', sorting);
             };
 
             return [

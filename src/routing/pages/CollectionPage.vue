@@ -164,7 +164,7 @@ export default Vue.extend({
         allMovies(): Movie[] {
             return this.$media.movies
                 .slice(0)
-                .sort((a, b) => a.createdAt.getTime() - b.createdAt.getTime());
+                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
         },
         filteredMovies(): Movie[] {
             let filteredMovies = this.allMovies;

@@ -9,6 +9,8 @@ import MoviePage from '@/routing/pages/MoviePage.vue';
 import UnauthorizedPage from '@/routing/pages/UnauthorizedPage.vue';
 import UnsupportedBrowserPage from '@/routing/pages/UnsupportedBrowserPage.vue';
 
+import Storage from '@/utils/Storage';
+
 export const routes = [
     { name: 'login', path: '/login', component: LoginPage },
     { name: 'home', path: '/', component: HomePage },
@@ -48,14 +50,12 @@ export function getForcedRoute(): string | null {
 
 export function initRouter(router: VueRouter) {
     router.onReady(() => {
-        const githubPagesRedirect = localStorage.getItem('github-pages-redirect');
+        const githubPagesRedirect = Storage.pull('github-pages-redirect');
 
         if (!githubPagesRedirect)
             return;
 
-        localStorage.removeItem('github-pages-redirect');
-
-        router.replace(JSON.parse(githubPagesRedirect));
+        router.replace(githubPagesRedirect);
     });
 
     router.beforeEach((to, _, next) => {

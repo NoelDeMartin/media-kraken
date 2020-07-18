@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" prefix="og: http://ogp.me/ns#">
     <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,13 +13,41 @@
         <meta property="og:image" content="<%= BASE_URL %>img/icons/android-chrome-512x512.png" />
         <meta property="og:image:width" content="512" />
         <meta property="og:image:height" content="512" />
+        <style>
+            body {
+                margin: 0;
+                background: #fff7f7;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100vw;
+                height: 100vh;
+            }
+            #error-message {
+                opacity: 100;
+                transition: opacity 300ms;
+                font-size: x-large;
+                text-align: center;
+                margin: 1rem;
+            }
+            #error-message a {
+                display: inline-block;
+            }
+            body:not(.redirecting-error) #error-message {
+                opacity: 0;
+            }
+        </style>
     </head>
     <body data-public-path="<%= BASE_URL %>">
         <noscript>
             <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
         </noscript>
-        Redirecting...
+        <p id="error-message">There was an error redirecting to this page, please <a href="<%= BASE_URL %>">go home</a> instead.</p>
         <script>
+            setTimeout(function() {
+                document.body.classList.add('redirecting-error');
+            }, 2000);
+
             (function () {
                 function redirectTo(publicPath, baseUrl) {
                     if (location.href === baseUrl)

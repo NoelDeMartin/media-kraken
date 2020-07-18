@@ -20,13 +20,12 @@ export default class Config extends Service {
     protected async init(): Promise<void> {
         await super.init();
 
-        if (!Storage.has('browser-capabilities')) {
-            Storage.set('browser-capabilities', {
+        if (!Storage.has('media-kraken-browser-capabilities'))
+            Storage.set('media-kraken-browser-capabilities', {
                 supportsIndexedDB: await this.isIndexedDBSupported(),
             });
-        }
 
-        this.capabilities = Storage.get('browser-capabilities');
+        this.capabilities = Storage.get('media-kraken-browser-capabilities');
     }
 
     private async isIndexedDBSupported(): Promise<boolean> {

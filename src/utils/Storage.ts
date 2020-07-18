@@ -27,6 +27,17 @@ class Storage {
         localStorage.removeItem(key);
     }
 
+    public pull(key: string, defaultValue: any = null): any {
+        if (!this.has(key))
+            return defaultValue;
+
+        const value = this.get(key);
+
+        this.remove(key);
+
+        return value;
+    }
+
 }
 
 export default new Storage();

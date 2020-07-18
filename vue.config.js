@@ -76,8 +76,8 @@ module.exports = {
     },
     pwa: {
         name: title,
-        themeColor: '#4299E1',
-        msTileColor: '#4299E1',
+        themeColor: '#f05252',
+        msTileColor: '#f05252',
         manifestOptions: {
             background_color: '#ffffff',
             orientation: 'portrait',
@@ -97,11 +97,11 @@ module.exports = {
             ],
             runtimeCaching: [
                 {
-                    urlPattern: /\/$/,
+                    urlPattern: /^https:\/\/noeldemartin\.github\.io\/media-kraken\/$/,
                     handler: 'StaleWhileRevalidate',
                 },
                 {
-                    urlPattern: /.*/,
+                    urlPattern: /^https:\/\/noeldemartin\.github\.io\/media-kraken\/.*/,
                     handler: 'CacheFirst',
                 },
             ],

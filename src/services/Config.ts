@@ -1,5 +1,7 @@
 import Service from '@/services/Service';
 
+import Storage from '@/utils/Storage';
+
 export default class Config extends Service {
 
     public environment!: string;
@@ -15,6 +17,8 @@ export default class Config extends Service {
 
         this.environment = process.env.NODE_ENV!;
         this.version = process.env.VUE_APP_VERSION + (this.isDevelopment ? '-next' : '');
+
+        Storage.set('media-kraken-version', this.version);
     }
 
 }

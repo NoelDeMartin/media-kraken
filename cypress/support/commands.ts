@@ -101,7 +101,7 @@ const customCommands = {
 
     localStorageShouldBeEmpty() {
         cy.wrap(null).should(() => {
-            expect(localStorage.getItem('offline-user')).to.be.null;
+            expect(localStorage.getItem('media-kraken-offline-user')).to.be.null;
             expect(localStorage.getItem('solid-auth-client')).to.be.null;
         });
     },

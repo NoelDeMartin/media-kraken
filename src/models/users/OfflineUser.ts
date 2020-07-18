@@ -12,7 +12,7 @@ export interface OfflineUserJSON {
 export default class OfflineUser extends User<OfflineUserJSON> {
 
     public static isLoggedIn(): boolean {
-        return Storage.get('offline-user', false);
+        return Storage.get('media-kraken-offline-user', false);
     }
 
     public static isOfflineUserJSON(json: any): json is OfflineUserJSON {
@@ -24,13 +24,13 @@ export default class OfflineUser extends User<OfflineUserJSON> {
     }
 
     public async login(): Promise<void> {
-        Storage.set('offline-user', true);
+        Storage.set('media-kraken-offline-user', true);
     }
 
     public async logout(): Promise<void> {
         await (Soukai.engine as IndexedDBEngine).purgeDatabase();
 
-        Storage.remove('offline-user');
+        Storage.remove('media-kraken-offline-user');
     }
 
     public initSoukaiEngine(): void {
