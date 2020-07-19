@@ -45,12 +45,16 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
     }
 
     private async initStorage(userJson: object): Promise<void> {
+        this.postMessage('update-progress-message', 'Loading user data...');
+
         this.user = await this.resolveUser(userJson);
 
         await this.user.initSoukaiEngine();
     }
 
     private async loadMoviesContainer(): Promise<void> {
+        this.postMessage('update-progress-message', 'Loading movies metadata...');
+
         const { movies: moviesContainer } = await this.user.resolveMediaContainers();
 
         this.postMessage('movies-container-loaded', moviesContainer.getAttributes());
@@ -84,12 +88,26 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
             // TODO this will only find movies that have the same url as the document,
             // so things like https://example.org/movies/jumanji#it won't work
 
+            let loadedMovies = 0;
             const updatedMovies = [];
+            const totalMovies = nonCachedDocumentUrls.size;
+
+            this.postMessage(
+                'update-progress-message',
+                `Loading movies data (${loadedMovies}/${totalMovies})...`,
+            );
 
             for (const chunkUrls of Arr.chunk([...nonCachedDocumentUrls], MOVIES_CHUNK_SIZE)) {
                 const chunkMovies = await Movie.from(moviesContainer.url).all<Movie>({
                     $in: chunkUrls,
                 });
+
+                loadedMovies += chunkMovies.length;
+
+                this.postMessage(
+                    'update-progress-message',
+                    `Loading movies data (${loadedMovies}/${totalMovies})...`,
+                );
 
                 updatedMovies.push(...chunkMovies);
             }
@@ -110,6 +128,8 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
 
             moviesContainer.setRelationModels('movies', [...cachedMovies, ...updatedMovies]);
         }
+
+        this.postMessage('update-progress-message', 'Almost done...');
 
         const actionPromises = moviesContainer.movies!.map(async movie => {
             if (!movie.isRelationLoaded('actions'))

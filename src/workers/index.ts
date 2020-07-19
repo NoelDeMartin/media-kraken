@@ -13,9 +13,16 @@ import WebWorkerRunner from './WebWorkerRunner';
 
 export async function loadMedia(...params: Parameters): Promise<MediaContainers> {
     let error: any = null;
+    const progressMessage = document.querySelector('#loading-overlay .progress-message');
     const containers: Partial<MediaContainers> = {};
     const worker = new Worker('@/workers/LoadMediaWorker.index.ts', { type: 'module' });
     const runner = new WebWorkerRunner<Parameters, Result>(worker, {
+        onUpdateProgressMessage(message) {
+            if (!progressMessage)
+                return;
+
+            progressMessage.textContent = message;
+        },
         onUnauthorized() {
             error = new UnauthorizedError;
         },
