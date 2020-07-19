@@ -8,7 +8,7 @@ const isTesting = process.env.NODE_ENV === 'testing';
 const publicPath = isProduction ? '/media-kraken/' : '/';
 const title = 'Media Kraken';
 const description = 'Track your movies with Media Kraken and never miss a beat!';
-const baseUrl = 'https://noeldemartin.github.io/media-kraken/';
+const baseUrl = isProduction ? 'https://noeldemartin.github.io/media-kraken/' : 'http://localhost:8080';
 
 process.env.VUE_APP_VERSION = version;
 process.env.VUE_APP_PUBLIC_PATH = publicPath;
