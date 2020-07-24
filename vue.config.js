@@ -90,7 +90,7 @@ module.exports = {
             importWorkboxFrom: 'local',
 
             // Use precaching or CacheFirst for everything except for index.html,
-            // use StaleWhileRevalidate instead to pick up updates.
+            // use NetworkFirst instead to pick up updates.
             exclude: [
                 /\.map$/,
                 /img\/icons\//,
@@ -101,7 +101,7 @@ module.exports = {
             runtimeCaching: [
                 {
                     urlPattern: /^https:\/\/noeldemartin\.github\.io\/media-kraken\/$/,
-                    handler: 'StaleWhileRevalidate',
+                    handler: 'NetworkFirst',
                 },
                 {
                     urlPattern: /^https:\/\/noeldemartin\.github\.io\/media-kraken\/.*/,
