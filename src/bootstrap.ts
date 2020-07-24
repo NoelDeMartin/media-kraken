@@ -3,8 +3,8 @@ import Vue from 'vue';
 import App from '@/App.vue';
 
 import { setUpPolyfills } from '@/utils/polyfills';
+import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
-import Sentry from '@/utils/Sentry';
 import Time from '@/utils/Time';
 
 import '@/components/base';
@@ -52,13 +52,13 @@ async function removeLoading() {
 }
 
 export async function start(): Promise<void> {
-    Sentry.init();
-    setErrorHandler(error => Sentry.report(error));
+    Errors.init();
+    setErrorHandler(error => Errors.handle(error));
 
     const servicesBooted = bootServices(Vue.instance).catch(error => {
         // eslint-disable-next-line no-console
         console.error(error);
-        Sentry.report(error);
+        Errors.handle(error);
 
         alert('Something went wrong! (look at the console for details)');
     });

@@ -23,8 +23,9 @@
                     desktop:p-0 desktop:flex-row desktop:items-center desktop:bg-transparent desktop:shadow-none
                 "
             >
-                <div v-if="$ui.mobile" class="flex items-center">
+                <div v-if="$ui.mobile && !$auth.isOffline" class="flex items-center">
                     <UserAvatar
+                        v-if="$auth.user.avatarUrl"
                         class="w-16 h-16 mr-4 flex-shrink-0 rounded-full text-primary-900 outline-none shadow-solid"
                     />
                     <div class="flex flex-col overflow-hidden">
@@ -41,7 +42,7 @@
                         </a>
                     </div>
                 </div>
-                <nav class="mt-4 desktop:mt-0">
+                <nav class="desktop:mt-0" :class="{ 'mt-4': $ui.mobile && !$auth.isOffline }">
                     <BaseLink
                         v-show="!$media.empty"
                         ref="my-collection"
@@ -57,7 +58,7 @@
                     v-show="$ui.desktop"
                     ref="button"
                     type="button"
-                    aria-label="Settings"
+                    aria-label="Application options"
                     :style="$auth.user.avatarUrl ? '' : 'margin-left:-.375rem;margin-right:-.375rem'"
                     :class="{
                         'rounded-full text-primary-900 focus:outline-none focus:shadow-solid': $auth.user.avatarUrl,
@@ -75,7 +76,7 @@
                         v-show="$ui.menuOpen || $ui.mobile"
                         ref="desktop-menu"
                         class="
-                            w-42 right-0 top-full mt-2 origin-top-right
+                            w-56 right-0 top-full mt-2 origin-top-right
                             rounded-md
                             desktop:absolute desktop:shadow-lg
                         "
@@ -101,16 +102,26 @@
                             </a>
                         </div>
                         <button
+                            v-for="menuOption of menuOptions"
+                            :key="menuOption.name"
                             v-close-menu
                             type="button"
-                            class="flex items-center text-gray-800 hover:underline"
+                            class="flex items-center text-gray-700"
                             :class="{
-                                'text-lg': $ui.mobile,
-                                'px-4 py-2 w-full text-sm': $ui.desktop,
+                                'text-lg mt-4 focus:underline hover:underline': $ui.mobile,
+                                'px-4 py-2 w-full text-sm hover:bg-gray-100 hover:text-gray-900': $ui.desktop,
                             }"
-                            @click="logout"
+                            @click="menuOption.handler"
                         >
-                            <BaseIcon name="logout" class="w-4 h-4 mr-2" /> <span class="truncate">Log out</span>
+                            <BaseIcon
+                                :name="menuOption.icon"
+                                class="mr-2"
+                                :class="{
+                                    'w-3 h-3': $ui.desktop,
+                                    'w-5 h-5': $ui.mobile,
+                                }"
+                            />
+                            <span class="truncate">{{ menuOption.name }}</span>
                         </button>
                     </div>
                 </BaseTransition>
@@ -126,7 +137,14 @@ import Time from '@/utils/Time';
 
 import SolidUser from '@/models/users/SolidUser';
 
+import SettingsModal from '@/components/modals/SettingsModal.vue';
 import UserAvatar from '@/components/UserAvatar.vue';
+
+interface MenuOption {
+    name: string;
+    icon: string;
+    handler: Function;
+}
 
 export default Vue.extend({
     components: {
@@ -138,6 +156,21 @@ export default Vue.extend({
         },
     },
     computed: {
+        menuOptions(): MenuOption[] {
+            const optionHandler = (handler: Function) => async () => {
+                // If this isn't done, logging out in offline mode causes a weird UI
+                // interaction with the appearance animation of the confirmation modal.
+                // TODO this shouldn't be necessary, debug further.
+                await Time.wait(0);
+
+                handler();
+            };
+
+            return [
+                { name: 'Settings', icon: 'wrench', handler: optionHandler(() => this.$ui.openModal(SettingsModal)) },
+                { name: 'Log out', icon: 'logout', handler: optionHandler(() => this.$auth.logout()) },
+            ];
+        },
         userWebId(): string | null {
             if (!(this.$auth.user instanceof SolidUser))
                 return null;
@@ -156,16 +189,6 @@ export default Vue.extend({
         this.$ui.setDesktopMenu(null);
         this.$ui.removeMenuTrigger(this.$refs['button'] as HTMLButtonElement);
         this.$ui.setMyCollection(null);
-    },
-    methods: {
-        async logout() {
-            // If this isn't done, logging out in offline mode causes a weird UI
-            // interaction with the appearance animation of the confirmation modal.
-            // TODO this shouldn't be necessary, debug further.
-            await Time.wait(0);
-
-            this.$auth.logout();
-        },
     },
 });
 </script>

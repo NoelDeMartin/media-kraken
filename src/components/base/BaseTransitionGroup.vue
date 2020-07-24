@@ -19,7 +19,7 @@ export default Transition.extend({
         },
     },
     render(h: CreateElement): VNode {
-        if (!this.enabled)
+        if (!this.animationsEnabled || !this.enabled)
             return h(this.tag, this.$slots.default);
 
         return h(

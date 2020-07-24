@@ -86,6 +86,7 @@
             v-if="showGoTop"
             type="button"
             title="Go top"
+            aria-label="Go top"
             class="
                 fixed flex items-center justify-center bottom-0 right-0 mr-4 mb-8 z-30
                 bg-primary-500 text-white rounded-full w-10 h-10 shadow-lg hover:bg-red-700

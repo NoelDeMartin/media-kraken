@@ -96,7 +96,7 @@ describe('Authentication', () => {
         cy.see('Welcome to Media Kraken!');
 
         // Act
-        cy.ariaLabel('Settings').click();
+        cy.ariaLabel('Application options').click();
         cy.contains('Log out').click();
 
         // Assert
@@ -166,7 +166,7 @@ describe('Authentication', () => {
         cy.seeImage(taxiDriver.image, { timeout: 10000 });
 
         // Act
-        cy.ariaLabel('Settings').click();
+        cy.ariaLabel('Application options').click();
         cy.contains('Log out').click();
 
         // Assert

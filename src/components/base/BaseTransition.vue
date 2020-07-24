@@ -5,7 +5,7 @@ import Transition from '@/components/mixins/Transition';
 
 export default Transition.extend({
     render(h: CreateElement): VNode {
-        if (!this.enabled)
+        if (!this.animationsEnabled || !this.enabled)
             return this.$slots.default as any as VNode;
 
         return h(

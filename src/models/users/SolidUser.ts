@@ -7,8 +7,8 @@ import ModelsCache from '@/models/ModelsCache';
 import TypeRegistration from '@/models/soukai/TypeRegistration';
 import User from '@/models/users/User';
 
+import Errors from '@/utils/Errors';
 import RDFStore from '@/utils/RDFStore';
-import Sentry from '@/utils/Sentry';
 import Storage from '@/utils/Storage';
 import Url from '@/utils/Url';
 
@@ -59,7 +59,7 @@ export default class SolidUser extends User<SolidUserJSON> {
 
             SolidAuthClient.trackSession(onSessionUpdated);
         } catch (error) {
-            Sentry.report(error);
+            Errors.handle(error);
 
             alert("We couldn't validate your credentials, please login again");
 

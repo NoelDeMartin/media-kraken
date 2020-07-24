@@ -8,6 +8,10 @@ enum Animation {
     SlideUp = 'slide-up',
 }
 
+interface Data {
+    animationsEnabled: boolean;
+}
+
 interface TransitionClasses {
     enterActive: string;
     enter: string;
@@ -93,6 +97,11 @@ export default mixins(Vue.extend({
             default: '',
         },
     },
+    data: (): Data => ({
+        // This is necessary because animations that get disabled once they've started get broken,
+        // so this can only be changed on component initialization.
+        animationsEnabled: Vue.instance.$ui.animationsEnabled,
+    }),
     computed: {
         durations(): { enter: number; leave: number} {
             return {

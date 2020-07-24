@@ -5,13 +5,14 @@ import Service, { ComputedStateDefinitions } from '@/services/Service';
 
 import Arr from '@/utils/Arr';
 import AsyncOperation from '@/utils/AsyncOperation';
+import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
 import Obj from '@/utils/Obj';
-import Sentry from '@/utils/Sentry';
 import UUID from '@/utils/UUID';
 
 import LoadingModal from '@/components/modals/LoadingModal.vue';
 import MarkdownModal from '@/components/modals/MarkdownModal.vue';
+import Storage from '@/utils/Storage';
 
 enum Layout {
     Mobile = 'mobile',
@@ -26,6 +27,7 @@ interface State {
     menuOpen: boolean;
     modals: Modal[];
     snackbars: Snackbar[];
+    animations: boolean;
     fixedScroll: number | null;
 }
 
@@ -67,6 +69,8 @@ export interface SnackbarOptions {
     error: boolean;
     transient: boolean;
 }
+
+const STORAGE_ANIMATIONS_KEY = 'media-kraken-animations';
 
 export default class UI extends Service<State, ComputedState> {
 
@@ -112,6 +116,10 @@ export default class UI extends Service<State, ComputedState> {
 
     public get snackbars(): Snackbar[] {
         return this.state.snackbars;
+    }
+
+    public get animationsEnabled(): boolean {
+        return this.state.animations;
     }
 
     public get fixedScroll(): number | null {
@@ -272,15 +280,12 @@ export default class UI extends Service<State, ComputedState> {
     }
 
     public showError(error: any): void {
-        Sentry.report(error);
+        Errors.handle(error);
 
         this.showSnackbar(
             error?.message || 'Something went wrong!',
             { error: true, transient: true },
         );
-
-        // eslint-disable-next-line no-console
-        console.error(error);
     }
 
     public showSnackbar(message: string, options: Partial<SnackbarOptions> = {}): Snackbar {
@@ -326,6 +331,14 @@ export default class UI extends Service<State, ComputedState> {
             return;
 
         this.setState({ snackbars: Arr.withoutIndex(this.snackbars, index) });
+    }
+
+    public setAnimationsEnabled(enabled: boolean): void {
+        if (this.animationsEnabled === enabled)
+            return;
+
+        this.setState({ animations: enabled });
+        Storage.set(STORAGE_ANIMATIONS_KEY, enabled);
     }
 
     public async updateModel<Model extends SolidModel>(
@@ -386,6 +399,7 @@ export default class UI extends Service<State, ComputedState> {
             menuOpen: false,
             modals: [],
             snackbars: [],
+            animations: Storage.get(STORAGE_ANIMATIONS_KEY, true),
             fixedScroll: null,
         };
     }
