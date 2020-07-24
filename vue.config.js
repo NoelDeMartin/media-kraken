@@ -4,6 +4,7 @@ const WorkerPlugin = require('worker-plugin');
 const path = require('path');
 const version = require('./package.json').version;
 const isProduction = process.env.NODE_ENV === 'production';
+const versionName = 'v' + version + (isProduction ? '' : '-next');
 const isTesting = process.env.NODE_ENV === 'testing';
 const publicPath = isProduction ? '/media-kraken/' : '/';
 const title = 'Media Kraken';
@@ -20,11 +21,13 @@ module.exports = {
             title,
             description,
             baseUrl,
+            version: versionName,
             entry: isTesting ? 'src/index.testing.ts' : 'src/index.ts',
         },
         '404': {
             title,
             baseUrl,
+            version: versionName,
             entry: 'src/routing/github-404.ts',
             chunks: [],
         },

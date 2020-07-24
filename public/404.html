@@ -26,14 +26,31 @@
             #error-message {
                 opacity: 100;
                 transition: opacity 300ms;
-                font-size: x-large;
+                font-size: 1.5rem;
+                font-family: Montserrat,sans-serif;
                 text-align: center;
                 margin: 1rem;
             }
             #error-message a {
                 display: inline-block;
             }
+            footer {
+                opacity: 100;
+                transition: opacity 300ms;
+                position: fixed;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                color: #e02c2c;
+                font-size: .75rem;
+                margin-bottom: .5rem;
+                font-weight: 400;
+                font-family: Montserrat,sans-serif;
+            }
             body:not(.redirecting-error) #error-message {
+                opacity: 0;
+            }
+            body:not(.redirecting-error) footer {
                 opacity: 0;
             }
         </style>
@@ -43,6 +60,7 @@
             <strong>We're sorry but <%= htmlWebpackPlugin.options.title %> doesn't work properly without JavaScript enabled. Please enable it to continue.</strong>
         </noscript>
         <p id="error-message">There was an error redirecting to this page, please <a href="<%= BASE_URL %>">go home</a> instead.</p>
+        <footer><%= htmlWebpackPlugin.options.version %></footer>
         <script>
             setTimeout(function() {
                 document.body.classList.add('redirecting-error');
