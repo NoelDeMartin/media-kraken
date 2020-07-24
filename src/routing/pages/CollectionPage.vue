@@ -82,6 +82,18 @@
             <BaseIcon name="search-empty" class="w-16 h-16 text-gray-700 mb-4" />
             <span class="text-lg">No movies found matching these filters.</span>
         </div>
+        <button
+            v-if="showGoTop"
+            type="button"
+            title="Go top"
+            class="
+                fixed flex items-center justify-center bottom-0 right-0 mr-4 mb-8 z-30
+                bg-primary-500 text-white rounded-full w-10 h-10 shadow-lg hover:bg-red-700
+            "
+            @click="goToTop"
+        >
+            <BaseIcon name="cheveron-up" class="w-8 h-8" />
+        </button>
     </div>
 </template>
 
@@ -110,7 +122,13 @@ interface WatchFilterMenuOptions extends MenuOption {
 interface Data {
     watchedFilter: WatchedFilter;
     searchFilter: string | null;
+    showGoTop: boolean;
     removeClickAwayListener: Function | null;
+    scrollListener: any | null;
+}
+
+function hasScrolled(): boolean {
+    return document.body.scrollTop > 370 || document.documentElement.scrollTop > 370;
 }
 
 export default Vue.extend({
@@ -118,9 +136,11 @@ export default Vue.extend({
         MoviesGrid,
     },
     data: (): Data => ({
+        showGoTop: hasScrolled(),
         watchedFilter: WatchedFilter.All,
         searchFilter: null,
         removeClickAwayListener: null,
+        scrollListener: null,
     }),
     computed: {
         watchedFilterOptions(): WatchFilterMenuOptions[] {
@@ -193,6 +213,16 @@ export default Vue.extend({
 
         this.$router.replace({ name: 'home' });
     },
+    mounted() {
+        document.addEventListener('scroll', this.scrollListener = () => this.showGoTop = hasScrolled());
+    },
+    destroyed() {
+        if (!this.scrollListener)
+            return;
+
+        document.removeEventListener('scroll', this.scrollListener);
+        this.scrollListener = null;
+    },
     methods: {
         showFilters() {
             if (this.removeClickAwayListener !== null)
@@ -223,6 +253,10 @@ export default Vue.extend({
         },
         exportCollection() {
             this.$media.exportCollection();
+        },
+        goToTop() {
+            document.body.scrollTop = 0;
+            document.documentElement.scrollTop = 0;
         },
     },
 });
