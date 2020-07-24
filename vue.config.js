@@ -82,8 +82,8 @@ module.exports = {
     },
     pwa: {
         name: title,
-        themeColor: '#f05252',
-        msTileColor: '#f05252',
+        themeColor: '#fed7d7',
+        msTileColor: '#fed7d7',
         manifestOptions: {
             background_color: '#ffffff',
             orientation: 'portrait',
