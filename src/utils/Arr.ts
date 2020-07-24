@@ -10,8 +10,8 @@ class Arr {
         return chunks;
     }
 
-    public contains<T>(arr: T[], item: T): boolean {
-        return arr.indexOf(item) !== -1;
+    public contains<T>(needle: T, haystack: T[]): boolean {
+        return haystack.indexOf(needle) !== -1;
     }
 
     public flatten<T>(items: T[][]): T[] {

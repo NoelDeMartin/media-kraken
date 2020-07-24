@@ -4,6 +4,7 @@ import App from '@/App.vue';
 
 import { setUpPolyfills } from '@/utils/polyfills';
 import EventBus from '@/utils/EventBus';
+import Sentry from '@/utils/Sentry';
 import Time from '@/utils/Time';
 
 import '@/components/base';
@@ -20,12 +21,10 @@ Vue.instance = new Vue({
     render: h => h(App),
 });
 
-function prepareErrorHandlers() {
-    const { $ui } = Vue.instance;
-
-    Vue.config.errorHandler = error => $ui.showError(error);
-    window.onunhandledrejection = (event: PromiseRejectionEvent) => $ui.showError(event.reason);
-    window.onerror = error => $ui.showError(error);
+function setErrorHandler(handler: (error: any) => void) {
+    Vue.config.errorHandler = handler;
+    window.onunhandledrejection = (event: PromiseRejectionEvent) => handler(event.reason);
+    window.onerror = handler;
 }
 
 function prepareInitialRoute() {
@@ -53,18 +52,22 @@ async function removeLoading() {
 }
 
 export async function start(): Promise<void> {
-    const servicesBooted = bootServices(Vue.instance).catch(error => {
-        alert('Something went wrong! (look at the console for details)');
+    Sentry.init();
+    setErrorHandler(error => Sentry.report(error));
 
+    const servicesBooted = bootServices(Vue.instance).catch(error => {
         // eslint-disable-next-line no-console
         console.error(error);
+        Sentry.report(error);
+
+        alert('Something went wrong! (look at the console for details)');
     });
 
     Vue.instance.$mount('#app');
 
     await servicesBooted;
 
-    prepareErrorHandlers();
+    setErrorHandler(error => Vue.instance.$ui.showError(error));
     prepareInitialRoute();
     EventBus.emit('booted');
     removeLoading();

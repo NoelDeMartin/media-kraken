@@ -37,7 +37,7 @@ class TVisoMoviesParser implements MediaParser<Data, Movie> {
         if (
             typeof data.title !== 'string' ||
             (data.imdb !== null && typeof data.imdb !== 'string') ||
-            !Arr.contains(Object.values(Status), data.status) ||
+            !Arr.contains(data.status, Object.values(Status)) ||
             !Time.isValidDateString(data.checkedDate)
         )
             throw new MediaValidationError(['Invalid format']);

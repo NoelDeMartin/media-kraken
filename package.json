@@ -15,6 +15,7 @@
     "cy:test": "start-server-and-test test:serve http://localhost:8080 cy:run"
   },
   "dependencies": {
+    "@sentry/browser": "^5.20.0",
     "@types/n3": "^1.1.6",
     "@types/rdf-js": "^3.0.0",
     "idb": "^5.0.4",

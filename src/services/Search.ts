@@ -232,7 +232,7 @@ export default class Search extends Service<State> {
     private captureHotKey({ target, key }: KeyboardEvent): boolean {
         if (
             !this.open &&
-            Arr.contains(['s', '/'], key.toLowerCase()) &&
+            Arr.contains(key.toLowerCase(), ['s', '/']) &&
             !this.isWritable(target)
         ) {
             this.start();
@@ -253,8 +253,8 @@ export default class Search extends Service<State> {
             || (
                 name === 'input' &&
                 !Arr.contains(
-                    NON_WRITABLE_INPUT_TYPES,
                     (element.getAttribute('type') || 'text').toLowerCase(),
+                    NON_WRITABLE_INPUT_TYPES,
                 )
             )
             || name === 'textarea'

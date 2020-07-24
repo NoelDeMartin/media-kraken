@@ -7,6 +7,7 @@ import Arr from '@/utils/Arr';
 import AsyncOperation from '@/utils/AsyncOperation';
 import EventBus from '@/utils/EventBus';
 import Obj from '@/utils/Obj';
+import Sentry from '@/utils/Sentry';
 import UUID from '@/utils/UUID';
 
 import LoadingModal from '@/components/modals/LoadingModal.vue';
@@ -271,6 +272,8 @@ export default class UI extends Service<State, ComputedState> {
     }
 
     public showError(error: any): void {
+        Sentry.report(error);
+
         this.showSnackbar(
             error?.message || 'Something went wrong!',
             { error: true, transient: true },

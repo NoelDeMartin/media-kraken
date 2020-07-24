@@ -109,7 +109,7 @@ export default class Movie extends SolidModel {
 
     public is(movie: Movie): boolean {
         return this.slug === movie.slug
-            || !!this.externalUrls.find(url => Arr.contains(movie.externalUrls, url));
+            || !!this.externalUrls.find(url => Arr.contains(url, movie.externalUrls));
     }
 
     public actionsRelationship(): MultiModelRelation {
