@@ -85,6 +85,8 @@ npm run serve
 
 That will work for the most part, but in order to use search you need to obtain a [TMDB api key](https://developers.themoviedb.org/3/getting-started/introduction). Once you have it, copy the `.env.example` file to `.env.local` and update the `VUE_APP_TMDB_API_KEY` variable with your key.
 
+If you want to try an online deployment of the development version, it can be accessed here: [media-kraken.netlify.com](https://media-kraken.netlify.com)
+
 ## Testing
 
 There are some unit tests in files ending with `.test.ts`, but most of the behaviour is tested with Cypress in integration tests.
