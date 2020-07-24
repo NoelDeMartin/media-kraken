@@ -1,5 +1,14 @@
 # Changelog
 
+## v0.1.3
+
+- Changed caching strategy in index to NetworkFirst.
+- Added opt-in error reporting to [Sentry](https://sentry.io/).
+- Added settings modal to configure animations and error reporting.
+- Configured development deploy at [media-kraken.netlify.com](https://media-kraken.netlify.com).
+
+[Compare changes with previous version](https://github.com/NoelDeMartin/media-kraken/compare/v0.1.2...v0.1.3)
+
 ## v0.1.2
 
 - Added progress messages in loading overlay.
