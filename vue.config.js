@@ -33,6 +33,7 @@ module.exports = {
         },
     },
     configureWebpack: {
+        devtool: 'source-map',
         externals: {
             'node-fetch': 'fetch',
             'text-encoding': 'TextEncoder',
