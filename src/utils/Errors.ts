@@ -45,8 +45,12 @@ class Errors {
             return;
         }
 
+        this.report(error);
+    }
+
+    public report(error: any): void {
         try {
-            captureException(error);
+            error.sentryId = captureException(error);
 
             // eslint-disable-next-line no-console
             console.error('Error reported to Sentry', error);

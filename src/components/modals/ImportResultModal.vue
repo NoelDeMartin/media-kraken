@@ -21,7 +21,7 @@
             </ImportResultModalItem>
             <ImportResultModalItem
                 v-if="log.ignored.length > 0"
-                icon="info"
+                icon="info-solid"
                 icon-class="text-blue-600"
                 @inspect="inspectIgnored"
             >
@@ -29,7 +29,7 @@
             </ImportResultModalItem>
             <ImportResultModalItem
                 v-if="log.unprocessed.length > 0"
-                icon="info"
+                icon="info-solid"
                 icon-class="text-blue-600"
                 @inspect="inspectUnprocessed"
             >

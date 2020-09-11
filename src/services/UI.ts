@@ -8,11 +8,12 @@ import AsyncOperation from '@/utils/AsyncOperation';
 import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
 import Obj from '@/utils/Obj';
+import Storage from '@/utils/Storage';
 import UUID from '@/utils/UUID';
 
+import ErrorInfoModal from '@/components/modals/ErrorInfoModal.vue';
 import LoadingModal from '@/components/modals/LoadingModal.vue';
 import MarkdownModal from '@/components/modals/MarkdownModal.vue';
-import Storage from '@/utils/Storage';
 
 enum Layout {
     Mobile = 'mobile',
@@ -68,6 +69,14 @@ export interface SnackbarOptions {
     loading: boolean;
     error: boolean;
     transient: boolean;
+    action?: SnackbarAction;
+    lifetime?: number;
+}
+
+export interface SnackbarAction {
+    text: string;
+    icon?: string;
+    handler: Function;
 }
 
 const STORAGE_ANIMATIONS_KEY = 'media-kraken-animations';
@@ -282,9 +291,21 @@ export default class UI extends Service<State, ComputedState> {
     public showError(error: any): void {
         Errors.handle(error);
 
-        this.showSnackbar(
-            error?.message || 'Something went wrong!',
-            { error: true, transient: true },
+        const { id: snackbarId } = this.showSnackbar(
+            'Something went wrong!',
+            {
+                error: true,
+                transient: true,
+                lifetime: 10000,
+                action: {
+                    text: 'View info',
+                    icon: 'info-outline',
+                    handler: () => {
+                        this.hideSnackbar(snackbarId);
+                        this.openModal(ErrorInfoModal, { error }, { cancellable: false });
+                    },
+                },
+            },
         );
     }
 

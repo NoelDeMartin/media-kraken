@@ -21,4 +21,8 @@ declare global {
         impatientKrakenTimeout?: number;
     }
 
+    interface Error {
+        sentryId?: string;
+    }
+
 }

@@ -7,7 +7,7 @@
         <BaseIcon
             v-if="icon"
             :name="icon"
-            :class="buttonIconClass"
+            :class="computedIconClass"
         />
         <span :class="textClass">
             <slot />
@@ -38,7 +38,7 @@ export default Vue.extend({
         },
     },
     computed: {
-        buttonIconClass(): string {
+        computedIconClass(): string {
             return this.iconClass || ('w-6 h-6' + (this.$slots.default ? ' mr-2' : ''));
         },
     },

@@ -27,9 +27,11 @@
             :id="`modal-${id}-body`"
             class="flex flex-col flex-grow px-4"
             :class="{
+                'overflow-hidden': !scrollable,
                 'pt-4': !title,
                 'pb-4': !fullscreen,
-                'overflow-y-scroll pb-0': fullscreen,
+                'pb-0': fullscreen,
+                'overflow-y-scroll': fullscreen && scrollable,
             }"
         >
             <slot />
@@ -60,6 +62,10 @@ export default Vue.extend({
         fullscreen: {
             type: Boolean,
             default: false,
+        },
+        scrollable: {
+            type: Boolean,
+            default: true,
         },
     },
 });

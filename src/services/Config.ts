@@ -1,5 +1,6 @@
 import Service from '@/services/Service';
 
+import Errors from '@/utils/Errors';
 import Storage from '@/utils/Storage';
 
 export default class Config extends Service {
@@ -10,6 +11,14 @@ export default class Config extends Service {
 
     public get isDevelopment(): boolean {
         return this.environment === 'development';
+    }
+
+    public get isReportingAvailable(): boolean {
+        return Errors.isReportingAvailable;
+    }
+
+    public get isReportingEnabled(): boolean {
+        return Errors.isReportingEnabled;
     }
 
     protected async init(): Promise<void> {

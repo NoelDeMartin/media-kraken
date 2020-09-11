@@ -98,6 +98,10 @@ module.exports = {
                 'readable': '640px',
                 'content': '900px',
             },
+            opacity: {
+                '15': '.15',
+                '30': '.3',
+            },
             gridTemplateColumns: theme => ({
                 ...Object.entries(theme('spacing')).reduce((gridTemplateColumns, [key, value]) => {
                     gridTemplateColumns['fit-' + key] = `repeat(auto-fit, ${value})`;
@@ -113,5 +117,6 @@ module.exports = {
         opacity: ['responsive', 'hover', 'focus', 'group-hover'],
         textColor: ['responsive', 'hover', 'focus', 'group-hover'],
         margin: ['responsive', 'last'],
+        width: ['responsive', 'group-hover'],
     },
 };

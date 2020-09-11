@@ -1,7 +1,7 @@
 <template>
     <div
         class="
-            flex items-center justify-center p-4 shadow-lg rounded-lg
+            flex items-center justify-center p-4 shadow-lg rounded-lg overflow-hidden
             pointer-events-auto
         "
         :class="{
@@ -11,6 +11,16 @@
     >
         <LoadingCircle v-if="options.loading" class="mr-3 w-6 h-6" />
         <MarkdownContent :content="message" />
+        <button
+            v-if="options.action"
+            type="button"
+            class="relative flex -my-4 -mr-4 ml-4 p-4 font-bold uppercase text-sm group"
+            @click="options.action.handler"
+        >
+            <div class="absolute inset-0 opacity-15 bg-black group-hover:opacity-30" />
+            <BaseIcon v-if="options.action.icon" :name="options.action.icon" class="w-4 h-4 mr-2 z-10" />
+            <span class="z-10">{{ options.action.text }}</span>
+        </button>
     </div>
 </template>
 
@@ -22,7 +32,7 @@ import { SnackbarOptions } from '@/services/UI';
 import LoadingCircle from '@/components/LoadingCircle.vue';
 import MarkdownContent from '@/components/MarkdownContent.vue';
 
-const TRANSIENT_DURATION = 5000;
+const DEFAULT_LIFETIME = 5000;
 
 export default Vue.extend({
     components: {
@@ -47,7 +57,7 @@ export default Vue.extend({
         if (!this.options.transient)
             return;
 
-        setTimeout(() => this.$ui.hideSnackbar(this.id), TRANSIENT_DURATION);
+        setTimeout(() => this.$ui.hideSnackbar(this.id), this.options.lifetime || DEFAULT_LIFETIME);
     },
 });
 </script>
