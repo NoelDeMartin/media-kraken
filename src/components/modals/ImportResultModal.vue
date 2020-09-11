@@ -21,7 +21,7 @@
             </ImportResultModalItem>
             <ImportResultModalItem
                 v-if="log.ignored.length > 0"
-                icon="info-solid"
+                icon="info"
                 icon-class="text-blue-600"
                 @inspect="inspectIgnored"
             >
@@ -29,7 +29,7 @@
             </ImportResultModalItem>
             <ImportResultModalItem
                 v-if="log.unprocessed.length > 0"
-                icon="info-solid"
+                icon="info"
                 icon-class="text-blue-600"
                 @inspect="inspectUnprocessed"
             >
@@ -67,6 +67,7 @@ import Movie from '@/models/soukai/Movie';
 
 import { ImportOperationLog } from '@/services/Media';
 
+import ErrorInfoModal from '@/components/modals/ErrorInfoModal.vue';
 import ImportResultModalItem from '@/components/modals/ImportResultModalItem.vue';
 import MarkdownModal from '@/components/modals/MarkdownModal.vue';
 import Modal from '@/components/mixins/Modal';
@@ -146,17 +147,16 @@ export default Modal.extend({
             let logs = '# The following movies caused some errors\n';
             let counter = 0;
 
-            for (const { error, data } of this.log.failed) {
-                logs += `${++counter}. ${error.message}<br>`;
-                logs += `<a class="text-xs" href="custom:${counter - 1}">inspect in console</a>\n`;
+            for (const { data } of this.log.failed) {
+                logs += `${++counter}. An unexpected error ocurred parsing this.<br>`;
+                logs += `<a href="custom:${counter - 1}">view details</a>`;
                 logs += `<code>${JSON.stringify(data)}</code>\n`;
             }
 
             this.$ui.openModal(MarkdownModal, {
                 content: logs,
                 handleCustomTrigger: (index: string) => {
-                    // eslint-disable-next-line no-console
-                    console.error(this.log.failed[parseInt(index)].error);
+                    this.$ui.openModal(ErrorInfoModal, { error: this.log.failed[parseInt(index)].error });
                 },
             });
         },

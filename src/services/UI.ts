@@ -75,7 +75,6 @@ export interface SnackbarOptions {
 
 export interface SnackbarAction {
     text: string;
-    icon?: string;
     handler: Function;
 }
 
@@ -298,8 +297,7 @@ export default class UI extends Service<State, ComputedState> {
                 transient: true,
                 lifetime: 10000,
                 action: {
-                    text: 'View info',
-                    icon: 'info-outline',
+                    text: 'View details',
                     handler: () => {
                         this.hideSnackbar(snackbarId);
                         this.openModal(ErrorInfoModal, { error }, { cancellable: false });

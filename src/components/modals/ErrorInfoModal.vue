@@ -36,7 +36,7 @@
                 />
                 <DiscreetButton
                     icon="copy"
-                    action="copy debug info"
+                    action="copy to clipboard"
                     class="bg-red-200 text-red-800"
                     @click="copy"
                 />
@@ -117,7 +117,7 @@ export default Modal.extend({
             document.execCommand('copy');
             textarea.remove();
 
-            this.$ui.showSnackbar('Debug info copied to clipboard', { transient: true });
+            this.$ui.showSnackbar('Stack trace copied to clipboard', { transient: true });
         },
     },
 });

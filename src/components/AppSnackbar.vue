@@ -18,7 +18,6 @@
             @click="options.action.handler"
         >
             <div class="absolute inset-0 opacity-15 bg-black group-hover:opacity-30" />
-            <BaseIcon v-if="options.action.icon" :name="options.action.icon" class="w-4 h-4 mr-2 z-10" />
             <span class="z-10">{{ options.action.text }}</span>
         </button>
     </div>
