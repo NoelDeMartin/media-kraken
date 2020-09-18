@@ -5,10 +5,16 @@ import Storage from '@/utils/Storage';
 
 const STORAGE_ENABLED_KEY = 'media-kraken-error-reporting';
 
+export interface ErrorsListener {
+    onReportingEnabled?(): void;
+    onReportingDisabled?(): void;
+}
+
 class Errors {
 
     private sentryInitialized: boolean = false;
     private reportingEnabled: boolean = false;
+    private listeners: ErrorsListener[] = [];
 
     public get isReportingEnabled(): boolean {
         return this.reportingEnabled;
@@ -35,6 +41,14 @@ class Errors {
 
         if (enabled && !this.sentryInitialized)
             this.initializeSentry();
+
+        this.listeners.forEach(listener => {
+            if (listener.onReportingEnabled && enabled)
+                listener.onReportingEnabled();
+
+            if (listener.onReportingDisabled && !enabled)
+                listener.onReportingDisabled();
+        });
     }
 
     public handle(error: any): void {
@@ -58,6 +72,10 @@ class Errors {
             // eslint-disable-next-line no-console
             console.error('Failed reporting an error to Sentry', error, reportingError);
         }
+    }
+
+    public registerListener(listener: ErrorsListener): void {
+        this.listeners.push(listener);
     }
 
     private userWantsReportingEnabled(): boolean {

@@ -56,11 +56,9 @@ export async function start(): Promise<void> {
     setErrorHandler(error => Errors.handle(error));
 
     const servicesBooted = bootServices(Vue.instance).catch(error => {
-        // eslint-disable-next-line no-console
-        console.error(error);
         Errors.handle(error);
 
-        alert('Something went wrong! (look at the console for details)');
+        Vue.instance.$app.setCrashReport(error);
     });
 
     Vue.instance.$mount('#app');

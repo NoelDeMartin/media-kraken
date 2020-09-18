@@ -22,7 +22,7 @@
         <div class="relative -mx-4 -mb-4 bg-red-200 flex-grow overflow-hidden">
             <div class="flex absolute m-4 top-0 gap-1 left-0 desktop:left-auto desktop:right-0">
                 <DiscreetButton
-                    v-if="$config.isReportingAvailable"
+                    v-if="$app.isErrorReportingAvailable"
                     icon="bug"
                     :action="sentryId ? 'view Sentry ID' : 'report to Sentry'"
                     class="bg-red-200 text-red-800"
@@ -76,7 +76,7 @@ export default Modal.extend({
     },
     computed: {
         title(): string {
-            const name = this.error.constructor.name || 'Error';
+            const name = this.error.name || 'Error';
             const message = this.error.message || 'Unknown';
 
             return `${name}: ${message}`;

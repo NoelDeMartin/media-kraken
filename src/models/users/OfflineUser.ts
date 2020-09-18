@@ -28,7 +28,10 @@ export default class OfflineUser extends User<OfflineUserJSON> {
     }
 
     public async logout(): Promise<void> {
-        await (Soukai.engine as IndexedDBEngine).purgeDatabase();
+        const engine = Soukai.engine as IndexedDBEngine;
+
+        if (Soukai.engine)
+            await engine.purgeDatabase();
 
         Storage.remove('media-kraken-offline-user');
     }

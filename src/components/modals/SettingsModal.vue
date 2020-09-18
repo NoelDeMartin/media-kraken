@@ -1,8 +1,8 @@
 <template>
     <AppModal :id="id" :options="options" title="Settings">
         <div
-            class="mb-2 -mx-4 px-4 px-4 pt-4 border-t max-w-readable"
-            :class="{ 'border-b pb-4': reportingAvailable }"
+            class="mb-2 -mx-4 px-4 pt-4 border-t max-w-readable"
+            :class="{ 'border-b pb-4': $app.isErrorReportingAvailable }"
         >
             <div class="flex justify-between">
                 <h3 class="text-lg font-medium">
@@ -15,7 +15,7 @@
                 battery or your device is struggling to keep up, turn off the animations for a simpler experience.
             </p>
         </div>
-        <div v-if="reportingAvailable" class="mb-2 -mx-4 px-4 pt-4 max-w-readable">
+        <div v-if="$app.isErrorReportingAvailable" class="mb-2 -mx-4 px-4 pt-4 max-w-readable">
             <div class="flex justify-between">
                 <h3 class="text-lg font-medium">
                     Error Reporting
@@ -42,9 +42,8 @@ import Modal from '@/components/mixins/Modal';
 
 export default Modal.extend({
     data: () => ({
-        reportingAvailable: Errors.isReportingAvailable,
         animations: Vue.instance.$ui.animationsEnabled,
-        errorReporting: Errors.isReportingEnabled,
+        errorReporting: Vue.instance.$app.isErrorReportingEnabled,
     }),
     watch: {
         animations(enabled: boolean) { this.$ui.setAnimationsEnabled(enabled); },

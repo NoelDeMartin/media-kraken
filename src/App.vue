@@ -7,7 +7,8 @@
             <div class="flex flex-col min-h-screen" :style="{ marginTop: `-${$ui.fixedScroll || 0}px` }">
                 <AppHeader v-if="$media.loaded && !$ui.headerHidden" />
                 <main class="flex flex-col flex-grow mx-auto max-w-content w-full px-4">
-                    <router-view />
+                    <CrashReport v-if="$app.isCrashed" />
+                    <router-view v-else />
                 </main>
                 <AppFooter />
             </div>
@@ -67,12 +68,14 @@ import Files from '@/utils/Files';
 import AppSnackbar from '@/components/AppSnackbar.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import AppHeader from '@/components/AppHeader.vue';
+import CrashReport from '@/components/CrashReport.vue';
 
 export default Vue.extend({
     components: {
         AppSnackbar,
         AppFooter,
         AppHeader,
+        CrashReport,
     },
     data: () => ({ booted: false }),
     created() {

@@ -70,7 +70,7 @@ export default Modal.extend({
         helpReplacements(): any {
             const repositoryUrl = 'https://github.com/NoelDeMartin/media-kraken';
             const filePath = 'docs#data-schema';
-            const branch = this.$config.isDevelopment ? 'main' : this.$config.version;
+            const branch = this.$app.isDevelopment ? 'main' : this.$app.version;
 
             return {
                 jsonld: {
