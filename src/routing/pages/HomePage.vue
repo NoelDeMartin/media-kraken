@@ -46,7 +46,7 @@
                 your collection
             </BaseLink> to rewatch some of your favourites
             or <span class="hidden desktop:inline-block">press "s" to find something new</span>
-            <BaseLink button class="desktop:hidden" @click.stop="$search.start()">
+            <BaseLink class="desktop:hidden" @click.stop="$search.start()">
                 find something new
             </BaseLink>.
         </p>

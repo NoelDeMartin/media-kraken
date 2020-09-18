@@ -1,10 +1,10 @@
 <template>
     <AppModal :id="id" :options="options" title="Are you sure you want to log out?">
         <p class="text-gray-700 text-sm leading-relaxed">
-            You are <BaseLink button @click="$ui.openFileMarkdownModal('application-storage')">
+            You are <BaseLink @click="$ui.openFileMarkdownModal('application-storage')">
                 using browser storage
             </BaseLink> and <strong>your data will be deleted</strong> when you log out. If you want to make sure that
-            it isn't lost, you can <BaseLink button @click="$media.exportCollection()">
+            it isn't lost, you can <BaseLink @click="$media.exportCollection()">
                 export your collection
             </BaseLink> and you'll be able to import it later (using JSON-LD import).
         </p>

@@ -39,7 +39,6 @@
                     </div>
                     <div class="flex flex-col-reverse justify-between desktop:flex-row">
                         <BaseLink
-                            button
                             class="text-sm self-center mt-4 desktop:mt-2 desktop:self-start"
                             @click="$ui.openFileMarkdownModal('application-storage')"
                         >
@@ -83,7 +82,6 @@
                             Use browser storage
                         </BaseButton>
                         <BaseLink
-                            button
                             class="self-center mt-4 text-sm"
                             @click="$ui.openFileMarkdownModal('application-storage')"
                         >

@@ -1,14 +1,6 @@
 <template>
-    <button
-        v-if="button"
-        type="button"
-        class="inline-block text-primary-700 hover:underline hover:text-primary-900"
-        @click="$emit('click', $event)"
-    >
-        <slot />
-    </button>
     <router-link
-        v-else-if="route"
+        v-if="route"
         class="inline-block text-primary-700 hover:underline hover:text-primary-900"
         :title="title"
         :to="routerTo"
@@ -16,7 +8,7 @@
         <slot />
     </router-link>
     <a
-        v-else
+        v-else-if="url"
         class="inline-block text-primary-700 hover:underline hover:text-primary-900"
         target="_blank"
         :title="title"
@@ -24,6 +16,14 @@
     >
         <slot />
     </a>
+    <button
+        v-else
+        type="button"
+        class="inline-block text-primary-700 hover:underline hover:text-primary-900"
+        @click="$emit('click', $event)"
+    >
+        <slot />
+    </button>
 </template>
 
 <script lang="ts">
@@ -43,10 +43,6 @@ export default Vue.extend({
         route: {
             type: String,
             default: null,
-        },
-        button: {
-            type: Boolean,
-            default: false,
         },
     },
     computed: {

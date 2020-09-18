@@ -41,7 +41,7 @@
             </BaseLink> and I'll help you.
         </p>
         <p class="text-gray-700 leading-relaxed">
-            In the meantime, you can probably find your movies <BaseLink button @click="openSearch">
+            In the meantime, you can probably find your movies <BaseLink @click="openSearch">
                 using the search in the header
             </BaseLink>.
         </p>
