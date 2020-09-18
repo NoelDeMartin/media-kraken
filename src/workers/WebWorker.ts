@@ -1,3 +1,4 @@
+import Errors from '@/utils/Errors';
 import Http, { SerializedResponse } from '@/utils/Http';
 import Str from '@/utils/Str';
 import UUID from '@/utils/UUID';
@@ -33,7 +34,7 @@ export default abstract class WebWorker<Parameters extends any[], Result> {
                     case 'operation-failed': {
                         const [ id, error ] = payload;
 
-                        this.rejectOperation(id, error);
+                        this.rejectOperation(id, Errors.parse(error));
                         break;
                     }
                     default:
@@ -74,10 +75,7 @@ export default abstract class WebWorker<Parameters extends any[], Result> {
 
             this.postMessage('done', result);
         } catch (e) {
-            // eslint-disable-next-line no-console
-            console.error(e);
-
-            this.postMessage('failed', e.message || 'Unknown error');
+            this.postMessage('failed', Errors.serialize(e));
         }
     }
 

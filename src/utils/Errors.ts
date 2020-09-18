@@ -10,6 +10,8 @@ export interface ErrorsListener {
     onReportingDisabled?(): void;
 }
 
+export type SerializedError = Error;
+
 class Errors {
 
     private sentryInitialized: boolean = false;
@@ -76,6 +78,22 @@ class Errors {
 
     public registerListener(listener: ErrorsListener): void {
         this.listeners.push(listener);
+    }
+
+    public serialize(error: Error): SerializedError {
+        return {
+            name: error.name,
+            message: error.message,
+            stack: error.stack,
+        };
+    }
+
+    public parse(errorObject: SerializedError): Error {
+        const error = new Error(errorObject.message);
+        error.name = errorObject.name;
+        error.stack = errorObject.stack;
+
+        return error;
     }
 
     private userWantsReportingEnabled(): boolean {

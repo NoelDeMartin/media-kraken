@@ -1,5 +1,6 @@
 import SolidAuthClient from 'solid-auth-client';
 
+import Errors from '@/utils/Errors';
 import Http from '@/utils/Http';
 import Str from '@/utils/Str';
 
@@ -42,7 +43,7 @@ export default class WebWorkerRunner<Parameters extends any[], Result> {
                 this._resolve(payload[0]);
                 break;
             case 'failed':
-                this._reject(payload[0]);
+                this._reject(Errors.parse(payload[0]));
                 break;
             case 'run-operation': {
                 const [id, name, args] = payload;
@@ -52,10 +53,7 @@ export default class WebWorkerRunner<Parameters extends any[], Result> {
 
                     this.postMessage('operation-completed', id, result);
                 } catch (e) {
-                    this.postMessage('operation-failed', id, e.message || 'Unknown error');
-
-                    // eslint-disable-next-line no-console
-                    console.error(e);
+                    this.postMessage('operation-failed', id, Errors.serialize(e));
                 }
                 break;
             }
