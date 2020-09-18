@@ -22,6 +22,12 @@
         <div class="relative -mx-4 -mb-4 bg-red-200 flex-grow overflow-hidden">
             <div class="flex absolute m-4 top-0 gap-1 left-0 desktop:left-auto desktop:right-0">
                 <DiscreetButton
+                    icon="github"
+                    action="report to Github"
+                    class="bg-red-200 text-red-800"
+                    :url="githubReportUrl"
+                />
+                <DiscreetButton
                     v-if="$app.isErrorReportingAvailable"
                     icon="bug"
                     :action="sentryId ? 'view Sentry ID' : 'report to Sentry'"
@@ -86,6 +92,16 @@ export default Modal.extend({
             const stack = this.error.stack || 'Stacktrace not found\n';
 
             return stack + '\n';
+        },
+        githubReportUrl(): string {
+            const title = encodeURIComponent(this.title);
+            const body = encodeURIComponent(
+                '[Please describe here what you were doing when this error appeared.]\n\n' +
+                'Stack trace:\n' +
+                '```' + this.stackTrace + '```',
+            );
+
+            return `${this.$app.sourceUrl}/issues/new?title=${title}&body=${body}`;
         },
     },
     methods: {

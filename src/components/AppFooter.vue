@@ -13,7 +13,7 @@
             </button>
             | <BaseLink
                 title="View application source code"
-                url="https://github.com/noeldemartin/media-kraken"
+                :url="$app.sourceUrl"
                 class="mx-1"
             >
                 source

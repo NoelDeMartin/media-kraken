@@ -16,6 +16,7 @@ interface State {
 export default class App extends Service<State> {
 
     public environment!: string;
+    public sourceUrl!: string;
     public version!: string;
 
     public get isDevelopment(): boolean {
@@ -53,6 +54,7 @@ export default class App extends Service<State> {
         await super.init();
 
         this.environment = process.env.NODE_ENV!;
+        this.sourceUrl = process.env.VUE_APP_SOURCE_URL!;
         this.version = process.env.VUE_APP_VERSION + (this.isDevelopment ? '-next' : '');
 
         Storage.set('media-kraken-version', this.version);

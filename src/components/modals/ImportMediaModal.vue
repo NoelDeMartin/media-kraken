@@ -36,7 +36,7 @@
         </div>
         <p class="text-gray-700 leading-relaxed my-3">
             If you can't import your movies with any of these options, please
-            <BaseLink url="https://github.com/NoelDeMartin/media-kraken/issues/new?title=Support+importing+movies+from+...">
+            <BaseLink :url="requestSourceUrl">
                 let me know
             </BaseLink> and I'll help you.
         </p>
@@ -68,15 +68,17 @@ export default Modal.extend({
             [MediaSource.IMDB]: 'IMDB',
         }),
         helpReplacements(): any {
-            const repositoryUrl = 'https://github.com/NoelDeMartin/media-kraken';
             const filePath = 'docs#data-schema';
             const branch = this.$app.isDevelopment ? 'main' : this.$app.version;
 
             return {
                 jsonld: {
-                    url: `${repositoryUrl}/blob/${branch}/${filePath}`,
+                    url: `${this.$app.sourceUrl}/blob/${branch}/${filePath}`,
                 },
             };
+        },
+        requestSourceUrl(): string {
+            return `${this.$app.sourceUrl}/issues/new?title=Support+importing+movies+from+...`;
         },
     },
     methods: {
