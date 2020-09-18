@@ -96,7 +96,7 @@ export default Modal.extend({
         githubReportUrl(): string {
             const title = encodeURIComponent(this.title);
             const body = encodeURIComponent(
-                '[Please describe here what you were doing when this error appeared.]\n\n' +
+                '[Please explain what you were trying to do when this error appeared.]\n\n' +
                 'Stack trace:\n' +
                 '```' + this.stackTrace + '```',
             );
