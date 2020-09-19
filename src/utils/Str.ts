@@ -1,5 +1,9 @@
 class Str {
 
+    public capitalize(text: string): string {
+        return text.substr(0, 1).toUpperCase() + text.substr(1);
+    }
+
     public slug(text: string, separator: string = '-'): string {
         text = text
             .trim()

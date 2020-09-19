@@ -8,7 +8,7 @@
     >
         <div class="flex mb-4 items-center">
             <h2 class="font-semibold text-xl text-red-200">
-                {{ title }}
+                {{ errorName }}
             </h2>
             <div class="flex-grow" />
             <button
@@ -19,36 +19,48 @@
                 <BaseIcon name="close" class="w-4 h-4 text-red-200" />
             </button>
         </div>
-        <div class="relative -mx-4 -mb-4 bg-red-200 flex-grow overflow-hidden">
-            <div class="flex absolute m-4 top-0 gap-1 left-0 desktop:left-auto desktop:right-0">
-                <DiscreetButton
-                    icon="github"
-                    action="report to Github"
-                    class="bg-red-200 text-red-800"
-                    :url="githubReportUrl"
-                />
-                <DiscreetButton
-                    v-if="$app.isErrorReportingAvailable"
-                    icon="bug"
-                    :action="sentryId ? 'view Sentry ID' : 'report to Sentry'"
-                    class="bg-red-200 text-red-800"
-                    @click="report"
-                />
-                <DiscreetButton
-                    icon="terminal"
-                    action="inspect in console"
-                    class="bg-red-200 text-red-800"
-                    @click="inspect"
-                />
-                <DiscreetButton
-                    icon="copy"
-                    action="copy to clipboard"
-                    class="bg-red-200 text-red-800"
-                    @click="copy"
-                />
+        <div class="flex flex-col relative -mx-4 -mb-4 bg-red-200 flex-grow overflow-hidden">
+            <div class="flex flex-col relative p-4 gap-3 desktop:flex-row">
+                <p class="text-gray-700 leading-relaxed">
+                    {{ errorMessage }}
+                </p>
+                <div v-if="$ui.desktop" class="flex-shrink-0 w-40" />
+                <div
+                    class="
+                        flex flex-col gap-2
+                        desktop:absolute desktop:right-0 desktop:top-0 desktop:m-4 desktop:gap-1
+                        desktop:flex-row-reverse
+                    "
+                >
+                    <ErrorInfoModalButton
+                        icon="terminal"
+                        action="inspect in console"
+                        class="bg-red-200 text-red-800"
+                        @click="inspect"
+                    />
+                    <ErrorInfoModalButton
+                        icon="copy"
+                        action="copy to clipboard"
+                        class="bg-red-200 text-red-800"
+                        @click="copy"
+                    />
+                    <ErrorInfoModalButton
+                        v-if="$app.isErrorReportingAvailable"
+                        icon="bug"
+                        :action="sentryId ? 'view Sentry ID' : 'report to Sentry'"
+                        class="bg-red-200 text-red-800"
+                        @click="report"
+                    />
+                    <ErrorInfoModalButton
+                        icon="github"
+                        action="report in GitHub"
+                        class="bg-red-200 text-red-800"
+                        :url="githubReportUrl"
+                    />
+                </div>
             </div>
             <pre
-                class="px-4 pb-4 mt-16 text-xs text-red-900 h-full overflow-auto desktop:mt-0 desktop:pt-4"
+                class="p-4 h-full text-xs text-red-900 bg-white-overlay overflow-auto"
                 v-text="stackTrace"
             />
         </div>
@@ -58,7 +70,7 @@
 <script lang="ts">
 import Errors from '@/utils/Errors';
 
-import DiscreetButton from '@/components/DiscreetButton.vue';
+import ErrorInfoModalButton from '@/components/modals/ErrorInfoModalButton.vue';
 import MarkdownContent from '@/components/MarkdownContent.vue';
 import Modal from '@/components/mixins/Modal';
 
@@ -68,7 +80,7 @@ interface Data {
 
 export default Modal.extend({
     components: {
-        DiscreetButton,
+        ErrorInfoModalButton,
         MarkdownContent,
     },
     props: {
@@ -81,20 +93,20 @@ export default Modal.extend({
         return { sentryId: this.error.sentryId };
     },
     computed: {
-        title(): string {
-            const name = this.error.name || 'Error';
-            const message = this.error.message || 'Unknown';
-
-            return `${name}: ${message}`;
+        errorName(): string {
+            return this.error.name || 'Error';
+        },
+        errorMessage(): string {
+            return this.error.message || 'Unknown error';
         },
         stackTrace(): string {
             // TODO without sourcemaps this may not be so useful...
-            const stack = this.error.stack || 'Stacktrace not found\n';
+            const stack = this.error.stack || 'Stacktrace not found';
 
             return stack + '\n';
         },
         githubReportUrl(): string {
-            const title = encodeURIComponent(this.title);
+            const title = encodeURIComponent(`${this.errorName}: ${this.errorMessage}`);
             const body = encodeURIComponent(
                 '[Please explain what you were trying to do when this error appeared.]\n\n' +
                 'Stack trace:\n' +
@@ -124,7 +136,7 @@ export default Modal.extend({
         },
         copy() {
             const textarea = document.createElement('textarea');
-            textarea.value = `${this.title}\n\n${this.stackTrace}`;
+            textarea.value = `${this.errorName}: ${this.errorMessage}\n\n${this.stackTrace}`;
             textarea.style.position = 'fixed';
             textarea.style.top = '-9999px';
             document.body.appendChild(textarea);
@@ -133,7 +145,7 @@ export default Modal.extend({
             document.execCommand('copy');
             textarea.remove();
 
-            this.$ui.showSnackbar('Stack trace copied to clipboard', { transient: true });
+            this.$ui.showSnackbar('Debug information copied to clipboard', { transient: true });
         },
     },
 });
