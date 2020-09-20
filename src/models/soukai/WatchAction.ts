@@ -26,7 +26,7 @@ export default class WatchAction extends SolidModel {
     };
 
     public movieRelationship(): SingleModelRelation {
-        return this.belongsTo(Movie, 'object');
+        return this.belongsToOne(Movie, 'object');
     }
 
 }

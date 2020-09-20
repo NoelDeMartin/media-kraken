@@ -2,9 +2,16 @@ import Errors from '@/utils/Errors';
 import Service from '@/services/Service';
 import Storage from '@/utils/Storage';
 
-interface CrashReport {
+export interface CrashReport {
     error: Error;
-    message: string;
+    title: string;
+    subtitle?: string;
+    actions: CrashReportAction[];
+}
+
+interface CrashReportAction {
+    label: string;
+    handle: Function;
 }
 
 interface State {
@@ -39,11 +46,15 @@ export default class App extends Service<State> {
         return this.state.isErrorReportingEnabled;
     }
 
-    public setCrashReport(
-        error: Error,
-        message: string = 'An unexpected problem crashed the application',
-    ): void {
-        this.setState({ crashReport: { error, message } });
+    public setCrashReport(error: Error, options: Partial<Omit<CrashReport,'error'>> = {}): void {
+        const crashReport: CrashReport = {
+            error,
+            title: 'An unexpected problem crashed the application',
+            actions: [],
+            ...options,
+        };
+
+        this.setState({ crashReport });
     }
 
     public clearCrashReport(): void {

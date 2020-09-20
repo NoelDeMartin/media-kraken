@@ -29,26 +29,12 @@ class ModelsCache {
     private connection?: IDBPDatabase<DatabaseSchema>;
 
     public async getFromDocument(document: SolidDocument, validAge: number = 0): Promise<SolidModel | null> {
-        const existingData = await this.getModelData(document.url);
+        const data = await this.getModelData(document.url);
 
-        if (
-            existingData &&
-            Math.abs(document.updatedAt.getTime() - existingData.updatedAt.getTime()) <= validAge
-        )
-            return this.deserializeModel(existingData);
+        if (data && Math.abs(document.updatedAt.getTime() - data.updatedAt.getTime()) <= validAge)
+            return this.deserializeModel(data);
 
-        const data: CachedModelTimestamp = existingData || { updatedAt: document.updatedAt };
-
-        data.updatedAt = document.updatedAt;
-
-        if (isCachedModelData(data)) {
-            delete data.modelName;
-            delete data.attributes;
-            delete data.relationModelNames;
-            delete data.relationAttributes;
-        }
-
-        await this.setModelData(document.url, data);
+        await this.setModelData(document.url, { updatedAt: document.updatedAt });
 
         return null;
     }

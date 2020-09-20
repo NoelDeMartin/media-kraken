@@ -1,7 +1,12 @@
+import { MalformedDocumentError } from 'soukai-solid';
+
 import { MediaParser } from '@/utils/parsers';
+import Arr from '@/utils/Arr';
 import EventBus from '@/utils/EventBus';
 import Files from '@/utils/Files';
+import IMDBMoviesParser from '@/utils/parsers/IMDBMoviesParser';
 import JSONLDMoviesParser from '@/utils/parsers/JSONLDMoviesParser';
+import Storage from '@/utils/Storage';
 import Time from '@/utils/Time';
 import TVisoMoviesParser from '@/utils/parsers/TVisoMoviesParser';
 
@@ -17,10 +22,8 @@ import User from '@/models/users/User';
 import { loadMedia } from '@/workers';
 import Service from '@/services/Service';
 
-import Arr from '@/utils/Arr';
 import ImportProgressModal from '@/components/modals/ImportProgressModal.vue';
 import ImportResultModal from '@/components/modals/ImportResultModal.vue';
-import IMDBMoviesParser from '@/utils/parsers/IMDBMoviesParser';
 
 interface State {
     moviesContainer: MediaContainer | null;
@@ -220,7 +223,8 @@ export default class Media extends Service<State> {
 
     private async load(user: User): Promise<void> {
         try {
-            const { movies: moviesContainer } = await loadMedia(user.toJSON());
+            const ignoredDocumentUrls = Storage.get('media-kraken-malformed-document-urls', []);
+            const { movies: moviesContainer } = await loadMedia(user.toJSON(), { ignoredDocumentUrls });
 
             await user.initSoukaiEngine();
 
@@ -236,12 +240,21 @@ export default class Media extends Service<State> {
                 return;
             }
 
+            if (error instanceof MalformedDocumentError) {
+                this.handleMalformedDocument(error);
+
+                return;
+            }
+
             throw error;
         }
     }
 
     private async unload(): Promise<void> {
         this.setState({ moviesContainer: null });
+
+        // TODO setup events system so that both this and ModelsCache.clear() is cleared after logout instead
+        Storage.remove('media-kraken-malformed-document-urls');
     }
 
     private getMoviesParser(source: MediaSource): MediaParser<any, Movie> {
@@ -253,6 +266,31 @@ export default class Media extends Service<State> {
             case MediaSource.IMDB:
                 return IMDBMoviesParser;
         }
+    }
+
+    private handleMalformedDocument(error: MalformedDocumentError): void {
+        const ignoreDocument = () => {
+            const malformedDocumentUrls = Storage.get('media-kraken-malformed-document-urls', []);
+
+            Storage.set('media-kraken-malformed-document-urls', [
+                ...malformedDocumentUrls,
+                error.documentUrl,
+            ]);
+
+            location.reload();
+        };
+
+        this.app.$app.setCrashReport(
+            error,
+            {
+                title: 'There was a problem reading a document from your collection',
+                subtitle: error.documentUrl,
+                actions: [{
+                    label: 'Ignore this document',
+                    handle: ignoreDocument,
+                }],
+            },
+        );
     }
 
 }

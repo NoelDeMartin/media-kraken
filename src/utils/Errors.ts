@@ -1,7 +1,10 @@
+import { DocumentFormat, MalformedDocumentError } from 'soukai-solid';
 import { init, captureException } from '@sentry/browser';
 
 import Arr from '@/utils/Arr';
 import Storage from '@/utils/Storage';
+
+import UnauthorizedError from '@/errors/UnauthorizedError';
 
 const STORAGE_ENABLED_KEY = 'media-kraken-error-reporting';
 
@@ -10,7 +13,16 @@ export interface ErrorsListener {
     onReportingDisabled?(): void;
 }
 
-export type SerializedError = Error;
+interface SerializedError extends Error {
+    errorClass?: 'unauthorized' | 'malformed-document';
+    errorData?: any;
+}
+
+interface MalformedDocumentErrorData {
+    documentUrl: string;
+    documentFormat: DocumentFormat;
+    malformationDetails: string;
+}
 
 class Errors {
 
@@ -81,17 +93,50 @@ class Errors {
     }
 
     public serialize(error: Error): SerializedError {
-        return {
+        const serializedError: SerializedError = {
             name: error.name,
             message: error.message,
             stack: error.stack,
         };
+
+        if (error instanceof UnauthorizedError) {
+            serializedError.errorClass = 'unauthorized';
+        } else if (error instanceof MalformedDocumentError) {
+            const data: MalformedDocumentErrorData = {
+                documentUrl: error.documentUrl,
+                documentFormat: error.documentFormat,
+                malformationDetails: error.malformationDetails,
+            };
+
+            serializedError.errorClass = 'malformed-document';
+            serializedError.errorData = data;
+        }
+
+        return serializedError;
     }
 
-    public parse(errorObject: SerializedError): Error {
-        const error = new Error(errorObject.message);
-        error.name = errorObject.name;
-        error.stack = errorObject.stack;
+    public parse(serializedError: SerializedError): Error {
+        const resolveError = () => {
+            switch (serializedError.errorClass) {
+                case 'unauthorized':
+                    return new UnauthorizedError();
+                case 'malformed-document': {
+                    const data = serializedError.errorData as MalformedDocumentErrorData;
+
+                    return new MalformedDocumentError(
+                        data.documentUrl,
+                        data.documentFormat,
+                        data.malformationDetails,
+                    );
+                }
+                default:
+                    return new Error(serializedError.message);
+            }
+        };
+        const error = resolveError();
+
+        error.name = serializedError.name;
+        error.stack = serializedError.stack;
 
         return error;
     }
