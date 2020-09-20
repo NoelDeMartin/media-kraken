@@ -120,6 +120,11 @@ interface WatchFilterMenuOptions extends MenuOption {
     mobileText: string;
 }
 
+interface MovieSearchIndex {
+    movie: Movie;
+    searchableText: string;
+}
+
 interface Data {
     watchedFilter: WatchedFilter;
     searchFilter: string | null;
@@ -182,30 +187,31 @@ export default Vue.extend({
         searching(): boolean {
             return this.removeClickAwayListener !== null;
         },
-        allMovies(): Movie[] {
+        moviesSearchIndex(): MovieSearchIndex[] {
             return this.$media.movies
                 .slice(0)
-                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
+                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+                .map(movie => ({ movie, searchableText: movie.uuid!.replaceAll('-', '') }));
         },
         filteredMovies(): Movie[] {
-            let filteredMovies = this.allMovies;
+            let filteredIndex = this.moviesSearchIndex;
 
             switch (this.watchedFilter) {
                 case WatchedFilter.Watched:
-                    filteredMovies = filteredMovies.filter(movie => movie.watched);
+                    filteredIndex = filteredIndex.filter(entry => entry.movie.watched);
                     break;
                 case WatchedFilter.WatchLater:
-                    filteredMovies = filteredMovies.filter(movie => !movie.watched);
+                    filteredIndex = filteredIndex.filter(entry => !entry.movie.watched);
                     break;
             }
 
             if (this.searching) {
                 const filterText = Str.slug(this.searchFilter!, '');
 
-                filteredMovies = filteredMovies.filter(movie => Str.contains(movie.uuid!.replace('-',''), filterText));
+                filteredIndex = filteredIndex.filter(entry => Str.contains(entry.searchableText, filterText));
             }
 
-            return filteredMovies;
+            return filteredIndex.map(entry => entry.movie);
         },
     },
     created() {
