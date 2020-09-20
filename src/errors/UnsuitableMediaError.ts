@@ -2,7 +2,7 @@ import MediaValidationError from './MediaValidationError';
 
 export default class UnsuitableMediaError extends MediaValidationError {
 
-    public reason: string;
+    public readonly reason: string;
 
     constructor(reason: string) {
         super([reason]);

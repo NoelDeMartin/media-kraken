@@ -11,6 +11,7 @@ import Obj from '@/utils/Obj';
 import Storage from '@/utils/Storage';
 import UUID from '@/utils/UUID';
 
+import AlertModal from '@/components/modals/AlertModal.vue';
 import ErrorInfoModal from '@/components/modals/ErrorInfoModal.vue';
 import LoadingModal from '@/components/modals/LoadingModal.vue';
 import MarkdownModal from '@/components/modals/MarkdownModal.vue';
@@ -287,11 +288,20 @@ export default class UI extends Service<State, ComputedState> {
         this.closeModal(id, true);
     }
 
+    public alert(message: string): void;
+    public alert(title: string, message: string): void;
+    public alert(titleOrMessage: string, message?: string): void {
+        const title = message ? titleOrMessage : undefined;
+        message = message || titleOrMessage;
+
+        this.openModal(AlertModal, { title, message });
+    }
+
     public showError(error: any): void {
         Errors.handle(error);
 
         const { id: snackbarId } = this.showSnackbar(
-            'Something went wrong!',
+            'Something went wrong, but it\'s not your fault. Try again!',
             {
                 error: true,
                 transient: true,

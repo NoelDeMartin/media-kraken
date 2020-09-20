@@ -5,7 +5,11 @@ import OfflineUser from '@/models/users/OfflineUser';
 import SolidUser from '@/models/users/SolidUser';
 import User from '@/models/users/User';
 
+import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
+import Time from '@/utils/Time';
+
+import NetworkRequestError from '@/errors/NetworkRequestError';
 
 import OfflineLogoutModal from '@/components/modals/OfflineLogoutModal.vue';
 
@@ -42,7 +46,21 @@ export default class Auth extends Service<State> {
     }
 
     public async loginWithSolid(idp: string): Promise<void> {
-        await SolidUser.login(idp);
+        this.app.$ui.loading(async () => {
+            const loggedIn = await SolidUser.login(idp);
+
+            if (!loggedIn) {
+                // For some reason, valid urls return !loggedIn before redirecting so there is no
+                // way to distinguish between an actual error or everything working as expected.
+                // We'll just wait a couple of seconds before showing an error.
+                await Time.wait(2000);
+
+                this.app.$ui.alert(
+                    'Log in failed',
+                    "It wasn't possible to log in with this url",
+                );
+            }
+        });
     }
 
     public async logout(force: boolean = false): Promise<void> {
@@ -68,12 +86,23 @@ export default class Auth extends Service<State> {
     protected async init(): Promise<void> {
         await super.init();
 
-        await SolidUser.trackSession(solidUser => {
-            if (!!this.user && !(this.user instanceof SolidUser)) {
-                return;
-            }
+        await SolidUser.trackSession({
+            onUserUpdated: (solidUser: SolidUser | null) => {
+                if (!!this.user && !(this.user instanceof SolidUser)) {
+                    return;
+                }
 
-            this.updateUser(solidUser);
+                this.updateUser(solidUser);
+            },
+            onError: (error: Error) => {
+                if (error instanceof NetworkRequestError) {
+                    this.handleSolidSessionError(error, 'A network request failed trying to log in', error.url);
+
+                    return;
+                }
+
+                this.handleSolidSessionError(error);
+            },
         });
 
         if (OfflineUser.isLoggedIn())
@@ -84,7 +113,7 @@ export default class Auth extends Service<State> {
         return { user: null };
     }
 
-    protected async updateUser(newUser: User | null = null): Promise<void> {
+    private async updateUser(newUser: User | null = null): Promise<void> {
         const previousUser = this.user;
 
         if (!newUser)
@@ -112,6 +141,31 @@ export default class Auth extends Service<State> {
             this.app.$router.replace({ name: 'home' });
 
         EventBus.emit('login', newUser);
+    }
+
+    private handleSolidSessionError(error: Error, title?: string, subtitle?: string): void {
+        const clearSessionData = async () => {
+            ModelsCache.clear();
+            SolidUser.logout();
+            this.app.$app.clearCrashReport();
+        };
+
+        Errors.report(error);
+
+        this.app.$app.setCrashReport(
+            error,
+            {
+                title: title || 'There was an error trying to log in',
+                subtitle,
+                actions: this.loggedIn
+                    ? []
+                    : [{
+                        label: 'Logout',
+                        priority: 0,
+                        handle: clearSessionData,
+                    }],
+            },
+        );
     }
 
 }

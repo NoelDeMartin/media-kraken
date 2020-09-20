@@ -12,31 +12,12 @@
         </p>
         <div class="flex flex-col gap-2">
             <BaseButton
-                v-for="(action, i) in crashReport.actions"
+                v-for="(action, i) in actions"
                 :key="i"
                 class="border border-primary-500 text-sm text-primary-700 justify-center hover:bg-black-overlay"
                 @click="action.handle"
             >
                 {{ action.label }}
-            </BaseButton>
-            <BaseButton
-                class="border border-primary-500 text-sm text-primary-700 justify-center hover:bg-black-overlay"
-                @click="reload()"
-            >
-                Reload the page
-            </BaseButton>
-            <BaseButton
-                class="border border-primary-500 text-sm text-primary-700 justify-center hover:bg-black-overlay"
-                @click="inspect()"
-            >
-                View error details
-            </BaseButton>
-            <BaseButton
-                v-if="$auth.loggedIn"
-                class="border border-primary-500 text-sm text-primary-700 justify-center hover:bg-black-overlay"
-                @click="logout()"
-            >
-                Logout
             </BaseButton>
         </div>
     </div>
@@ -45,7 +26,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
-import { CrashReport } from '@/services/App';
+import { CrashReport, CrashReportAction } from '@/services/App';
 
 import ErrorInfoModal from '@/components/modals/ErrorInfoModal.vue';
 
@@ -54,18 +35,44 @@ export default Vue.extend({
         crashReport(): CrashReport {
             return this.$app.crashReport!;
         },
-    },
-    methods: {
-        reload() {
-            location.reload();
-        },
-        inspect() {
-            this.$ui.openModal(ErrorInfoModal, { error: this.crashReport.error });
-        },
-        async logout() {
-            await this.$auth.logout();
+        actions(): CrashReportAction[] {
+            const actions: CrashReportAction[] = [
+                {
+                    label: 'Reload the page',
+                    priority: 1,
+                    handle: () => location.reload(),
+                },
+                {
+                    label: 'View error details',
+                    priority: 1,
+                    handle: () => this.$ui.openModal(ErrorInfoModal, { error: this.crashReport.error }),
+                },
+            ];
 
-            this.$app.clearCrashReport();
+            if (this.$auth.loggedIn) {
+                actions.push({
+                    label: 'Logout',
+                    priority: 1,
+                    handle: async () => {
+                        await this.$auth.logout();
+
+                        this.$app.clearCrashReport();
+                    },
+                });
+            }
+
+            actions.push(
+                ...this.crashReport.actions.map(
+                    action => ({
+                        priority: 2,
+                        ...action,
+                    }),
+                ),
+            );
+
+            actions.sort((a, b) => b.priority! - a.priority!);
+
+            return actions;
         },
     },
 });

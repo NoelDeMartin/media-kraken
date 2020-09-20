@@ -6,7 +6,7 @@
         "
         :class="{
             'bg-gray-800 text-white': !options.error,
-            'bg-red-600 text-red-100': options.error,
+            'bg-red-200 text-red-700 font-medium': options.error,
         }"
     >
         <LoadingCircle v-if="options.loading" class="mr-3 w-6 h-6" />
@@ -15,6 +15,7 @@
             v-if="options.action"
             type="button"
             class="relative flex -my-4 -mr-4 ml-4 p-4 font-bold uppercase text-sm group"
+            :class="{ 'bg-red-500 text-white': options.error }"
             @click="options.action.handler"
         >
             <div class="absolute inset-0 opacity-15 bg-black group-hover:opacity-30" />

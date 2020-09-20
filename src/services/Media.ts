@@ -12,7 +12,7 @@ import TVisoMoviesParser from '@/utils/parsers/TVisoMoviesParser';
 
 import MediaValidationError from '@/errors/MediaValidationError';
 import UnauthorizedError from '@/errors/UnauthorizedError';
-import UnsuitableMediaError from '@/errors/IgnoreMediaError';
+import UnsuitableMediaError from '@/errors/UnsuitableMediaError';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
 import ModelsCache from '@/models/ModelsCache';

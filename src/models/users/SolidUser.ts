@@ -7,7 +7,6 @@ import ModelsCache from '@/models/ModelsCache';
 import TypeRegistration from '@/models/soukai/TypeRegistration';
 import User from '@/models/users/User';
 
-import Errors from '@/utils/Errors';
 import RDFStore from '@/utils/RDFStore';
 import Storage from '@/utils/Storage';
 import Url from '@/utils/Url';
@@ -18,6 +17,11 @@ export interface SolidUserJSON {
     avatar_url: string | null;
     storages: string[];
     typeIndexUrl: string;
+}
+
+export interface SessionListener {
+    onUserUpdated(user: SolidUser | null): void;
+    onError(error: Error): void;
 }
 
 export default class SolidUser extends User<SolidUserJSON> {
@@ -32,13 +36,13 @@ export default class SolidUser extends User<SolidUserJSON> {
         this._fetch = fetch;
     }
 
-    public static async trackSession(listener: (user: SolidUser | null) => void): Promise<void> {
+    public static async trackSession(listener: SessionListener): Promise<void> {
         let activeSessionWebId: string | null = null;
         const onSessionUpdated = async (session: Session | void) => {
             if (!session) {
                 if (activeSessionWebId !== null) {
                     activeSessionWebId = null;
-                    listener(null);
+                    listener.onUserUpdated(null);
                 }
 
                 return;
@@ -51,7 +55,7 @@ export default class SolidUser extends User<SolidUserJSON> {
 
             const user = await this.fromWebId(activeSessionWebId);
 
-            listener(user);
+            listener.onUserUpdated(user);
         };
 
         try {
@@ -59,16 +63,14 @@ export default class SolidUser extends User<SolidUserJSON> {
 
             SolidAuthClient.trackSession(onSessionUpdated);
         } catch (error) {
-            Errors.handle(error);
-
-            alert("We couldn't validate your credentials, please login again");
-
-            await this.logout();
+            listener.onError(error);
         }
     }
 
-    public static async login(idp: string): Promise<void> {
-        await SolidAuthClient.login(idp);
+    public static async login(idp: string): Promise<boolean> {
+        const session = await SolidAuthClient.login(idp);
+
+        return !!session;
     }
 
     public static async logout(): Promise<void> {

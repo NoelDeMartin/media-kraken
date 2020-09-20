@@ -1,7 +1,8 @@
-import { Fetch } from 'soukai-solid';
+import { DocumentFormat, Fetch, MalformedDocumentError } from 'soukai-solid';
 import { Parser as TurtleParser } from 'n3';
 import { Quad } from 'rdf-js';
 
+import NetworkRequestError from '@/errors/NetworkRequestError';
 import UnauthorizedError from '@/errors/UnauthorizedError';
 
 const knownPrefixes: { [prefix: string]: string } = {
@@ -16,25 +17,40 @@ const knownPrefixes: { [prefix: string]: string } = {
 export default class RDFStore {
 
     public static async fromUrl(fetch: Fetch, url: string): Promise<RDFStore> {
+        const data = await this.fetchData(fetch, url);
+
+        return this.parse(url, data);
+    }
+
+    private static async fetchData(fetch: Fetch, url: string): Promise<string> {
         const options = { headers: { 'Accept': 'text/turtle' } };
+
+        try {
+            const response = await fetch(url, options);
+
+            if (response.status === 401)
+                throw new UnauthorizedError;
+
+            return response.text();
+        } catch (error) {
+            if (error instanceof UnauthorizedError)
+                throw error;
+
+            throw new NetworkRequestError(url);
+        }
+    }
+
+    private static parse(url: string, data: string): Promise<RDFStore> {
         const quads: Quad[] = [];
         const parser = new TurtleParser({
             baseIRI: url,
             format: 'text/turtle',
         });
 
-        const response = await fetch(url, options);
-
-        if (response.status === 401) {
-            throw new UnauthorizedError;
-        }
-
-        const data = await response.text();
-
         return new Promise((resolve, reject) => {
             parser.parse(data, (error, quad) => {
                 if (error) {
-                    reject(error);
+                    reject(new MalformedDocumentError(url, DocumentFormat.RDF, error.message));
                     return;
                 }
 

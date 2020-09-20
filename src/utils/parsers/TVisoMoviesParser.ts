@@ -1,5 +1,5 @@
 import MediaValidationError from '@/errors/MediaValidationError';
-import UnsuitableMediaError from '@/errors/IgnoreMediaError';
+import UnsuitableMediaError from '@/errors/UnsuitableMediaError';
 
 import Arr from '@/utils/Arr';
 import Time from '@/utils/Time';

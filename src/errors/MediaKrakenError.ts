@@ -1,16 +1,11 @@
-export default class MediaKrakenError implements Error {
+export default class MediaKrakenError extends Error {
 
-    public name: string;
-    public message: string;
-    public stack?: string;
+    constructor(message?: string) {
+        super(message);
 
-    constructor(...args: any[]) {
-        // Error cannot be extended and this is necessary
-        // +info: https://stackoverflow.com/questions/12915412/how-do-i-extend-a-host-object-e-g-error-in-typescript
-        const error = new Error(...args);
-        this.name = error.name;
-        this.message = error.message;
-        this.stack = error.stack;
+        // Fix inheritance: https://stackoverflow.com/questions/41102060/typescript-extending-error-class
+        this.name = new.target.name;
+        Object.setPrototypeOf(this, new.target.prototype);
     }
 
 }

@@ -9,8 +9,9 @@ export interface CrashReport {
     actions: CrashReportAction[];
 }
 
-interface CrashReportAction {
+export interface CrashReportAction {
     label: string;
+    priority?: number;
     handle: Function;
 }
 
