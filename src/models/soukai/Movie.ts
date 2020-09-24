@@ -4,6 +4,7 @@ import { SolidModel, SolidHasManyRelation } from 'soukai-solid';
 import Arr from '@/utils/Arr';
 import Str from '@/utils/Str';
 import TMDBMoviesParser from '@/utils/parsers/TMDBMoviesParser';
+import TMDBResolver from '@/utils/media/TMDBResolver';
 import Url from '@/utils/Url';
 
 import TheMovieDBApi, { TMDBMovie } from '@/api/TheMovieDBApi';
@@ -149,17 +150,14 @@ export default class Movie extends SolidModel {
             return TheMovieDBApi.getMovie(this.tmdbId);
 
         if (this.imdbId) {
-            const { movie_results } = await TheMovieDBApi.find(
-                this.imdbId,
-                { external_source: 'imdb_id' },
-            );
+            const model = await TMDBResolver.resolveImdbId(this.imdbId);
 
-            if (!movie_results || movie_results.length === 0)
+            if (model === null || !TheMovieDBApi.isMovie(model))
                 return null;
 
-            movie_results[0].imdb_id = this.imdbId;
+            model.imdb_id = this.imdbId;
 
-            return movie_results[0];
+            return model;
         }
 
         return null;

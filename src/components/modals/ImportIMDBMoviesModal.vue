@@ -39,8 +39,8 @@ export default Modal.extend({
             return [
                 'Examples of valid urls:',
                 '  - https://www.imdb.com/title/tt0245429',
+                '  - https://m.imdb.com/title/tt0245429',
                 '  - https://imdb.com/title/tt0245429',
-                '  - http://www.imdb.com/title/tt0245429',
                 '  - http://imdb.com/title/tt0245429',
                 '  - ...',
             ].join('\n');
@@ -51,10 +51,10 @@ export default Modal.extend({
             let match;
             const data = [];
             const text = this.text.slice(0);
-            const regex = /https?:\/\/(www\.)?imdb\.com\/title\/([a-zA-Z0-9]+)/g;
+            const regex = /https?:\/\/(www\.)?(m\.)?imdb\.com\/title\/([a-zA-Z0-9]+)/g;
 
             while((match = regex.exec(text))) {
-                data.push({ imdb: match[2] });
+                data.push({ imdb: match[3] });
             }
 
             this.$ui.resolveModal(this.id, data);

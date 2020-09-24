@@ -91,6 +91,8 @@ export default class Media extends Service<State> {
     }
 
     public async importMovies(data: object[], source: MediaSource): Promise<void> {
+        // TODO refactor this method (maybe extract it into a helper class?)
+
         if (this.state.importOperation)
             throw new Error('Import already in progress');
 

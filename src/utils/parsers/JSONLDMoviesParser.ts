@@ -26,6 +26,8 @@ class JSONLDMoviesParser implements MediaParser<object, Movie> {
 
         if (!movieType)
             throw new MediaValidationError(['Invalid format, schema:Movie type is missing']);
+
+        // TODO validate that schema:name is not missing
     }
 
     public async parse(data: object): Promise<Movie> {

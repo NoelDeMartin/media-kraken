@@ -2,6 +2,8 @@ type GetMovieResponse = TMDBMovie;
 
 interface FindResponse {
     movie_results: TMDBMovie[];
+    person_results: TMDBPerson[];
+    tv_results: TMDBTV[];
 }
 
 interface SearchMoviesResponse {
@@ -11,6 +13,8 @@ interface SearchMoviesResponse {
     results: TMDBMovie[];
 }
 
+export type TMDBModel = TMDBMovie | TMDBTV | TMDBPerson;
+
 export interface TMDBMovie {
     id: number;
     title: string;
@@ -18,6 +22,14 @@ export interface TMDBMovie {
     release_date?: string;
     poster_path?: string | null;
     imdb_id?: string | null;
+}
+
+export interface TMDBTV {
+    id: number;
+}
+
+export interface TMDBPerson {
+    id: number;
 }
 
 class TheMovieDBApi {
@@ -32,6 +44,10 @@ class TheMovieDBApi {
 
     public searchMovies(query: string): Promise<SearchMoviesResponse> {
         return this.request('search/movie', { query });
+    }
+
+    public isMovie(model: TMDBModel): model is TMDBMovie {
+        return 'release_date' in model;
     }
 
     private async request<Response=any>(path: string, parameters: object = {}): Promise<Response> {
