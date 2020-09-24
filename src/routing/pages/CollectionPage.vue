@@ -191,7 +191,7 @@ export default Vue.extend({
             return this.$media.movies
                 .slice(0)
                 .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-                .map(movie => ({ movie, searchableText: movie.uuid!.replaceAll('-', '') }));
+                .map(movie => ({ movie, searchableText: movie.uuid!.replace(/-/g, '') }));
         },
         filteredMovies(): Movie[] {
             let filteredIndex = this.moviesSearchIndex;
