@@ -20,14 +20,23 @@ import Movie from '@/models/soukai/Movie';
 import User from '@/models/users/User';
 
 import { loadMedia } from '@/workers';
-import Service from '@/services/Service';
+import Service, { ComputedStateDefinitions } from '@/services/Service';
 
 import ImportProgressModal from '@/components/modals/ImportProgressModal.vue';
 import ImportResultModal from '@/components/modals/ImportResultModal.vue';
 
+type SearchIndex = {
+    searchableText: string;
+    movie: Movie;
+}[];
+
 interface State {
     moviesContainer: MediaContainer | null;
     importOperation: ImportOperation | null;
+}
+
+interface ComputedState {
+    searchIndex: SearchIndex;
 }
 
 interface ImportOperation {
@@ -63,7 +72,7 @@ export enum MediaSource {
     IMDB = 'imdb',
 }
 
-export default class Media extends Service<State> {
+export default class Media extends Service<State, ComputedState> {
 
     protected storeName: string = 'media';
 
@@ -76,6 +85,10 @@ export default class Media extends Service<State> {
 
     public get moviesContainer(): MediaContainer | null {
         return this.state.moviesContainer;
+    }
+
+    public get searchIndex(): SearchIndex {
+        return this.computedState.searchIndex;
     }
 
     public get loaded(): boolean {
@@ -222,6 +235,23 @@ export default class Media extends Service<State> {
             importOperation: null,
         };
     }
+
+    protected getComputedStateDefinitions(): ComputedStateDefinitions<State, ComputedState> {
+        return {
+            searchIndex({ moviesContainer }: State) {
+                if (!moviesContainer)
+                    return [];
+
+                const movies = moviesContainer.movies || [];
+
+                return movies
+                    .slice(0)
+                    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+                    .map(movie => ({ movie, searchableText: movie.uuid!.replace(/-/g, '') }));
+            },
+        };
+    }
+
 
     private async load(user: User): Promise<void> {
         try {

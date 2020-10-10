@@ -18,6 +18,7 @@
                     desktop:text-gray-600
                     desktop:absolute desktop:-translate-y-1/2 desktop:top-1/2 desktop:py-2
                 "
+                title="You can also press &quot;/&quot; to start searching within your collection!"
                 @click.stop="$search.start()"
             >
                 <BaseIcon name="search" class="w-6 h-6 p-1 desktop:w-4 desktop:h-4 desktop:p-0 desktop:mr-2" />
@@ -46,8 +47,8 @@
                     @input="$search.update($event.target.value)"
                     @keydown.esc="$search.stop()"
                     @keydown.enter="$search.submit()"
-                    @keydown.up="$search.higlightResultAbove()"
-                    @keydown.down="$search.higlightResultBelow()"
+                    @keydown.up="$search.highlightResultAbove()"
+                    @keydown.down="$search.highlightResultBelow()"
                 >
                 <div class="pointer-events-none absolute inset-y-0 left-0 pl-4 flex items-center">
                     <BaseIcon name="search" class="w-4 h-4 pointer-events-none text-gray-600" />

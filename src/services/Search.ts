@@ -3,13 +3,13 @@ import Service from '@/services/Service';
 import TheMovieDBApi from '@/api/TheMovieDBApi';
 
 import Arr from '@/utils/Arr';
+import DOM from '@/utils/DOM';
+import Str from '@/utils/Str';
 import Time, { DebouncedFunction } from '@/utils/Time';
 import TMDBMoviesParser from '@/utils/parsers/TMDBMoviesParser';
 
 import MovieModal from '@/components/modals/MovieModal.vue';
 import Movie from '@/models/soukai/Movie';
-
-const NON_WRITABLE_INPUT_TYPES = ['submit', 'reset', 'checkbox', 'radio'];
 
 export type SearchResult = Movie;
 
@@ -115,7 +115,10 @@ export default class Search extends Service<State> {
             return;
         }
 
-        this.search();
+        if (query.startsWith('/'))
+            this.updateSearchResults();
+        else
+            this.search();
     }
 
     public highlightResult(result: SearchResult): void {
@@ -127,7 +130,7 @@ export default class Search extends Service<State> {
         this.setState({ highlightedResultIndex: index });
     }
 
-    public higlightResultAbove(): void {
+    public highlightResultAbove(): void {
         const resultsLength = this.results.length;
         const highlightedResultIndex = this.state.highlightedResultIndex;
 
@@ -145,7 +148,7 @@ export default class Search extends Service<State> {
         });
     }
 
-    public higlightResultBelow(): void {
+    public highlightResultBelow(): void {
         const resultsLength = this.results.length;
         const highlightedResultIndex = this.state.highlightedResultIndex;
 
@@ -171,13 +174,13 @@ export default class Search extends Service<State> {
     }
 
     public openResult(result: SearchResult): void {
-        if (result.exists()) {
+        if (!result.exists())
+            this.app.$ui.openModal(MovieModal, { movie: result });
+        else if (
+            this.app.$router.currentRoute.name !== 'movie' ||
+            this.app.$router.currentRoute.params?.uuid !== result.uuid
+        )
             this.app.$router.push({ name: 'movie', params: { uuid: result.uuid! }});
-
-            return;
-        }
-
-        this.app.$ui.openModal(MovieModal, { movie: result });
 
         this.stop();
     }
@@ -192,14 +195,26 @@ export default class Search extends Service<State> {
     }
 
     private async updateSearchResults() {
-        const response = await TheMovieDBApi.searchMovies(this.query.trim());
-        const promisedResults = response.results.map(async data => {
-            const movie = await TMDBMoviesParser.parse(data);
+        const getSearchResults = async (query: string): Promise<SearchResult[]> => {
+            if (query.startsWith('/')) {
+                const filterText = Str.slug(query, '');
 
-            return this.app.$media.movies.find(collectionMovie => collectionMovie.is(movie))
-                || movie;
-        });
-        const results = await Promise.all(promisedResults);
+                return this.app.$media.searchIndex
+                    .filter(entry => Str.contains(entry.searchableText, filterText))
+                    .map(entry => entry.movie);
+            }
+
+            const response = await TheMovieDBApi.searchMovies(query.trim());
+            const promisedResults = response.results.map(async data => {
+                const movie = await TMDBMoviesParser.parse(data);
+
+                return this.app.$media.movies.find(collectionMovie => collectionMovie.is(movie))
+                    || movie;
+            });
+            return await Promise.all(promisedResults);
+        };
+
+        const results = await getSearchResults(this.query.trim());
 
         this.searching = false;
         this.setState({
@@ -233,32 +248,17 @@ export default class Search extends Service<State> {
         if (
             !this.open &&
             Arr.contains(key.toLowerCase(), ['s', '/']) &&
-            !this.isWritable(target)
+            !DOM.isWritable(target)
         ) {
             this.start();
+
+            if (key === '/')
+                this.update('/');
 
             return true;
         }
 
         return false;
-    }
-
-    private isWritable(element: any): boolean {
-        if (!(element instanceof HTMLElement))
-            return false;
-
-        const name = element.nodeName.toLowerCase();
-
-        return name === 'select'
-            || (
-                name === 'input' &&
-                !Arr.contains(
-                    (element.getAttribute('type') || 'text').toLowerCase(),
-                    NON_WRITABLE_INPUT_TYPES,
-                )
-            )
-            || name === 'textarea'
-            || element.isContentEditable;
     }
 
 }

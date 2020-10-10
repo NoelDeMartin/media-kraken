@@ -501,7 +501,7 @@ export default class UI extends Service<State, ComputedState> {
                 },
             });
 
-            media.addListener(updateState);
+            media.addEventListener('change', updateState);
 
             updateState();
         }

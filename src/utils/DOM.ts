@@ -1,4 +1,26 @@
+import Arr from './Arr';
+
+const NON_WRITABLE_INPUT_TYPES = ['submit', 'reset', 'checkbox', 'radio'];
+
 class DOM {
+
+    public isWritable(element: any): boolean {
+        if (!(element instanceof HTMLElement))
+            return false;
+
+        const name = element.nodeName.toLowerCase();
+
+        return name === 'select'
+            || (
+                name === 'input' &&
+                !Arr.contains(
+                    (element.getAttribute('type') || 'text').toLowerCase(),
+                    NON_WRITABLE_INPUT_TYPES,
+                )
+            )
+            || name === 'textarea'
+            || element.isContentEditable;
+    }
 
     public measurePixels(css: string, parent?: Element): number {
         const ruler = document.createElement('div');

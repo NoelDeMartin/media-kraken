@@ -49,6 +49,7 @@
                         v-close-menu
                         route="collection"
                         class="flex items-center h-8 font-semibold desktop:text-sm desktop:mr-4"
+                        :title="$route.name !== 'collection' ? 'Press &quot;c&quot; to open your collection' : null"
                         :class="{ 'underline': $route.name === 'collection' }"
                     >
                         My Collection

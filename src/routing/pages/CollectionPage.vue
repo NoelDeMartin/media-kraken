@@ -62,12 +62,13 @@
                         ref="searchFilter"
                         v-model="searchFilter"
                         placeholder="Search in your collection..."
+                        aria-label="Filter collection"
                         class="
                             absolute w-full right-0 top-1/2 transform -translate-y-1/2
                             text-sm py-1 bg-transparent appearance-none border-b-2 border-primary-200
                             focus:border-primary-300
                         "
-                        @keyup.esc="searchFilter = ''"
+                        @keyup.esc="hideFilters"
                     >
                 </BaseTransition>
             </div>
@@ -101,6 +102,7 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import DOM from '@/utils/DOM';
 import Str from '@/utils/Str';
 
 import Movie from '@/models/soukai/Movie';
@@ -120,17 +122,13 @@ interface WatchFilterMenuOptions extends MenuOption {
     mobileText: string;
 }
 
-interface MovieSearchIndex {
-    movie: Movie;
-    searchableText: string;
-}
-
 interface Data {
     watchedFilter: WatchedFilter;
     searchFilter: string | null;
     showGoTop: boolean;
     removeClickAwayListener: Function | null;
     scrollListener: any | null;
+    keyboardListener: any | null;
 }
 
 function hasScrolled(): boolean {
@@ -147,6 +145,7 @@ export default Vue.extend({
         searchFilter: null,
         removeClickAwayListener: null,
         scrollListener: null,
+        keyboardListener: null,
     }),
     computed: {
         watchedFilterOptions(): WatchFilterMenuOptions[] {
@@ -187,14 +186,8 @@ export default Vue.extend({
         searching(): boolean {
             return this.removeClickAwayListener !== null;
         },
-        moviesSearchIndex(): MovieSearchIndex[] {
-            return this.$media.movies
-                .slice(0)
-                .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
-                .map(movie => ({ movie, searchableText: movie.uuid!.replace(/-/g, '') }));
-        },
         filteredMovies(): Movie[] {
-            let filteredIndex = this.moviesSearchIndex;
+            let filteredIndex = this.$media.searchIndex;
 
             switch (this.watchedFilter) {
                 case WatchedFilter.Watched:
@@ -222,15 +215,33 @@ export default Vue.extend({
     },
     mounted() {
         document.addEventListener('scroll', this.scrollListener = () => this.showGoTop = hasScrolled());
+        document.addEventListener('keydown', this.keyboardListener = (event: KeyboardEvent) => {
+            if (!this.captureHotKey(event))
+                return;
+
+            event.preventDefault();
+        });
     },
     destroyed() {
-        if (!this.scrollListener)
-            return;
+        if (this.scrollListener) {
+            document.removeEventListener('scroll', this.scrollListener);
+            this.scrollListener = null;
+        }
 
-        document.removeEventListener('scroll', this.scrollListener);
-        this.scrollListener = null;
+        if (this.keyboardListener) {
+            document.removeEventListener('keydown', this.keyboardListener);
+            this.keyboardListener = null;
+        }
     },
     methods: {
+        captureHotKey({ target, key }: KeyboardEvent): boolean {
+            if (key.toLowerCase() !== 'f' || DOM.isWritable(target))
+                return false;
+
+            this.showFilters();
+
+            return true;
+        },
         showFilters() {
             if (this.removeClickAwayListener !== null)
                 return;

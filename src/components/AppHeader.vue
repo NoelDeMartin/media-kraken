@@ -32,7 +32,17 @@
                             desktop:relative desktop:inset-auto
                         "
                     >
-                        <router-link :to="{ name: 'home' }" class="mr-4" title="Media Kraken">
+                        <router-link
+                            :to="{ name: 'home' }"
+                            :title="
+                                'Media Kraken' + (
+                                    $route.name !== 'home'
+                                        ? ' - press &quot;h&quot; to go home'
+                                        : ''
+                                )
+                            "
+                            class="mr-4"
+                        >
                             <BaseIcon name="media-kraken" class="w-auto h-16" />
                         </router-link>
                     </div>
@@ -47,19 +57,58 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import DOM from '@/utils/DOM';
+
 import AppHeaderProfile from '@/components/AppHeaderProfile.vue';
 import AppHeaderSearch from '@/components/AppHeaderSearch.vue';
+
+interface Data {
+    keyboardListener: any | null;
+}
+
+const ROUTE_HOT_KEYS: Record<string, string> = {
+    'c': 'collection',
+    'h': 'home',
+};
 
 export default Vue.extend({
     components: {
         AppHeaderProfile,
         AppHeaderSearch,
     },
+    data: (): Data => ({ keyboardListener: null }),
     mounted() {
         this.$ui.addMenuTrigger(this.$refs['menu-button'] as HTMLButtonElement);
+
+        document.addEventListener('keydown', this.keyboardListener = (event: KeyboardEvent) => {
+            if (!this.captureHotKey(event))
+                return;
+
+            event.preventDefault();
+        });
     },
     beforeDestroy() {
         this.$ui.removeMenuTrigger(this.$refs['menu-button'] as HTMLButtonElement);
+    },
+    destroyed() {
+        if (!this.keyboardListener)
+            return;
+
+        document.removeEventListener('keydown', this.keyboardListener);
+        this.keyboardListener = null;
+    },
+    methods: {
+        captureHotKey({ target, key }: KeyboardEvent): boolean {
+            const route: string | undefined = ROUTE_HOT_KEYS[key.toLowerCase()];
+
+            if (!route || DOM.isWritable(target))
+                return false;
+
+            if (this.$router.currentRoute.name !== route)
+                this.$router.push({ name: route });
+
+            return true;
+        },
     },
 });
 </script>
