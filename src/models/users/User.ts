@@ -13,9 +13,9 @@ export default abstract class User<JSON extends object=object> {
     }
 
     public async resolveMediaContainers(): Promise<MediaContainers> {
-        const cachedMovies = await this.getCachedMoviesContainer();
+        const cachedMoviesContainer = await this.getCachedMoviesContainer();
 
-        return { movies: cachedMovies || await this.initMoviesContainer() };
+        return { movies: cachedMoviesContainer || await this.initMoviesContainer() };
     }
 
     public async login(): Promise<void> {

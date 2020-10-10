@@ -1,7 +1,6 @@
 import Service from '@/services/Service';
 
 import ModelsCache from '@/models/ModelsCache';
-import Movie from '@/models/soukai/Movie';
 
 import Storage from '@/utils/Storage';
 
@@ -30,10 +29,10 @@ export default class Config extends Service {
 
     private async isIndexedDBSupported(): Promise<boolean> {
         try {
-            const movieStub = new Movie({ url: 'browser-storage://capabilities-check' });
+            const stubUrl = 'browser-storage://capabilities-check';
 
-            await ModelsCache.remember(movieStub);
-            await ModelsCache.forget(movieStub.url);
+            await ModelsCache.rememberDocument(stubUrl, new Date());
+            await ModelsCache.forgetDocument(stubUrl);
 
             return true;
         } catch (e) {

@@ -1,8 +1,18 @@
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix movies: <> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix stat: <http://www.w3.org/ns/posix/stat#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix turtle: <http://www.w3.org/ns/iana/media-types/text/turtle#> .
+@prefix XML: <http://www.w3.org/2001/XMLSchema#> .
 
-<>
+movies:
     a ldp:Resource ;
     a ldp:Container ;
     rdfs:label "Movies" ;
-    ldp:contains <./taxi-driver-1976.ttl> .
+    ldp:contains movies:taxi-driver-1976 .
+
+movies:taxi-driver-1976
+    a turtle:Resource, ldp:Resource ;
+    terms:modified "2020-07-18T11:41:15Z"^^XML:dateTime ;
+    stat:mtime 1595072475.92 .

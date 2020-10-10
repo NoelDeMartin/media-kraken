@@ -68,9 +68,10 @@ export default class Movie extends SolidModel {
     }
 
     public get uuid(): string | null {
-        return this.url
-            ? this.url.substring(this.url.lastIndexOf('/') + 1)
-            : null;
+        if (!this.url)
+            return null;
+
+        return this.url.match(/([^/#]+)(#.*)?$/)[1] ?? null;
     }
 
     public get slug(): string {
@@ -114,7 +115,10 @@ export default class Movie extends SolidModel {
     }
 
     public actionsRelationship(): MultiModelRelation {
-        return this.hasMany(WatchAction, 'object');
+        return this
+            .hasMany(WatchAction, 'object')
+            .usingSameDocument()
+            .onDelete('cascade');
     }
 
     public async fetchMissingAttributes(): Promise<void> {
@@ -132,17 +136,17 @@ export default class Movie extends SolidModel {
         this.regenerateUrls();
     }
 
-    public watch(date?: Date): Promise<WatchAction> {
+    public async watch(date?: Date): Promise<WatchAction> {
         date = date || new Date();
 
-        return this.relatedActions.create({ startTime: date, endTime: date }, true);
+        return this.relatedActions.create({ startTime: date, endTime: date });
     }
 
-    protected newUrl(documentUrl?: string): string {
-        if (documentUrl)
-            return documentUrl + '#' + this.slug;
+    protected newUrl(documentUrl?: string, resourceHash?: string): string {
+        documentUrl = documentUrl ?? Url.resolve(this.modelClass.collection, this.slug);
+        resourceHash = resourceHash ?? this.modelClass.defaultResourceHash;
 
-        return Url.resolve(this.modelClass.collection, this.slug);
+        return `${documentUrl}#${resourceHash}`;
     }
 
     private async resolveTMDBMovie(): Promise<TMDBMovie | null> {

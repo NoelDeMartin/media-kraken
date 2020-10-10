@@ -2,7 +2,7 @@ import TheMovieDBApi, { TMDBModel } from '@/api/TheMovieDBApi';
 
 class TMDBResolver {
 
-    private cache: MapObject<TMDBModel | null> = {};
+    private cache: Record<string, TMDBModel | null> = {};
 
     public async resolveImdbId(imdbId: string): Promise<TMDBModel | null> {
         return this.fromCache(`imdb-${imdbId}`, async () => {

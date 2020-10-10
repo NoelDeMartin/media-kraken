@@ -1,5 +1,5 @@
 import { SolidDocument } from 'soukai-solid';
-import Soukai from 'soukai';
+import Soukai, { Attributes } from 'soukai';
 
 import '@/plugins/soukai';
 
@@ -14,8 +14,18 @@ import JSONUserParser from '@/utils/parsers/JSONUserParser';
 
 import WebWorker from './WebWorker';
 
+export interface SerializedMoviesContainer {
+    attributes: Attributes;
+    movies: SerializedMovie[];
+}
+
+export interface SerializedMovie {
+    attributes: Attributes;
+    actionsAttributes: Attributes[];
+}
+
 export type Parameters = [object, Partial<Config>?];
-export type Result = void;
+export type Result = { movies: SerializedMoviesContainer };
 
 const MOVIES_CHUNK_SIZE = 10;
 
@@ -28,6 +38,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
     private user!: User;
     private config!: Config;
     private moviesContainer!: MediaContainer;
+    private processedDocumentUrls: string[] = [];
 
     protected async work(userJson: object, config: Partial<Config> = {}): Promise<Result> {
         this.config = {
@@ -39,14 +50,19 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
             await this.initStorage(userJson);
             await this.loadContainers();
             await this.loadMovies();
-            await this.loadActions();
+
+            this.updateProgressMessage('Almost done...');
+
+            return {
+                movies: this.serializeMoviesContainer(),
+            };
         } finally {
             await Soukai.closeConnections();
         }
     }
 
     private async initStorage(userJson: object): Promise<void> {
-        this.postMessage('update-progress-message', 'Loading user data...');
+        this.updateProgressMessage('Loading user data...');
 
         this.user = await this.resolveUser(userJson);
 
@@ -54,46 +70,34 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
     }
 
     private async loadContainers(): Promise<void> {
-        this.postMessage('update-progress-message', 'Loading movies metadata...');
+        this.updateProgressMessage('Loading movies metadata...');
 
-        const containers = await this.user.resolveMediaContainers();
+        const { movies } = await this.user.resolveMediaContainers();
 
-        this.moviesContainer = containers.movies;
-        this.postMessage('movies-container-loaded', this.moviesContainer.getAttributes());
+        this.moviesContainer = movies;
     }
 
     private async loadMovies(): Promise<void> {
         if (this.moviesContainer.isRelationLoaded('movies'))
             return;
 
-        const documentUrls = new Set(this.getDocumentUrlsToLoad());
-        const cachedMovies = await this.loadMoviesFromCache(documentUrls);
-        const databaseMovies = await this.loadMoviesFromDatabase(documentUrls);
+        if (!this.moviesContainer.isRelationLoaded('documents'))
+            await this.moviesContainer.loadRelation('documents');
 
-        await this.rememberMovies(databaseMovies);
-        await this.rememberDocuments(documentUrls);
+        this.moviesContainer.setRelationModels('movies', []);
 
-        this.moviesContainer.setRelationModels('movies', [
-            ...cachedMovies,
-            ...databaseMovies,
-        ]);
+        await this.loadMoviesFromCache();
+        await this.loadMoviesFromDatabase();
     }
 
-    private async loadActions(): Promise<void> {
-        this.postMessage('update-progress-message', 'Almost done...');
-
-        const operations = this.moviesContainer.movies!.map(async movie => {
-            if (!movie.isRelationLoaded('actions'))
-                await movie.loadRelation('actions');
-
-            this.postMessage(
-                'movie-loaded',
-                movie.getAttributes(),
-                movie.actions!.map(action => action.getAttributes()),
-            );
-        });
-
-        await Promise.all(operations);
+    private serializeMoviesContainer(): SerializedMoviesContainer {
+        return {
+            attributes: this.moviesContainer.getAttributes(),
+            movies: this.moviesContainer.movies!.map(movie => ({
+                attributes: movie.getAttributes(),
+                actionsAttributes: movie.actions!.map(action => action.getAttributes()),
+            })),
+        };
     }
 
     private async resolveUser(userJson: object): Promise<User> {
@@ -105,78 +109,68 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         return user;
     }
 
-    private getDocumentUrlsToLoad(): string[] {
-        return this.moviesContainer.resourceUrls.filter(url => !Arr.contains(url, this.config.ignoredDocumentUrls));
-    }
-
-    private async loadMoviesFromCache(documentUrls: Set<string>): Promise<Movie[]> {
-        const movies: Movie[] = [];
+    private async loadMoviesFromCache(): Promise<void> {
         const operations = this.moviesContainer.documents.map(async document => {
-            const movie = await ModelsCache.getFromDocument(document);
-
-            if (movie === null)
+            if (Arr.contains(document.url, this.config.ignoredDocumentUrls))
                 return;
 
-            documentUrls.delete(document.url);
+            const models = await ModelsCache.getFromDocument(document);
 
-            if (movie.modelClass !== Movie)
+            if (models === null)
                 return;
 
-            movies.push(movie as Movie);
+            this.moviesContainer.movies!.push(...models.filter(model => model.modelClass === Movie) as Movie[]);
+            this.processedDocumentUrls.push(document.url);
         });
 
         await Promise.all(operations);
-
-        return movies;
     }
 
-    private async loadMoviesFromDatabase(documentUrls: Set<string>): Promise<Movie[]> {
-        // TODO this will only find movies that have the same url as the document,
-        // so things like https://example.org/movies/jumanji#it won't work
-
-        let loadedMovies = 0;
-        const movies = [];
-        const totalMovies = documentUrls.size;
-
-        this.postMessage(
-            'update-progress-message',
-            `Loading movies data (${loadedMovies}/${totalMovies})...`,
+    private async loadMoviesFromDatabase(): Promise<void> {
+        const documents = this.moviesContainer.documents.filter(document =>
+            !Arr.contains(document.url, this.config.ignoredDocumentUrls) &&
+            !Arr.contains(document.url, this.processedDocumentUrls),
         );
 
-        for (const chunkUrls of Arr.chunk([...documentUrls], MOVIES_CHUNK_SIZE)) {
-            const chunkMovies = await Movie.from(this.moviesContainer.url).all<Movie>({
-                $in: chunkUrls,
-            });
+        if (documents.length === 0)
+            return;
 
-            loadedMovies += chunkMovies.length;
-
-            this.postMessage(
-                'update-progress-message',
-                `Loading movies data (${loadedMovies}/${totalMovies})...`,
-            );
-
-            chunkMovies.forEach(movie => documentUrls.delete(movie.url));
-            movies.push(...chunkMovies);
-        }
-
-        return movies;
+        await this.loadMoviesFromDatabaseByChunks(documents);
     }
 
-    private async rememberMovies(movies: Movie[]): Promise<void> {
-        const operations = movies.map(async movie => {
-            if (!movie.isRelationLoaded('actions'))
-                await movie.loadRelation('actions');
+    private async loadMoviesFromDatabaseByChunks(documents: SolidDocument[]): Promise<void> {
+        const totalDocuments = documents.length;
+        const chunks = Arr.chunk(documents, MOVIES_CHUNK_SIZE);
 
-            await ModelsCache.remember(movie, { actions: movie.actions! });
+        for (let i = 0; i < chunks.length; i++) {
+            const chunk = chunks[i];
+
+            this.updateProgressMessage(`Loading movies data (${i*MOVIES_CHUNK_SIZE}/${totalDocuments})...`);
+
+            await this.loadMoviesFromDocuments(chunk);
+        }
+    }
+
+    private async loadMoviesFromDocuments(documents: SolidDocument[]): Promise<void> {
+        const movies = await Movie.from(this.moviesContainer.url).all<Movie>({
+            $in: documents.map(document => document.url),
         });
 
-        await Promise.all(operations);
+        await Promise.all(movies.map(async movie => {
+            if (movie.isRelationLoaded('actions'))
+                return;
+
+            await movie.loadRelation('actions');
+        }));
+
+        await Promise.all(documents.map(document => ModelsCache.rememberDocument(document.url, document.updatedAt)));
+        await Promise.all(movies.map(movie => ModelsCache.remember(movie, { actions: movie.actions! })));
+
+        this.moviesContainer.movies!.push(...movies);
     }
 
-    private async rememberDocuments(documentUrls: Set<string>): Promise<void> {
-        const operations = [...documentUrls].map(url => ModelsCache.remember(new SolidDocument({ url })));
-
-        await Promise.all(operations);
+    private updateProgressMessage(message: string): void {
+        this.postMessage('update-progress-message', message);
     }
 
 }

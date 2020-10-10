@@ -172,9 +172,10 @@ export default class SolidUser extends User<SolidUserJSON> {
         // Given that we've set the date in the client after receiving a response, there may be some
         // difference in the modified date depending on the network. So we'll use a 5 seconds threshold
         // for valid models.
-        const moviesContainer = await ModelsCache.getFromDocument(moviesContainerDocument, 5000);
+        const models = await ModelsCache.getFromDocument(moviesContainerDocument, 5000);
+        const [moviesContainer] = (models || []).filter(model => model.modelClass === MediaContainer);
 
-        return moviesContainer as (MediaContainer | null);
+        return moviesContainer as MediaContainer || null;
     }
 
     protected async initMoviesContainer(): Promise<MediaContainer> {
@@ -185,7 +186,8 @@ export default class SolidUser extends User<SolidUserJSON> {
 
         // Reading containers causes their modified date to be updated in node-solid-server, so
         // we will set the modified date of this document in the cache to now.
-        ModelsCache.remember(moviesContainer, { documents: moviesContainer.documents }, now);
+        ModelsCache.rememberDocument(moviesContainer.url, now);
+        ModelsCache.remember(moviesContainer, { documents: moviesContainer.documents });
 
         return moviesContainer;
     }

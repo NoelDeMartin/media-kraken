@@ -30,19 +30,8 @@ class JSONLDMoviesParser implements MediaParser<object, Movie> {
         // TODO validate that schema:name is not missing
     }
 
-    public async parse(data: object): Promise<Movie> {
-        const movie = await Movie.newFromJsonLD<Movie>(data);
-
-        delete movie.url;
-
-        (movie.actions || []).forEach(action => {
-            delete action.url;
-            delete action.object;
-
-            movie.relatedActions.addModelToStoreInSameDocument(action);
-        });
-
-        return movie;
+    public parse(data: object): Promise<Movie> {
+        return Movie.newFromJsonLD<Movie>(data);
     }
 
 }

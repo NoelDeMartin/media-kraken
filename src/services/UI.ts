@@ -89,7 +89,7 @@ export default class UI extends Service<State, ComputedState> {
     private desktopMenu: HTMLElement | null = null;
     private menuTriggers: HTMLButtonElement[] = [];
     private myCollection: HTMLElement | null = null;
-    private modalResolves: MapObject<Function> = {};
+    private modalResolves: Record<string, Function> = {};
 
     private clickListener: EventListener | null = null;
     private removeMenuClickAwayListener: Function | null = null;

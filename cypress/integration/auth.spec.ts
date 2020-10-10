@@ -51,7 +51,7 @@ function stubSolidAuth(
     cy.fetchRoute('/settings/privateTypeIndex.ttl', typeIndex);
 
     if (!signup) {
-        cy.fetchRoute('/movies/taxi-driver-1976.ttl', taxiDriverTurtle);
+        cy.fetchRoute('/movies/taxi-driver-1976', taxiDriverTurtle);
         cy.fetchRoute('/movies/', movies);
     }
 

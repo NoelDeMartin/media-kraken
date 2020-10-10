@@ -181,14 +181,14 @@ export default class Media extends Service<State> {
         });
     }
 
-    public async removeMovie(movie: Movie, movieUrl: string): Promise<void> {
+    public async removeMovie(movie: Movie): Promise<void> {
         if (!this.loaded)
             return;
 
         Arr.removeItem(this.moviesContainer!.movies!, movie);
 
-        await ModelsCache.forget(this.moviesContainer!.url);
-        await ModelsCache.forget(movieUrl);
+        await ModelsCache.forgetDocument(this.moviesContainer!.url);
+        await ModelsCache.forgetDocument(movie.url);
     }
 
     public cancelImport(): void {

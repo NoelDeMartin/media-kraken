@@ -176,10 +176,8 @@ export default Vue.extend({
 
             await this.$ui.loading(
                 async () => {
-                    const movieUrl = this.movie!.url;
-
+                    await this.$media.removeMovie(this.movie!);
                     await this.movie!.delete();
-                    await this.$media.removeMovie(this.movie!, movieUrl);
                 },
                 `Deleting **${this.movie.title}**...`,
             );
