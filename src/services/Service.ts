@@ -22,8 +22,8 @@ export default abstract class Service<State = {}, ComputedState = {}> {
         });
     }
 
-    public boot(): Promise<void> {
-        this.init().then(this.resolveReady).catch(this.rejectReady);
+    public launch(): Promise<void> {
+        this.boot().then(this.resolveReady).catch(this.rejectReady);
 
         return this.ready;
     }
@@ -36,7 +36,7 @@ export default abstract class Service<State = {}, ComputedState = {}> {
         return Services.$store.getters;
     }
 
-    protected async init(): Promise<void> {
+    protected async boot(): Promise<void> {
         this.registerStoreModule(Services.$store);
     }
 

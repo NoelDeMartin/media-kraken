@@ -84,8 +84,8 @@ export default class Auth extends Service<State> {
         Services.$router.push({ name: 'unauthorized' });
     }
 
-    protected async init(): Promise<void> {
-        await super.init();
+    protected async boot(): Promise<void> {
+        await super.boot();
 
         await SolidUser.trackSession({
             onUserUpdated: (solidUser: SolidUser | null) => {

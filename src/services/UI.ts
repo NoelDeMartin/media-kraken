@@ -410,8 +410,8 @@ export default class UI extends Service<State, ComputedState> {
         return () => this.updateClickAwayListeners(Arr.withoutItem(this.clickAwayListeners, listener));
     }
 
-    protected async init(): Promise<void> {
-        await super.init();
+    protected async boot(): Promise<void> {
+        await super.boot();
 
         this.watchWindowMedia();
         this.watchOverlay();

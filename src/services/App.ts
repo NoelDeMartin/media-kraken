@@ -62,8 +62,8 @@ export default class App extends Service<State> {
         this.setState({ crashReport: null });
     }
 
-    protected async init(): Promise<void> {
-        await super.init();
+    protected async boot(): Promise<void> {
+        await super.boot();
 
         this.environment = process.env.NODE_ENV!;
         this.sourceUrl = process.env.VUE_APP_SOURCE_URL!;

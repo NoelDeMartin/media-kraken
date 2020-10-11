@@ -16,8 +16,8 @@ export default class Browser extends Service {
         return this.capabilities.supportsIndexedDB;
     }
 
-    protected async init(): Promise<void> {
-        await super.init();
+    protected async boot(): Promise<void> {
+        await super.boot();
 
         if (!Storage.has('media-kraken-browser-capabilities'))
             Storage.set('media-kraken-browser-capabilities', {

@@ -41,7 +41,7 @@ export async function bootServices(app: Vue): Promise<void> {
     Object.assign(Services, appServices);
     Object.assign(Vue.prototype, appServices);
 
-    await Promise.all(Object.values(appServices).map((service: Service) => service.boot()));
+    await Promise.all(Object.values(appServices).map((service: Service) => service.launch()));
 }
 
 export default Services;
