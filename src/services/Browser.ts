@@ -8,7 +8,7 @@ interface BrowserCapabilities {
     supportsIndexedDB: boolean;
 }
 
-export default class Config extends Service {
+export default class Browser extends Service {
 
     private capabilities!: BrowserCapabilities;
 

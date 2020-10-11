@@ -9,7 +9,7 @@ import Time from '@/utils/Time';
 
 import '@/components/base';
 
-import { bootServices } from '@/services';
+import Services, { bootServices } from '@/services';
 import { getForcedRoute } from '@/routing';
 import plugins from '@/plugins';
 
@@ -58,15 +58,15 @@ export async function start(): Promise<void> {
     const servicesBooted = bootServices(Vue.instance).catch(error => {
         Errors.handle(error);
 
-        Vue.instance.$app.setCrashReport(error);
+        Services.$app.setCrashReport(error);
     });
 
     Vue.instance.$mount('#app');
 
     await servicesBooted;
 
-    setErrorHandler(error => Vue.instance.$ui.showError(error));
+    setErrorHandler(error => Services.$ui.showError(error));
     prepareInitialRoute();
-    EventBus.emit('booted');
+    EventBus.emit('application-ready');
     removeLoading();
 }

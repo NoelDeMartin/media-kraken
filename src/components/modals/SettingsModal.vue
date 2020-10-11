@@ -34,7 +34,7 @@
 </template>
 
 <script lang="ts">
-import Vue from 'vue';
+import Services from '@/services';
 
 import Errors from '@/utils/Errors';
 
@@ -42,8 +42,8 @@ import Modal from '@/components/mixins/Modal';
 
 export default Modal.extend({
     data: () => ({
-        animations: Vue.instance.$ui.animationsEnabled,
-        errorReporting: Vue.instance.$app.isErrorReportingEnabled,
+        animations: Services.$ui.animationsEnabled,
+        errorReporting: Services.$app.isErrorReportingEnabled,
     }),
     watch: {
         animations(enabled: boolean) { this.$ui.setAnimationsEnabled(enabled); },

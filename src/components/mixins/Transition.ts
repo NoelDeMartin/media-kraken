@@ -1,6 +1,8 @@
 import mixins from 'vue-typed-mixins';
 import Vue from 'vue';
 
+import Services from '@/services';
+
 enum Animation {
     Fade = 'fade',
     Scale = 'scale',
@@ -100,7 +102,7 @@ export default mixins(Vue.extend({
     data: (): Data => ({
         // This is necessary because animations that get disabled once they've started get broken,
         // so this can only be changed on component initialization.
-        animationsEnabled: Vue.instance.$ui.animationsEnabled,
+        animationsEnabled: Services.$ui.animationsEnabled,
     }),
     computed: {
         durations(): { enter: number; leave: number} {

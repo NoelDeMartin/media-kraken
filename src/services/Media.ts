@@ -21,6 +21,7 @@ import User from '@/models/users/User';
 
 import { loadMedia } from '@/workers';
 import Service, { ComputedStateDefinitions } from '@/services/Service';
+import Services from '@/services';
 
 import ImportProgressModal from '@/components/modals/ImportProgressModal.vue';
 import ImportResultModal from '@/components/modals/ImportResultModal.vue';
@@ -109,7 +110,7 @@ export default class Media extends Service<State, ComputedState> {
         if (this.state.importOperation)
             throw new Error('Import already in progress');
 
-        const { id: progressModalId } = this.app.$ui.openModal(ImportProgressModal, {}, {
+        const { id: progressModalId } = Services.$ui.openModal(ImportProgressModal, {}, {
             cancellable: false,
         });
 
@@ -189,8 +190,8 @@ export default class Media extends Service<State, ComputedState> {
         // If this isn't done, showing the result modal causes a weird UI interaction
         // TODO this shouldn't be necessary, debug further.
         Time.wait(0).then(() => {
-            this.app.$ui.closeModal(progressModalId, true);
-            this.app.$ui.openModal(ImportResultModal, { log }, { cancellable: false });
+            Services.$ui.closeModal(progressModalId, true);
+            Services.$ui.openModal(ImportResultModal, { log }, { cancellable: false });
         });
     }
 
@@ -220,10 +221,10 @@ export default class Media extends Service<State, ComputedState> {
 
     protected async init(): Promise<void> {
         await super.init();
-        await this.app.$auth.ready;
+        await Services.$auth.ready;
 
-        if (this.app.$auth.isLoggedIn())
-            await this.load(this.app.$auth.user);
+        if (Services.$auth.isLoggedIn())
+            await this.load(Services.$auth.user);
 
         EventBus.on('login', this.load.bind(this));
         EventBus.on('logout', this.unload.bind(this));
@@ -267,7 +268,7 @@ export default class Media extends Service<State, ComputedState> {
             EventBus.emit('media-loaded');
         } catch (error) {
             if (error instanceof UnauthorizedError) {
-                this.app.$auth.handleUnauthorized();
+                Services.$auth.handleUnauthorized();
 
                 return;
             }
@@ -312,7 +313,7 @@ export default class Media extends Service<State, ComputedState> {
             location.reload();
         };
 
-        this.app.$app.setCrashReport(
+        Services.$app.setCrashReport(
             error,
             {
                 title: 'There was a problem reading a document from your collection',

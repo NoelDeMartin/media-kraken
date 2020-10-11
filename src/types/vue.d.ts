@@ -1,19 +1,10 @@
-import App from '@/services/App';
-import Auth from '@/services/Auth';
-import Browser from '@/services/Browser';
-import Media from '@/services/Media';
-import Search from '@/services/Search';
-import UI from '@/services/UI';
+import { Services } from '@/services';
 
 declare module 'vue/types/vue' {
 
-    interface Vue {
-        $app: App;
-        $auth: Auth;
-        $browser: Browser;
-        $media: Media;
-        $search: Search;
-        $ui: UI;
+    // eslint-disable-next-line @typescript-eslint/no-empty-interface
+    interface Vue extends Services {
+        //
     }
 
     interface VueConstructor<V extends Vue = Vue> {

@@ -1,5 +1,5 @@
-import { Component } from 'vue';
 import { SolidModel } from 'soukai-solid';
+import Vue, { Component } from 'vue';
 
 import Service, { ComputedStateDefinitions } from '@/services/Service';
 
@@ -515,7 +515,7 @@ export default class UI extends Service<State, ComputedState> {
                     const scrollY = this.fixedScroll;
 
                     this.setState({ fixedScroll: null });
-                    this.app.$nextTick(() => window.scrollTo({ top: scrollY! }));
+                    Vue.instance.$nextTick(() => window.scrollTo({ top: scrollY! }));
 
                     return;
                 }

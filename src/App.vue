@@ -3,53 +3,51 @@
         class="font-montserrat antialiased font-normal text-base text-gray-900 leading-tight bg-gray-100 max-h-screen"
         :class="{ 'overflow-hidden': $ui.fixedScroll !== null }"
     >
-        <template v-if="booted">
-            <div class="flex flex-col min-h-screen" :style="{ marginTop: `-${$ui.fixedScroll || 0}px` }">
-                <AppHeader v-if="$media.loaded && !$ui.headerHidden" />
-                <main class="flex flex-col flex-grow mx-auto max-w-content w-full px-4">
-                    <CrashReport v-if="$app.isCrashed" />
-                    <router-view v-else />
-                </main>
-                <AppFooter />
+        <div v-if="ready" class="flex flex-col min-h-screen" :style="{ marginTop: `-${$ui.fixedScroll || 0}px` }">
+            <AppHeader v-if="$media.loaded && !$ui.headerHidden" />
+            <main class="flex flex-col flex-grow mx-auto max-w-content w-full px-4">
+                <CrashReport v-if="$app.isCrashed" />
+                <router-view v-else />
+            </main>
+            <AppFooter />
+        </div>
+        <BaseTransition animation="fade">
+            <div v-show="$ui.showOverlay" class="fixed inset-0 z-40">
+                <div class="absolute inset-0 bg-gray-500 opacity-75" />
             </div>
-            <BaseTransition animation="fade">
-                <div v-show="$ui.showOverlay" class="fixed inset-0 z-40">
-                    <div class="absolute inset-0 bg-gray-500 opacity-75" />
-                </div>
-            </BaseTransition>
-            <BaseTransitionGroup animations="fade scale">
-                <aside
-                    v-for="(modal, index) of $ui.modals"
-                    :key="modal.id"
-                    class="
-                        fixed inset-0 p-4 z-50 flex items-center justify-center
-                        transition-all transform ease-in duration-300
-                    "
-                    :class="{ 'opacity-0 scale-90': index < $ui.modals.length - 1 }"
-                    @click.self="$ui.closeModal(modal.id)"
-                >
-                    <component :is="modal.component" v-bind="modal.props" />
-                </aside>
-            </BaseTransitionGroup>
-            <BaseTransitionGroup
-                tag="aside"
-                animations="slide-up fade"
+        </BaseTransition>
+        <BaseTransitionGroup animations="fade scale">
+            <aside
+                v-for="(modal, index) of $ui.modals"
+                :key="modal.id"
                 class="
-                    fixed bottom-0 inset-x-0 p-4
-                    flex flex-col items-end justify-center
-                    pointer-events-none z-50
+                    fixed inset-0 p-4 z-50 flex items-center justify-center
+                    transition-all transform ease-in duration-300
                 "
+                :class="{ 'opacity-0 scale-90': index < $ui.modals.length - 1 }"
+                @click.self="$ui.closeModal(modal.id)"
             >
-                <AppSnackbar
-                    v-for="snackbar of $ui.snackbars"
-                    :id="snackbar.id"
-                    :key="snackbar.id"
-                    :message="snackbar.message"
-                    :options="snackbar.options"
-                    class="mb-2 last:mb-0"
-                />
-            </BaseTransitionGroup>
-        </template>
+                <component :is="modal.component" v-bind="modal.props" />
+            </aside>
+        </BaseTransitionGroup>
+        <BaseTransitionGroup
+            tag="aside"
+            animations="slide-up fade"
+            class="
+                fixed bottom-0 inset-x-0 p-4
+                flex flex-col items-end justify-center
+                pointer-events-none z-50
+            "
+        >
+            <AppSnackbar
+                v-for="snackbar of $ui.snackbars"
+                :id="snackbar.id"
+                :key="snackbar.id"
+                :message="snackbar.message"
+                :options="snackbar.options"
+                class="mb-2 last:mb-0"
+            />
+        </BaseTransitionGroup>
         <input
             id="file-picker"
             ref="file-picker"
@@ -77,9 +75,9 @@ export default Vue.extend({
         AppHeader,
         CrashReport,
     },
-    data: () => ({ booted: false }),
+    data: () => ({ ready: false }),
     created() {
-        EventBus.once('booted', () => this.booted = true);
+        EventBus.once('application-ready', () => this.ready = true);
     },
     mounted() {
         Files.setInput(this.$refs['file-picker'] as HTMLInputElement);

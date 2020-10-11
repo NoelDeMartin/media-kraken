@@ -1,4 +1,7 @@
+import Vue from 'vue';
+
 import Service from '@/services/Service';
+import Services from '@/services';
 
 import TheMovieDBApi from '@/api/TheMovieDBApi';
 
@@ -72,9 +75,9 @@ export default class Search extends Service<State> {
             return;
 
         this.setState({ open: true });
-        this.app.$nextTick(() => this.searchInput!.focus());
+        Vue.instance.$nextTick(() => this.searchInput!.focus());
 
-        this.removeClickAwayListener = this.app.$ui.onClickAway(
+        this.removeClickAwayListener = Services.$ui.onClickAway(
             [this.searchInput, this.searchResultsContainer].filter(el => !!el) as HTMLElement[],
             () => this.stop(),
         );
@@ -175,12 +178,12 @@ export default class Search extends Service<State> {
 
     public openResult(result: SearchResult): void {
         if (!result.exists())
-            this.app.$ui.openModal(MovieModal, { movie: result });
+            Services.$ui.openModal(MovieModal, { movie: result });
         else if (
-            this.app.$router.currentRoute.name !== 'movie' ||
-            this.app.$router.currentRoute.params?.uuid !== result.uuid
+            Services.$router.currentRoute.name !== 'movie' ||
+            Services.$router.currentRoute.params?.uuid !== result.uuid
         )
-            this.app.$router.push({ name: 'movie', params: { uuid: result.uuid! }});
+            Services.$router.push({ name: 'movie', params: { uuid: result.uuid! }});
 
         this.stop();
     }
@@ -199,7 +202,7 @@ export default class Search extends Service<State> {
             if (query.startsWith('/')) {
                 const filterText = Str.slug(query, '');
 
-                return this.app.$media.searchIndex
+                return Services.$media.searchIndex
                     .filter(entry => Str.contains(entry.searchableText, filterText))
                     .map(entry => entry.movie);
             }
@@ -208,7 +211,7 @@ export default class Search extends Service<State> {
             const promisedResults = response.results.map(async data => {
                 const movie = await TMDBMoviesParser.parse(data);
 
-                return this.app.$media.movies.find(collectionMovie => collectionMovie.is(movie))
+                return Services.$media.movies.find(collectionMovie => collectionMovie.is(movie))
                     || movie;
             });
             return await Promise.all(promisedResults);

@@ -73,6 +73,7 @@
 import Vue from 'vue';
 
 import { SearchResult } from '@/services/Search';
+import Services from '@/services';
 
 import LoadingDots from '@/components/LoadingDots.vue';
 
@@ -82,7 +83,7 @@ export default Vue.extend({
     },
     directives: {
         stopSearch: {
-            bind: el => el.addEventListener('click', () => Vue.instance.$search.stop()),
+            bind: el => el.addEventListener('click', () => Services.$search.stop()),
         },
     },
     mounted() {

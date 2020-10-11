@@ -2,6 +2,8 @@ import SolidAuthClient from 'solid-auth-client';
 import Soukai from 'soukai';
 import Vue from 'vue';
 
+import Services from '@/services';
+
 import { AppLibraries } from '@/types/global';
 import EventBus from '@/utils/EventBus';
 import JSONLDMoviesParser from '@/utils/parsers/JSONLDMoviesParser';
@@ -13,7 +15,7 @@ window.Runtime = {
     start,
 
     login: async () => {
-        Vue.instance.$auth.loginOffline();
+        Services.$auth.loginOffline();
 
         await Promise.all([
             EventBus.until('login'),
@@ -33,7 +35,7 @@ window.Runtime = {
     },
 
     async addMovie(jsonld: object): Promise<void> {
-        const media = Vue.instance.$media;
+        const media = Services.$media;
         const movie = await JSONLDMoviesParser.parse(jsonld);
 
         await media.ready;

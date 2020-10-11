@@ -1,4 +1,4 @@
-import Vue from 'vue';
+import Services from '@/services';
 
 class DefaultListener implements Listener {
 
@@ -29,7 +29,7 @@ class DefaultListener implements Listener {
         this.synchronizeUI();
 
         if (error)
-            Vue.instance.$ui.showError(error);
+            Services.$ui.showError(error);
     }
 
     private synchronizeUI(): void {
@@ -47,7 +47,7 @@ class DefaultListener implements Listener {
     }
 
     private showSnackbar(message: string): void {
-        const snackbar = Vue.instance.$ui.showSnackbar(message, { loading: true });
+        const snackbar = Services.$ui.showSnackbar(message, { loading: true });
 
         DefaultListener.snackbarId = snackbar.id;
     }
@@ -56,7 +56,7 @@ class DefaultListener implements Listener {
         if (DefaultListener.snackbarId === null)
             return false;
 
-        Vue.instance.$ui.updateSnackbar(DefaultListener.snackbarId, message);
+        Services.$ui.updateSnackbar(DefaultListener.snackbarId, message);
 
         return true;
     }
@@ -65,7 +65,7 @@ class DefaultListener implements Listener {
         if (DefaultListener.snackbarId === null)
             return;
 
-        Vue.instance.$ui.hideSnackbar(DefaultListener.snackbarId);
+        Services.$ui.hideSnackbar(DefaultListener.snackbarId);
         DefaultListener.snackbarId = null;
     }
 

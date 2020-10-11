@@ -1,4 +1,5 @@
 import Service from '@/services/Service';
+import Services from '@/services';
 
 import ModelsCache from '@/models/ModelsCache';
 import OfflineUser from '@/models/users/OfflineUser';
@@ -46,7 +47,7 @@ export default class Auth extends Service<State> {
     }
 
     public async loginWithSolid(idp: string): Promise<void> {
-        this.app.$ui.loading(async () => {
+        Services.$ui.loading(async () => {
             const loggedIn = await SolidUser.login(idp);
 
             if (!loggedIn) {
@@ -55,7 +56,7 @@ export default class Auth extends Service<State> {
                 // We'll just wait a couple of seconds before showing an error.
                 await Time.wait(2000);
 
-                this.app.$ui.alert(
+                Services.$ui.alert(
                     'Log in failed',
                     "It wasn't possible to log in with this url",
                 );
@@ -67,8 +68,8 @@ export default class Auth extends Service<State> {
         if (!this.loggedIn)
             return;
 
-        if (this.isOffline && !this.app.$media.empty && !force) {
-            this.app.$ui.openModal(OfflineLogoutModal);
+        if (this.isOffline && !Services.$media.empty && !force) {
+            Services.$ui.openModal(OfflineLogoutModal);
 
             return;
         }
@@ -77,10 +78,10 @@ export default class Auth extends Service<State> {
     }
 
     public handleUnauthorized(): void {
-        if (this.app.$route.name === 'unauthorized')
+        if (Services.$route.name === 'unauthorized')
             return;
 
-        this.app.$router.push({ name: 'unauthorized' });
+        Services.$router.push({ name: 'unauthorized' });
     }
 
     protected async init(): Promise<void> {
@@ -129,16 +130,16 @@ export default class Auth extends Service<State> {
 
             EventBus.emit('logout');
 
-            if (this.app.$router.currentRoute.name !== 'login')
-                this.app.$router.push({ name: 'login' });
+            if (Services.$router.currentRoute.name !== 'login')
+                Services.$router.push({ name: 'login' });
 
             return;
         }
 
         await newUser.login();
 
-        if (this.app.$router.currentRoute.name === 'login')
-            this.app.$router.replace({ name: 'home' });
+        if (Services.$router.currentRoute.name === 'login')
+            Services.$router.replace({ name: 'home' });
 
         EventBus.emit('login', newUser);
     }
@@ -147,12 +148,12 @@ export default class Auth extends Service<State> {
         const clearSessionData = async () => {
             ModelsCache.clear();
             SolidUser.logout();
-            this.app.$app.clearCrashReport();
+            Services.$app.clearCrashReport();
         };
 
         Errors.report(error);
 
-        this.app.$app.setCrashReport(
+        Services.$app.setCrashReport(
             error,
             {
                 title: title || 'There was an error trying to log in',

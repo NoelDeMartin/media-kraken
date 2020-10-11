@@ -1,6 +1,6 @@
-import Vue from 'vue';
-
 import TheMovieDBApi from '@/api/TheMovieDBApi';
+
+import Services from '@/services';
 
 import MediaValidationError from '@/errors/MediaValidationError';
 import UnsuitableMediaError from '@/errors/UnsuitableMediaError';
@@ -43,7 +43,7 @@ class IMDBMoviesParser implements MediaParser<Data, Movie> {
 
     private async alreadyInCollection(data: Data): Promise<boolean> {
         const tmpMovie = await this.parse(data);
-        const collectionMovie = Vue.instance.$media.movies.find(collectionMovie => collectionMovie.is(tmpMovie));
+        const collectionMovie = Services.$media.movies.find(collectionMovie => collectionMovie.is(tmpMovie));
 
         return !!collectionMovie;
     }

@@ -1,43 +1,49 @@
-import Vue from 'vue';
-
 import { Store } from 'vuex';
+
+import Services from '@/services';
 
 export type ComputedStateDefinitions<State, ComputedState> = {
     [ComputedProperty in keyof ComputedState]:
         (state: State, computed: ComputedState) => ComputedState[ComputedProperty];
 };
 
-export default abstract class Service<State = void, ComputedState = {}> {
+export default abstract class Service<State = {}, ComputedState = {}> {
 
-    protected app: Vue;
     protected storeName: string = '';
 
     public readonly ready: Promise<void>;
+    private resolveReady!: () => void;
+    private rejectReady!: () => void;
 
-    constructor(app: Vue, ...args: any[]) {
-        this.app = app;
+    constructor() {
+        this.ready = new Promise((resolve, reject) => {
+            this.resolveReady = resolve;
+            this.rejectReady = reject;
+        });
+    }
 
-        // defer calling init() until constructor has completed
-        this.ready = Promise.resolve().then(() => this.init(...args));
+    public boot(): Promise<void> {
+        this.init().then(this.resolveReady).catch(this.rejectReady);
+
+        return this.ready;
     }
 
     protected get state(): State {
-        return this.app.$store.state[this.storeName] || this.getInitialState();
+        return Services.$store.state[this.storeName] || this.getInitialState();
     }
 
     protected get computedState(): ComputedState {
-        return this.app.$store.getters;
+        return Services.$store.getters;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    protected async init(...args: any[]): Promise<void> {
-        this.registerStoreModule(this.app.$store);
+    protected async init(): Promise<void> {
+        this.registerStoreModule(Services.$store);
     }
 
     protected registerStoreModule(store: Store<State>): void {
         const initialState = this.getInitialState();
 
-        if (initialState === null)
+        if (Object.keys(initialState).length === 0)
             return;
 
         store.registerModule(this.storeName, {
@@ -55,14 +61,14 @@ export default abstract class Service<State = void, ComputedState = {}> {
         getter: (state: State, computed: ComputedState) => T,
         callback: (oldValue: T, newValue: T) => void,
     ): () => void {
-        return this.app.$store.watch(
+        return Services.$store.watch(
             (state, computed) => getter(state[this.storeName], computed),
             callback,
         );
     }
 
     protected getInitialState(): State {
-        return null as any;
+        return {} as any;
     }
 
     protected getComputedStateDefinitions(): ComputedStateDefinitions<State, ComputedState> {
@@ -70,7 +76,7 @@ export default abstract class Service<State = void, ComputedState = {}> {
     }
 
     protected setState(newState: Partial<State>): void {
-        this.app.$store.commit(`${this.storeName}.setState`, newState);
+        Services.$store.commit(`${this.storeName}.setState`, newState);
     }
 
 }

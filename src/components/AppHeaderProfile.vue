@@ -134,6 +134,8 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import Services from '@/services';
+
 import Time from '@/utils/Time';
 
 import SolidUser from '@/models/users/SolidUser';
@@ -153,7 +155,7 @@ export default Vue.extend({
     },
     directives: {
         closeMenu: {
-            bind: el => el.addEventListener('click', () => Vue.instance.$ui.closeMenu()),
+            bind: el => el.addEventListener('click', () => Services.$ui.closeMenu()),
         },
     },
     computed: {
