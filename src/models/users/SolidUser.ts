@@ -10,6 +10,7 @@ import User from '@/models/users/User';
 import RDFStore from '@/utils/RDFStore';
 import Storage from '@/utils/Storage';
 import Url from '@/utils/Url';
+import UUID from '@/utils/UUID';
 
 export interface SolidUserJSON {
     id: string;
@@ -243,7 +244,7 @@ export default class SolidUser extends User<SolidUserJSON> {
                 instanceContainer: moviesContainer.url,
             });
 
-            typeRegistration.mintUrl(this.typeIndexUrl);
+            typeRegistration.mintUrl(this.typeIndexUrl, true, UUID.generate());
 
             return typeRegistration.save(this.typeIndexUrl);
         }));
