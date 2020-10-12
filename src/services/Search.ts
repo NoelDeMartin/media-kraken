@@ -1,5 +1,6 @@
 import Vue from 'vue';
 
+import { screenBreakpoints } from '@/services/UI';
 import Service from '@/services/Service';
 import Services from '@/services';
 
@@ -37,7 +38,7 @@ export default class Search extends Service<State> {
 
     private search: DebouncedFunction<[]> = Time.debounce(
         () => this.updateSearchResults(),
-        400,
+        document.body.clientWidth > screenBreakpoints.desktop! ? 400 : 1000,
     );
 
     public get query(): string {
