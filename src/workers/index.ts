@@ -3,6 +3,7 @@ import Movie from '@/models/soukai/Movie';
 import WatchAction from '@/models/soukai/WatchAction';
 
 import { MediaContainers } from '@/services/Media';
+import Services from '@/services';
 
 import { Parameters, Result, SerializedMoviesContainer, SerializedMovie } from './LoadMediaWorker';
 import WebWorkerRunner from './WebWorkerRunner';
@@ -27,15 +28,9 @@ function hydrateMoviesContainer(data: SerializedMoviesContainer): MediaContainer
 }
 
 export async function loadMedia(...params: Parameters): Promise<MediaContainers> {
-    const progressMessage = document.querySelector('#loading-overlay .progress-message');
     const worker = new Worker('@/workers/LoadMediaWorker.index.ts', { type: 'module' });
     const runner = new WebWorkerRunner<Parameters, Result>(worker, {
-        onUpdateProgressMessage(message) {
-            if (!progressMessage)
-                return;
-
-            progressMessage.textContent = message;
-        },
+        onUpdateProgressMessage: message => Services.$ui.updateBootupProgressMessage(message),
     });
 
     const result = await runner.run(...params);

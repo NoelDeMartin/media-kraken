@@ -1,6 +1,10 @@
-import Errors from '@/utils/Errors';
 import Service from '@/services/Service';
+import Services from '@/services';
+
+import Errors from '@/utils/Errors';
 import Storage from '@/utils/Storage';
+
+import migrations from '@/migrations';
 
 export interface CrashReport {
     error: Error;
@@ -22,6 +26,8 @@ interface State {
 }
 
 export default class App extends Service<State> {
+
+    public static readonly VERSION_STORAGE_KEY = 'media-kraken-version';
 
     public environment!: string;
     public sourceUrl!: string;
@@ -65,16 +71,16 @@ export default class App extends Service<State> {
     protected async boot(): Promise<void> {
         await super.boot();
 
-        this.environment = process.env.NODE_ENV!;
-        this.sourceUrl = process.env.VUE_APP_SOURCE_URL!;
-        this.version = process.env.VUE_APP_VERSION + (this.isDevelopment ? '-next' : '');
-
-        Storage.set('media-kraken-version', this.version);
-
         Errors.registerListener({
             onReportingDisabled: () => this.setState({ isErrorReportingEnabled: false }),
             onReportingEnabled: () => this.setState({ isErrorReportingEnabled: true }),
         });
+
+        this.environment = process.env.NODE_ENV!;
+        this.sourceUrl = process.env.VUE_APP_SOURCE_URL!;
+        this.version = process.env.VUE_APP_VERSION + (this.isDevelopment ? '-next' : '');
+
+        await this.upgradeStorage();
     }
 
     protected getInitialState(): State {
@@ -83,6 +89,29 @@ export default class App extends Service<State> {
             isErrorReportingAvailable: Errors.isReportingAvailable,
             isErrorReportingEnabled: Errors.isReportingEnabled,
         };
+    }
+
+    private async upgradeStorage() {
+        const previousVersion = Storage.get(App.VERSION_STORAGE_KEY);
+
+        if (previousVersion === this.version)
+            return;
+
+        if (previousVersion !== null)
+            await this.runStorageMigrations(previousVersion);
+
+        Storage.set(App.VERSION_STORAGE_KEY, this.version);
+    }
+
+    private async runStorageMigrations(storageVersion: string): Promise<void> {
+        Services.$ui.updateBootupProgressMessage('Running storage migrations...');
+
+        for (const migration of migrations) {
+            if (!migration.isNecessary(storageVersion))
+                continue;
+
+            storageVersion = await migration.apply();
+        }
     }
 
 }

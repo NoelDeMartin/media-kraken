@@ -37,8 +37,8 @@ function prepareInitialRoute() {
     $router.replace({ name: initialRoute });
 }
 
-async function removeLoading() {
-    document.body.classList.remove('loading');
+async function removeBootupOverlay() {
+    document.body.classList.remove('booting-up');
 
     if (!window.impatientKrakenTimeout)
         await Time.wait(1000);
@@ -48,7 +48,7 @@ async function removeLoading() {
         delete window.impatientKrakenTimeout;
     }
 
-    document.getElementById('loading-overlay')?.remove();
+    document.getElementById('bootup-overlay')?.remove();
 }
 
 export async function start(): Promise<void> {
@@ -68,5 +68,6 @@ export async function start(): Promise<void> {
     setErrorHandler(error => Services.$ui.showError(error));
     prepareInitialRoute();
     EventBus.emit('application-ready');
-    removeLoading();
+
+    removeBootupOverlay();
 }

@@ -221,6 +221,7 @@ export default class Media extends Service<State, ComputedState> {
 
     protected async boot(): Promise<void> {
         await super.boot();
+        await Services.$app.ready;
         await Services.$auth.ready;
 
         if (Services.$auth.isLoggedIn())

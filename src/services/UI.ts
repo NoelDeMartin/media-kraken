@@ -94,6 +94,7 @@ export default class UI extends Service<State, ComputedState> {
     private clickListener: EventListener | null = null;
     private removeMenuClickAwayListener: Function | null = null;
     private clickAwayListeners: ClickAwayListener[] = [];
+    private bootupProgressMessage = document.querySelector('#bootup-overlay .progress-message') as HTMLParagraphElement;
 
     public get layout(): Layout {
         return this.computedState.layout;
@@ -408,6 +409,13 @@ export default class UI extends Service<State, ComputedState> {
         this.updateClickAwayListeners([...this.clickAwayListeners, listener]);
 
         return () => this.updateClickAwayListeners(Arr.withoutItem(this.clickAwayListeners, listener));
+    }
+
+    public updateBootupProgressMessage(message: string): void {
+        if (!this.bootupProgressMessage)
+            return;
+
+        this.bootupProgressMessage.textContent = message;
     }
 
     protected async boot(): Promise<void> {

@@ -4,6 +4,17 @@ class Str {
         return text.substr(0, 1).toUpperCase() + text.substr(1);
     }
 
+    public parseVersion(version: string): [number, number, number, string?] | null {
+        const matches = version.match(/(\d+)\.(\d+)\.(\d+)(-(.*))?/);
+
+        if (!matches)
+            return null;
+
+        return matches[5]
+            ? [parseInt(matches[1]), parseInt(matches[2]), parseInt(matches[3]), matches[5]]
+            : [parseInt(matches[1]), parseInt(matches[2]), parseInt(matches[3])];
+    }
+
     public slug(text: string, separator: string = '-'): string {
         text = text
             .trim()
