@@ -243,11 +243,14 @@ export default Vue.extend({
             return true;
         },
         showFilters() {
-            if (this.removeClickAwayListener !== null)
-                return;
-
             const input = this.$refs.searchFilter as HTMLInputElement;
             const trigger = (this.$refs.filtersTrigger as Vue).$el as HTMLButtonElement;
+
+            if (this.removeClickAwayListener !== null) {
+                input.focus();
+
+                return;
+            }
 
             this.searchFilter = '';
             this.removeClickAwayListener = this.$ui.onClickAway(
