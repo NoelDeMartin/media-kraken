@@ -20,41 +20,41 @@
             </button>
         </div>
         <div class="flex flex-col relative -mx-4 -mb-4 bg-red-200 flex-grow overflow-hidden">
-            <div class="flex flex-col relative p-4 gap-3 desktop:flex-row">
-                <p class="text-gray-700 leading-relaxed">
+            <div class="flex flex-col relative p-4 desktop:flex-row">
+                <p class="text-gray-700 leading-relaxed mb-3 desktop:mr-3 desktop:mb-0">
                     {{ errorMessage }}
                 </p>
                 <div v-if="$ui.desktop" class="flex-shrink-0 w-40" />
                 <div
                     class="
-                        flex flex-col gap-2
-                        desktop:absolute desktop:right-0 desktop:top-0 desktop:m-4 desktop:gap-1
+                        flex flex-col
+                        desktop:absolute desktop:right-0 desktop:top-0 desktop:m-4
                         desktop:flex-row-reverse
                     "
                 >
                     <ErrorInfoModalButton
                         icon="terminal"
                         action="inspect in console"
-                        class="bg-red-200 text-red-800"
+                        class="bg-red-200 text-red-800 mb-2 desktop:mb-0"
                         @click="inspect"
                     />
                     <ErrorInfoModalButton
                         icon="copy"
                         action="copy to clipboard"
-                        class="bg-red-200 text-red-800"
+                        class="bg-red-200 text-red-800 mb-2 desktop:mr-2 desktop:mb-0"
                         @click="copy"
                     />
                     <ErrorInfoModalButton
                         v-if="$app.isErrorReportingAvailable"
                         icon="bug"
                         :action="sentryId ? 'view Sentry ID' : 'report to Sentry'"
-                        class="bg-red-200 text-red-800"
+                        class="bg-red-200 text-red-800 mb-2 desktop:mr-2 desktop:mb-0"
                         @click="report"
                     />
                     <ErrorInfoModalButton
                         icon="github"
                         action="report in GitHub"
-                        class="bg-red-200 text-red-800"
+                        class="bg-red-200 text-red-800 desktop:mr-2"
                         :url="githubReportUrl"
                     />
                 </div>

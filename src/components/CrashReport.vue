@@ -10,11 +10,11 @@
         <p class="my-4">
             Here's some things you can do:
         </p>
-        <div class="flex flex-col gap-2">
+        <div class="flex flex-col">
             <BaseButton
                 v-for="(action, i) in actions"
                 :key="i"
-                class="border border-primary-500 text-sm text-primary-700 justify-center hover:bg-black-overlay"
+                class="border border-primary-500 text-sm text-primary-700 justify-center mb-2 hover:bg-black-overlay"
                 @click="action.handle"
             >
                 {{ action.label }}
