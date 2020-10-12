@@ -37,6 +37,8 @@ In order to understand the basic functionalities, you should at least be familia
 
 ## Data schema
 
+This diagram is a representation of the [Soukai models](https://soukai.js.org/guide/defining-models.html) used in the app, connected by [Soukai relationships](https://soukai.js.org/guide/defining-models.html#relationships).
+
 ![Data schema](Classes.jpg)
 
 | Prefix     | Url                                     | Documentation                        |
