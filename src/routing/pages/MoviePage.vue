@@ -72,6 +72,9 @@
                         v-slot="{ toggle: toggleActionsMenu }"
                         direction="top-right"
                         :options="[
+                            movie.watched
+                                ? { text: 'Watch later', icon: 'time', handle: markWatchLater }
+                                : { text: 'Watch', icon: 'checkmark', handle: markWatched },
                             { text: 'Delete', icon: 'trash', handle: deleteMovie },
                         ]"
                     >
@@ -165,11 +168,28 @@ export default Vue.extend({
 
             await this.$ui.updateModel(this.movie, movie => movie.watch());
         },
+        async markWatchLater() {
+            if (!this.movie)
+                return;
+
+            if (!(await this.$ui.confirm('Mark this movie to watch later?')))
+                return;
+
+            await this.$ui.loading(
+                async () => {
+                    await this.movie!.loadRelationIfUnloaded('actions');
+                    await Promise.all(this.movie!.actions!.map(action => action.delete()));
+
+                    this.movie!.setRelationModels('actions', []);
+                },
+                `Marking **${this.movie.title}** to watch later`,
+            );
+        },
         async deleteMovie() {
             if (!this.movie)
                 return;
 
-            if (!confirm('Are you sure you want to delete this movie?'))
+            if (!(await this.$ui.confirm('Delete this movie?')))
                 return;
 
             this.$router.push({ name: this.$media.movies.length === 1 ? 'home' : 'collection' });

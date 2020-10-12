@@ -12,6 +12,7 @@ import Storage from '@/utils/Storage';
 import UUID from '@/utils/UUID';
 
 import AlertModal from '@/components/modals/AlertModal.vue';
+import ConfirmModal from '@/components/modals/ConfirmModal.vue';
 import ErrorInfoModal from '@/components/modals/ErrorInfoModal.vue';
 import LoadingModal from '@/components/modals/LoadingModal.vue';
 import MarkdownModal from '@/components/modals/MarkdownModal.vue';
@@ -53,7 +54,7 @@ export interface Modal<R=any> {
     component: Component;
     options: ModalOptions;
     props: object;
-    result: Promise<R | null>;
+    result: Promise<R>;
 }
 
 export interface ModalOptions {
@@ -296,6 +297,17 @@ export default class UI extends Service<State, ComputedState> {
         message = message || titleOrMessage;
 
         this.openModal(AlertModal, { title, message });
+    }
+
+    public confirm(message: string): Promise<boolean>;
+    public confirm(title: string, message: string): Promise<boolean>;
+    public confirm(titleOrMessage: string, message?: string): Promise<boolean> {
+        const title = message ? titleOrMessage : undefined;
+        message = message || titleOrMessage;
+
+        const modal = this.openModal<boolean>(ConfirmModal, { title, message });
+
+        return modal.result;
     }
 
     public showError(error: any): void {

@@ -106,9 +106,6 @@ describe('Media', () => {
 
     it('Deletes movies', () => {
         // Arrange
-        let confirmed = false;
-
-        cy.on('window:confirm', () => confirmed = true);
         cy.addMovie(spiritLD);
         cy.contains('My Collection').click();
         cy.anchorWithTitle(`${spirit.name} (Watched)`).click();
@@ -116,11 +113,30 @@ describe('Media', () => {
         // Act
         cy.ariaLabel('Open actions menu').click();
         cy.contains('Delete').click();
+        cy.contains('Ok').click();
 
         // Assert
-        cy.see(`${spirit.name} has been removed from your collection.`).then(() => {
-            expect(confirmed).to.be.true;
-        });
+        cy.see(`${spirit.name} has been removed from your collection.`);
+    });
+
+    it('Marks movies as watch later', () => {
+        // Arrange
+        cy.addMovie(spiritLD);
+        cy.contains('My Collection').click();
+        cy.anchorWithTitle(`${spirit.name} (Watched)`).click();
+
+        // Act
+        cy.ariaLabel('Open actions menu').click();
+        cy.contains('Watch later').click();
+        cy.contains('Ok').click();
+
+        // Assert
+        cy.contains('watch later');
+
+        cy.visit('/collection');
+        cy.startApp();
+
+        cy.anchorWithTitle(`${spirit.name} (Watch later)`).should('be.visible');
     });
 
 });
