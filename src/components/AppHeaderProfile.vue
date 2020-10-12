@@ -48,7 +48,10 @@
                         ref="my-collection"
                         v-close-menu
                         route="collection"
-                        class="flex items-center h-8 font-semibold desktop:text-sm desktop:mr-4"
+                        class="
+                            flex items-center h-8 font-semibold text-lg mb-2
+                            desktop:text-sm desktop:mr-4 desktop:mb-0
+                        "
                         :title="$route.name !== 'collection' ? 'Press &quot;c&quot; to open your collection' : null"
                         :class="{ 'underline': $route.name === 'collection' }"
                     >
@@ -71,7 +74,6 @@
                     <UserAvatar v-if="$auth.user.avatarUrl" class="w-12 h-12 rounded-full" />
                     <BaseIcon v-else name="cog" class="w-5 h-5" />
                 </button>
-                <div class="flex-grow" />
                 <BaseTransition :enabled="$ui.desktop" :duration="100" animations="fade scale">
                     <div
                         v-show="$ui.menuOpen || $ui.mobile"
@@ -102,28 +104,30 @@
                                 {{ userWebId }}
                             </a>
                         </div>
-                        <button
-                            v-for="menuOption of menuOptions"
-                            :key="menuOption.name"
-                            v-close-menu
-                            type="button"
-                            class="flex items-center text-gray-700"
-                            :class="{
-                                'text-lg mt-4 focus:underline hover:underline': $ui.mobile,
-                                'px-4 py-2 w-full text-sm hover:bg-gray-100 hover:text-gray-900': $ui.desktop,
-                            }"
-                            @click="menuOption.handler"
-                        >
-                            <BaseIcon
-                                :name="menuOption.icon"
-                                class="mr-2"
+                        <div class="-mt-4 desktop:mt-0">
+                            <button
+                                v-for="menuOption of menuOptions"
+                                :key="menuOption.name"
+                                v-close-menu
+                                type="button"
+                                class="flex items-center text-gray-700"
                                 :class="{
-                                    'w-3 h-3': $ui.desktop,
-                                    'w-5 h-5': $ui.mobile,
+                                    'text-lg mt-4 focus:underline hover:underline': $ui.mobile,
+                                    'px-4 py-2 w-full text-sm hover:bg-gray-100 hover:text-gray-900': $ui.desktop,
                                 }"
-                            />
-                            <span class="truncate">{{ menuOption.name }}</span>
-                        </button>
+                                @click="menuOption.handler"
+                            >
+                                <BaseIcon
+                                    :name="menuOption.icon"
+                                    class="mr-2"
+                                    :class="{
+                                        'w-3 h-3': $ui.desktop,
+                                        'w-5 h-5': $ui.mobile,
+                                    }"
+                                />
+                                <span class="truncate">{{ menuOption.name }}</span>
+                            </button>
+                        </div>
                     </div>
                 </BaseTransition>
             </div>
