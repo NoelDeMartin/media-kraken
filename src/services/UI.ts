@@ -1,5 +1,5 @@
 import { SolidModel } from 'soukai-solid';
-import Vue, { Component } from 'vue';
+import { Component } from 'vue';
 
 import Service, { ComputedStateDefinitions } from '@/services/Service';
 
@@ -31,7 +31,6 @@ interface State {
     modals: Modal[];
     snackbars: Snackbar[];
     animations: boolean;
-    fixedScroll: number | null;
 }
 
 interface ComputedState {
@@ -131,10 +130,6 @@ export default class UI extends Service<State, ComputedState> {
 
     public get animationsEnabled(): boolean {
         return this.state.animations;
-    }
-
-    public get fixedScroll(): number | null {
-        return this.state.fixedScroll;
     }
 
     public get showOverlay(): boolean {
@@ -434,7 +429,6 @@ export default class UI extends Service<State, ComputedState> {
         await super.boot();
 
         this.watchWindowMedia();
-        this.watchOverlay();
         this.watchAuth();
     }
 
@@ -449,7 +443,6 @@ export default class UI extends Service<State, ComputedState> {
             modals: [],
             snackbars: [],
             animations: Storage.get(STORAGE_ANIMATIONS_KEY, true),
-            fixedScroll: null,
         };
     }
 
@@ -525,24 +518,6 @@ export default class UI extends Service<State, ComputedState> {
 
             updateState();
         }
-    }
-
-    private watchOverlay() {
-        this.watchStore(
-            (_, { showOverlay }) => showOverlay,
-            showOverlay => {
-                if (!showOverlay) {
-                    const scrollY = this.fixedScroll;
-
-                    this.setState({ fixedScroll: null });
-                    Vue.instance.$nextTick(() => window.scrollTo({ top: scrollY! }));
-
-                    return;
-                }
-
-                this.setState({ fixedScroll: window.scrollY });
-            },
-        );
     }
 
     private watchAuth() {
