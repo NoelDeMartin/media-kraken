@@ -104,7 +104,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         const user = await JSONUserParser.parse(userJson);
 
         if (user instanceof SolidUser)
-            SolidUser.setFetch((...params: any[]) => this.solidFetch(...params));
+            SolidUser.setFetch((...params: any[]) => this.solidAuthClientFetch(...params));
 
         return user;
     }
@@ -170,7 +170,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
     }
 
     private updateProgressMessage(message: string): void {
-        this.postMessage('update-progress-message', message);
+        this.runOperation('update-progress-message', message);
     }
 
 }

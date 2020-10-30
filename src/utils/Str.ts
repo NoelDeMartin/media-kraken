@@ -4,6 +4,24 @@ class Str {
         return text.substr(0, 1).toUpperCase() + text.substr(1);
     }
 
+    public camel(str: string): string {
+        return str.split(/_|-|\s|(?=[A-Z])/)
+            .map(
+                (word, index) => {
+                    if (word.length === 0) {
+                        return word;
+                    }
+
+                    if (index === 0) {
+                        return word.toLowerCase();
+                    }
+
+                    return word.substr(0, 1).toUpperCase() + word.substr(1).toLowerCase();
+                },
+            )
+            .join('');
+    }
+
     public parseVersion(version: string): [number, number, number, string?] | null {
         const matches = version.match(/(\d+)\.(\d+)\.(\d+)(-(.*))?/);
 

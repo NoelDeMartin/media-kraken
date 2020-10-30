@@ -6,73 +6,66 @@ import Str from '@/utils/Str';
 
 import { WebWorkerMessage } from './WebWorker';
 
-export interface WebWorkerRunnerListener {
-    [event: string]: ((...args: any[]) => void) | undefined;
-}
+export type WebWorkerRunnerDelegate = Record<string, (...args: any[]) => unknown>;
 
 export default class WebWorkerRunner<Parameters extends any[], Result> {
 
     private worker: Worker;
-    private listener: WebWorkerRunnerListener;
+    private delegate: WebWorkerRunnerDelegate;
     private workerPromise: Promise<Result>;
 
     private _resolve!: Function;
     private _reject!: Function;
 
-    constructor(worker: Worker, listener: WebWorkerRunnerListener = {}) {
+    constructor(worker: Worker, delegate: WebWorkerRunnerDelegate = {}) {
         this.worker = worker;
-        this.listener = listener;
+        this.delegate = delegate;
         this.workerPromise = new Promise<Result>((resolve, reject) => {
             this._resolve = resolve;
             this._reject = reject;
         });
 
-        worker.onerror = () => this.onError();
+        worker.onerror = () => this._reject();
         worker.onmessage = ({ data: message }: { data: WebWorkerMessage }) => this.onMessage(message);
     }
 
     public run(...params: Parameters): Promise<Result> {
-        this.postMessage('start', ...params);
+        this.worker.postMessage({ name: 'run', payload: params });
 
         return this.workerPromise;
     }
 
-    protected async onMessage({ name, payload }: WebWorkerMessage): Promise<void> {
+    protected async onMessage({ operationId, name, payload }: WebWorkerMessage): Promise<void> {
         switch (name) {
-            case 'done':
-                this._resolve(payload[0]);
+            case 'work-completed':
+                this._resolve(payload);
                 break;
-            case 'failed':
-                this._reject(Errors.parse(payload[0]));
+            case 'work-failed':
+                this._reject(Errors.parse(payload));
                 break;
-            case 'run-operation': {
-                const [id, name, args] = payload;
-
+            default: {
                 try {
-                    const result = await this.handleOperation(name, args);
+                    const result = await this.handleOperation(name, payload);
 
-                    this.postMessage('operation-completed', id, result);
+                    this.worker.postMessage({ operationId, name: 'operation-completed', payload: result });
                 } catch (e) {
-                    this.postMessage('operation-failed', id, Errors.serialize(e));
+                    this.worker.postMessage({ operationId, name: 'operation-failed', payload: Errors.serialize(e) });
                 }
                 break;
             }
-            default:
-                this.listener['on' + Str.studly(name)]?.call(this.listener, ...payload);
         }
     }
 
-    protected onError(): void {
-        this._reject();
-    }
-
-    protected postMessage(name: string, ...params: any[]): void {
-        this.worker.postMessage({ name, payload: params });
-    }
-
     protected async handleOperation(name: string, args: any[]): Promise<any> {
+        if (name in this.delegate)
+            return this.delegate[name](...args);
+
+        const camelCaseName = Str.camel(name);
+        if (camelCaseName in this.delegate)
+            return this.delegate[camelCaseName](...args);
+
         switch (name) {
-            case 'solid-fetch': {
+            case 'solid-auth-client-fetch': {
                 const response = await SolidAuthClient.fetch(...(args as [string, any]));
 
                 return Http.serializeResponse(response);

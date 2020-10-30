@@ -1,92 +1,74 @@
 import Errors from '@/utils/Errors';
 import Http, { SerializedResponse } from '@/utils/Http';
-import Str from '@/utils/Str';
 import UUID from '@/utils/UUID';
 
 export interface WebWorkerMessage {
+    operationId?: string;
     name: string;
     payload: any;
 }
 
 export default abstract class WebWorker<Parameters extends any[], Result> {
 
-    private operations: {
-        [id: string]: {
-            resolve: Function;
-            reject: Function;
+    private operations: Record<string, {
+        resolve: Function;
+        reject: Function;
+    }> = {};
+
+    public async listen(): Promise<void> {
+        const handleMessage = async ({ data: { operationId, name, payload } }: { data: WebWorkerMessage }) => {
+            switch (name) {
+                case 'run':
+                    this.run(...payload);
+                    break;
+                case 'operation-completed':
+                    if (operationId && operationId in this.operations) {
+                        this.operations[operationId]?.resolve(payload);
+                        delete this.operations[operationId];
+                    }
+                    break;
+                case 'operation-failed':
+                    if (operationId && operationId in this.operations) {
+                        this.operations[operationId]?.reject(payload);
+                        delete this.operations[operationId];
+                    }
+                    break;
+            }
         };
-    } = {};
 
-    public async run(): Promise<void> {
-        addEventListener(
-            'message',
-            async ({ data: { name, payload } }: { data: WebWorkerMessage }) => {
-                switch (name) {
-                    case 'start':
-                        this.start(...payload);
-                        break;
-                    case 'operation-completed': {
-                        const [ id, result ] = payload;
-
-                        this.resolveOperation(id, result);
-                        break;
-                    }
-                    case 'operation-failed': {
-                        const [ id, error ] = payload;
-
-                        this.rejectOperation(id, Errors.parse(error));
-                        break;
-                    }
-                    default:
-                        (this as any)['on' + Str.studly(name)]?.call(this, ...payload);
-                        break;
-                }
-            },
-        );
+        addEventListener('message', handleMessage);
     }
 
-    protected postMessage(name: string, ...payload: any[]): void {
-        const message: WebWorkerMessage = { name, payload };
-
-        (postMessage as any)(message);
-    }
-
-    protected runOperation<T>(name: string, ...args: any[]): Promise<T> {
+    protected runOperation<T>(name: string, ...payload: any[]): Promise<T> {
         return new Promise((resolve, reject) => {
-            const id = UUID.generate();
+            const operationId = UUID.generate();
 
-            this.operations[id] = { resolve, reject };
+            this.operations[operationId] = { resolve, reject };
 
-            this.postMessage('run-operation', id, name, args);
+            this.postMessage({ operationId, name, payload });
         });
     }
 
-    protected async solidFetch(...args: any[]): Promise<Response> {
-        const response = await this.runOperation<SerializedResponse>('solid-fetch', ...args);
+    protected async solidAuthClientFetch(...args: any[]): Promise<Response> {
+        const response = await this.runOperation<SerializedResponse>('solid-auth-client-fetch', ...args);
 
         return Http.deserializeResponse(response);
     }
 
-    protected abstract work(...params: Parameters): Promise<Result>;
-
-    public async start(...parameters: Parameters): Promise<void> {
+    protected async run(...parameters: Parameters): Promise<void> {
         try {
             const result = await this.work(...parameters);
 
-            this.postMessage('done', result);
+            this.postMessage({ name: 'work-completed', payload: result });
         } catch (e) {
-            this.postMessage('failed', Errors.serialize(e));
+            this.postMessage({ name: 'work-failed', payload: Errors.serialize(e) });
         }
     }
 
-    private resolveOperation(id: string, result: any): void {
-        this.operations[id]?.resolve(result);
-        delete this.operations[id];
-    }
+    protected abstract work(...params: Parameters): Promise<Result>;
 
-    private rejectOperation(id: string, error: any): void {
-        this.operations[id]?.reject(error);
-        delete this.operations[id];
+    private postMessage(message: WebWorkerMessage) {
+        (postMessage as any)(message);
     }
 
 }

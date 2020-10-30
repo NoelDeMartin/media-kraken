@@ -30,7 +30,7 @@ function hydrateMoviesContainer(data: SerializedMoviesContainer): MediaContainer
 export async function loadMedia(...params: Parameters): Promise<MediaContainers> {
     const worker = new Worker('@/workers/LoadMediaWorker.index.ts', { type: 'module' });
     const runner = new WebWorkerRunner<Parameters, Result>(worker, {
-        onUpdateProgressMessage: message => Services.$ui.updateBootupProgressMessage(message),
+        updateProgressMessage: message => Services.$ui.updateBootupProgressMessage(message),
     });
 
     const result = await runner.run(...params);
