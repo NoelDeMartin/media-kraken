@@ -5,6 +5,8 @@ import WatchAction from '@/models/soukai/WatchAction';
 import { MediaContainers } from '@/services/Media';
 import Services from '@/services';
 
+import Storage from '@/utils/Storage';
+
 import { Parameters, Result, SerializedMoviesContainer, SerializedMovie } from './LoadMediaWorker';
 import WebWorkerRunner from './WebWorkerRunner';
 
@@ -29,9 +31,25 @@ function hydrateMoviesContainer(data: SerializedMoviesContainer): MediaContainer
 
 export async function loadMedia(...params: Parameters): Promise<MediaContainers> {
     const worker = new Worker('@/workers/LoadMediaWorker.index.ts', { type: 'module' });
-    const runner = new WebWorkerRunner<Parameters, Result>(worker, {
-        updateProgressMessage: message => Services.$ui.updateBootupProgressMessage(message),
-    });
+    const runner = new WebWorkerRunner<Parameters, Result>(
+        worker,
+        {
+            updateProgressMessage: message => Services.$ui.updateBootupProgressMessage(message),
+            confirmSchemaMigration: async () => {
+                if (Storage.has('media-kraken-migrate-schema'))
+                    return Storage.get('media-kraken-migrate-schema');
+
+                const migrateSchema = await Services.$ui.confirmMarkdown('confirm-schema-migration', {
+                    acceptLabel: 'Yes',
+                    cancelLabel: 'No',
+                });
+
+                Storage.set('media-kraken-migrate-schema', migrateSchema);
+
+                return migrateSchema;
+            },
+        },
+    );
 
     const result = await runner.run(...params);
 

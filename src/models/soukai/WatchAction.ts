@@ -29,4 +29,9 @@ export default class WatchAction extends SolidModel {
         return this.belongsToOne(Movie, 'object');
     }
 
+    public fixLegacyAttributes(url: string, object: string): void {
+        this._attributes.url = url;
+        this._attributes.object = object;
+    }
+
 }

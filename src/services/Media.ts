@@ -258,7 +258,8 @@ export default class Media extends Service<State, ComputedState> {
     private async load(user: User): Promise<void> {
         try {
             const ignoredDocumentUrls = Storage.get('media-kraken-malformed-document-urls', []);
-            const { movies: moviesContainer } = await loadMedia(user.toJSON(), { ignoredDocumentUrls });
+            const migrateSchema = Storage.get('media-kraken-migrate-schema', undefined);
+            const { movies: moviesContainer } = await loadMedia(user.toJSON(), { ignoredDocumentUrls, migrateSchema });
 
             await user.initSoukaiEngine();
 
@@ -287,8 +288,8 @@ export default class Media extends Service<State, ComputedState> {
     private async unload(): Promise<void> {
         this.setState({ moviesContainer: null });
 
-        // TODO setup events system so that both this and ModelsCache.clear() is cleared after logout instead
         Storage.remove('media-kraken-malformed-document-urls');
+        Storage.remove('media-kraken-migrate-schema');
     }
 
     private getMoviesParser(source: MediaSource): MediaParser<any, Movie> {

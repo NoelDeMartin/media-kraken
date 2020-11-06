@@ -1,11 +1,12 @@
-import { FieldType, MultiModelRelation } from 'soukai';
-import { SolidModel, SolidHasManyRelation } from 'soukai-solid';
+import { SolidModel, SolidHasManyRelation, RDFDocumentMetadata } from 'soukai-solid';
+import Soukai, { FieldType, MultiModelRelation } from 'soukai';
 
 import Arr from '@/utils/Arr';
 import Str from '@/utils/Str';
 import TMDBMoviesParser from '@/utils/parsers/TMDBMoviesParser';
 import TMDBResolver from '@/utils/media/TMDBResolver';
 import Url from '@/utils/Url';
+import UUID from '@/utils/UUID';
 
 import TheMovieDBApi, { TMDBMovie } from '@/api/TheMovieDBApi';
 
@@ -142,6 +143,64 @@ export default class Movie extends SolidModel {
         return this.relatedActions.create({ startTime: date, endTime: date });
     }
 
+    public hasLegacySchema(documentMetadata?: RDFDocumentMetadata): boolean {
+        if (documentMetadata?.containsRelativeIRIs || !this.exists() || this.wasRecentlyCreated())
+            return false;
+
+        const documentUrl = this.getDocumentUrl();
+        const originalDocumentUrl = this.getOriginalDocumentUrl();
+
+        return (documentUrl !== null && originalDocumentUrl !== null && documentUrl !== originalDocumentUrl)
+            || !Str.contains(this.url, '#');
+    }
+
+    public async migrateSchema(): Promise<void> {
+        if (!this.exists() || this.wasRecentlyCreated())
+            return;
+
+        const originalDocumentUrl = this.getOriginalDocumentUrl()!;
+        const resourceHash = Url.parse(this.url)?.fragment ?? this.modelClass.defaultResourceHash;
+        const fixedUrl = `${originalDocumentUrl}#${resourceHash}`;
+        const legacyActions = this.relatedActions.getLoadedModels().filter(
+            action => action.getOriginalDocumentUrl() === originalDocumentUrl,
+        );
+        const fixedActionUrls = legacyActions.reduce(
+            (fixedActionUrls, action) => {
+                const actionResourceHash = Url.parse(action.url)?.fragment ?? UUID.generate();
+
+                fixedActionUrls[action.url] = `${originalDocumentUrl}#${actionResourceHash}`;
+
+                return fixedActionUrls;
+            },
+            {} as Record<string, string>,
+        );
+
+        await Soukai.requireEngine().update(
+            this.getOriginalContainerUrl()!,
+            this.getOriginalDocumentUrl()!,
+            {
+                '@graph': {
+                    $updateItems: [
+                        {
+                            $where: { '@id': this.url },
+                            $update: { '@id': fixedUrl },
+                        },
+                        legacyActions.map(action => ({
+                            $where: { '@id': action.url },
+                            $update: {
+                                '@id': fixedActionUrls[action.url],
+                                'https://schema.org/object': fixedUrl,
+                            },
+                        })),
+                    ],
+                },
+            },
+        );
+
+        this.fixLegacyAttributes(fixedUrl);
+        legacyActions.forEach(action => action.fixLegacyAttributes(fixedActionUrls[action.url], fixedUrl));
+    }
+
     protected newUrl(documentUrl?: string, resourceHash?: string): string {
         documentUrl = documentUrl ?? Url.resolve(this.modelClass.collection, this.slug);
         resourceHash = resourceHash ?? this.modelClass.defaultResourceHash;
@@ -176,6 +235,10 @@ export default class Movie extends SolidModel {
 
         this.mintUrl();
         documentActions.forEach(action => action.mintUrl(this.url));
+    }
+
+    private fixLegacyAttributes(url: string): void {
+        this._attributes.url = url;
     }
 
 }

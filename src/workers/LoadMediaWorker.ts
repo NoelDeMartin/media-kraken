@@ -1,4 +1,4 @@
-import { SolidDocument } from 'soukai-solid';
+import { RDFDocumentMetadata, SolidDocument, SolidEngine } from 'soukai-solid';
 import Soukai, { Attributes } from 'soukai';
 
 import '@/plugins/soukai';
@@ -31,6 +31,7 @@ const MOVIES_CHUNK_SIZE = 10;
 
 interface Config {
     ignoredDocumentUrls: string[];
+    migrateSchema?: boolean;
 }
 
 export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
@@ -38,7 +39,8 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
     private user!: User;
     private config!: Config;
     private moviesContainer!: MediaContainer;
-    private processedDocumentUrls: string[] = [];
+    private processedDocumentsUrls: string[] = [];
+    private documentsMetadata: Record<string, RDFDocumentMetadata> = {};
 
     protected async work(userJson: object, config: Partial<Config> = {}): Promise<Result> {
         this.config = {
@@ -67,6 +69,20 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         this.user = await this.resolveUser(userJson);
 
         await this.user.initSoukaiEngine();
+
+        if (Soukai.engine instanceof SolidEngine)
+            Soukai.engine.addListener({
+                onRDFDocumentLoaded: (url, metadata) => this.documentsMetadata[url] = metadata,
+            });
+    }
+
+    private async resolveUser(userJson: object): Promise<User> {
+        const user = await JSONUserParser.parse(userJson);
+
+        if (user instanceof SolidUser)
+            SolidUser.setFetch((...params: any[]) => this.solidAuthClientFetch(...params));
+
+        return user;
     }
 
     private async loadContainers(): Promise<void> {
@@ -75,6 +91,8 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         const { movies } = await this.user.resolveMediaContainers();
 
         this.moviesContainer = movies;
+
+        await this.migrateContainerSchema(this.moviesContainer);
     }
 
     private async loadMovies(): Promise<void> {
@@ -90,25 +108,6 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         await this.loadMoviesFromDatabase();
     }
 
-    private serializeMoviesContainer(): SerializedMoviesContainer {
-        return {
-            attributes: this.moviesContainer.getAttributes(),
-            movies: this.moviesContainer.movies!.map(movie => ({
-                attributes: movie.getAttributes(),
-                actionsAttributes: movie.actions!.map(action => action.getAttributes()),
-            })),
-        };
-    }
-
-    private async resolveUser(userJson: object): Promise<User> {
-        const user = await JSONUserParser.parse(userJson);
-
-        if (user instanceof SolidUser)
-            SolidUser.setFetch((...params: any[]) => this.solidAuthClientFetch(...params));
-
-        return user;
-    }
-
     private async loadMoviesFromCache(): Promise<void> {
         const operations = this.moviesContainer.documents.map(async document => {
             if (Arr.contains(document.url, this.config.ignoredDocumentUrls))
@@ -120,7 +119,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
                 return;
 
             this.moviesContainer.movies!.push(...models.filter(model => model.modelClass === Movie) as Movie[]);
-            this.processedDocumentUrls.push(document.url);
+            this.processedDocumentsUrls.push(document.url);
         });
 
         await Promise.all(operations);
@@ -129,7 +128,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
     private async loadMoviesFromDatabase(): Promise<void> {
         const documents = this.moviesContainer.documents.filter(document =>
             !Arr.contains(document.url, this.config.ignoredDocumentUrls) &&
-            !Arr.contains(document.url, this.processedDocumentUrls),
+            !Arr.contains(document.url, this.processedDocumentsUrls),
         );
 
         if (documents.length === 0)
@@ -156,12 +155,9 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
             $in: documents.map(document => document.url),
         });
 
-        await Promise.all(movies.map(async movie => {
-            if (movie.isRelationLoaded('actions'))
-                return;
+        await Promise.all(movies.map(movie => movie.loadRelationIfUnloaded('actions')));
 
-            await movie.loadRelation('actions');
-        }));
+        await this.migrateMoviesSchemas(movies);
 
         await Promise.all(documents.map(document => ModelsCache.rememberDocument(document.url, document.updatedAt)));
         await Promise.all(movies.map(movie => ModelsCache.remember(movie, { actions: movie.actions! })));
@@ -169,8 +165,61 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         this.moviesContainer.movies!.push(...movies);
     }
 
+    private async migrateContainerSchema(container: MediaContainer): Promise<void> {
+        if (!(Soukai.engine instanceof SolidEngine))
+            return;
+
+        if (this.config.migrateSchema === false)
+            return;
+
+        const hasLegacySchema = await container.hasLegacySchema();
+        if (!hasLegacySchema)
+            return;
+
+        const migrateSchema = await this.shouldMigrateSchema();
+        if (!migrateSchema)
+            return;
+
+        await container.migrateSchema();
+    }
+
+    private async migrateMoviesSchemas(movies: Movie[]): Promise<void> {
+        if (!(Soukai.engine instanceof SolidEngine))
+            return;
+
+        const legacyMovies = this.filterLegacyMovies(movies);
+        if (legacyMovies.length === 0)
+            return;
+
+        const migrateSchema = await this.shouldMigrateSchema();
+        if (!migrateSchema)
+            return;
+
+        await Promise.all(legacyMovies.map(movie => movie.migrateSchema()));
+    }
+
+    private serializeMoviesContainer(): SerializedMoviesContainer {
+        return {
+            attributes: this.moviesContainer.getAttributes(),
+            movies: this.moviesContainer.movies!.map(movie => ({
+                attributes: movie.getAttributes(),
+                actionsAttributes: movie.actions!.map(action => action.getAttributes()),
+            })),
+        };
+    }
+
+    private filterLegacyMovies(movies: Movie[]): Movie[] {
+        return movies.filter(
+            movie => movie.hasLegacySchema(this.documentsMetadata[movie.getDocumentUrl()!]),
+        );
+    }
+
     private updateProgressMessage(message: string): void {
         this.runOperation('update-progress-message', message);
+    }
+
+    private async shouldMigrateSchema(): Promise<boolean> {
+        return this.config.migrateSchema ?? await this.runOperation('confirm-schema-migration');
     }
 
 }
