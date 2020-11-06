@@ -8,7 +8,7 @@
             {{ crashReport.subtitle }}
         </p>
         <p class="my-4">
-            Here's some things you can do:
+            Here are some things you can do:
         </p>
         <div class="flex flex-col">
             <BaseButton

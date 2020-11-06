@@ -47,7 +47,7 @@
                     <ErrorInfoModalButton
                         v-if="$app.isErrorReportingAvailable"
                         icon="bug"
-                        :action="sentryId ? 'view Sentry ID' : 'report to Sentry'"
+                        :action="sentryId ? 'View report ID' : 'Send error report'"
                         class="bg-red-200 text-red-800 mb-2 desktop:mr-2 desktop:mb-0"
                         @click="report"
                     />
@@ -119,7 +119,7 @@ export default Modal.extend({
     methods: {
         report() {
             if (this.sentryId) {
-                this.$ui.showSnackbar('Sentry ID: ' + this.sentryId, { transient: true });
+                this.$ui.showSnackbar('Sentry.io ID: ' + this.sentryId, { transient: true });
 
                 return;
             }
@@ -127,7 +127,7 @@ export default Modal.extend({
             Errors.report(this.error);
 
             this.sentryId = this.error.sentryId;
-            this.$ui.showSnackbar('Error reported to Sentry: ' + this.sentryId, { transient: true });
+            this.$ui.showSnackbar('Error reported to Sentry.io: ' + this.sentryId, { transient: true });
         },
         inspect() {
             (window as any).error = this.error;

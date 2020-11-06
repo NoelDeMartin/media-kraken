@@ -320,7 +320,7 @@ export default class Media extends Service<State, ComputedState> {
                 title: 'There was a problem reading a document from your collection',
                 subtitle: error.documentUrl,
                 actions: [{
-                    label: 'Ignore this document',
+                    label: 'Ignore this document and continue',
                     handle: ignoreDocument,
                 }],
             },
