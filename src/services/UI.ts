@@ -44,6 +44,12 @@ interface ClickAwayListener {
     callback(): void | boolean;
 }
 
+interface ConfirmOptions {
+    markdown?: boolean;
+    acceptLabel?: string;
+    cancelLabel?: string;
+}
+
 export const screenBreakpoints: { [layout in Layout]?: number } = {
     [Layout.Desktop]: 640,
 };
@@ -294,15 +300,37 @@ export default class UI extends Service<State, ComputedState> {
         this.openModal(AlertModal, { title, message });
     }
 
-    public confirm(message: string): Promise<boolean>;
-    public confirm(title: string, message: string): Promise<boolean>;
-    public confirm(titleOrMessage: string, message?: string): Promise<boolean> {
-        const title = message ? titleOrMessage : undefined;
-        message = message || titleOrMessage;
+    public confirm(message: string, options?: ConfirmOptions): Promise<boolean>;
+    public confirm(title: string, message: string, options?: ConfirmOptions): Promise<boolean>;
+    public confirm(
+        titleOrMessage: string,
+        messageOrOptions?: string | ConfirmOptions,
+        options: ConfirmOptions = {},
+    ): Promise<boolean> {
+        options = typeof messageOrOptions === 'object' ? messageOrOptions : options;
 
-        const modal = this.openModal<boolean>(ConfirmModal, { title, message });
+        const title = typeof messageOrOptions === 'string' ? titleOrMessage : null;
+        const message = typeof messageOrOptions === 'string' ? messageOrOptions : titleOrMessage;
+        const modal = this.openModal<boolean>(ConfirmModal, { title, message, ...options }, { cancellable: false });
 
         return modal.result;
+    }
+
+    public async confirmMarkdown(file: string, options: Omit<ConfirmOptions, 'markdown'> = {}): Promise<boolean> {
+        let title = null;
+        let message = (await import(`@/assets/markdown/${file}.md`)).default;
+
+        if (message.startsWith('# ')) {
+            const secondLineIndex = message.indexOf('\n');
+
+            title = message.substring(2, secondLineIndex);
+            message = message.substring(secondLineIndex + 1);
+        }
+
+        return this.confirm(title, message, {
+            markdown: true,
+            ...options,
+        });
     }
 
     public showError(error: any): void {
