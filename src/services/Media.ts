@@ -224,11 +224,11 @@ export default class Media extends Service<State, ComputedState> {
         await Services.$app.ready;
         await Services.$auth.ready;
 
+        EventBus.on('logout', this.unload.bind(this));
+        EventBus.on('login', this.load.bind(this));
+
         if (Services.$auth.isLoggedIn())
             await this.load(Services.$auth.user);
-
-        EventBus.on('login', this.load.bind(this));
-        EventBus.on('logout', this.unload.bind(this));
     }
 
     protected getInitialState(): State {

@@ -9,6 +9,7 @@ import User from '@/models/users/User';
 
 import RDFStore from '@/utils/RDFStore';
 import Storage from '@/utils/Storage';
+import Time from '@/utils/Time';
 import Url from '@/utils/Url';
 import UUID from '@/utils/UUID';
 
@@ -70,6 +71,13 @@ export default class SolidUser extends User<SolidUserJSON> {
 
     public static async login(idp: string): Promise<boolean> {
         const session = await SolidAuthClient.login(idp);
+
+        if (!session)
+            // Valid urls return an empty session before redirecting so there is no
+            // way to distinguish between an actual error or everything working as expected.
+            // We'll just wait a couple of seconds before returning, if the browser hasn't
+            // redirected by then something is probably going wrong.
+            await Time.wait(2000);
 
         return !!session;
     }

@@ -8,7 +8,6 @@ import User from '@/models/users/User';
 
 import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
-import Time from '@/utils/Time';
 
 import NetworkRequestError from '@/errors/NetworkRequestError';
 
@@ -47,21 +46,10 @@ export default class Auth extends Service<State> {
     }
 
     public async loginWithSolid(idp: string): Promise<void> {
-        Services.$ui.loading(async () => {
-            const loggedIn = await SolidUser.login(idp);
+        const loggedIn = await Services.$ui.loading(() => SolidUser.login(idp));
 
-            if (!loggedIn) {
-                // For some reason, valid urls return !loggedIn before redirecting so there is no
-                // way to distinguish between an actual error or everything working as expected.
-                // We'll just wait a couple of seconds before showing an error.
-                await Time.wait(2000);
-
-                Services.$ui.alert(
-                    'Log in failed',
-                    "It wasn't possible to log in with this url",
-                );
-            }
-        });
+        if (!loggedIn)
+            Services.$ui.alert('Log in failed', "It wasn't possible to log in with this url");
     }
 
     public async logout(force: boolean = false): Promise<void> {
