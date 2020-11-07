@@ -112,6 +112,8 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import Str from '@/utils/Str';
+
 interface Data {
     identityProviderUrl: string | null;
 }
@@ -129,10 +131,34 @@ export default Vue.extend({
         },
         async submitLoginWithSolid() {
             try {
+                await this.replaceLegacyDomains();
                 await this.$auth.loginWithSolid(this.identityProviderUrl!);
             } catch (error) {
                 this.$ui.showError(error);
             }
+        },
+        async replaceLegacyDomains() {
+            if (!this.isUsingLegacySolidCommunity())
+                return;
+
+            const replaceDomain = await this.replaceLegacySolidCommunity();
+            if (!replaceDomain)
+                return;
+
+            this.identityProviderUrl = this.identityProviderUrl!.replace('solid.community', 'solidcommunity.net');
+        },
+        isUsingLegacySolidCommunity(): boolean {
+            return Str.contains(this.identityProviderUrl!, 'solid.community');
+        },
+        replaceLegacySolidCommunity(): Promise<boolean> {
+            return this.$ui.confirm(
+                [
+                    'The `solid.community` domain has been moved to `solidcommunity.net`, ' +
+                    'do you want to use that instead?\n',
+                    '[learn more](https://gitlab.com/solid.community/proposals/-/issues/16)',
+                ].join('\n'),
+                { markdown: true },
+            );
         },
     },
 });
