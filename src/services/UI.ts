@@ -411,9 +411,7 @@ export default class UI extends Service<State, ComputedState> {
         update: (model: Model) => Promise<any> | any,
         affectedAttributes: string[] = [],
     ): Promise<void> {
-        const operation = new AsyncOperation({
-            onFailed: error => this.showError(error),
-        });
+        const operation = new AsyncOperation();
         const initialAttributes = Obj.only(model.getAttributes(), affectedAttributes);
 
         try {

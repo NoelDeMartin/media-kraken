@@ -3,7 +3,7 @@
         <MarkdownContent
             v-if="body"
             :content="body"
-            class="markdown-modal-content"
+            class="markdown-content--typography"
             @custom-trigger="handleCustomTrigger($event)"
         />
         <LoadingCircle v-else class="w-8 h-8 text-primary-700" />
@@ -74,52 +74,3 @@ export default Modal.extend({
     },
 });
 </script>
-
-<style lang="scss">
-    .markdown-modal-content {
-        @apply flex flex-col;
-
-        h2, h3, h4, p {
-            @apply mb-3;
-        }
-
-        & > p:last-child {
-            @apply mb-0;
-        }
-
-        h2 {
-            @apply font-semibold text-primary-900;
-        }
-
-        li, p {
-            @apply text-sm text-gray-700 leading-relaxed;
-        }
-
-        ul, ol {
-            @apply list-inside;
-        }
-
-        ul {
-            @apply list-disc;
-        }
-
-        ol {
-            @apply list-decimal;
-        }
-
-        a, button.link {
-            @apply text-primary-700;
-
-            &:hover {
-                @apply text-primary-900 underline;
-            }
-
-        }
-
-        code {
-            @apply block bg-gray-200 p-2 text-xs rounded mt-1 mb-4;
-            word-break: break-all;
-        }
-
-    }
-</style>

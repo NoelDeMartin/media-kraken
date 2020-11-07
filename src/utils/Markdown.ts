@@ -1,5 +1,7 @@
 import marked from 'marked';
 
+const CODE_BLOCK = '```';
+
 class Markdown {
 
     private renderer: marked.Renderer = new marked.Renderer();
@@ -17,6 +19,10 @@ class Markdown {
             return '';
 
         return marked(markdown, { renderer: this.renderer });
+    }
+
+    public codeBlock(code: string): string {
+        return `${CODE_BLOCK}\n${code}\n${CODE_BLOCK}`;
     }
 
 }

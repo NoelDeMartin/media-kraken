@@ -3,19 +3,19 @@
         <h2 v-if="title" class="font-semibold text-gray-800 leading-relaxed mb-3">
             {{ title }}
         </h2>
-        <MarkdownContent v-if="markdown" :content="message" class="markdown-modal-content" />
+        <MarkdownContent v-if="markdown" :content="message" class="markdown-content--typography" />
         <p v-else class="text-center text-gray-700 mb-4">
             {{ message }}
         </p>
         <div class="flex flex-row self-end">
             <BaseButton
-                class="uppercase font-semibold text-sm text-primary-700 self-center mr-1 hover:bg-black-overlay"
+                class="text-primary-700 border border-primary-500 mr-2 hover:bg-black-overlay"
                 @click="$ui.resolveModal(id, false)"
             >
                 {{ cancelLabel }}
             </BaseButton>
             <BaseButton
-                class="uppercase font-semibold text-sm bg-primary-700 text-white self-center hover:bg-primary-900"
+                class="text-white bg-red-500 hover:bg-red-700"
                 @click="$ui.resolveModal(id, true)"
             >
                 {{ acceptLabel }}
@@ -47,7 +47,7 @@ export default Modal.extend({
         },
         acceptLabel: {
             type: String,
-            default: 'Ok',
+            default: 'OK',
         },
         cancelLabel: {
             type: String,

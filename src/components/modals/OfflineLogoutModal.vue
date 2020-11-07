@@ -1,4 +1,5 @@
 <template>
+    <!-- TODO migrate this to confirm modal -->
     <AppModal :id="id" :options="options" title="Are you sure you want to log out?">
         <p class="text-gray-700 text-sm leading-relaxed">
             You are <BaseLink @click="$ui.openFileMarkdownModal('application-storage')">

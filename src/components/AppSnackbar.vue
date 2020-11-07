@@ -1,20 +1,22 @@
 <template>
     <div
-        class="
-            flex items-center justify-center p-4 shadow-lg rounded-lg overflow-hidden
-            pointer-events-auto
-        "
+        class="flex items-center justify-center shadow-lg rounded-lg overflow-hidden pointer-events-auto"
         :class="{
             'bg-gray-800 text-white': !options.error,
             'bg-red-200 text-red-700 font-medium': options.error,
         }"
     >
-        <LoadingCircle v-if="options.loading" class="mr-3 w-6 h-6" />
-        <MarkdownContent :content="message" />
+        <div
+            class="flex items-center justify-center p-4 rounded-l-lg"
+            :class="{ 'border border-r-0 border-red-300': options.error }"
+        >
+            <LoadingCircle v-if="options.loading" class="mr-3 w-6 h-6" />
+            <MarkdownContent :content="message" />
+        </div>
         <button
             v-if="options.action"
             type="button"
-            class="relative flex -my-4 -mr-4 ml-4 p-4 font-bold uppercase text-sm group"
+            class="relative flex p-4 font-bold uppercase text-sm group self-stretch items-center"
             :class="{ 'bg-red-500 text-white': options.error }"
             @click="options.action.handler"
         >

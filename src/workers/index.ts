@@ -40,8 +40,7 @@ export async function loadMedia(...params: Parameters): Promise<MediaContainers>
                     return Storage.get('media-kraken-migrate-schema');
 
                 const migrateSchema = await Services.$ui.confirmMarkdown('confirm-schema-migration', {
-                    acceptLabel: 'Yes',
-                    cancelLabel: 'No',
+                    acceptLabel: 'Migrate',
                 });
 
                 Storage.set('media-kraken-migrate-schema', migrateSchema);

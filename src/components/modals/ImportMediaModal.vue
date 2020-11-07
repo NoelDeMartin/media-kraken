@@ -8,7 +8,7 @@
         <p class="text-gray-700 leading-relaxed mb-3">
             You can import movies from the following sources:
         </p>
-        <div class="flex grid gap-4 grid-cols-fill-32 desktop:grid-cols-fill-40">
+        <div class="grid gap-4 grid-cols-fill-32 desktop:grid-cols-fill-40">
             <div v-for="source of sources" :key="source" class="relative ratio-1/1">
                 <div class="absolute inset-0 flex">
                     <button

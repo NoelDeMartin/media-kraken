@@ -67,6 +67,8 @@ import Movie from '@/models/soukai/Movie';
 
 import { ImportOperationLog } from '@/services/Media';
 
+import Markdown from '@/utils/Markdown';
+
 import ErrorInfoModal from '@/components/modals/ErrorInfoModal.vue';
 import ImportResultModalItem from '@/components/modals/ImportResultModalItem.vue';
 import MarkdownModal from '@/components/modals/MarkdownModal.vue';
@@ -92,69 +94,72 @@ export default Modal.extend({
     },
     methods: {
         inspectWatched() {
-            let logs = '# These movies have been imported as watched\n';
             let counter = 0;
+            const logs = ['# These movies have been imported as watched'];
 
             for (const movie of this.watchedMovies) {
-                logs += `${++counter}. ${movie.title}\n`;
+                logs.push(`${++counter}. ${movie.title}`);
             }
 
-            this.$ui.openModal(MarkdownModal, { content: logs });
+            this.$ui.openModal(MarkdownModal, { content: logs.join('\n') });
         },
         inspectPending() {
-            let logs = '# These movies have been imported to watch later\n';
             let counter = 0;
+            const logs = ['# These movies have been imported to watch later'];
 
             for (const movie of this.pendingMovies) {
-                logs += `${++counter}. ${movie.title}\n`;
+                logs.push(`${++counter}. ${movie.title}`);
             }
 
-            this.$ui.openModal(MarkdownModal, { content: logs });
+            this.$ui.openModal(MarkdownModal, { content: logs.join('\n') });
         },
         inspectIgnored() {
-            let logs = '# The following movies have been ignored\n';
             let counter = 0;
+            const logs = ['# The following movies have been ignored'];
 
             for (const { reason, data } of this.log.ignored) {
-                logs += `${++counter}. ${reason}\n`;
-                logs += `<code>${JSON.stringify(data)}</code>\n`;
+                logs.push(`${++counter}. ${reason}`);
+                logs.push(Markdown.codeBlock(JSON.stringify(data)));
             }
 
-            this.$ui.openModal(MarkdownModal, { content: logs });
+            this.$ui.openModal(MarkdownModal, { content: logs.join('\n') });
         },
         inspectUnprocessed() {
-            let logs = '# The following movies have not been processed\n';
             let counter = 0;
+            const logs = ['# The following movies have not been processed'];
 
             for (const data of this.log.unprocessed) {
-                logs += `${++counter}. <code>${JSON.stringify(data)}</code>\n`;
+                logs.push(`${++counter}. `);
+                logs.push(Markdown.codeBlock(JSON.stringify(data)));
             }
 
-            this.$ui.openModal(MarkdownModal, { content: logs });
+            this.$ui.openModal(MarkdownModal, { content: logs.join('\n') });
         },
         inspectInvalid() {
-            let logs = '# The following items were not valid movies\n';
             let counter = 0;
+            const logs = ['# The following items were not valid movies'];
 
             for (const { reasons, data } of this.log.invalid) {
-                logs += `${++counter}. ${reasons.join(', ')}\n`;
-                logs += `<code>${JSON.stringify(data)}</code>\n`;
+                logs.push(`${++counter}. ${reasons.join(', ')}`);
+                logs.push(Markdown.codeBlock(JSON.stringify(data)));
             }
 
-            this.$ui.openModal(MarkdownModal, { content: logs });
+            this.$ui.openModal(MarkdownModal, { content: logs.join('\n') });
         },
         inspectFailed() {
-            let logs = '# The following movies caused some errors\n';
             let counter = 0;
+            const logs = ['# The following movies caused some errors'];
 
             for (const { data } of this.log.failed) {
-                logs += `${++counter}. An unexpected error ocurred parsing this.<br>`;
-                logs += `<a href="custom:${counter - 1}">view details</a>`;
-                logs += `<code>${JSON.stringify(data)}</code>\n`;
+                logs.push(
+                    `${++counter}. An unexpected error ocurred parsing this — `+
+                        `<a href="custom:${counter - 1}">view details</a>`,
+                );
+                logs.push(Markdown.codeBlock(JSON.stringify(data)));
             }
 
             this.$ui.openModal(MarkdownModal, {
-                content: logs,
+                content: logs.join('\n'),
                 handleCustomTrigger: (index: string) => {
                     this.$ui.openModal(ErrorInfoModal, { error: this.log.failed[parseInt(index)].error });
                 },
