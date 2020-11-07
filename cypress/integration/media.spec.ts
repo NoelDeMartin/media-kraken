@@ -113,7 +113,7 @@ describe('Media', () => {
         // Act
         cy.ariaLabel('Open actions menu').click();
         cy.contains('Delete').click();
-        cy.contains('Ok').click();
+        cy.contains('OK').click();
 
         // Assert
         cy.see(`${spirit.name} has been removed from your collection.`);
@@ -128,7 +128,7 @@ describe('Media', () => {
         // Act
         cy.ariaLabel('Open actions menu').click();
         cy.contains('Watch later').click();
-        cy.contains('Ok').click();
+        cy.contains('OK').click();
 
         // Assert
         cy.contains('watch later');
