@@ -281,7 +281,7 @@ export default class Media extends Service<State, ComputedState> {
                 return;
             }
 
-            throw error;
+            this.handleUnknownError(error);
         }
     }
 
@@ -326,6 +326,10 @@ export default class Media extends Service<State, ComputedState> {
                 }],
             },
         );
+    }
+
+    private handleUnknownError(error: Error): void {
+        Services.$app.setCrashReport(error);
     }
 
 }
