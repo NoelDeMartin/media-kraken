@@ -133,9 +133,10 @@ export default class Auth extends Service<State> {
     }
 
     private handleSolidSessionError(error: Error, title?: string, subtitle?: string): void {
-        const clearSessionData = async () => {
+        const handleLogout = async () => {
             ModelsCache.clear();
             SolidUser.logout();
+            EventBus.emit('logout');
             Services.$app.clearCrashReport();
         };
 
@@ -151,7 +152,7 @@ export default class Auth extends Service<State> {
                     : [{
                         label: 'Logout',
                         priority: 0,
-                        handle: clearSessionData,
+                        handle: handleLogout,
                     }],
             },
         );
