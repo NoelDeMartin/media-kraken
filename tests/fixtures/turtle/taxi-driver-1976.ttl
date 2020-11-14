@@ -1,7 +1,7 @@
 @prefix schema: <https://schema.org/> .
 @prefix ldp: <http://www.w3.org/ns/ldp#> .
 
-<>
+<#it>
     a schema:Movie ;
     a ldp:Resource ;
     schema:name "Taxi Driver" ;

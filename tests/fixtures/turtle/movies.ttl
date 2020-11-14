@@ -9,6 +9,7 @@
 movies:
     a ldp:Resource ;
     a ldp:Container ;
+    terms:modified "2021-01-01T00:00:00Z"^^XML:dateTime ;
     rdfs:label "Movies" ;
     ldp:contains movies:taxi-driver-1976 .
 
