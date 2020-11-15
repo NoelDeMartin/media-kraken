@@ -6,6 +6,7 @@ export const enum Format {
 
 export const enum MediaType {
     JSON = 'application/json',
+    CSV = 'text/csv',
 }
 
 interface ActiveUpload {
@@ -25,6 +26,7 @@ const BODY_CANCEL_EVENTS = ['focus', 'mousemove', 'touchmove'];
 
 const MEDIA_TYPES_ACCEPT = {
     [MediaType.JSON]: '.json',
+    [MediaType.CSV]: '.csv',
 };
 
 class Files {

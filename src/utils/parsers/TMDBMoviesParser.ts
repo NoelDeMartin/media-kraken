@@ -15,18 +15,22 @@ class TMDBMoviesParser implements MediaParser<Data, Movie> {
     public async parse(data: Data): Promise<Movie> {
         const movie = new Movie({
             title: data.title,
-            description: data.overview,
-            releaseDate: data.release_date,
             externalUrls: [`https://www.themoviedb.org/movie/${data.id}`],
         });
 
-        movie.setRelationModels('actions', []);
+        if (data.overview)
+            movie.description = data.overview;
+
+        if (data.release_date)
+            movie.releaseDate = new Date(data.release_date);
 
         if (data.poster_path)
             movie.posterUrl = `https://image.tmdb.org/t/p/w500${data.poster_path}`;
 
         if (data.imdb_id)
             movie.externalUrls.push(`https://www.imdb.com/title/${data.imdb_id}`);
+
+        movie.setRelationModels('actions', []);
 
         return movie;
     }

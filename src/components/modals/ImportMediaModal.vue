@@ -20,7 +20,10 @@
                         :title="'Import from ' + mediaSourceNames[source]"
                         @click="importMedia(source)"
                     >
-                        <BaseIcon :name="source" class="w-24 h-24" />
+                        <BaseIcon v-if="source !== 'goodfilms'" :name="source" class="w-24 h-24" />
+                        <div v-else style="background: #2c2c2c" class="w-24 h-24 p-2 flex items-center justify-center">
+                            <img src="@/assets/img/logos/goodfilms.png">
+                        </div>
                     </button>
                     <button
                         v-if="source !== 'imdb'"
@@ -54,6 +57,7 @@ import { MediaSource } from '@/services/Media';
 import ImportIMDBMoviesModal from '@/components/modals/ImportIMDBMoviesModal.vue';
 import Modal from '@/components/mixins/Modal';
 
+import CSV from '@/utils/CSV';
 import Files, { MediaType } from '@/utils/Files';
 import Time from '@/utils/Time';
 
@@ -63,9 +67,10 @@ export default Modal.extend({
     }),
     computed: {
         mediaSourceNames: () => ({
+            [MediaSource.IMDB]: 'IMDB',
             [MediaSource.JSONLD]: 'JSON-LD',
             [MediaSource.TViso]: 'TViso',
-            [MediaSource.IMDB]: 'IMDB',
+            [MediaSource.GoodFilms]: 'Good Fil.ms',
         }),
         helpReplacements(): any {
             const filePath = 'docs#data-schema';
@@ -104,16 +109,18 @@ export default Modal.extend({
             switch (source) {
                 case MediaSource.IMDB:
                     return this.getDataFromModal();
+                case MediaSource.GoodFilms:
+                    return this.getDataFromFile(MediaType.CSV);
                 default:
-                    return this.getDataFromFile();
+                    return this.getDataFromFile(MediaType.JSON);
             }
         },
-        async getDataFromFile(): Promise<object[]> {
-            const filecontents = await Files.upload({ accept: MediaType.JSON });
-            if (filecontents === null)
+        async getDataFromFile(format: MediaType): Promise<object[]> {
+            const fileContents = await Files.upload({ accept: format });
+            if (fileContents === null)
                 return [];
 
-            const data = JSON.parse(filecontents);
+            const data = this.parseData(format, fileContents);
             if (!Array.isArray(data))
                 throw new Error('Invalid file format, expecting array');
 
@@ -124,6 +131,12 @@ export default Modal.extend({
             const data = await modal.result;
 
             return data || [];
+        },
+        parseData(format: MediaType, fileContents: string): unknown {
+            return {
+                [MediaType.JSON]: () => JSON.parse(fileContents),
+                [MediaType.CSV]: () => CSV.parse(fileContents),
+            }[format]();
         },
     },
 });
