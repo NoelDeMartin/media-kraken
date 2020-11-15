@@ -72,7 +72,7 @@
                         v-slot="{ toggle: toggleActionsMenu }"
                         direction="top-right"
                         :options="[
-                            movie.watched
+                            (movie && movie.watched)
                                 ? { text: 'Watch later', icon: 'time', handle: markWatchLater }
                                 : { text: 'Watch', icon: 'checkmark', handle: markWatched },
                             { text: 'Delete', icon: 'trash', handle: deleteMovie },

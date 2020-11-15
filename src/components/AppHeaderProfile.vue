@@ -25,12 +25,12 @@
             >
                 <div v-if="$ui.mobile && !$auth.isOffline" class="flex items-center">
                     <UserAvatar
-                        v-if="$auth.user.avatarUrl"
+                        v-if="user.avatarUrl"
                         class="w-16 h-16 mr-4 flex-shrink-0 rounded-full text-primary-900 outline-none shadow-solid"
                     />
                     <div class="flex flex-col overflow-hidden">
                         <span class="truncate text-lg font-bold">
-                            {{ $auth.user.name }}
+                            {{ user.name }}
                         </span>
                         <a
                             v-if="userWebId"
@@ -63,15 +63,15 @@
                     ref="button"
                     type="button"
                     aria-label="Application options"
-                    :style="$auth.user.avatarUrl ? '' : 'margin-left:-.375rem;margin-right:-.375rem'"
+                    :style="user.avatarUrl ? '' : 'margin-left:-.375rem;margin-right:-.375rem'"
                     :class="{
-                        'rounded-full text-primary-900 focus:outline-none focus:shadow-solid': $auth.user.avatarUrl,
+                        'rounded-full text-primary-900 focus:outline-none focus:shadow-solid': user.avatarUrl,
                         'flex w-8 h-8 text-gray-700 items-center justify-center hover:text-gray-800':
-                            !$auth.user.avatarUrl,
+                            !user.avatarUrl,
                     }"
                     @click="$ui.toggleMenu()"
                 >
-                    <UserAvatar v-if="$auth.user.avatarUrl" class="w-12 h-12 rounded-full" />
+                    <UserAvatar v-if="user.avatarUrl" class="w-12 h-12 rounded-full" />
                     <BaseIcon v-else name="cog" class="w-5 h-5" />
                 </button>
                 <BaseTransition :enabled="$ui.desktop" :duration="100" animations="fade scale">
@@ -85,7 +85,7 @@
                         "
                         :class="{
                             'pb-1 rounded-lg bg-white border border-gray-300 overflow-hidden': $ui.desktop,
-                            '-mt-4': $ui.desktop && !$auth.user.avatarUrl,
+                            '-mt-4': $ui.desktop && !user.avatarUrl,
                         }"
                     >
                         <div
@@ -93,7 +93,7 @@
                             class="flex flex-col p-4 overflow-hidden bg-gray-200 border-b border-gray-300"
                         >
                             <span class="truncate font-bold mb-1">
-                                {{ $auth.user.name }}
+                                {{ user.name }}
                             </span>
                             <a
                                 v-if="userWebId"
@@ -143,6 +143,7 @@ import Services from '@/services';
 import Time from '@/utils/Time';
 
 import SolidUser from '@/models/users/SolidUser';
+import User from '@/models/users/User';
 
 import SettingsModal from '@/components/modals/SettingsModal.vue';
 import UserAvatar from '@/components/UserAvatar.vue';
@@ -163,6 +164,9 @@ export default Vue.extend({
         },
     },
     computed: {
+        user(): User {
+            return this.$auth.user!;
+        },
         menuOptions(): MenuOption[] {
             const optionHandler = (handler: Function) => async () => {
                 // If this isn't done, logging out in offline mode causes a weird UI
@@ -179,10 +183,9 @@ export default Vue.extend({
             ];
         },
         userWebId(): string | null {
-            if (!(this.$auth.user instanceof SolidUser))
-                return null;
-
-            return this.$auth.user.id;
+            return this.$auth.user instanceof SolidUser
+                ? this.$auth.user.id
+                : null;
         },
     },
     mounted() {

@@ -13,7 +13,7 @@ export default Vue.extend({
         },
     },
     computed: {
-        iconComponent() {
+        iconComponent(): Vue {
             return require(`@/assets/icons/${this.name}.svg`).default;
         },
     },

@@ -18,7 +18,7 @@
             type="button"
             class="relative flex p-4 font-bold uppercase text-sm group self-stretch items-center"
             :class="{ 'bg-red-500 text-white': options.error }"
-            @click="options.action.handler"
+            @click="clickAction"
         >
             <div class="absolute inset-0 opacity-15 bg-black group-hover:opacity-30" />
             <span class="z-10">{{ options.action.text }}</span>
@@ -60,6 +60,14 @@ export default Vue.extend({
             return;
 
         setTimeout(() => this.$ui.hideSnackbar(this.id), this.options.lifetime || DEFAULT_LIFETIME);
+    },
+    methods: {
+        clickAction() {
+            if (!this.options.action?.handler)
+                return;
+
+            this.options.action.handler();
+        },
     },
 });
 </script>

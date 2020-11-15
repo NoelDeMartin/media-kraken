@@ -3,7 +3,7 @@
         <div class="flex flex-col items-center max-w-xs">
             <BaseIcon name="media-kraken" class="w-32 h-32" />
             <p class="text-sm text-gray-800 text-center leading-relaxed my-6">
-                The credentials from <span class="font-semibold">{{ $auth.user.id }}</span> are
+                The credentials from <span class="font-semibold">{{ user.id }}</span> are
                 no longer valid, please log in again or log out to use a different account.
             </p>
             <div class="flex flex-col w-full">
@@ -39,15 +39,18 @@ import Vue from 'vue';
 import SolidUser from '@/models/users/SolidUser';
 
 export default Vue.extend({
+    computed: {
+        user(): SolidUser {
+            return this.$auth.user as SolidUser;
+        },
+    },
     created() {
         if (this.$auth.isLoggedIn && this.$media.loaded)
             this.$router.replace({ name: 'home' });
     },
     methods: {
         refreshCredentials() {
-            const user = this.$auth.user as SolidUser;
-
-            this.$auth.loginWithSolid(user.id);
+            this.$auth.loginWithSolid(this.user.id);
         },
     },
 });
