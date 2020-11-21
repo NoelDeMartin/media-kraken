@@ -1,28 +1,39 @@
 # Changelog
 
-## v0.1.3
+All notable changes to this project will be documented in this file.
 
-- Changed caching strategy in index to NetworkFirst.
-- Added opt-in error reporting to [Sentry](https://sentry.io/).
-- Added settings modal to configure animations and error reporting.
-- Configured development deploy at [media-kraken.netlify.com](https://media-kraken.netlify.com).
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-[Compare changes with previous version](https://github.com/NoelDeMartin/media-kraken/compare/v0.1.2...v0.1.3)
+## [v0.1.3](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.3) - 2020-07-24
 
-## v0.1.2
+### Added
 
-- Added progress messages in loading overlay.
+- Opt-in error reporting to [Sentry](https://sentry.io/).
+- Settings modal to configure animations and error reporting.
+- Development deploy at [media-kraken.netlify.com](https://media-kraken.netlify.com).
 
-[Compare changes with previous version](https://github.com/NoelDeMartin/media-kraken/compare/v0.1.1...v0.1.2)
+### Changed
 
-## v0.1.1
+- Service worker caching strategy in index to NetworkFirst.
+
+## [v0.1.2](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.2) - 2020-07-19
+
+### Added
+
+- Progress messages in loading overlay.
+
+## [v0.1.1](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.1) - 2020-07-18
+
+### Changed
 
 - Improved initial loading for large collections.
-- Fixed opengraph meta tags.
 
-[Compare changes with previous version](https://github.com/NoelDeMartin/media-kraken/compare/v0.1.0...v0.1.1)
+### Fixed
 
-## v0.1.0
+- Opengraph meta tags.
 
-- First version of the app.
-- Track movies.
+## [v0.1.0](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.0) - 2020-07-18
+
+### Added
+
+- Everything!
