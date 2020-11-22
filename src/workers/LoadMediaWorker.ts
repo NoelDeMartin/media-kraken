@@ -92,7 +92,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
 
         this.moviesContainer = movies;
 
-        await this.migrateContainerSchema(this.moviesContainer);
+        await this.migrateContainerSchema('Movies', this.moviesContainer);
     }
 
     private async loadMovies(): Promise<void> {
@@ -165,7 +165,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         this.moviesContainer.movies!.push(...movies);
     }
 
-    private async migrateContainerSchema(container: MediaContainer): Promise<void> {
+    private async migrateContainerSchema(name: string, container: MediaContainer): Promise<void> {
         if (!(Soukai.engine instanceof SolidEngine))
             return;
 
@@ -180,7 +180,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         if (!migrateSchema)
             return;
 
-        await container.migrateSchema();
+        await container.migrateSchema(name, this.documentsMetadata[container.url]?.describedBy);
     }
 
     private async migrateMoviesSchemas(movies: Movie[]): Promise<void> {

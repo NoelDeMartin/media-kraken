@@ -10,6 +10,10 @@ class Arr {
         return chunks;
     }
 
+    public create<T>(item: T | T[]): T[] {
+        return Array.isArray(item) ? item : [item];
+    }
+
     public contains<T>(needle: T, haystack: T[]): boolean {
         return haystack.indexOf(needle) !== -1;
     }

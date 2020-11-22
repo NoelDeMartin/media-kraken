@@ -30,7 +30,7 @@ export default class SolidUser extends User<SolidUserJSON> {
 
     private static _fetch?: Fetch;
 
-    private static get fetch(): Fetch {
+    public static get fetch(): Fetch {
         return this._fetch || SolidAuthClient.fetch.bind(SolidAuthClient);
     }
 
@@ -179,9 +179,9 @@ export default class SolidUser extends User<SolidUserJSON> {
             return null;
 
         // Given that we've set the date in the client after receiving a response, there may be some
-        // difference in the modified date depending on the network. So we'll use a 5 seconds threshold
-        // for valid models.
-        const models = await ModelsCache.getFromDocument(moviesContainerDocument, 5000);
+        // difference in the modified date used in the server depending on the network latency.
+        // We will use a 10 seconds threshold to consider models valid.
+        const models = await ModelsCache.getFromDocument(moviesContainerDocument, 10000);
         const [moviesContainer] = (models || []).filter(model => model.modelClass === MediaContainer);
 
         return moviesContainer as MediaContainer || null;

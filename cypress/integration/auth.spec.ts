@@ -17,12 +17,12 @@ function stubSolidAuth(
     domain: string,
     options: {
         context?: SolidLoginContext;
-        signup?: boolean;
+        signUp?: boolean;
     } = {},
 ): SolidLoginContext {
     const context = options.context || {};
-    const signup = options.signup ?? false;
-    const typeIndex = signup ? emptyTypeIndex : populatedTypeIndex;
+    const signUp = options.signUp ?? false;
+    const typeIndex = signUp ? emptyTypeIndex : populatedTypeIndex;
 
     cy.lib('solid-auth-client').then(SolidAuthClient => {
         cy.stub(SolidAuthClient, 'trackSession').callsFake(listener => {
@@ -50,7 +50,12 @@ function stubSolidAuth(
     cy.fetchRoute('/me', profile);
     cy.fetchRoute('/settings/privateTypeIndex.ttl', typeIndex);
 
-    if (!signup) {
+    if (signUp) {
+        cy.fetchRoute(
+            new RegExp(`https://${domain}/$`),
+            new Response('Created', { status: 201 }),
+        );
+    } else {
         cy.fetchRoute('/movies/taxi-driver-1976', taxiDriverTurtle);
         cy.fetchRoute('/movies/', movies);
     }
@@ -110,7 +115,7 @@ describe('Authentication', () => {
         // Arrange
         const domain = Faker.internet.domainName();
 
-        stubSolidAuth(domain, { signup: true });
+        stubSolidAuth(domain, { signUp: true });
 
         cy.startApp();
 

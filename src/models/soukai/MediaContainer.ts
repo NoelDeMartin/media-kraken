@@ -1,7 +1,10 @@
-import { SolidContainerModel, SolidContainsRelation, SolidEngine, SolidEngineListener } from 'soukai-solid';
-import Soukai, { MultiModelRelation, FieldType } from 'soukai';
+import Soukai, { MultiModelRelation, FieldType, SoukaiError, Attributes } from 'soukai';
+import { NetworkError, SolidContainerModel, SolidContainsRelation } from 'soukai-solid';
 
 import Movie from '@/models/soukai/Movie';
+import SolidUser from '@/models/users/SolidUser';
+
+import Arr from '@/utils/Arr';
 
 export default class MediaContainer extends SolidContainerModel {
 
@@ -16,7 +19,7 @@ export default class MediaContainer extends SolidContainerModel {
     public movies?: Movie[];
     public relatedMovies!: SolidContainsRelation<MediaContainer, Movie, typeof Movie>;
 
-    private legacyUrl: string | null = null;
+    private fixedUpdatedAt: Date | null = null;
 
     public moviesRelationship(): MultiModelRelation {
         return this.contains(Movie);
@@ -26,71 +29,100 @@ export default class MediaContainer extends SolidContainerModel {
         if (!this.exists() || this.wasRecentlyCreated())
             return false;
 
-        // This is the date when v0.2.0 was released with the schema migration.
-        // In order to to avoid doing an unnecessary request to get the meta document,
-        // we are assuming that containers with updatedAt later than this date are already up to date.
-        const schemaMigrationReleaseDate = new Date(); // TODO update on 0.2.0 release
-        const oldestModification = this.modificationDates ? this.modificationDates.sort()[0] : new Date(0);
-
-        if (oldestModification > schemaMigrationReleaseDate)
-            return false;
-
-        return this.hasLegacyUrl();
+        return !this.name
+            || isNaN(this.updatedAt.getTime());
     }
 
-    public async migrateSchema(): Promise<void> {
+    public async migrateSchema(name: string, describedBy?: string): Promise<void> {
         if (!this.exists() || this.wasRecentlyCreated())
             return;
 
-        const updatedAt = new Date();
+        const metaDocumentUrl = describedBy || `${this.url}.meta`;
+        const createdAt = await this.getCreatedAtFromMetaDocument(metaDocumentUrl);
 
-        await Soukai.requireEngine().update(
-            this.getContainerUrl()!,
-            this.getDocumentUrl()! + '.meta',
-            {
-                '@graph': {
-                    $updateItems: {
-                        $where: { '@id': this.legacyUrl },
-                        $update: {
-                            '@id': this.url,
-                            'http://purl.org/dc/terms/modified': {
-                                '@type': 'http://www.w3.org/2001/XMLSchema#dateTime',
-                                '@value': updatedAt.toISOString(),
-                            },
-                        },
-                    },
-                },
-            },
-        );
+        try {
+            const response = await SolidUser.fetch(metaDocumentUrl, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'text/turtle' },
+                body: [
+                    '@prefix movies: <./> .',
+                    '@prefix purl: <http://purl.org/dc/terms/> .',
+                    '@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .',
+                    '',
+                    'movies:',
+                    `    purl:created ${this.serializeTurtleDate(createdAt)} ;`,
+                    `    rdfs:label "${name}" .`,
+                ].join('\n'),
+            });
 
-        this.legacyUrl = null;
-        this.fixLegacyAttributes(updatedAt);
+            if (response.status !== 201)
+                throw new SoukaiError(`Error migrating ${this.url}, returned ${response.status} status code`);
+
+            this.fixLegacyAttributes(name, this.fixedUpdatedAt || this.updatedAt);
+        } catch (error) {
+            throw new NetworkError(`Error migrating ${this.url}`, error);
+        }
     }
 
-    private async hasLegacyUrl(): Promise<boolean> {
-        this.legacyUrl = await this.getLegacyUrl();
+    protected initializeAttributes(attributes: Attributes, exists: boolean): void {
+        if (exists && 'updatedAt' in attributes && Array.isArray(attributes['updatedAt']))
+            this.fixedUpdatedAt = attributes['updatedAt'].slice(1).reduce(
+                (latest, current) => latest > current ? latest : current,
+                attributes['updatedAt'][0],
+            );
 
-        return this.legacyUrl !== null;
+        super.initializeAttributes(attributes, exists);
     }
 
-    private async getLegacyUrl(): Promise<string | null> {
-        let containsRelativeIRIs: boolean = false;
-        const engine = Soukai.requireEngine() as SolidEngine;
-        const listener: SolidEngineListener = {
-            onRDFDocumentLoaded: (_, metadata) => containsRelativeIRIs = !!metadata.containsRelativeIRIs,
-        };
+    private async getCreatedAtFromMetaDocument(metaDocumentUrl: string): Promise<Date> {
+        const document = await Soukai.requireEngine().readOne(this.getContainerUrl()!, metaDocumentUrl);
 
-        engine.addListener(listener);
+        if (!this.isLegacyMetaDocument(document))
+            throw new SoukaiError(
+                `The document at ${metaDocumentUrl} was not created with Media Kraken so it isn't safe to migrate, ` +
+                'you can migrate it yourself by adding rdfs:label property',
+            );
 
-        const metaDocument = await engine.readOne(this.getContainerUrl()!, this.url + '.meta');
-
-        engine.removeListener(listener);
-
-        return containsRelativeIRIs ? null : (metaDocument as any)['@graph'][0]['@id'];
+        return new Date(document['@graph'][0]['http://purl.org/dc/terms/created']['@value']);
     }
 
-    private fixLegacyAttributes(updatedAt: Date): void {
+    private isLegacyMetaDocument(document: any): document is {
+        '@graph': [{
+            'http://purl.org/dc/terms/created': { '@value': string };
+        }];
+    } {
+        if (document['@graph'].length > 1)
+            return false;
+
+        const containerResource = document['@graph'][0];
+        const properties = Object.keys(containerResource);
+        const expectedProperties = [
+            '@id',
+            '@type',
+            'http://purl.org/dc/terms/created',
+            'http://purl.org/dc/terms/modified',
+            'http://www.w3.org/2000/01/rdf-schema#label',
+        ];
+
+        return properties.length !== expectedProperties.length
+            || expectedProperties.some(property => !Arr.contains(property, properties))
+            || Arr.create(containerResource['@type']).some((type: string) => !Arr.contains(type, [
+                'https://www.w3.org/ns/ldp#Resource',
+                'https://www.w3.org/ns/ldp#Container',
+            ]));
+    }
+
+    private fixLegacyAttributes(name: string, updatedAt: Date): void {
+        this._attributes.name = name;
         this._attributes.updatedAt = updatedAt;
+    }
+
+    private serializeTurtleDate(value: Date): string {
+        const digits = (...numbers: number[]) => numbers.map(number => number.toString().padStart(2, '0'));
+        const date = digits(value.getUTCFullYear(), value.getUTCMonth() + 1, value.getUTCDate()).join('-');
+        const time = digits(value.getUTCHours(), value.getUTCMinutes(), value.getUTCSeconds()).join(':');
+
+        return `"${date}T${time}Z"^^<http://www.w3.org/2001/XMLSchema#dateTime>`;
     }
 
 }
