@@ -74,11 +74,11 @@ export default Modal.extend({
         }),
         helpReplacements(): any {
             const filePath = 'docs#data-schema';
-            const branch = this.$app.isDevelopment ? 'main' : this.$app.version;
+            const tag = this.$app.isDevelopment ? 'main' : `v${this.$app.version}`;
 
             return {
                 jsonld: {
-                    url: `${this.$app.sourceUrl}/blob/${branch}/${filePath}`,
+                    url: `${this.$app.sourceUrl}/blob/${tag}/${filePath}`,
                 },
             };
         },
