@@ -1,3 +1,5 @@
+import { after } from '@noeldemartin/utils';
+
 import Service from '@/services/Service';
 import Services from '@/services';
 
@@ -5,6 +7,9 @@ import ModelsCache from '@/models/ModelsCache';
 import OfflineUser from '@/models/users/OfflineUser';
 import SolidUser from '@/models/users/SolidUser';
 import User from '@/models/users/User';
+
+import SolidAuth from '@/authentication/SolidAuth';
+import { AuthenticationMethod } from '@/authentication/AuthenticationMethod';
 
 import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
@@ -45,11 +50,23 @@ export default class Auth extends Service<State> {
         await this.updateUser(new OfflineUser());
     }
 
-    public async loginWithSolid(idp: string): Promise<void> {
-        const loggedIn = await Services.$ui.loading(() => SolidUser.login(idp));
+    public async loginWithSolid(loginUrl: string): Promise<void> {
+        const loggedIn = await Services.$ui.loading(() => SolidAuth.login(loginUrl, AuthenticationMethod.Legacy));
 
-        if (!loggedIn)
+        if (loggedIn === false) {
             Services.$ui.alert('Log in failed', "It wasn't possible to log in with this url");
+
+            return;
+        }
+
+        if (loggedIn === true) {
+            await after({ seconds: 10 });
+
+            Services.$ui.alert(
+                'This is taking too long...',
+                'You should have been redirected to your identity provider by now, maybe something went wrong',
+            );
+        }
     }
 
     public async logout(force: boolean = false): Promise<void> {
@@ -74,8 +91,7 @@ export default class Auth extends Service<State> {
 
     protected async boot(): Promise<void> {
         await super.boot();
-
-        await SolidUser.trackSession({
+        await SolidAuth.boot({
             onUserUpdated: (solidUser: SolidUser | null) => {
                 if (!!this.user && !(this.user instanceof SolidUser)) {
                     return;
@@ -134,8 +150,8 @@ export default class Auth extends Service<State> {
 
     private handleSolidSessionError(error: Error, title?: string, subtitle?: string): void {
         const handleLogout = async () => {
-            ModelsCache.clear();
-            SolidUser.logout();
+            await ModelsCache.clear();
+            await SolidAuth.logout();
             EventBus.emit('logout');
             Services.$app.clearCrashReport();
         };

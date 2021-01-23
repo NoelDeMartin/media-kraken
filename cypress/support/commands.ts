@@ -41,10 +41,12 @@ const customCommands = {
     startApp(): void {
         cy.window()
           .then(window => cy.stub(window, 'fetch').callsFake(fetchStub));
-        cy.lib('solid-auth-client')
-          .then(SolidAuthClient => cy.stub(SolidAuthClient, 'fetch').callsFake(fetchStub));
+        cy.lib('solid-auth-client').then(async promisedClient => {
+            const client = await promisedClient;
 
-        getRuntime().then(runtime => runtime.start());
+            cy.stub(client, 'fetch').callsFake(fetchStub);
+            getRuntime().then(runtime => runtime.start());
+        });
     },
 
     login(): void {

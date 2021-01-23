@@ -49,8 +49,8 @@ export default abstract class WebWorker<Parameters extends any[], Result> {
         });
     }
 
-    protected async solidAuthClientFetch(...args: any[]): Promise<Response> {
-        const response = await this.runOperation<SerializedResponse>('solid-auth-client-fetch', ...args);
+    protected async solidFetch(...args: any[]): Promise<Response> {
+        const response = await this.runOperation<SerializedResponse>('solid-fetch', ...args);
 
         return Http.deserializeResponse(response);
     }

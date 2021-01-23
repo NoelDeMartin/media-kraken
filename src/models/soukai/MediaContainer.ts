@@ -1,10 +1,9 @@
 import Soukai, { MultiModelRelation, FieldType, SoukaiError, Attributes } from 'soukai';
 import { NetworkError, SolidContainerModel, SolidContainsRelation } from 'soukai-solid';
 
-import Movie from '@/models/soukai/Movie';
-import SolidUser from '@/models/users/SolidUser';
-
 import Arr from '@/utils/Arr';
+import Movie from '@/models/soukai/Movie';
+import SolidAuth from '@/authentication/SolidAuth';
 
 export default class MediaContainer extends SolidContainerModel {
 
@@ -41,7 +40,7 @@ export default class MediaContainer extends SolidContainerModel {
         const createdAt = await this.getCreatedAtFromMetaDocument(metaDocumentUrl);
 
         try {
-            const response = await SolidUser.fetch(metaDocumentUrl, {
+            const response = await SolidAuth.fetch(metaDocumentUrl, {
                 method: 'PUT',
                 headers: { 'Content-Type': 'text/turtle' },
                 body: [

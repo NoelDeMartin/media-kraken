@@ -3,7 +3,7 @@ import { Soukai } from 'soukai';
 
 interface AppLibraries {
     'soukai': Soukai;
-    'solid-auth-client': SolidAuthClient;
+    'solid-auth-client': Promise<SolidAuthClient>;
 }
 
 declare global {

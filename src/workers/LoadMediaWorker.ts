@@ -9,6 +9,8 @@ import Movie from '@/models/soukai/Movie';
 import SolidUser from '@/models/users/SolidUser';
 import User from '@/models/users/User';
 
+import SolidAuth from '@/authentication/SolidAuth';
+
 import Arr from '@/utils/Arr';
 import JSONUserParser from '@/utils/parsers/JSONUserParser';
 
@@ -80,7 +82,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         const user = await JSONUserParser.parse(userJson);
 
         if (user instanceof SolidUser)
-            SolidUser.setFetch((...params: any[]) => this.solidAuthClientFetch(...params));
+            SolidAuth.setFetch(this.solidFetch.bind(this));
 
         return user;
     }

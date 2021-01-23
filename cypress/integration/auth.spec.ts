@@ -24,14 +24,16 @@ function stubSolidAuth(
     const signUp = options.signUp ?? false;
     const typeIndex = signUp ? emptyTypeIndex : populatedTypeIndex;
 
-    cy.lib('solid-auth-client').then(SolidAuthClient => {
-        cy.stub(SolidAuthClient, 'trackSession').callsFake(listener => {
+    cy.lib('solid-auth-client').then(async promisedClient => {
+        const client = await promisedClient;
+
+        cy.stub(client, 'trackSession').callsFake(listener => {
             context.listener = listener;
 
             if (context.session)
                 listener(context.session);
         });
-        cy.stub(SolidAuthClient, 'login').callsFake(() => {
+        cy.stub(client, 'login').callsFake(() => {
             context.session = {
                 idp: `https://${domain}`,
                 webId: `https://${domain}/me`,

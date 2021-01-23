@@ -1,4 +1,4 @@
-import SolidAuthClient from 'solid-auth-client';
+import SolidAuth from '@/authentication/SolidAuth';
 
 import Errors from '@/utils/Errors';
 import Http from '@/utils/Http';
@@ -65,8 +65,8 @@ export default class WebWorkerRunner<Parameters extends any[], Result> {
             return this.delegate[camelCaseName](...args);
 
         switch (name) {
-            case 'solid-auth-client-fetch': {
-                const response = await SolidAuthClient.fetch(...(args as [string, any]));
+            case 'solid-fetch': {
+                const response = await SolidAuth.fetch(...(args as [string, any]));
 
                 return Http.serializeResponse(response);
             }

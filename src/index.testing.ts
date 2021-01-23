@@ -1,4 +1,3 @@
-import SolidAuthClient from 'solid-auth-client';
 import Soukai from 'soukai';
 import Vue from 'vue';
 
@@ -30,7 +29,10 @@ window.Runtime = {
             case 'soukai':
                 return Soukai;
             case 'solid-auth-client':
-                return SolidAuthClient;
+                return import(
+                    /* webpackChunkName: 'authentication-legacy' */
+                    '@/authentication/LegacyAuthenticator.chunk')
+                        .then(legacyChunk => legacyChunk.default);
         }
     },
 

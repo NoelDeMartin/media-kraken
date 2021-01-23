@@ -2,7 +2,7 @@
     <div
         class="flex items-center h-full"
         :class="{
-            'absolute inset-0 justify-end':$ui.mobile,
+            'absolute inset-0 justify-end': $ui.mobile,
             'relative justify-start flex-grow mr-4 z-20': $ui.desktop,
         }"
         role="search"
