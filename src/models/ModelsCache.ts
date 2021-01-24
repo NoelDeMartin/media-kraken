@@ -79,9 +79,13 @@ class ModelsCache {
     private async getDocumentData(url: string): Promise<CachedDocumentData | null> {
         try {
             const connection = await this.getConnection();
-            const transaction = connection.transaction('models-cache', 'readonly');
+            const data = await this.retryingOnTransactionInactive(() => {
+                const transaction = connection.transaction('models-cache', 'readonly');
 
-            return await transaction.store.get(url) || null;
+                return transaction.store.get(url);
+            });
+
+            return data || null;
         } catch (e) {
             return null;
         }
@@ -89,20 +93,26 @@ class ModelsCache {
 
     private async setDocumentData(url: string, data: CachedDocumentData): Promise<void> {
         const connection = await this.getConnection();
-        const transaction = connection.transaction('models-cache', 'readwrite');
 
-        transaction.store.put(data, url);
+        await this.retryingOnTransactionInactive(() => {
+            const transaction = connection.transaction('models-cache', 'readwrite');
 
-        await transaction.done;
+            transaction.store.put(data, url);
+
+            return transaction.done;
+        });
     }
 
     private async deleteDocumentData(url: string): Promise<void> {
         const connection = await this.getConnection();
-        const transaction = connection.transaction('models-cache', 'readwrite');
 
-        transaction.store.delete(url);
+        await this.retryingOnTransactionInactive(() => {
+            const transaction = connection.transaction('models-cache', 'readwrite');
 
-        await transaction.done;
+            transaction.store.delete(url);
+
+            return transaction.done;
+        });
     }
 
     private serializeModel(model: SolidModel, relatedModels: Record<string, SolidModel[]>): CachedModel {
@@ -157,6 +167,24 @@ class ModelsCache {
             });
 
         return this.connection;
+    }
+
+    // See https://github.com/jakearchibald/idb/issues/201
+    private retryingOnTransactionInactive<R>(operation: () => R): R {
+        try {
+            return operation();
+        } catch (error) {
+            if (
+                !(error instanceof Error) || (
+                    error.name.toLowerCase().includes('inactive') &&
+                    error.message.toLowerCase().includes('inactive')
+                )
+            ) {
+                throw error;
+            }
+
+            return operation();
+        }
     }
 
 }
