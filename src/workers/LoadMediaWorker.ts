@@ -211,9 +211,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
     }
 
     private filterLegacyMovies(movies: Movie[]): Movie[] {
-        return movies.filter(
-            movie => movie.hasLegacySchema(this.documentsMetadata[movie.getDocumentUrl()!]),
-        );
+        return movies.filter(movie => movie.hasLegacySchema());
     }
 
     private updateProgressMessage(message: string): void {

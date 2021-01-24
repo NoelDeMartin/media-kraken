@@ -26,6 +26,9 @@ class ModelsCache {
     private connection?: IDBPDatabase<DatabaseSchema>;
 
     public async getFromDocument(document: SolidDocument, validAge: number = 0): Promise<SolidModel[] | null> {
+        if (!document.updatedAt)
+            return null;
+
         const data = await this.getDocumentData(document.url);
 
         if (!data || Math.abs(document.updatedAt.getTime() - data.updatedAt.getTime()) > validAge)
@@ -35,6 +38,9 @@ class ModelsCache {
     }
 
     public async rememberDocument(documentUrl: string, documentUpdatedAt: Date): Promise<void> {
+        if (!documentUpdatedAt)
+            return;
+
         await this.setDocumentData(documentUrl, {
             models: {},
             updatedAt: documentUpdatedAt,
@@ -45,12 +51,12 @@ class ModelsCache {
         const documentUrl = model.getDocumentUrl();
 
         if (!documentUrl)
-            throw new Error('Cannot remember a model without url');
+            return;
 
         const data = await this.getDocumentData(documentUrl);
 
         if (!data)
-            throw Error(`Model document not initialized: ${documentUrl}`);
+            return;
 
         data.models[model.url] = this.serializeModel(model, relatedModels);
 

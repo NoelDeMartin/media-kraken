@@ -2,7 +2,7 @@
 @prefix pim: <http://www.w3.org/ns/pim/space#> .
 @prefix solid: <http://www.w3.org/ns/solid/terms#> .
 
-<>
+<#me>
     foaf:name "John Doe" ;
     pim:storage </> ;
     solid:privateTypeIndex </settings/privateTypeIndex.ttl> .

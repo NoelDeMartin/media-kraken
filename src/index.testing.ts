@@ -32,7 +32,12 @@ window.Runtime = {
                 return import(
                     /* webpackChunkName: 'authentication-legacy' */
                     '@/authentication/LegacyAuthenticator.chunk')
-                        .then(legacyChunk => legacyChunk.default);
+                        .then(chunk => chunk.default);
+            case '@inrupt/solid-client-authn-browser':
+                return import(
+                    /* webpackChunkName: 'authentication-inrupt' */
+                    '@/authentication/InruptAuthenticator.chunk')
+                        .then(chunk => chunk.default);
         }
     },
 

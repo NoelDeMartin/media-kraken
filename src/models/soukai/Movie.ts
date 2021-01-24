@@ -1,4 +1,4 @@
-import { SolidModel, SolidHasManyRelation, RDFDocumentMetadata } from 'soukai-solid';
+import { SolidModel, SolidHasManyRelation } from 'soukai-solid';
 import Soukai, { FieldType, MultiModelRelation } from 'soukai';
 
 import Arr from '@/utils/Arr';
@@ -143,7 +143,7 @@ export default class Movie extends SolidModel {
         return this.relatedActions.create({ startTime: date, endTime: date });
     }
 
-    public hasLegacySchema(documentMetadata?: RDFDocumentMetadata): boolean {
+    public hasLegacySchema(): boolean {
         if (!this.exists() || this.wasRecentlyCreated())
             return false;
 
@@ -151,8 +151,7 @@ export default class Movie extends SolidModel {
         const sourceDocumentUrl = this.getSourceDocumentUrl();
 
         return (documentUrl !== null && sourceDocumentUrl !== null && documentUrl !== sourceDocumentUrl)
-            || !Str.contains(this.url, '#')
-            || !documentMetadata?.containsRelativeIRIs;
+            || !Str.contains(this.url, '#');
     }
 
     public async migrateSchema(): Promise<void> {

@@ -1,3 +1,4 @@
+import { AuthenticationStatus } from '@/authentication';
 import { arr, FluentArray, PromisedValue } from '@noeldemartin/utils';
 import { Fetch } from 'soukai-solid';
 
@@ -17,7 +18,7 @@ export default abstract class Authenticator {
     private listeners: FluentArray<AuthListener> = arr<AuthListener>([]);
     private booted?: PromisedValue<void>;
 
-    public abstract login(oidcIssuer: string): Promise<void>;
+    public abstract login(oidcIssuer: string): Promise<AuthenticationStatus>;
 
     public abstract logout(): Promise<void>;
 

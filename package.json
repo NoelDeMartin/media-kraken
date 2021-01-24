@@ -16,6 +16,7 @@
     "cy:test": "start-server-and-test test:serve http://localhost:8080 cy:run"
   },
   "dependencies": {
+    "@inrupt/solid-client-authn-browser": "^1.4.2",
     "@noeldemartin/utils": "0.0.1-next.2ec8e71341786e1ee19f80f0380492c5bc62be9d",
     "@sentry/browser": "^5.20.0",
     "@types/n3": "^1.1.6",
@@ -26,7 +27,7 @@
     "register-service-worker": "^1.6.2",
     "solid-auth-client": "^2.4.1",
     "soukai": "^0.4.0",
-    "soukai-solid": "^0.4.0-dev.6605c1a509f7ff59670f11b6d906813dd90f2e6c",
+    "soukai-solid": "^0.4.0-dev.809cdd56b1727a5c54fb2a5feab453394a14da92",
     "tailwindcss": "^1.2.0",
     "vue": "^2.6.10",
     "vue-router": "^3.1.5",

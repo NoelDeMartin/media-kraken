@@ -2,6 +2,7 @@ import { Fetch } from 'soukai-solid';
 import { Session, SolidAuthClient } from 'solid-auth-client';
 import { PromisedValue, Storage } from '@noeldemartin/utils';
 
+import { AuthenticationStatus } from '@/authentication';
 import Authenticator from '@/authentication/Authenticator';
 
 class LegacyAuthenticator extends Authenticator {
@@ -50,13 +51,12 @@ class LegacyAuthenticator extends Authenticator {
         client.trackSession(onSessionUpdated);
     }
 
-    public async login(oidcIssuer: string): Promise<void> {
+    public async login(oidcIssuer: string): Promise<AuthenticationStatus> {
         await this.startSession();
 
-        const response = await this.promisedClient!.value!.login(oidcIssuer);
+        const session = await this.promisedClient!.value!.login(oidcIssuer);
 
-        if (response === null)
-            throw new Error(`Could not log in to ${oidcIssuer}`);
+        return session ? AuthenticationStatus.LoggedIn : AuthenticationStatus.LoggingIn;
     }
 
     public async logout(): Promise<void> {

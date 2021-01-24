@@ -1,9 +1,9 @@
 import { Fetch } from 'soukai-solid';
-import { silenced, urlRoot, Storage } from '@noeldemartin/utils';
+import { silenced, urlRoot, Storage, after } from '@noeldemartin/utils';
 
 import SolidUser from '@/models/users/SolidUser';
 
-import { defaultAuthenticationMethod, AuthenticationMethod } from '@/authentication/AuthenticationMethod';
+import { defaultAuthenticationMethod, AuthenticationMethod, AuthenticationStatus } from '@/authentication';
 import Authenticator, { AuthListener, AuthSession } from '@/authentication/Authenticator';
 import authenticators from '@/authentication/authenticators';
 
@@ -70,12 +70,11 @@ class SolidAuth {
         }
     }
 
-    public async login(
-        loginUrl: string,
-        authenticationMethod: AuthenticationMethod = defaultAuthenticationMethod,
-    ): Promise<boolean | void> {
+    public async login(loginUrl: string, authenticationMethod?: AuthenticationMethod): Promise<AuthenticationStatus> {
         if (this.session)
-            return;
+            return AuthenticationStatus.LoggedIn;
+
+        authenticationMethod = authenticationMethod ?? defaultAuthenticationMethod;
 
         const profile = await this.readProfileFromLoginUrl(loginUrl);
         const oidcIssuerUrl = profile?.oidcIssuerUrl ?? urlRoot(profile?.webId ?? loginUrl);
@@ -85,19 +84,27 @@ class SolidAuth {
 
         try {
             const authenticator = await this.useAuthenticator(authenticationMethod);
+            const status = await authenticator.login(oidcIssuerUrl);
 
-            await authenticator.login(oidcIssuerUrl);
+            if (status === AuthenticationStatus.LoggingIn)
+                await after({ seconds: 10 });
 
-            return true;
+            return status;
         } catch (error) {
             Storage.remove(STORAGE_PREVIOUS_LOGIN_KEY);
 
-            return false;
+            return AuthenticationStatus.Failed;
         }
     }
 
     public async logout(): Promise<void> {
-        await this.session?.authenticator?.logout();
+        if (Storage.has(STORAGE_PREVIOUS_LOGIN_KEY))
+            Storage.remove(STORAGE_PREVIOUS_LOGIN_KEY);
+
+        if (this._previousLogin)
+            delete this._previousLogin;
+
+        await this.authenticator?.logout();
     }
 
     private async useAuthenticator(authenticationMethod: AuthenticationMethod): Promise<Authenticator> {

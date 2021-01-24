@@ -17,7 +17,9 @@ class Http {
     }
 
     public deserializeResponse(response: SerializedResponse): Response {
-        return new Response(response.body, {
+        const body = response.body.size === 0 ? null : response.body;
+
+        return new Response(body, {
             status: response.status,
             statusText: response.statusText,
             headers: response.headers,

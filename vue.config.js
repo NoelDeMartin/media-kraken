@@ -74,6 +74,10 @@ module.exports = {
             .use('vue-svg-loader')
             .loader('vue-svg-loader');
 
+        // TODO remove this after updating TS version
+        // (Inrupt's auth package is using type-only imports in declaration files)
+        config.plugins.delete('fork-ts-checker');
+
         config.module
             .rule('markdown')
             .test(/\.md$/)

@@ -39,14 +39,12 @@ export function fetchStub(url: string, options: any): Promise<Response> {
 const customCommands = {
 
     startApp(): void {
-        cy.window()
-          .then(window => cy.stub(window, 'fetch').callsFake(fetchStub));
-        cy.lib('solid-auth-client').then(async promisedClient => {
-            const client = await promisedClient;
-
-            cy.stub(client, 'fetch').callsFake(fetchStub);
-            getRuntime().then(runtime => runtime.start());
-        });
+        cy.window().then(window => cy.stub(window, 'fetch').callsFake(fetchStub));
+        cy.lib('solid-auth-client')
+          .then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
+        cy.lib('@inrupt/solid-client-authn-browser')
+          .then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
+        getRuntime().then(runtime => runtime.start());
     },
 
     login(): void {
@@ -104,6 +102,9 @@ const customCommands = {
     localStorageShouldBeEmpty() {
         cy.wrap(null).should(() => {
             expect(localStorage.getItem('media-kraken-offline-user')).to.be.null;
+            expect(localStorage.getItem('media-kraken-solid-auth')).to.be.null;
+            expect(localStorage.getItem('media-kraken-malformed-document-urls')).to.be.null;
+            expect(localStorage.getItem('media-kraken-migrate-schema')).to.be.null;
             expect(localStorage.getItem('solid-auth-client')).to.be.null;
         });
     },

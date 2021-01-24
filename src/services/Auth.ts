@@ -1,5 +1,3 @@
-import { after } from '@noeldemartin/utils';
-
 import Service from '@/services/Service';
 import Services from '@/services';
 
@@ -8,8 +6,8 @@ import OfflineUser from '@/models/users/OfflineUser';
 import SolidUser from '@/models/users/SolidUser';
 import User from '@/models/users/User';
 
+import { AuthenticationMethod, AuthenticationStatus } from '@/authentication';
 import SolidAuth from '@/authentication/SolidAuth';
-import { AuthenticationMethod } from '@/authentication/AuthenticationMethod';
 
 import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
@@ -50,22 +48,22 @@ export default class Auth extends Service<State> {
         await this.updateUser(new OfflineUser());
     }
 
-    public async loginWithSolid(loginUrl: string): Promise<void> {
-        const loggedIn = await Services.$ui.loading(() => SolidAuth.login(loginUrl, AuthenticationMethod.Legacy));
+    public async loginWithSolid(loginUrl: string, authenticationMethod?: AuthenticationMethod): Promise<void> {
+        const status = await Services.$ui.loading(
+            () => SolidAuth.login(loginUrl, authenticationMethod),
+            'Logging in...',
+        );
 
-        if (loggedIn === false) {
-            Services.$ui.alert('Log in failed', "It wasn't possible to log in with this url");
-
-            return;
-        }
-
-        if (loggedIn === true) {
-            await after({ seconds: 10 });
-
-            Services.$ui.alert(
-                'This is taking too long...',
-                'You should have been redirected to your identity provider by now, maybe something went wrong',
-            );
+        switch (status) {
+            case AuthenticationStatus.LoggingIn:
+                Services.$ui.alert(
+                    'This is taking too long...',
+                    'You should have been redirected to your identity provider by now, maybe something went wrong',
+                );
+                break;
+            case AuthenticationStatus.Failed:
+                Services.$ui.alert('Log in failed', "It wasn't possible to log in with this url");
+                break;
         }
     }
 

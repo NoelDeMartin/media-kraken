@@ -25,11 +25,7 @@ export default class MediaContainer extends SolidContainerModel {
     }
 
     public async hasLegacySchema(): Promise<boolean> {
-        if (!this.exists() || this.wasRecentlyCreated())
-            return false;
-
-        return !this.name
-            || isNaN(this.updatedAt.getTime());
+        return this.exists() && !this.wasRecentlyCreated() && !this.name;
     }
 
     public async migrateSchema(name: string, describedBy?: string): Promise<void> {

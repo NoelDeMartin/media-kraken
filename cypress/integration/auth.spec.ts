@@ -1,3 +1,4 @@
+import { ILoginInputOptions, ISessionInfo } from '@inrupt/solid-client-authn-browser';
 import { Session } from 'solid-auth-client';
 import Faker from 'faker';
 
@@ -8,25 +9,43 @@ import profile from '@tests/fixtures/turtle/profile.ttl';
 import taxiDriver from '@tests/fixtures/json/taxi-driver.json';
 import taxiDriverTurtle from '@tests/fixtures/turtle/taxi-driver-1976.ttl';
 
-interface SolidLoginContext {
+interface LoginContext {
+    domain: string;
+    signUp?: boolean;
+    reload?: () => void;
+}
+
+interface SolidAuthClientLoginContext extends LoginContext {
     listener?: Function;
     session?: Session;
 }
 
-function stubSolidAuth(
-    domain: string,
-    options: {
-        context?: SolidLoginContext;
-        signUp?: boolean;
-    } = {},
-): SolidLoginContext {
-    const context = options.context || {};
-    const signUp = options.signUp ?? false;
+interface InruptAuthClientLoginContext extends LoginContext {
+    oidcIssuer?: string;
+    session?: ISessionInfo;
+}
+
+function stubSolidPOD(domain: string, signUp: boolean) {
     const typeIndex = signUp ? emptyTypeIndex : populatedTypeIndex;
 
-    cy.lib('solid-auth-client').then(async promisedClient => {
-        const client = await promisedClient;
+    cy.fetchRoute('/profile/card#me', profile);
+    cy.fetchRoute('/settings/privateTypeIndex.ttl', typeIndex);
 
+    if (signUp) {
+        cy.fetchRoute(
+            new RegExp(`https://${domain}/$`),
+            new Response('Created', { status: 201 }),
+        );
+    } else {
+        cy.fetchRoute('/movies/taxi-driver-1976', taxiDriverTurtle);
+        cy.fetchRoute('/movies/', movies);
+    }
+}
+
+function stubSolidAuthClient(context: SolidAuthClientLoginContext): SolidAuthClientLoginContext {
+    context.signUp = context.signUp ?? false;
+
+    cy.lib('solid-auth-client').then(client => {
         cy.stub(client, 'trackSession').callsFake(listener => {
             context.listener = listener;
 
@@ -35,8 +54,8 @@ function stubSolidAuth(
         });
         cy.stub(client, 'login').callsFake(() => {
             context.session = {
-                idp: `https://${domain}`,
-                webId: `https://${domain}/me`,
+                idp: `https://${context.domain}`,
+                webId: `https://${context.domain}/profile/card#me`,
                 accessToken: 'accessToken',
                 idToken: 'idToken',
                 clientId: 'clientId',
@@ -49,18 +68,42 @@ function stubSolidAuth(
         });
     });
 
-    cy.fetchRoute('/me', profile);
-    cy.fetchRoute('/settings/privateTypeIndex.ttl', typeIndex);
+    stubSolidPOD(context.domain, context.signUp);
 
-    if (signUp) {
-        cy.fetchRoute(
-            new RegExp(`https://${domain}/$`),
-            new Response('Created', { status: 201 }),
-        );
-    } else {
-        cy.fetchRoute('/movies/taxi-driver-1976', taxiDriverTurtle);
-        cy.fetchRoute('/movies/', movies);
-    }
+    return context;
+}
+
+function stubInruptAuthClient(context: InruptAuthClientLoginContext): InruptAuthClientLoginContext {
+    context.signUp = context.signUp ?? false;
+
+    cy.lib('@inrupt/solid-client-authn-browser').then(client => {
+        cy.stub(client, 'handleIncomingRedirect').callsFake(() => {
+            if (!context.oidcIssuer)
+                return;
+
+            context.session = {
+                isLoggedIn: true,
+                sessionId: 'sessionId',
+                webId: `https://${context.domain}/profile/card#me`,
+            };
+
+            return context.session;
+        });
+        cy.stub(client, 'login').callsFake(({ oidcIssuer }: ILoginInputOptions) => {
+            context.oidcIssuer = oidcIssuer;
+        });
+    });
+
+    stubSolidPOD(context.domain, context.signUp);
+
+    context.reload =
+        () => cy.window()
+                .then(window => window.location.reload())
+                .then(() => {
+                    stubInruptAuthClient(context);
+
+                    cy.startApp();
+                });
 
     return context;
 }
@@ -113,18 +156,34 @@ describe('Authentication', () => {
         cy.localStorageShouldBeEmpty();
     });
 
+    it('Logs out in mobile layout', () => {
+        // Arrange
+        cy.viewport('samsung-s10');
+        cy.startApp();
+        cy.login();
+
+        // Act
+        cy.ariaLabel('Open menu').click();
+        cy.contains('Log out').click();
+
+        // Assert
+        cy.url().should('include', '/login');
+    });
+
     it('Signs up with Solid', () => {
         // Arrange
         const domain = Faker.internet.domainName();
-
-        stubSolidAuth(domain, { signUp: true });
+        const loginContext = stubInruptAuthClient({ domain, signUp: true });
 
         cy.startApp();
 
         // Act
         cy.contains('Use Solid').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
-        cy.contains('Login').click();
+        cy.contains('Log in with Solid').click();
+
+        // TODO this should be triggered within the stubbed login
+        loginContext.reload!();
 
         // Assert
         cy.see('Welcome to Media Kraken!').then(() => cy.getFetchCalls().then(calls => {
@@ -141,37 +200,75 @@ describe('Authentication', () => {
         }));
     });
 
-    it('Logs in with Solid', () => {
+    it('Logs in with Solid');
+    it('Logs out with Solid and clears client data');
+
+    it('[Legacy] Signs up with Solid', () => {
         // Arrange
         const domain = Faker.internet.domainName();
-        const loginContext = stubSolidAuth(domain);
+
+        stubSolidAuthClient({ domain, signUp: true });
 
         cy.startApp();
 
         // Act
         cy.contains('Use Solid').click();
+        cy.contains('Can\'t log in? try using a different authentication method').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
-        cy.contains('Login').click();
+        cy.get('select').select('Log in using the legacy authentication library');
+        cy.get('a[href="https://github.com/solid/solid-auth-client"]').should('be.visible');
+        cy.contains('Log in with Solid').click();
+
+        // Assert
+        cy.see('Welcome to Media Kraken!').then(() => cy.getFetchCalls().then(calls => {
+            const typeCalls = calls[`https://${domain}/settings/privateTypeIndex.ttl`];
+
+            expect(typeCalls).to.have.lengthOf(5);
+
+            expect(typeCalls[1].options.method || 'GET').to.eq('GET');
+            expect(typeCalls[2].options.method || 'GET').to.eq('GET');
+            expect(typeCalls[3].options.method || 'GET').to.eq('PATCH');
+            expect(typeCalls[3].options.body).to.contain('<https://schema.org/Movie>');
+            expect(typeCalls[4].options.method || 'GET').to.eq('PATCH');
+            expect(typeCalls[4].options.body).to.contain('<https://schema.org/WatchAction>');
+        }));
+    });
+
+    it('[Legacy] Logs in with Solid', () => {
+        // Arrange
+        const domain = Faker.internet.domainName();
+        const loginContext = stubSolidAuthClient({ domain });
+
+        cy.startApp();
+
+        // Act
+        cy.contains('Use Solid').click();
+        cy.contains('Can\'t log in? try using a different authentication method').click();
+        cy.get('input[placeholder="Solid POD url"]').type(domain);
+        cy.get('select').select('Log in using the legacy authentication library');
+        cy.contains('Log in with Solid').click();
 
         // Assert
         cy.seeImage(taxiDriver.image, { timeout: 10000 });
 
         cy.visit('/collection');
-        stubSolidAuth(domain, { context: loginContext });
+        stubSolidAuthClient(loginContext);
         cy.startApp();
         cy.seeImage(taxiDriver.image, { timeout: 10000 });
     });
 
-    it('Logs out with Solid and clears client data', () => {
+    it('[Legacy] Logs out with Solid and clears client data', () => {
         // Arrange
         const domain = Faker.internet.domainName();
 
-        stubSolidAuth(domain);
+        stubSolidAuthClient({ domain });
 
         cy.startApp();
         cy.contains('Use Solid').click();
+        cy.contains('Can\'t log in? try using a different authentication method').click();
         cy.get('input[placeholder="Solid POD url"]').type(domain);
-        cy.contains('Login').click();
+        cy.get('select').select('Log in using the legacy authentication library');
+        cy.contains('Log in with Solid').click();
         cy.seeImage(taxiDriver.image, { timeout: 10000 });
 
         // Act
@@ -181,20 +278,6 @@ describe('Authentication', () => {
         // Assert
         cy.indexedDBShouldBeEmpty();
         cy.localStorageShouldBeEmpty();
-    });
-
-    it('Logs out in mobile layout', () => {
-        // Arrange
-        cy.viewport('samsung-s10');
-        cy.startApp();
-        cy.login();
-
-        // Act
-        cy.ariaLabel('Open menu').click();
-        cy.contains('Log out').click();
-
-        // Assert
-        cy.url().should('include', '/login');
     });
 
 });

@@ -1,9 +1,16 @@
+import { fetch, handleIncomingRedirect, login, logout } from '@inrupt/solid-client-authn-browser';
 import { SolidAuthClient } from 'solid-auth-client';
 import { Soukai } from 'soukai';
 
 interface AppLibraries {
     'soukai': Soukai;
-    'solid-auth-client': Promise<SolidAuthClient>;
+    'solid-auth-client': SolidAuthClient;
+    '@inrupt/solid-client-authn-browser': {
+        fetch: typeof fetch;
+        handleIncomingRedirect: typeof handleIncomingRedirect;
+        login: typeof login;
+        logout: typeof logout;
+    };
 }
 
 declare global {

@@ -5,90 +5,54 @@
             <h1 class="mt-4 text-3xl font-semibold">
                 Media Kraken
             </h1>
-            <div class="flex flex-col items-center mt-1">
+            <div class="flex flex-col items-center mt-1 max-w-md">
                 <p class="text-sm text-gray-800 text-center leading-relaxed mb-6">
                     Keep track of your movies and create your own collection!
                 </p>
-                <form
-                    v-if="identityProviderUrl !== null"
-                    class="self-stretch flex flex-col"
-                    @submit.prevent="submitLoginWithSolid"
-                >
-                    <div class="flex flex-col desktop:flex-row">
-                        <input
-                            ref="solid-input"
-                            v-model="identityProviderUrl"
-                            placeholder="Solid POD url"
-                            class="
-                                flex-grow shadow p-2 rounded-lg border border-primary-300
-                                focus:border-primary-500
-                                desktop:rounded-r-none
-                            "
-                        >
-                        <BaseButton
-                            submit
-                            icon="solid-emblem"
-                            class="
-                                bg-brand-solid h-10 shadow text-white mt-4
-                                text-sm font-medium tracking-wide
-                                desktop:rounded-l-none desktop:mt-0
-                            "
-                        >
-                            Login <span class="desktop:hidden">with Solid</span>
-                        </BaseButton>
-                    </div>
-                    <div class="flex flex-col-reverse justify-between desktop:flex-row">
-                        <BaseLink
-                            class="text-sm self-center mt-4 desktop:mt-2 desktop:self-start"
-                            @click="$ui.openFileMarkdownModal('application-storage')"
-                        >
-                            I need help
-                        </BaseLink>
-                        <BaseButton
-                            class="
-                                border border-primary-500 mt-4 text-sm text-primary-700 justify-center
-                                hover:bg-black-overlay desktop:mt-2
-                            "
-                            @click="identityProviderUrl = null"
-                        >
-                            Cancel
-                        </BaseButton>
-                    </div>
-                </form>
-                <template v-else>
-                    <div class="flex flex-col items-center">
-                        <p class="self-start text-gray-800 mb-3 text-sm">
-                            Where do you want to store your data?
-                        </p>
-                        <BaseButton
-                            icon="solid-emblem"
-                            class="
-                                w-64 h-10 mb-3 text-sm font-medium tracking-wide shadow
-                                bg-brand-solid text-white
-                            "
-                            @click="loginWithSolid"
-                        >
-                            Use Solid
-                        </BaseButton>
-                        <BaseButton
-                            icon="browser"
-                            class="
-                                w-64 h-10 text-sm font-medium tracking-wide shadow
-                                text-white bg-brand-browser
-                            "
-                            icon-class="w-6 h-4 mr-2"
-                            @click="loginOffline"
-                        >
-                            Use browser storage
-                        </BaseButton>
-                        <BaseLink
-                            class="self-center mt-4 text-sm"
-                            @click="$ui.openFileMarkdownModal('application-storage')"
-                        >
-                            Help me decide what to use
-                        </BaseLink>
-                    </div>
-                </template>
+                <LoginPrevious
+                    v-if="previousLoginUrl"
+                    :login-url="previousLoginUrl"
+                    @login="loginWithPreviousLogin"
+                    @forget="forgetPreviousLogin"
+                />
+                <LoginSolid
+                    v-else-if="loginUrl !== null"
+                    :login-url="loginUrl"
+                    @updateLoginUrl="loginUrl = $event"
+                    @submit="submitLoginWithSolid"
+                />
+                <div v-else class="flex flex-col items-center">
+                    <p class="self-start text-gray-800 mb-3 text-sm">
+                        Where do you want to store your data?
+                    </p>
+                    <BaseButton
+                        icon="solid-emblem"
+                        class="
+                        w-64 h-10 mb-3 text-sm font-medium tracking-wide shadow
+                        bg-brand-solid text-white
+                    "
+                        @click="loginWithSolid"
+                    >
+                        Use Solid
+                    </BaseButton>
+                    <BaseButton
+                        icon="browser"
+                        class="
+                        w-64 h-10 text-sm font-medium tracking-wide shadow
+                        text-white bg-brand-browser
+                    "
+                        icon-class="w-6 h-4 mr-2"
+                        @click="loginOffline"
+                    >
+                        Use browser storage
+                    </BaseButton>
+                    <BaseLink
+                        class="self-center mt-4 text-sm"
+                        @click="$ui.openFileMarkdownModal('application-storage')"
+                    >
+                        Help me decide what to use
+                    </BaseLink>
+                </div>
             </div>
         </template>
         <p v-else class="font-medium">
@@ -112,30 +76,68 @@
 <script lang="ts">
 import Vue from 'vue';
 
+import { AuthenticationMethod } from '@/authentication';
+import SolidAuth from '@/authentication/SolidAuth';
 import Str from '@/utils/Str';
 
+import LoginPrevious from '@/components/LoginPrevious.vue';
+import LoginSolid from '@/components/LoginSolid.vue';
+
 interface Data {
-    identityProviderUrl: string | null;
+    loginUrl: string | null;
+    previousLoginUrl: string | undefined;
 }
 
 export default Vue.extend({
-    data: (): Data => ({ identityProviderUrl: null }),
+    components: {
+        LoginPrevious,
+        LoginSolid,
+    },
+    data: (): Data => ({
+        loginUrl: null,
+        previousLoginUrl: undefined,
+    }),
+    created() {
+        this.previousLoginUrl = SolidAuth.previousLogin?.loginUrl;
+    },
     methods: {
         loginWithSolid() {
-            this.identityProviderUrl = 'https://';
+            this.loginUrl = 'https://';
 
-            this.$nextTick(() => (this.$refs['solid-input'] as HTMLInputElement).focus());
         },
         loginOffline() {
             this.$auth.loginOffline();
         },
-        async submitLoginWithSolid() {
+        async loginWithPreviousLogin() {
+            const previousLogin = SolidAuth.previousLogin;
+
+            if (!previousLogin)
+                return;
+
             try {
-                await this.replaceLegacyDomains();
-                await this.$auth.loginWithSolid(this.identityProviderUrl!);
+                await this.$auth.loginWithSolid(previousLogin.loginUrl, previousLogin.authenticationMethod);
             } catch (error) {
                 this.$ui.showError(error);
             }
+        },
+        async submitLoginWithSolid(authenticationMethod?: AuthenticationMethod) {
+            if (!this.loginUrl)
+                return;
+
+            try {
+                await this.replaceLegacyDomains();
+                await this.$auth.loginWithSolid(this.loginUrl, authenticationMethod);
+            } catch (error) {
+                this.$ui.showError(error);
+            }
+        },
+        async forgetPreviousLogin() {
+            if (!this.previousLoginUrl)
+                return;
+
+            await SolidAuth.logout();
+
+            this.previousLoginUrl = undefined;
         },
         async replaceLegacyDomains() {
             if (!this.isUsingLegacySolidCommunity())
@@ -145,10 +147,10 @@ export default Vue.extend({
             if (!replaceDomain)
                 return;
 
-            this.identityProviderUrl = this.identityProviderUrl!.replace('solid.community', 'solidcommunity.net');
+            this.loginUrl = this.loginUrl!.replace('solid.community', 'solidcommunity.net');
         },
         isUsingLegacySolidCommunity(): boolean {
-            return Str.contains(this.identityProviderUrl!, 'solid.community');
+            return Str.contains(this.loginUrl!, 'solid.community');
         },
         replaceLegacySolidCommunity(): Promise<boolean> {
             return this.$ui.confirm(
