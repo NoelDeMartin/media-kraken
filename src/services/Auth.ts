@@ -89,6 +89,7 @@ export default class Auth extends Service<State> {
 
     protected async boot(): Promise<void> {
         await super.boot();
+        await Services.$app.ready;
         await SolidAuth.boot({
             onUserUpdated: (solidUser: SolidUser | null) => {
                 if (!!this.user && !(this.user instanceof SolidUser)) {
