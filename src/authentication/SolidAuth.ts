@@ -153,8 +153,12 @@ class SolidAuth {
             webId,
             storageUrls: storages.map(storage => storage.object.value),
             privateTypeIndexUrl: privateTypeIndex.object.value,
-            name: store.statement(webId, 'foaf:name')?.object.value,
-            avatarUrl: store.statement(webId, 'foaf:img')?.object.value,
+            name:
+                store.statement(webId, 'vcard:fn')?.object.value ??
+                store.statement(webId, 'foaf:name')?.object.value,
+            avatarUrl:
+                store.statement(webId, 'vcard:hasPhoto')?.object.value ??
+                store.statement(webId, 'foaf:img')?.object.value,
             oidcIssuerUrl: store.statement(webId, 'solid:oidcIssuer')?.object.value,
         };
     }

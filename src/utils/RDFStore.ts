@@ -6,12 +6,13 @@ import NetworkRequestError from '@/errors/NetworkRequestError';
 import UnauthorizedError from '@/errors/UnauthorizedError';
 
 const knownPrefixes: { [prefix: string]: string } = {
-    solid: 'http://www.w3.org/ns/solid/terms#',
-    schema: 'https://schema.org/',
-    rdfs: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
     foaf: 'http://xmlns.com/foaf/0.1/',
     pim: 'http://www.w3.org/ns/pim/space#',
     purl: 'http://purl.org/dc/terms/',
+    rdfs: 'http://www.w3.org/1999/02/22-rdf-syntax-ns#',
+    schema: 'https://schema.org/',
+    solid: 'http://www.w3.org/ns/solid/terms#',
+    vcard: 'http://www.w3.org/2006/vcard/ns#',
 };
 
 export default class RDFStore {
