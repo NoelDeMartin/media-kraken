@@ -176,8 +176,8 @@ class ModelsCache {
         } catch (error) {
             if (
                 !(error instanceof Error) || (
-                    error.name.toLowerCase().includes('inactive') &&
-                    error.message.toLowerCase().includes('inactive')
+                    !error.name.toLowerCase().includes('inactive') &&
+                    !error.message.toLowerCase().includes('inactive')
                 )
             ) {
                 throw error;
