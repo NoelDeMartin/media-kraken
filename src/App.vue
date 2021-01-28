@@ -2,7 +2,7 @@
     <div class="font-montserrat antialiased font-normal text-base text-gray-900 leading-tight bg-gray-100 max-h-screen">
         <div v-if="ready" class="flex flex-col min-h-screen">
             <AppHeader v-if="$media.loaded && !$ui.headerHidden" />
-            <main class="flex flex-col flex-grow mx-auto max-w-content w-full px-8">
+            <main class="flex flex-col flex-grow mx-auto max-w-content w-full px-4">
                 <CrashReport v-if="$app.isCrashed" />
                 <router-view v-else />
             </main>

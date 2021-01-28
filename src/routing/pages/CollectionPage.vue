@@ -53,6 +53,7 @@
                             hover:bg-black-overlay
                         "
                         style="padding:0"
+                        title="Press &quot;f&quot; to filter your collection"
                         @click="showFilters"
                     />
                 </BaseTransition>

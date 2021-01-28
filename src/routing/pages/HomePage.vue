@@ -20,7 +20,7 @@
                 </button>
             </BaseMenu>
         </div>
-        <MoviesGrid :movies="pendingMoviesSummary" />
+        <MoviesGrid ref="movies-grid" :movies="pendingMoviesSummary" />
         <p
             v-if="pendingMovies.length > pendingMoviesSummary.length"
             class="mt-3 leading-relaxed max-w-readable text-center desktop:text-left"
@@ -95,6 +95,9 @@ import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 import MoviesGrid from '@/components/MoviesGrid.vue';
 import SeedCollectionModal from '@/components/modals/SeedCollectionModal.vue';
 
+const MAX_MOVIES = 10;
+const MAX_ROWS = 3;
+
 const enum Sorting {
     MostRecent = 'most-recent',
     Oldest = 'oldest',
@@ -104,11 +107,21 @@ interface SortMenuOption extends MenuOption {
     sorting: Sorting;
 }
 
+interface Data {
+    sorting: Sorting;
+    gridColumns: number | null;
+    resizeListener: (() => void) | null;
+}
+
 export default Vue.extend({
     components: {
         MoviesGrid,
     },
-    data: () => ({ sorting: Storage.get('media-kraken-home-sorting', Sorting.MostRecent) }),
+    data: (): Data => ({
+        sorting: Storage.get('media-kraken-home-sorting', Sorting.MostRecent),
+        gridColumns: null,
+        resizeListener: null,
+    }),
     computed: {
         sortingOptions(): SortMenuOption[] {
             const handle = ({ sorting }: SortMenuOption) => {
@@ -137,8 +150,22 @@ export default Vue.extend({
             return pendingMovies;
         },
         pendingMoviesSummary(): Movie[] {
-            return this.pendingMovies.slice(0, 10);
+            const gridColumns = this.gridColumns || MAX_MOVIES;
+            const moviesCount = Math.min(MAX_MOVIES - (MAX_MOVIES % gridColumns), MAX_ROWS * gridColumns);
+
+            return this.pendingMovies.slice(0, moviesCount);
         },
+    },
+    mounted() {
+        this.gridColumns = this.measureGridColumns();
+
+        window.addEventListener('resize', this.resizeListener = () => this.gridColumns = this.measureGridColumns());
+    },
+    destroyed() {
+        if (!this.resizeListener)
+            return;
+
+        window.removeEventListener('resize', this.resizeListener);
     },
     methods: {
         importMedia() {
@@ -146,6 +173,14 @@ export default Vue.extend({
         },
         seedCollection() {
             this.$ui.openModal(SeedCollectionModal);
+        },
+        measureGridColumns(): number | null {
+            const gridElement = (this.$refs['movies-grid'] as Vue)?.$el.querySelector('.grid');
+            const movieElement = gridElement?.firstElementChild;
+
+            return gridElement && movieElement
+                ? Math.floor(gridElement.clientWidth / movieElement.clientWidth)
+                : null;
         },
     },
 });
