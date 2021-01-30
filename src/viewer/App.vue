@@ -46,11 +46,11 @@ export default Vue.extend({
         NoCollection,
     },
     computed: {
-        collectionTitle(): string | null {
-            return this.$viewer.moviesContainer?.name || null;
+        collectionTitle(): string {
+            return this.$viewer.moviesContainer?.name || 'Collection';
         },
-        collectionDescription(): string | null {
-            return this.$viewer.moviesContainer?.description || null;
+        collectionDescription(): string {
+            return this.$viewer.moviesContainer?.description || undefined;
         },
     },
 });
