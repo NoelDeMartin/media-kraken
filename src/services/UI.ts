@@ -103,11 +103,11 @@ export default class UI extends Service<State, ComputedState> {
     private bootupProgressMessage = document.querySelector('#bootup-overlay .progress-message') as HTMLParagraphElement;
 
     public get layout(): Layout {
-        return this.computedState.layout;
+        return this.getComputedState('layout');
     }
 
     public get mobile(): boolean {
-        return this.computedState.mobile;
+        return this.getComputedState('mobile');
     }
 
     public get desktop(): boolean {
@@ -139,7 +139,7 @@ export default class UI extends Service<State, ComputedState> {
     }
 
     public get showOverlay(): boolean {
-        return this.computedState.showOverlay;
+        return this.getComputedState('showOverlay');
     }
 
     private get menu(): HTMLElement | null {

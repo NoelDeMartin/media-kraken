@@ -35,16 +35,8 @@ export default abstract class Service<State = {}, ComputedState = {}> {
         return Services.$store.state[this.storeNamespace] || this.getInitialState();
     }
 
-    protected get computedState(): ComputedState {
-        if (!this._computedState) {
-            this._computedState = new Proxy(Services.$store.getters, {
-                get: (target: any, property: string, receiver: any) => {
-                    return Reflect.get(target, `${this.storeNamespace}.${property}`, receiver);
-                },
-            });
-        }
-
-        return this._computedState!;
+    protected getComputedState<P extends keyof ComputedState>(property: P): ComputedState[P] {
+        return Services.$store.getters[`${this.storeNamespace}/${property}`];
     }
 
     protected async boot(): Promise<void> {
@@ -58,17 +50,14 @@ export default abstract class Service<State = {}, ComputedState = {}> {
             return;
 
         store.registerModule(this.storeNamespace, {
+            namespaced: true,
             state: initialState,
             mutations: {
-                [`${this.storeNamespace}.setState`]: (state: State, newState: Partial<State>) => {
+                setState: (state: State, newState: Partial<State>) => {
                     Object.assign(state, newState);
                 },
             },
-            getters: Object.entries(this.getComputedStateDefinitions()).reduce((getters: any, [name, method]) => {
-                getters[`${this.storeNamespace}.${name}`] = method;
-
-                return getters;
-            }, {}),
+            getters: this.getComputedStateDefinitions(),
         });
     }
 
@@ -91,7 +80,7 @@ export default abstract class Service<State = {}, ComputedState = {}> {
     }
 
     protected setState(newState: Partial<State>): void {
-        Services.$store.commit(`${this.storeNamespace}.setState`, newState);
+        Services.$store.commit(`${this.storeNamespace}/setState`, newState);
     }
 
 }

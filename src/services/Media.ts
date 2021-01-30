@@ -91,7 +91,7 @@ export default class Media extends Service<State, ComputedState> {
     }
 
     public get searchIndex(): SearchIndex {
-        return this.computedState.searchIndex;
+        return this.getComputedState('searchIndex');
     }
 
     public get loaded(): boolean {
