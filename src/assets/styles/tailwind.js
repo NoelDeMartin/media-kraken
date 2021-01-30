@@ -22,6 +22,11 @@ module.exports = {
                 overlay: 'rgba(255, 255, 255, .25)',
             },
 
+            'brand-solid': {
+                500: '#7c4dff',
+                700: '#653add',
+            },
+
             gray: {
                 100: '#fff7f7',
                 200: '#f4eded',

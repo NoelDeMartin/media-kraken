@@ -11,8 +11,9 @@
                     icon="solid-emblem"
                     class="
                         justify-center
-                        bg-brand-solid h-10 shadow text-white mt-4
+                        bg-brand-solid-500 h-10 shadow text-white mt-4
                         text-sm font-medium tracking-wide
+                        hover:bg-brand-solid-700
                         desktop:mt-0
                     "
                     @click="refreshCredentials"
@@ -55,14 +56,3 @@ export default Vue.extend({
     },
 });
 </script>
-
-<style lang="scss">
-    .bg-brand-solid {
-        background: #7c4dff;
-
-        &:hover {
-            background: #653add;
-        }
-
-    }
-</style>

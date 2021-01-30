@@ -89,7 +89,7 @@ const STORAGE_ANIMATIONS_KEY = 'media-kraken-animations';
 
 export default class UI extends Service<State, ComputedState> {
 
-    protected storeName: string = 'ui';
+    protected readonly storeNamespace: string = 'ui';
 
     private mobileMenu: HTMLElement | null = null;
     private desktopMenu: HTMLElement | null = null;

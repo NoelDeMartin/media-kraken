@@ -2,7 +2,7 @@
     <footer class="px-4 py-2 text-xs text-primary-700 text-center">
         <div
             class="flex max-w-content mx-auto"
-            :class="!$auth.loggedIn ? 'justify-center' : 'justify-end'"
+            :class="$viewer.isActive || !$auth.loggedIn ? 'justify-center' : 'justify-end'"
         >
             <button
                 type="button"

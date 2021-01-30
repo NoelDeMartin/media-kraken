@@ -28,9 +28,9 @@
                     <BaseButton
                         icon="solid-emblem"
                         class="
-                        w-64 h-10 mb-3 text-sm font-medium tracking-wide shadow
-                        bg-brand-solid text-white
-                    "
+                            w-64 h-10 mb-3 text-sm font-medium tracking-wide shadow
+                            bg-brand-solid-500 text-white hover:bg-brand-solid-700
+                        "
                         @click="loginWithSolid"
                     >
                         Use Solid
@@ -38,9 +38,9 @@
                     <BaseButton
                         icon="browser"
                         class="
-                        w-64 h-10 text-sm font-medium tracking-wide shadow
-                        text-white bg-brand-browser
-                    "
+                            w-64 h-10 text-sm font-medium tracking-wide shadow
+                            text-white bg-blue-500 hover:bg-blue-700
+                        "
                         icon-class="w-6 h-4 mr-2"
                         @click="loginOffline"
                     >
@@ -165,23 +165,3 @@ export default Vue.extend({
     },
 });
 </script>
-
-<style lang="scss">
-    .bg-brand-solid {
-        background: #7c4dff;
-
-        &:hover {
-            background: #653add;
-        }
-
-    }
-
-    .bg-brand-browser {
-        @apply bg-blue-500;
-
-        &:hover {
-            @apply bg-blue-700;
-        }
-
-    }
-</style>

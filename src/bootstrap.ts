@@ -37,7 +37,7 @@ function prepareInitialRoute() {
     $router.replace({ name: initialRoute });
 }
 
-async function removeBootupOverlay() {
+export async function removeBootupOverlay() {
     document.body.classList.remove('booting-up');
 
     if (!window.impatientKrakenTimeout)

@@ -33,6 +33,14 @@ module.exports = {
             entry: 'src/routing/github-404.ts',
             chunks: [],
         },
+        'viewer': {
+            title: `${title} Viewer`,
+            description,
+            baseUrl,
+            version: versionName,
+            entry: 'src/viewer/index.ts',
+            template: 'public/index.html',
+        },
     },
     configureWebpack: {
         devtool: 'source-map',

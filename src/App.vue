@@ -8,43 +8,9 @@
             </main>
             <AppFooter />
         </div>
-        <BaseTransition animation="fade">
-            <div v-show="$ui.showOverlay" class="fixed inset-0 z-40">
-                <div class="absolute inset-0 bg-gray-500 opacity-75" />
-            </div>
-        </BaseTransition>
-        <BaseTransitionGroup animations="fade scale">
-            <aside
-                v-for="(modal, index) of $ui.modals"
-                :key="modal.id"
-                class="
-                    fixed inset-0 p-4 z-50 flex items-center justify-center
-                    transition-all transform ease-in duration-300
-                "
-                :class="{ 'opacity-0 scale-90': index < $ui.modals.length - 1 }"
-                @click.self="$ui.closeModal(modal.id)"
-            >
-                <component :is="modal.component" v-bind="modal.props" />
-            </aside>
-        </BaseTransitionGroup>
-        <BaseTransitionGroup
-            tag="aside"
-            animations="slide-up fade"
-            class="
-                fixed bottom-0 inset-x-0 p-4
-                flex flex-col items-end justify-center
-                pointer-events-none z-50
-            "
-        >
-            <AppSnackbar
-                v-for="snackbar of $ui.snackbars"
-                :id="snackbar.id"
-                :key="snackbar.id"
-                :message="snackbar.message"
-                :options="snackbar.options"
-                class="mb-2 last:mb-0"
-            />
-        </BaseTransitionGroup>
+        <AppOverlay />
+        <AppModals />
+        <AppSnackbars />
         <input
             id="file-picker"
             ref="file-picker"
@@ -60,16 +26,20 @@ import Vue from 'vue';
 import EventBus from '@/utils/EventBus';
 import Files from '@/utils/Files';
 
-import AppSnackbar from '@/components/AppSnackbar.vue';
 import AppFooter from '@/components/AppFooter.vue';
 import AppHeader from '@/components/AppHeader.vue';
+import AppModals from '@/components/AppModals.vue';
+import AppOverlay from '@/components/AppOverlay.vue';
+import AppSnackbars from '@/components/AppSnackbars.vue';
 import CrashReport from '@/components/CrashReport.vue';
 
 export default Vue.extend({
     components: {
-        AppSnackbar,
         AppFooter,
         AppHeader,
+        AppModals,
+        AppOverlay,
+        AppSnackbars,
         CrashReport,
     },
     data: () => ({ ready: false }),

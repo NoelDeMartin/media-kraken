@@ -26,9 +26,9 @@ interface State {
 
 export default class Search extends Service<State> {
 
-    protected storeName: string = 'search';
-
     public searching: boolean = false;
+
+    protected readonly storeNamespace: string = 'search';
 
     private searchInput: HTMLInputElement | null = null;
     private searchResultsContainer: HTMLElement | null = null;

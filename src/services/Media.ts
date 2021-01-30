@@ -27,11 +27,6 @@ import Services from '@/services';
 import ImportProgressModal from '@/components/modals/ImportProgressModal.vue';
 import ImportResultModal from '@/components/modals/ImportResultModal.vue';
 
-type SearchIndex = {
-    searchableText: string;
-    movie: Movie;
-}[];
-
 interface State {
     moviesContainer: MediaContainer | null;
     importOperation: ImportOperation | null;
@@ -46,6 +41,11 @@ interface ImportOperation {
     total: number;
     cancelled: boolean;
 }
+
+export type SearchIndex = {
+    searchableText: string;
+    movie: Movie;
+}[];
 
 export interface ImportOperationLog {
     added: Movie[];
@@ -77,7 +77,7 @@ export enum MediaSource {
 
 export default class Media extends Service<State, ComputedState> {
 
-    protected storeName: string = 'media';
+    protected readonly storeNamespace: string = 'media';
 
     public get movies(): Movie[] {
         if (!this.state.moviesContainer)
@@ -255,7 +255,6 @@ export default class Media extends Service<State, ComputedState> {
             },
         };
     }
-
 
     private async load(user: User): Promise<void> {
         try {

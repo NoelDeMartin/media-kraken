@@ -9,11 +9,14 @@ export type ComputedStateDefinitions<State, ComputedState> = {
 
 export default abstract class Service<State = {}, ComputedState = {}> {
 
-    protected storeName: string = '';
 
     public readonly ready: Promise<void>;
+
+    protected readonly storeNamespace: string = '';
+
     private resolveReady!: () => void;
     private rejectReady!: () => void;
+    private _computedState?: ComputedState;
 
     constructor() {
         this.ready = new Promise((resolve, reject) => {
@@ -29,11 +32,19 @@ export default abstract class Service<State = {}, ComputedState = {}> {
     }
 
     protected get state(): State {
-        return Services.$store.state[this.storeName] || this.getInitialState();
+        return Services.$store.state[this.storeNamespace] || this.getInitialState();
     }
 
     protected get computedState(): ComputedState {
-        return Services.$store.getters;
+        if (!this._computedState) {
+            this._computedState = new Proxy(Services.$store.getters, {
+                get: (target: any, property: string, receiver: any) => {
+                    return Reflect.get(target, `${this.storeNamespace}.${property}`, receiver);
+                },
+            });
+        }
+
+        return this._computedState!;
     }
 
     protected async boot(): Promise<void> {
@@ -46,14 +57,18 @@ export default abstract class Service<State = {}, ComputedState = {}> {
         if (Object.keys(initialState).length === 0)
             return;
 
-        store.registerModule(this.storeName, {
+        store.registerModule(this.storeNamespace, {
             state: initialState,
             mutations: {
-                [`${this.storeName}.setState`]: (state: State, newState: Partial<State>) => {
+                [`${this.storeNamespace}.setState`]: (state: State, newState: Partial<State>) => {
                     Object.assign(state, newState);
                 },
             },
-            getters: this.getComputedStateDefinitions(),
+            getters: Object.entries(this.getComputedStateDefinitions()).reduce((getters: any, [name, method]) => {
+                getters[`${this.storeNamespace}.${name}`] = method;
+
+                return getters;
+            }, {}),
         });
     }
 
@@ -62,7 +77,7 @@ export default abstract class Service<State = {}, ComputedState = {}> {
         callback: (oldValue: T, newValue: T) => void,
     ): () => void {
         return Services.$store.watch(
-            (state, computed) => getter(state[this.storeName], computed),
+            (state, computed) => getter(state[this.storeNamespace], computed),
             callback,
         );
     }
@@ -76,7 +91,7 @@ export default abstract class Service<State = {}, ComputedState = {}> {
     }
 
     protected setState(newState: Partial<State>): void {
-        Services.$store.commit(`${this.storeName}.setState`, newState);
+        Services.$store.commit(`${this.storeNamespace}.setState`, newState);
     }
 
 }

@@ -26,7 +26,7 @@ interface HasUser {
 
 export default class Auth extends Service<State> {
 
-    protected storeName: string = 'auth';
+    protected readonly storeNamespace: string = 'auth';
 
     public get loggedIn(): boolean {
         return !!this.state.user;

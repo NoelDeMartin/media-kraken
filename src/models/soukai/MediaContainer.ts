@@ -13,6 +13,10 @@ export default class MediaContainer extends SolidContainerModel {
             rdfProperty: 'rdfs:label',
             required: true,
         },
+        description: {
+            type: FieldType.String,
+            rdfProperty: 'rdfs:comment',
+        },
     };
 
     public movies?: Movie[];

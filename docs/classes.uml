@@ -12,6 +12,7 @@ class **MediaContainer** {
     ..**fields**..
 
     + **name:** rdfs:label
+    + **description:** rdfs:comment
     + **createdAt:** purl:created
     + **updatedAt:** purl:modified
 

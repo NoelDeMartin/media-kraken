@@ -45,8 +45,8 @@
             submit
             icon="solid-emblem"
             class="
-                bg-brand-solid h-10 shadow text-white mt-4
-                text-sm justify-center font-medium tracking-wide
+                bg-brand-solid-500 h-10 shadow text-white mt-4
+                text-sm justify-center font-medium tracking-wide hover:bg-brand-solid-700
             "
         >
             Log in with Solid

@@ -33,6 +33,16 @@ export default class App extends Service<State> {
     public sourceUrl!: string;
     public version!: string;
 
+    protected readonly storeNamespace: string = 'app';
+
+    private runMigrations: boolean;
+
+    constructor(runMigrations: boolean = true) {
+        super();
+
+        this.runMigrations = runMigrations;
+    }
+
     public get isDevelopment(): boolean {
         return this.environment === 'development';
     }
@@ -80,7 +90,8 @@ export default class App extends Service<State> {
         this.sourceUrl = process.env.VUE_APP_SOURCE_URL!;
         this.version = process.env.VUE_APP_VERSION + (this.isDevelopment ? '-next' : '');
 
-        await this.upgradeStorage();
+        if (this.runMigrations)
+            await this.upgradeStorage();
     }
 
     protected getInitialState(): State {

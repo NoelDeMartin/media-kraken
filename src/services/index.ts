@@ -9,17 +9,19 @@ import Media from '@/services/Media';
 import Search from '@/services/Search';
 import Service from '@/services/Service';
 import UI from '@/services/UI';
+import Viewer from '@/services/Viewer';
 
 export interface Services {
     $app: App;
     $auth: Auth;
     $browser: Browser;
     $media: Media;
-    $search: Search;
-    $ui: UI;
-    $store: Store<any>;
     $route: Route;
     $router: VueRouter;
+    $search: Search;
+    $store: Store<any>;
+    $ui: UI;
+    $viewer: Viewer;
 }
 
 const Services = {} as Services;
@@ -32,6 +34,7 @@ export async function bootServices(app: Vue): Promise<void> {
         $media: new Media(),
         $search: new Search(),
         $ui: new UI(),
+        $viewer: new Viewer(),
     };
 
     Services['$router'] = app.$router;
