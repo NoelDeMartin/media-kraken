@@ -41,7 +41,8 @@ describe('Media', () => {
         cy.see('Love Exposure has been added to your collection!');
 
         cy.contains('My Collection').click();
-        cy.see('Collection (2)');
+        cy.see('Collection');
+        cy.see('(2)');
 
         cy.seeImage(jaws.image);
         cy.seeImage(loveExposure.image);
@@ -69,7 +70,8 @@ describe('Media', () => {
         cy.contains('OK').click();
         cy.contains('My Collection').click();
 
-        cy.see('Collection (2)');
+        cy.see('Collection');
+        cy.see('(2)');
         cy.seeImage(symbol.image);
         cy.seeImage(jaws.image);
 
@@ -100,7 +102,8 @@ describe('Media', () => {
         cy.contains('My Collection').click();
 
         // Assert
-        cy.see('Collection (1)');
+        cy.see('Collection');
+        cy.see('(1)');
         cy.url().should('include', '/collection');
     });
 

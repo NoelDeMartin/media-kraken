@@ -64,6 +64,9 @@ export default Vue.extend({
             if (!this.collectionUrl)
                 return;
 
+            if (!this.collectionUrl.startsWith('http'))
+                this.collectionUrl = 'https://' + this.collectionUrl;
+
             if (!this.collectionUrl.endsWith('/'))
                 this.collectionUrl += '/';
 

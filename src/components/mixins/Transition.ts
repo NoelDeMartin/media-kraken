@@ -7,6 +7,7 @@ enum Animation {
     Fade = 'fade',
     Scale = 'scale',
     ResizeWidth = 'resize-width',
+    ResizeHeight = 'resize-height',
     SlideUp = 'slide-up',
 }
 
@@ -191,6 +192,11 @@ export default mixins(Vue.extend({
                         enterTo: ['max-w-full'],
                         leave: ['max-w-full'],
                         leaveTo: ['max-w-0'],
+                    };
+                case Animation.ResizeHeight:
+                    return {
+                        enter: ['max-h-0'],
+                        leaveTo: ['max-h-0'],
                     };
                 case Animation.SlideUp:
                     return {

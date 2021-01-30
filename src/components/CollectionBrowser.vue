@@ -5,6 +5,19 @@
             class="markdown-content--typography max-w-readable self-center"
             :content="description"
         />
+        <BaseTransition
+            :duration="100"
+            animations="resize-height"
+            enter-to-class="max-h-41px"
+            leave-class="max-h-41px"
+        >
+            <div v-if="$ui.mobile && searching">
+                <BasePageHeader v-if="$ui.mobile && searching" no-margin class="mt-4 flex">
+                    <span class="truncate">{{ title }}</span>
+                    <span class="pl-1">({{ filteredMovies.length }})</span>
+                </BasePageHeader>
+            </div>
+        </BaseTransition>
         <div class="movies-browser__header relative flex items-center -mx-2">
             <BaseTransition
                 :enter-duration="150"
@@ -12,7 +25,11 @@
                 animation="fade"
                 enter-active-class="delay-75"
             >
-                <div v-if="!$ui.mobile || !searching" class="flex items-center" :class="{ 'ml-2': $viewer.isActive }">
+                <div
+                    v-if="!$ui.mobile || !searching"
+                    class="flex items-center overflow-hidden"
+                    :class="{ 'ml-2': $viewer.isActive }"
+                >
                     <BaseMenu
                         v-if="!$viewer.isActive"
                         v-slot="{ toggle: toggleActionsMenu }"
@@ -29,7 +46,10 @@
                             @click="toggleActionsMenu"
                         />
                     </BaseMenu>
-                    <BasePageHeader>{{ title }} ({{ filteredMovies.length }})</BasePageHeader>
+                    <BasePageHeader class="flex">
+                        <span class="truncate">{{ title }}</span>
+                        <span class="pl-1">({{ filteredMovies.length }})</span>
+                    </BasePageHeader>
                 </div>
             </BaseTransition>
             <div class="flex-grow" />
@@ -47,7 +67,10 @@
             </BaseMenu>
             <div
                 class="relative transition-all duration-150"
-                :class="{ 'w-full mx-2 desktop:w-64': searching, 'w-8': !searching }"
+                :class="{
+                    'w-full mx-2 desktop:w-64': searching,
+                    'w-8 flex-shrink-0': !searching,
+                }"
             >
                 <BaseTransition :duration="100" animation="fade">
                     <BaseButton

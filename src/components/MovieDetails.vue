@@ -84,7 +84,7 @@
                             icon="more"
                             aria-label="Open actions menu"
                             class="w-8 h-8 -mr-2 mt-2 justify-center desktop:mt-0 hover:bg-black-overlay"
-                            style="padding:0"
+                            no-padding
                             @click="toggleActionsMenu"
                         />
                     </BaseMenu>

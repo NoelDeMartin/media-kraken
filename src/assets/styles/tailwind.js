@@ -103,6 +103,10 @@ module.exports = {
                 'readable': '640px',
                 'content': '900px',
             },
+            maxHeight: {
+                '0': '0',
+                '41px': '41px',
+            },
             opacity: {
                 '15': '.15',
                 '30': '.3',

@@ -1,7 +1,8 @@
 <template>
     <button
         :type="submit ? 'submit' : 'button'"
-        class="flex items-center px-4 py-2 rounded-md"
+        class="flex items-center rounded-md"
+        :class="{ 'px-4 py-2': !noPadding }"
         @click="$emit('click', $event)"
     >
         <BaseIcon
@@ -35,6 +36,10 @@ export default Vue.extend({
         iconClass: {
             type: String,
             default: null,
+        },
+        noPadding: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {
