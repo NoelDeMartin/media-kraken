@@ -99,7 +99,8 @@ It can also be useful for debugging to execute these tests in a browser. In orde
 
 ## Work journal
 
-I have been journaling during the development process, you can read about the evolution of the application and get more in-depth information here:
+I have been journaling during the development process, you can read about the evolution of the application and get more in-depth information. However, not all of these tasks are exclusively about this app. If you're only interested about it, search for "Kraken" and you should find everything related.
 
 - [Implementing a Media Tracker using Solid](https://noeldemartin.com/tasks/implementing-a-media-tracker-using-solid)
 - [Housekeeping](https://noeldemartin.com/tasks/housekeeping)
+- [Implementing a Recipes Manager using Solid](https://noeldemartin.com/tasks/implementing-a-recipes-manager-using-solid)
