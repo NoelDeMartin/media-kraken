@@ -36,6 +36,7 @@
 </template>
 
 <script lang="ts">
+import { after } from '@noeldemartin/utils';
 import Vue from 'vue';
 
 interface Data {
@@ -82,6 +83,8 @@ export default Vue.extend({
                 ],
                 () => this.closeMenu(),
             );
+
+            this.$emit('opened');
         },
         closeMenu() {
             if (!this.removeClickAwayListener)
@@ -89,6 +92,8 @@ export default Vue.extend({
 
             this.removeClickAwayListener();
             this.removeClickAwayListener = null;
+
+            after({ milliseconds: 100 }).then(() => this.$emit('closed'));
         },
         triggerOption(option: MenuOption) {
             this.closeMenu();

@@ -27,8 +27,11 @@
             >
                 <div
                     v-if="!$ui.mobile || !searching"
-                    class="flex items-center overflow-hidden"
-                    :class="{ 'ml-2': $viewer.isActive }"
+                    class="flex items-center"
+                    :class="{
+                        'ml-2': $viewer.isActive,
+                        'overflow-hidden hover:overflow-visible': !actionsMenuOpen,
+                    }"
                 >
                     <BaseMenu
                         v-if="!$viewer.isActive"
@@ -37,6 +40,8 @@
                             { text: 'Import to collection', icon: 'upload', handle: importMedia },
                             { text: 'Export collection', icon: 'download', handle: exportCollection },
                         ]"
+                        @opened="actionsMenuOpen = true"
+                        @closed="actionsMenuOpen = false"
                     >
                         <BaseButton
                             icon="more"
@@ -157,6 +162,7 @@ interface WatchFilterMenuOptions extends MenuOption {
 }
 
 interface Data {
+    actionsMenuOpen: boolean;
     watchedFilter: WatchedFilter;
     searchFilter: string | null;
     showGoTop: boolean;
@@ -189,6 +195,7 @@ export default Vue.extend({
         },
     },
     data: (): Data => ({
+        actionsMenuOpen: false,
         showGoTop: hasScrolled(),
         watchedFilter: WatchedFilter.All,
         searchFilter: null,
