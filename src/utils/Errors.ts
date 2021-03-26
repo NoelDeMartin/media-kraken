@@ -24,6 +24,11 @@ interface MalformedDocumentErrorData {
     malformationDetails: string;
 }
 
+interface UnauthorizedErrorData {
+    forbidden: boolean;
+    url: string;
+}
+
 class Errors {
 
     private sentryInitialized: boolean = false;
@@ -100,7 +105,13 @@ class Errors {
         };
 
         if (error instanceof UnauthorizedError) {
+            const data: UnauthorizedErrorData = {
+                forbidden: error.forbidden,
+                url: error.url,
+            };
+
             serializedError.errorClass = 'unauthorized';
+            serializedError.errorData = data;
         } else if (error instanceof MalformedDocumentError) {
             const data: MalformedDocumentErrorData = {
                 documentUrl: error.documentUrl,
@@ -118,8 +129,11 @@ class Errors {
     public parse(serializedError: SerializedError): Error {
         const resolveError = () => {
             switch (serializedError.errorClass) {
-                case 'unauthorized':
-                    return new UnauthorizedError();
+                case 'unauthorized': {
+                    const data = serializedError.errorData as UnauthorizedErrorData;
+
+                    return new UnauthorizedError(data.forbidden, data.url);
+                }
                 case 'malformed-document': {
                     const data = serializedError.errorData as MalformedDocumentErrorData;
 

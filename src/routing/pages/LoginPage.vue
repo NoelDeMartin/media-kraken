@@ -103,7 +103,6 @@ export default Vue.extend({
     methods: {
         loginWithSolid() {
             this.loginUrl = 'https://';
-
         },
         loginOffline() {
             this.$auth.loginOffline();

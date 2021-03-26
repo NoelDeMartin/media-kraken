@@ -1,9 +1,17 @@
 <template>
-    <button
-        :type="submit ? 'submit' : 'button'"
+    <component
+        :is="href ? 'a' : 'button'"
+        v-bind="
+            href
+                ? {
+                    href: href,
+                    target: '_blank',
+                }
+                : { type: submit ? 'submit' : 'button' }
+        "
         class="flex items-center rounded-md"
         :class="{ 'px-4 py-2': !noPadding }"
-        @click="$emit('click', $event)"
+        @click="!href && $emit('click', $event)"
     >
         <BaseIcon
             v-if="icon"
@@ -13,7 +21,7 @@
         <span :class="textClass">
             <slot />
         </span>
-    </button>
+    </component>
 </template>
 
 <script lang="ts">
@@ -24,6 +32,10 @@ export default Vue.extend({
         submit: {
             type: Boolean,
             default: false,
+        },
+        href: {
+            type: String,
+            default: null,
         },
         icon: {
             type: String,

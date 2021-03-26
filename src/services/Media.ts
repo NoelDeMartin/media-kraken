@@ -271,7 +271,7 @@ export default class Media extends Service<State, ComputedState> {
             EventBus.emit('media-loaded');
         } catch (error) {
             if (error instanceof UnauthorizedError) {
-                Services.$auth.handleUnauthorized();
+                Services.$auth.handleUnauthorized(error);
 
                 return;
             }

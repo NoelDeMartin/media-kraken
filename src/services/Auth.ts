@@ -1,3 +1,5 @@
+import { Dictionary } from 'vue-router/types/router';
+
 import Service from '@/services/Service';
 import Services from '@/services';
 
@@ -13,11 +15,14 @@ import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
 
 import NetworkRequestError from '@/errors/NetworkRequestError';
+import UnauthorizedError from '@/errors/UnauthorizedError';
 
 import OfflineLogoutModal from '@/components/modals/OfflineLogoutModal.vue';
 
 interface State {
     user: User | null;
+    unauthorizedError: UnauthorizedError | null;
+    refreshing: boolean;
 }
 
 interface HasUser {
@@ -36,12 +41,24 @@ export default class Auth extends Service<State> {
         return this.state.user;
     }
 
+    public get unauthorizedError(): UnauthorizedError | null {
+        return this.state.unauthorizedError;
+    }
+
+    public get refreshing(): boolean {
+        return !!this.state.refreshing;
+    }
+
     public get isOffline(): boolean | null {
         return this.loggedIn ? this.user instanceof OfflineUser : null;
     }
 
     public isLoggedIn(): this is HasUser {
         return this.loggedIn;
+    }
+
+    public setRefreshing(refreshing: boolean): void {
+        this.setState({ refreshing });
     }
 
     public async loginOffline(): Promise<void> {
@@ -80,11 +97,17 @@ export default class Auth extends Service<State> {
         this.updateUser(null);
     }
 
-    public handleUnauthorized(): void {
+    public handleUnauthorized(error: UnauthorizedError): void {
         if (Services.$route.name === 'unauthorized')
             return;
 
-        Services.$router.push({ name: 'unauthorized' });
+        const query: Dictionary<string> = {};
+
+        if (error.forbidden)
+            query.forbidden = 'true';
+
+        this.setState({ unauthorizedError: error });
+        Services.$router.push({ name: 'unauthorized', query });
     }
 
     protected async boot(): Promise<void> {
@@ -114,7 +137,11 @@ export default class Auth extends Service<State> {
     }
 
     protected getInitialState(): State {
-        return { user: null };
+        return {
+            user: null,
+            unauthorizedError: null,
+            refreshing: false,
+        };
     }
 
     private async updateUser(newUser: User | null = null): Promise<void> {

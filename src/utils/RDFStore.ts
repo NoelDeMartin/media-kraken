@@ -29,8 +29,8 @@ export default class RDFStore {
         try {
             const response = await fetch(url, options);
 
-            if (response.status === 401)
-                throw new UnauthorizedError;
+            if ([401, 403].includes(response.status))
+                throw new UnauthorizedError(response.status === 403, url);
 
             return response.text();
         } catch (error) {

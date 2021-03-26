@@ -4,7 +4,7 @@
             <AppHeader v-if="$media.loaded && !$ui.headerHidden" />
             <main class="flex flex-col flex-grow mx-auto max-w-content w-full px-4">
                 <CrashReport v-if="$app.isCrashed" />
-                <router-view v-else />
+                <router-view v-else-if="!$auth.refreshing" />
             </main>
             <AppFooter />
         </div>
