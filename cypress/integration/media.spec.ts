@@ -1,3 +1,6 @@
+import { objectWithout } from '@noeldemartin/utils';
+import path from 'path';
+
 import jaws from '@tests/fixtures/json/jaws.json';
 import jawsTmdb from '@tests/fixtures/tmdb/jaws.json';
 import jawsTmdbSearchResult from '@tests/fixtures/tmdb/jaws-search-result.json';
@@ -92,6 +95,37 @@ describe('Media', () => {
         cy.anchorWithTitle(`${jaws.name} (Watch later)`).should('be.visible');
     });
 
+    it('Exports collection', () => {
+        // Arrange
+        const downloadsFolder = Cypress.config('downloadsFolder');
+
+        cy.task('deleteFolder', downloadsFolder);
+        cy.addMovie(spiritLD);
+        cy.contains('My Collection').click();
+
+        // Act
+        cy.ariaLabel('Open actions menu').click();
+        cy.contains('Export collection').click();
+
+        // Assert
+        const filename = path.join(downloadsFolder, 'my-collection.json');
+
+        cy.readFile(filename).then(collection => {
+            expect(collection).to.have.length(1);
+
+            const movie = objectWithout(collection[0], ['actions', 'purl:modified']);
+            const actions = collection[0].actions;
+
+            expect(typeof collection[0]['purl:modified']).to.equal('object');
+            expect(movie).to.deep.equal(objectWithout(spiritLD, ['actions', 'purl:modified']));
+            expect(actions).to.have.length(1);
+
+            const action = objectWithout(actions[0], ['@id']);
+            expect(typeof actions[0]['@id']).to.equal('string');
+            expect(action).to.deep.equal(objectWithout(spiritLD.actions[0], ['@id']));
+        });
+    });
+
     it('Opens collection in mobile layout', () => {
         // Arrange
         cy.viewport('samsung-s10');
@@ -102,8 +136,8 @@ describe('Media', () => {
         cy.contains('My Collection').click();
 
         // Assert
-        cy.see('Collection');
-        cy.see('(1)');
+        cy.contains('h1', 'Collection').should('be.visible');
+        cy.contains('h1', '(1)').should('be.visible');
         cy.url().should('include', '/collection');
     });
 

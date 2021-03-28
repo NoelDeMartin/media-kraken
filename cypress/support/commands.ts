@@ -184,4 +184,14 @@ Cypress.Commands.overwrite('reload', originalReload => {
     cy.startApp();
 });
 
+Cypress.Commands.overwrite(
+    'click',
+    (originalClick, subject, ...args) =>
+        args.length === 0
+            ? cy.wrap(subject).should('be.visible').then(() => originalClick(subject, ...args))
+
+            // TODO figure out how to assert visibility for commands with arguments as well.
+            : originalClick(subject, ...args),
+);
+
 export default customCommands;

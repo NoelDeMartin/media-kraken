@@ -34,7 +34,7 @@ export default abstract class Authenticator {
     }
 
     public addListener(listener: AuthListener): () => void {
-        if (!this.listeners.contains(listener))
+        if (!this.listeners.includes(listener))
             this.listeners.push(listener);
 
         return () => {
@@ -43,7 +43,7 @@ export default abstract class Authenticator {
     }
 
     public removeListener(listener: AuthListener): void {
-        if (!this.listeners.contains(listener))
+        if (!this.listeners.includes(listener))
             return;
 
         this.listeners.remove(listener);

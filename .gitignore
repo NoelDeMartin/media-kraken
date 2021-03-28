@@ -22,3 +22,4 @@ yarn-error.log*
 
 # Test generated files
 cypress/screenshots
+cypress/downloads
