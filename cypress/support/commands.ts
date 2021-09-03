@@ -6,13 +6,19 @@ import ModelsCache from '@/models/ModelsCache';
 
 import Http from '@tests/utils/Http';
 
+import cssCommands, { queueAuthenticatedRequests } from './commands/community-solid-server';
+
+interface StartAppOptions {
+    stubFetch: boolean;
+}
+
 type FetchCall = { url: string; options: any };
 
 const fetchRoutes: { match(url: string): boolean; response: any }[] = [];
 const fetchCalls: { [url: string]: FetchCall[] } = {};
 
-function getRuntime(): Cypress.Chainable<TestingRuntime> {
-    return cy.window().its('Runtime').then(runtime => runtime!);
+function getTestingRuntime(): Cypress.Chainable<TestingRuntime> {
+    return cy.window().its('testing').then(runtime => runtime!);
 }
 
 export function fetchStub(url: string, options: any): Promise<Response> {
@@ -38,17 +44,28 @@ export function fetchStub(url: string, options: any): Promise<Response> {
 
 const customCommands = {
 
-    startApp(): void {
-        cy.window().then(window => cy.stub(window, 'fetch').callsFake(fetchStub));
-        cy.lib('solid-auth-client')
-          .then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
-        cy.lib('@inrupt/solid-client-authn-browser')
-          .then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
-        getRuntime().then(runtime => runtime.start());
+    ...cssCommands,
+
+    startApp(options: Partial<StartAppOptions> = {}): void {
+        if (options.stubFetch ?? true) {
+            cy.window().then(window => cy.stub(window, 'fetch').callsFake(fetchStub));
+            cy.lib('solid-auth-client')
+              .then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
+            cy.lib('@inrupt/solid-client-authn-browser')
+              .then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
+        }
+
+        cy.window().then(window => queueAuthenticatedRequests(window));
+
+        getTestingRuntime().then(runtime => runtime.start());
+    },
+
+    waitForReload(options: Partial<StartAppOptions> = {}): void {
+        cy.get('#bootup-overlay').then(() => cy.startApp(options));
     },
 
     login(): void {
-        getRuntime().then(runtime => runtime.login());
+        getTestingRuntime().then(runtime => runtime.login());
     },
 
     resetBrowser(): void {
@@ -56,15 +73,15 @@ const customCommands = {
         Object.keys(fetchCalls).forEach(url => delete fetchCalls[url]);
         ModelsCache.clear();
         (new IndexedDBEngine('media-kraken')).purgeDatabase();
-        cy.window().then(window => window.Runtime?.lib('soukai').closeConnections());
+        cy.window().then(window => window.testing?.lib('soukai').closeConnections());
     },
 
     lib<K extends keyof AppLibraries>(name: K): Cypress.Chainable<AppLibraries[K]> {
-        return getRuntime().then(runtime => runtime.lib(name));
+        return getTestingRuntime().then(runtime => runtime.lib(name));
     },
 
     addMovie(jsonld: object): void {
-        getRuntime().then(runtime => runtime.addMovie(jsonld));
+        getTestingRuntime().then(runtime => runtime.addMovie(jsonld));
     },
 
     indexedDBShouldBeEmpty() {

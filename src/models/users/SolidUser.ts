@@ -1,3 +1,4 @@
+import { createPrivateTypeIndex } from '@noeldemartin/solid-utils';
 import { SolidDocument, SolidEngine } from 'soukai-solid';
 import Soukai from 'soukai';
 
@@ -17,7 +18,7 @@ export interface SolidUserJSON {
     name: string;
     avatar_url: string | null;
     storages: string[];
-    typeIndexUrl: string;
+    typeIndexUrl?: string;
 }
 
 export default class SolidUser extends User<SolidUserJSON> {
@@ -43,7 +44,7 @@ export default class SolidUser extends User<SolidUserJSON> {
     public readonly id: string;
 
     private storages: string[];
-    private typeIndexUrl: string;
+    private typeIndexUrl?: string;
     private moviesContainerUrl?: string | null;
 
     constructor(
@@ -51,7 +52,7 @@ export default class SolidUser extends User<SolidUserJSON> {
         name: string,
         avatarUrl: string | null,
         storages: string[],
-        typeIndexUrl: string,
+        typeIndexUrl?: string,
     ) {
         super(name, avatarUrl);
 
@@ -127,7 +128,8 @@ export default class SolidUser extends User<SolidUserJSON> {
 
     private async getMoviesContainerUrl(): Promise<string | null> {
         if (typeof this.moviesContainerUrl === 'undefined') {
-            const store = await RDFStore.fromUrl(SolidAuth.fetch, this.typeIndexUrl);
+            const typeIndexUrl = this.typeIndexUrl ?? await this.createTypeIndex();
+            const store = await RDFStore.fromUrl(SolidAuth.fetch, typeIndexUrl);
 
             const moviesContainerType = store.statements(null, 'rdfs:type', 'solid:TypeRegistration')
                 .find(statement =>
@@ -145,6 +147,7 @@ export default class SolidUser extends User<SolidUserJSON> {
 
     private async createMoviesContainer(): Promise<MediaContainer> {
         // TODO ask for preferred storage
+        const typeIndexUrl = this.typeIndexUrl ?? await this.createTypeIndex();
         const storage = this.storages[0];
         const moviesContainer = new MediaContainer({ name: 'Movies' });
         const rdfsClasses = [
@@ -164,10 +167,22 @@ export default class SolidUser extends User<SolidUserJSON> {
 
             typeRegistration.mintUrl(this.typeIndexUrl, true, UUID.generate());
 
-            return typeRegistration.save(Url.parentDirectory(this.typeIndexUrl));
+            return typeRegistration.save(Url.parentDirectory(typeIndexUrl));
         }));
 
         return moviesContainer;
+    }
+
+    private async createTypeIndex(): Promise<string> {
+        const typeIndexUrl = await createPrivateTypeIndex({
+            webId: this.id,
+            storageUrls: this.storages,
+            name: this.name,
+        }, SolidAuth.fetch);
+
+        this.typeIndexUrl = typeIndexUrl;
+
+        return typeIndexUrl;
     }
 
 }

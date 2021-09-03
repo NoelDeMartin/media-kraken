@@ -2,6 +2,8 @@
 @prefix pim: <http://www.w3.org/ns/pim/space#> .
 @prefix solid: <http://www.w3.org/ns/solid/terms#> .
 
+<> a foaf:PersonalProfileDocument .
+
 <#me>
     foaf:name "John Doe" ;
     pim:storage </> ;

@@ -10,14 +10,16 @@
     "diagnostics": "vti diagnostics",
     "deploy": "scripts/deploy.sh",
     "test": "jest",
-    "test:serve": "NODE_ENV=testing vue-cli-service serve",
+    "test:serve-app": "NODE_ENV=testing vue-cli-service serve",
+    "test:serve-pod": "community-solid-server -p 4000 -l warn",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
-    "cy:test": "start-server-and-test test:serve http://localhost:8080 cy:run"
+    "cy:test": "start-server-and-test test:serve-app http-get://localhost:8080 test:serve-pod http-get://localhost:4000 cy:run"
   },
   "dependencies": {
     "@inrupt/solid-client-authn-browser": "^1.11.2",
-    "@noeldemartin/utils": "^0.1.0",
+    "@noeldemartin/solid-utils": "0.0.0-next.a1b68bc42f8a4f951db18a82c9029bd6ff0185de",
+    "@noeldemartin/utils": "0.1.0-next.fce6bc1e138260f71239b0ece548414d8bb0d4a6",
     "@sentry/browser": "^5.20.0",
     "@types/n3": "^1.1.6",
     "@types/rdf-js": "^3.0.0",
@@ -36,6 +38,7 @@
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.1.1",
     "@fullhuman/postcss-purgecss": "^2.0.5",
+    "@solid/community-server": "^1.1.0",
     "@types/faker": "^4.1.11",
     "@types/jest": "^25.2.1",
     "@types/marked": "^0.7.3",
@@ -58,7 +61,7 @@
     "nodemon": "^2.0.2",
     "raw-loader": "^4.0.0",
     "sass-loader": "^8.0.2",
-    "start-server-and-test": "^1.10.11",
+    "start-server-and-test": "^1.14.0",
     "ts-jest": "^25.3.1",
     "typescript": "^3.9.10",
     "vti": "0.0.17",

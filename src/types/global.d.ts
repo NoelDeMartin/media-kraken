@@ -21,10 +21,11 @@ declare global {
         service<K extends keyof Vue>(name: K): Vue[K];
         lib<K extends keyof AppLibraries>(name: K): AppLibraries[K];
         addMovie(jsonld: object): Promise<void>;
+        queueAuthenticatedRequest(url: string, options: RequestInit): void;
     }
 
     interface Window {
-        Runtime?: TestingRuntime;
+        testing?: TestingRuntime;
         impatientKrakenTimeout?: number;
     }
 

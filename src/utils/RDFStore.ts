@@ -1,6 +1,5 @@
 import { DocumentFormat, Fetch, MalformedDocumentError } from 'soukai-solid';
-import { Parser as TurtleParser } from 'n3';
-import { Quad } from 'rdf-js';
+import { Quad, Parser as TurtleParser } from 'n3';
 
 import NetworkRequestError from '@/errors/NetworkRequestError';
 import UnauthorizedError from '@/errors/UnauthorizedError';

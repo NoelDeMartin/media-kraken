@@ -3,6 +3,7 @@ import { login, logout } from '@inrupt/solid-client-authn-browser';
 
 import { AuthenticationStatus } from '@/authentication';
 import Authenticator from '@/authentication/Authenticator';
+import EventBus from '@/utils/EventBus';
 
 class InruptAuthenticator extends Authenticator {
 
@@ -21,8 +22,10 @@ class InruptAuthenticator extends Authenticator {
 
         const session = await handleIncomingRedirect(window.location.href);
 
-        if (session?.isLoggedIn)
+        if (session?.isLoggedIn) {
+            await EventBus.emit('authenticated-fetch-ready', fetch);
             await this.onSessionStarted({ webId: session.webId as string });
+        }
     }
 
     public async login(oidcIssuer: string): Promise<AuthenticationStatus> {

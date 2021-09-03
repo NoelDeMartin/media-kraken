@@ -1,22 +1,12 @@
 import { Fetch } from 'soukai-solid';
-import { silenced, urlRoot, Storage, after } from '@noeldemartin/utils';
+import { urlRoot, Storage, after } from '@noeldemartin/utils';
+import { fetchLoginUserProfile, SolidUserProfile } from '@noeldemartin/solid-utils';
 
 import SolidUser from '@/models/users/SolidUser';
 
 import { defaultAuthenticationMethod, AuthenticationMethod, AuthenticationStatus } from '@/authentication';
 import Authenticator, { AuthListener, AuthSession } from '@/authentication/Authenticator';
 import authenticators from '@/authentication/authenticators';
-
-import RDFStore from '@/utils/RDFStore';
-
-type UserProfile = {
-    webId: string;
-    storageUrls: string[];
-    privateTypeIndexUrl: string;
-    name?: string;
-    avatarUrl?: string;
-    oidcIssuerUrl?: string;
-}
 
 export type SolidAuthPreviousLogin = {
     loginUrl: string;
@@ -76,7 +66,7 @@ class SolidAuth {
 
         authenticationMethod = authenticationMethod ?? defaultAuthenticationMethod;
 
-        const profile = await this.readProfileFromLoginUrl(loginUrl);
+        const profile = await fetchLoginUserProfile(loginUrl);
         const oidcIssuerUrl = profile?.oidcIssuerUrl ?? urlRoot(profile?.webId ?? loginUrl);
         const loginData: SolidAuthPreviousLogin = { loginUrl, authenticationMethod };
 
@@ -130,44 +120,11 @@ class SolidAuth {
         return this.authenticator;
     }
 
-    private async readProfileFromLoginUrl(loginUrl: string): Promise<UserProfile | null> {
-        const readProfile = silenced(this.readProfile.bind(this));
-
-        return await readProfile(loginUrl)
-            ?? await readProfile(loginUrl.replace(/\/$/, '').concat('/profile/card#me'))
-            ?? await readProfile(urlRoot(loginUrl).concat('/profile/card#me'));
-    }
-
-    private async readProfile(webId: string): Promise<UserProfile> {
-        const store = await RDFStore.fromUrl(this.fetch, webId);
-        const storages = store.statements(webId, 'pim:storage');
-        const privateTypeIndex = store.statement(webId, 'solid:privateTypeIndex');
-
-        if (storages.length === 0)
-            throw new Error('Couldn\'t find a storage in profile');
-
-        if (!privateTypeIndex)
-            throw new Error('Couldn\'t find a private type index in the profile');
-
-        return {
-            webId,
-            storageUrls: storages.map(storage => storage.object.value),
-            privateTypeIndexUrl: privateTypeIndex.object.value,
-            name:
-                store.statement(webId, 'vcard:fn')?.object.value ??
-                store.statement(webId, 'foaf:name')?.object.value,
-            avatarUrl:
-                store.statement(webId, 'vcard:hasPhoto')?.object.value ??
-                store.statement(webId, 'foaf:img')?.object.value,
-            oidcIssuerUrl: store.statement(webId, 'solid:oidcIssuer')?.object.value,
-        };
-    }
-
     private async onSessionStarted(session: AuthSession): Promise<void> {
         if (session.webId === this.session?.webId)
             return;
 
-        const profile = await this.readProfile(session.webId);
+        const profile = await fetchLoginUserProfile(session.webId) as SolidUserProfile;
         const user = new SolidUser(
             profile.webId,
             profile.name ?? 'Unknown',

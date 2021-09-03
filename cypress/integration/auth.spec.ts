@@ -1,4 +1,3 @@
-import { ILoginInputOptions, ISessionInfo } from '@inrupt/solid-client-authn-browser';
 import { Session } from 'solid-auth-client';
 import Faker from 'faker';
 
@@ -20,15 +19,10 @@ interface SolidAuthClientLoginContext extends LoginContext {
     session?: Session;
 }
 
-interface InruptAuthClientLoginContext extends LoginContext {
-    oidcIssuer?: string;
-    session?: ISessionInfo;
-}
-
 function stubSolidPOD(domain: string, signUp: boolean) {
     const typeIndex = signUp ? emptyTypeIndex : populatedTypeIndex;
 
-    cy.fetchRoute('/profile/card#me', profile);
+    cy.fetchRoute('/profile/card', profile);
     cy.fetchRoute('/settings/privateTypeIndex.ttl', typeIndex);
 
     if (signUp) {
@@ -69,41 +63,6 @@ function stubSolidAuthClient(context: SolidAuthClientLoginContext): SolidAuthCli
     });
 
     stubSolidPOD(context.domain, context.signUp);
-
-    return context;
-}
-
-function stubInruptAuthClient(context: InruptAuthClientLoginContext): InruptAuthClientLoginContext {
-    context.signUp = context.signUp ?? false;
-
-    cy.lib('@inrupt/solid-client-authn-browser').then(client => {
-        cy.stub(client, 'handleIncomingRedirect').callsFake(() => {
-            if (!context.oidcIssuer)
-                return;
-
-            context.session = {
-                isLoggedIn: true,
-                sessionId: 'sessionId',
-                webId: `https://${context.domain}/profile/card#me`,
-            };
-
-            return context.session;
-        });
-        cy.stub(client, 'login').callsFake(({ oidcIssuer }: ILoginInputOptions) => {
-            context.oidcIssuer = oidcIssuer;
-        });
-    });
-
-    stubSolidPOD(context.domain, context.signUp);
-
-    context.reload =
-        () => cy.window()
-                .then(window => window.location.reload())
-                .then(() => {
-                    stubInruptAuthClient(context);
-
-                    cy.startApp();
-                });
 
     return context;
 }
@@ -172,32 +131,26 @@ describe('Authentication', () => {
 
     it('Signs up with Solid', () => {
         // Arrange
-        const domain = Faker.internet.domainName();
-        const loginContext = stubInruptAuthClient({ domain, signUp: true });
-
-        cy.startApp();
+        cy.intercept('POST', 'http://localhost:4000/alice/').as('createMoviesContainer');
+        cy.intercept('PUT', 'http://localhost:4000/alice/settings/privateTypeIndex').as('createTypeIndex');
+        cy.intercept('PATCH', 'http://localhost:4000/alice/settings/privateTypeIndex').as('registerMoviesContainer');
+        cy.startApp({ stubFetch: false });
 
         // Act
         cy.contains('Use Solid').click();
-        cy.get('input[placeholder="Solid POD url"]').type(domain);
+        cy.get('input[placeholder="Solid POD url"]')
+          .clear()
+          .type('http://localhost:4000/alice/');
         cy.contains('Log in with Solid').click();
-
-        // TODO this should be triggered within the stubbed login
-        loginContext.reload!();
+        cy.cssAuthorize({ reset: true });
+        cy.waitForReload({ stubFetch: false });
 
         // Assert
-        cy.see('Welcome to Media Kraken!').then(() => cy.getFetchCalls().then(calls => {
-            const typeCalls = calls[`https://${domain}/settings/privateTypeIndex.ttl`];
+        cy.see('Welcome to Media Kraken!');
 
-            expect(typeCalls).to.have.lengthOf(5);
-
-            expect(typeCalls[1].options.method || 'GET').to.eq('GET');
-            expect(typeCalls[2].options.method || 'GET').to.eq('GET');
-            expect(typeCalls[3].options.method || 'GET').to.eq('PATCH');
-            expect(typeCalls[3].options.body).to.contain('<https://schema.org/Movie>');
-            expect(typeCalls[4].options.method || 'GET').to.eq('PATCH');
-            expect(typeCalls[4].options.body).to.contain('<https://schema.org/WatchAction>');
-        }));
+        cy.get('@createMoviesContainer').its('request.headers.authorization').should('match', /DPoP .*/);
+        cy.get('@createTypeIndex').its('request.headers.authorization').should('match', /DPoP .*/);
+        cy.get('@registerMoviesContainer').its('request.headers.authorization').should('match', /DPoP .*/);
     });
 
     it('Logs in with Solid');

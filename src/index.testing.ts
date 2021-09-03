@@ -1,3 +1,5 @@
+import { arr } from '@noeldemartin/utils';
+import { Fetch } from 'soukai-solid';
 import Soukai from 'soukai';
 import Vue from 'vue';
 
@@ -9,9 +11,23 @@ import JSONLDMoviesParser from '@/utils/parsers/JSONLDMoviesParser';
 
 import { start } from './bootstrap';
 
-window.Runtime = {
+const authenticatedRequests = arr<{ url: string; options: RequestInit }>();
 
-    start,
+window.testing = {
+
+    async start() {
+        EventBus.on<Fetch>('authenticated-fetch-ready', async fetch => {
+            console.log('NOEL-DEBUG: run requests', [...authenticatedRequests.values()]);
+
+            for (const request of authenticatedRequests) {
+                await fetch(request.url, request.options);
+            }
+
+            authenticatedRequests.clear();
+        });
+
+        await start();
+    },
 
     login: async () => {
         Services.$auth.loginOffline();
@@ -51,6 +67,10 @@ window.Runtime = {
             await EventBus.until('media-loaded');
 
         await media.moviesContainer!.relatedMovies.save(movie);
+    },
+
+    queueAuthenticatedRequest(url, options) {
+        authenticatedRequests.push({ url, options });
     },
 
 };
