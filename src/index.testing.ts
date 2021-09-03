@@ -17,8 +17,6 @@ window.testing = {
 
     async start() {
         EventBus.on<Fetch>('authenticated-fetch-ready', async fetch => {
-            console.log('NOEL-DEBUG: run requests', [...authenticatedRequests.values()]);
-
             for (const request of authenticatedRequests) {
                 await fetch(request.url, request.options);
             }
