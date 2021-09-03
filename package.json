@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "docs:build": "scripts/compile-docs.sh",
-    "lint": "vue-cli-service lint",
+    "lint": "vue-cli-service lint && tsc --noEmit",
     "diagnostics": "vti diagnostics",
     "deploy": "scripts/deploy.sh",
     "test": "jest",
@@ -66,5 +66,8 @@
     "vue-template-compiler": "^2.6.10",
     "vue-typed-mixins": "^0.2.0",
     "worker-plugin": "^4.0.2"
+  },
+  "engines": {
+    "node": ">=14.15.0 <15"
   }
 }
