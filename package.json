@@ -16,7 +16,7 @@
     "cy:test": "start-server-and-test test:serve http://localhost:8080 cy:run"
   },
   "dependencies": {
-    "@inrupt/solid-client-authn-browser": "^1.4.2",
+    "@inrupt/solid-client-authn-browser": "^1.11.2",
     "@noeldemartin/utils": "^0.1.0",
     "@sentry/browser": "^5.20.0",
     "@types/n3": "^1.1.6",
@@ -48,7 +48,7 @@
     "@vue/cli-plugin-typescript": "^4.3.0",
     "@vue/cli-service": "~4.2.3",
     "@vue/eslint-config-typescript": "^5.0.1",
-    "cypress": "^6.8.0",
+    "cypress": "^8.3.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
     "faker": "^4.1.0",
@@ -60,7 +60,7 @@
     "sass-loader": "^8.0.2",
     "start-server-and-test": "^1.10.11",
     "ts-jest": "^25.3.1",
-    "typescript": "~3.7.5",
+    "typescript": "^3.9.10",
     "vti": "0.0.17",
     "vue-svg-loader": "^0.15.0",
     "vue-template-compiler": "^2.6.10",
