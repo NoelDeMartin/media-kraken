@@ -13,6 +13,7 @@ const description = 'Track your movies with Media Kraken and never miss a beat!'
 const baseUrl = isProduction ? 'https://noeldemartin.github.io/media-kraken/' : 'http://localhost:8080';
 const sourceUrl = 'https://github.com/noeldemartin/media-kraken';
 
+process.env.VUE_APP_VERSION = version;
 process.env.VUE_APP_VERSION_NAME = versionName;
 process.env.VUE_APP_SOURCE_URL = sourceUrl;
 process.env.VUE_APP_PUBLIC_PATH = publicPath;

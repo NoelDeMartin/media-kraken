@@ -75,7 +75,7 @@ export default Modal.extend({
         }),
         helpReplacements(): any {
             const filePath = 'docs#data-schema';
-            const tag = this.$app.isDevelopment ? 'main' : `v${this.$app.version}`;
+            const tag = this.$app.isDevelopment ? 'main' : this.$app.versionName;
 
             return {
                 jsonld: {

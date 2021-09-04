@@ -32,6 +32,7 @@ export default class App extends Service<State> {
     public environment!: string;
     public sourceUrl!: string;
     public version!: string;
+    public versionName!: string;
 
     protected readonly storeNamespace: string = 'app';
 
@@ -88,7 +89,8 @@ export default class App extends Service<State> {
 
         this.environment = process.env.NODE_ENV as string;
         this.sourceUrl = process.env.VUE_APP_SOURCE_URL as string;
-        this.version = process.env.VUE_APP_VERSION_NAME as string;
+        this.version = process.env.VUE_APP_VERSION as string;
+        this.versionName = process.env.VUE_APP_VERSION_NAME as string;
 
         if (this.runMigrations)
             await this.upgradeStorage();

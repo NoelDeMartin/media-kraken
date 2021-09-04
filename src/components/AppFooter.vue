@@ -18,7 +18,7 @@
             >
                 source
             </BaseLink>
-            | v{{ $app.version }}
+            | {{ $app.versionName }}
         </div>
     </footer>
 </template>
