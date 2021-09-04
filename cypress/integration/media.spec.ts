@@ -49,21 +49,21 @@ describe('Media', () => {
 
         cy.seeImage(jaws.image);
         cy.seeImage(loveExposure.image);
-        cy.anchorWithTitle(`${jaws.name} (Watch later)`).should('be.visible');
-        cy.anchorWithTitle(`${loveExposure.name} (Watched)`).should('be.visible');
+        cy.anchorWithLabel(`${jaws.name} (Watch later)`).should('be.visible');
+        cy.anchorWithLabel(`${loveExposure.name} (Watched)`).should('be.visible');
 
         cy.visit('/collection');
         cy.startApp();
         cy.seeImage(jaws.image);
         cy.seeImage(loveExposure.image);
-        cy.anchorWithTitle(`${jaws.name} (Watch later)`).should('be.visible');
-        cy.anchorWithTitle(`${loveExposure.name} (Watched)`).should('be.visible');
+        cy.anchorWithLabel(`${jaws.name} (Watch later)`).should('be.visible');
+        cy.anchorWithLabel(`${loveExposure.name} (Watched)`).should('be.visible');
     });
 
     it('Imports movies from JSON-LD', () => {
         // Act
         cy.contains('Yes, I have some movies I\'d like to import').click();
-        cy.buttonWithTitle('Import from JSON-LD').click();
+        cy.buttonWithLabel('Import from JSON-LD').click();
         cy.uploadFixture('collection.json');
 
         // Assert
@@ -78,21 +78,21 @@ describe('Media', () => {
         cy.seeImage(symbol.image);
         cy.seeImage(jaws.image);
 
-        cy.anchorWithTitle(`${symbol.name} (Watched)`).click();
+        cy.anchorWithLabel(`${symbol.name} (Watched)`).click();
         cy.see('watched');
 
         cy.contains('My Collection').click();
-        cy.anchorWithTitle(`${jaws.name} (Watch later)`).click();
+        cy.anchorWithLabel(`${jaws.name} (Watch later)`).click();
         cy.see('watch later');
 
         cy.visit('/collection');
         cy.startApp();
 
         cy.seeImage(symbol.image);
-        cy.anchorWithTitle(`${symbol.name} (Watched)`).should('be.visible');
+        cy.anchorWithLabel(`${symbol.name} (Watched)`).should('be.visible');
 
         cy.seeImage(jaws.image);
-        cy.anchorWithTitle(`${jaws.name} (Watch later)`).should('be.visible');
+        cy.anchorWithLabel(`${jaws.name} (Watch later)`).should('be.visible');
     });
 
     it('Exports collection', () => {
@@ -145,7 +145,7 @@ describe('Media', () => {
         // Arrange
         cy.addMovie(spiritLD);
         cy.contains('My Collection').click();
-        cy.anchorWithTitle(`${spirit.name} (Watched)`).click();
+        cy.anchorWithLabel(`${spirit.name} (Watched)`).click();
 
         // Act
         cy.ariaLabel('Open actions menu').click();
@@ -160,7 +160,7 @@ describe('Media', () => {
         // Arrange
         cy.addMovie(spiritLD);
         cy.contains('My Collection').click();
-        cy.anchorWithTitle(`${spirit.name} (Watched)`).click();
+        cy.anchorWithLabel(`${spirit.name} (Watched)`).click();
 
         // Act
         cy.ariaLabel('Open actions menu').click();
@@ -173,7 +173,7 @@ describe('Media', () => {
         cy.visit('/collection');
         cy.startApp();
 
-        cy.anchorWithTitle(`${spirit.name} (Watch later)`).should('be.visible');
+        cy.anchorWithLabel(`${spirit.name} (Watch later)`).should('be.visible');
     });
 
 });

@@ -159,12 +159,12 @@ const customCommands = {
         return cy.get<HTMLElement>(`[role="${role}"]`);
     },
 
-    buttonWithTitle(title: string): Cypress.Chainable<JQuery<HTMLElement>> {
-        return cy.get<HTMLElement>(`button[title="${title}"]`);
+    buttonWithLabel(label: string): Cypress.Chainable<JQuery<HTMLElement>> {
+        return cy.get<HTMLElement>(`button[aria-label="${label}"]`);
     },
 
-    anchorWithTitle(title: string): Cypress.Chainable<JQuery<HTMLElement>> {
-        return cy.get<HTMLElement>(`a[title="${title}"]`);
+    anchorWithLabel(label: string): Cypress.Chainable<JQuery<HTMLElement>> {
+        return cy.get<HTMLElement>(`a[aria-label="${label}"]`);
     },
 
     uploadFixture(name: string): void {

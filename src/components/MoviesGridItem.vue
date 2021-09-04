@@ -13,6 +13,7 @@
             <router-link
                 :to="{ name: 'movie', params: { uuid: movie.uuid } }"
                 :title="linkTitle"
+                :aria-label="linkTitle"
                 class="block group"
             >
                 <MoviePoster :url="movie.posterUrl" :title="movie.title" />
@@ -24,6 +25,7 @@
                 class="badge absolute top-0 right-0 -mt-1 w-10 h-10 flex items-center justify-center"
                 style="margin-right:-.7rem"
                 :title="movie.watched ? null : 'Mark watched'"
+                :aria-label="movie.watched ? null : `Mark ${movie.title} as watched`"
                 v-bind="movie.watched ? { class: 'watched' } : { type: 'button' }"
                 @click="movie.pending && markWatched($event)"
             >

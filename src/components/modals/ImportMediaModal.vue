@@ -18,6 +18,7 @@
                             shadow border border-gray-400 hover:bg-gray-300
                         "
                         :title="'Import from ' + mediaSourceNames[source]"
+                        :aria-label="'Import from ' + mediaSourceNames[source]"
                         @click="importMedia(source)"
                     >
                         <BaseIcon v-if="source !== 'goodfilms'" :name="source" class="w-24 h-24" />
