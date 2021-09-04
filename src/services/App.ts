@@ -86,9 +86,9 @@ export default class App extends Service<State> {
             onReportingEnabled: () => this.setState({ isErrorReportingEnabled: true }),
         });
 
-        this.environment = process.env.NODE_ENV!;
-        this.sourceUrl = process.env.VUE_APP_SOURCE_URL!;
-        this.version = process.env.VUE_APP_VERSION + (this.isDevelopment ? '-next' : '');
+        this.environment = process.env.NODE_ENV as string;
+        this.sourceUrl = process.env.VUE_APP_SOURCE_URL as string;
+        this.version = process.env.VUE_APP_VERSION_NAME as string;
 
         if (this.runMigrations)
             await this.upgradeStorage();

@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const WorkerPlugin = require('worker-plugin');
 
+const { execSync } = require('child_process');
 const path = require('path');
 const version = require('./package.json').version;
 const isProduction = process.env.NODE_ENV === 'production';
-const versionName = 'v' + version + (isProduction ? '' : '-next');
+const versionName = 'v' + version + (isProduction ? '' : ('-next-' + execSync('git rev-parse HEAD')));
 const isTesting = process.env.NODE_ENV === 'testing';
 const publicPath = isProduction ? '/media-kraken/' : '/';
 const title = 'Media Kraken';
@@ -12,7 +13,7 @@ const description = 'Track your movies with Media Kraken and never miss a beat!'
 const baseUrl = isProduction ? 'https://noeldemartin.github.io/media-kraken/' : 'http://localhost:8080';
 const sourceUrl = 'https://github.com/noeldemartin/media-kraken';
 
-process.env.VUE_APP_VERSION = version;
+process.env.VUE_APP_VERSION_NAME = versionName;
 process.env.VUE_APP_SOURCE_URL = sourceUrl;
 process.env.VUE_APP_PUBLIC_PATH = publicPath;
 
