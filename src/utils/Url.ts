@@ -44,16 +44,6 @@ class Url {
             : url;
     }
 
-    public parentDirectory(url: string): string {
-        if (url.endsWith('/')) {
-            url = url.substring(0, url.length - 1);
-        }
-
-        const pathIndex = url.lastIndexOf('/');
-
-        return pathIndex !== -1 ? url.substr(0, pathIndex + 1) : url;
-    }
-
     public filename(url: string): string {
         const pathIndex = url.lastIndexOf('/');
 

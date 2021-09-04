@@ -12,7 +12,7 @@ declare global {
 
         // eslint-disable-next-line @typescript-eslint/no-empty-interface
         interface Chainable<Subject> extends CustomCommands<Subject> {
-
+            reload(optionsOrForceReload?: Partial<StartAppOptions> | boolean): Chainable<AUTWindow>;
         }
 
     }

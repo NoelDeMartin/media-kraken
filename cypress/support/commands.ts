@@ -49,10 +49,8 @@ const customCommands = {
     startApp(options: Partial<StartAppOptions> = {}): void {
         if (options.stubFetch ?? true) {
             cy.window().then(window => cy.stub(window, 'fetch').callsFake(fetchStub));
-            cy.lib('solid-auth-client')
-              .then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
-            cy.lib('@inrupt/solid-client-authn-browser')
-              .then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
+            cy.lib('solid-auth-client').then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
+            cy.lib('@inrupt/solid-client-authn-browser').then(client => cy.stub(client, 'fetch').callsFake(fetchStub));
         }
 
         cy.window().then(window => queueAuthenticatedRequests(window));
@@ -196,10 +194,16 @@ for (const command in customCommands) {
     Cypress.Commands.add(command, (customCommands as any)[command]);
 }
 
-Cypress.Commands.overwrite('reload', originalReload => {
-    originalReload();
-    cy.startApp();
-});
+Cypress.Commands.overwrite(
+    'reload',
+    (originalReload, optionsOrForceReload: Partial<StartAppOptions> | boolean = {}) => {
+        const options = typeof optionsOrForceReload === 'boolean' ? {} : optionsOrForceReload;
+        const forceReload = typeof optionsOrForceReload === 'boolean' ? optionsOrForceReload : false;
+
+        originalReload(forceReload);
+        cy.startApp(options);
+    },
+);
 
 Cypress.Commands.overwrite(
     'click',

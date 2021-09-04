@@ -1,0 +1,13 @@
+INSERT DATA {
+
+    <#movies-registration>
+        a <http://www.w3.org/ns/solid/terms#TypeRegistration> ;
+        <http://www.w3.org/ns/solid/terms#forClass> <https://schema.org/Movie> ;
+        <http://www.w3.org/ns/solid/terms#instanceContainer> <http://localhost:4000/alice/movies/> .
+
+    <#watch-actions-registration>
+        a <http://www.w3.org/ns/solid/terms#TypeRegistration> ;
+        <http://www.w3.org/ns/solid/terms#forClass> <https://schema.org/WatchAction> ;
+        <http://www.w3.org/ns/solid/terms#instanceContainer> <http://localhost:4000/alice/movies/> .
+
+}

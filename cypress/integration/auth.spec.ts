@@ -153,7 +153,46 @@ describe('Authentication', () => {
         cy.get('@registerMoviesContainer').its('request.headers.authorization').should('match', /DPoP .*/);
     });
 
-    it('Logs in with Solid');
+    it('Logs in with Solid', () => {
+        // Arrange
+        cy.intercept('PATCH', 'http://localhost:4000/alice/movies/metropolis').as('patchMetropolis');
+        cy.startApp({ stubFetch: false });
+
+        // Act - Initial log in
+        cy.contains('Use Solid').click();
+        cy.get('input[placeholder="Solid POD url"]')
+          .clear()
+          .type('http://localhost:4000/alice/');
+        cy.contains('Log in with Solid').click();
+        cy.cssAuthorize({
+            reset: {
+                typeIndex: true,
+                moviesContainer: true,
+                movies: ['spirited-away', 'metropolis'],
+            },
+        });
+        cy.waitForReload({ stubFetch: false });
+
+        // Act - Mark a movie as watched
+        // TODO move this to media specs, test using CSS.
+        cy.buttonWithLabel('Mark Metropolis as watched').click();
+        cy.wait('@patchMetropolis');
+
+        // Act - Reload and log in again
+        cy.reload({ stubFetch: false });
+        cy.contains('Log in again').click();
+        cy.contains('Continue').click();
+        cy.waitForReload({ stubFetch: false });
+
+        // Assert
+        cy.contains('My Collection').click();
+        cy.anchorWithLabel('Spirited Away (Watch later)').should('be.visible');
+        cy.anchorWithLabel('Metropolis (Watched)').should('be.visible');
+
+        cy.get('@patchMetropolis').its('request.headers.authorization').should('match', /DPoP .*/);
+        cy.get('@patchMetropolis').its('request.headers.if-none-match').should('not.exist');
+    });
+
     it('Logs out with Solid and clears client data');
 
     it('[Legacy] Signs up with Solid', () => {

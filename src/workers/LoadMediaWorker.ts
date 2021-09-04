@@ -1,4 +1,6 @@
-import { RDFDocumentMetadata, SolidDocument, SolidEngine } from 'soukai-solid';
+import { arrayChunk } from '@noeldemartin/utils';
+import { fetchSolidDocument, SolidDocument } from '@noeldemartin/solid-utils';
+import { RDFDocumentMetadata, SolidDocument as SolidDocumentModel, SolidEngine } from 'soukai-solid';
 import Soukai, { Attributes } from 'soukai';
 
 import '@/plugins/soukai';
@@ -29,7 +31,7 @@ export interface SerializedMovie {
 export type Parameters = [object, Partial<Config>?];
 export type Result = { movies: SerializedMoviesContainer };
 
-const MOVIES_CHUNK_SIZE = 10;
+const MAX_REQUESTS_CHUNK_SIZE = 10;
 
 interface Config {
     ignoredDocumentUrls: string[];
@@ -101,8 +103,11 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         if (this.moviesContainer.isRelationLoaded('movies'))
             return;
 
-        if (!this.moviesContainer.isRelationLoaded('documents'))
-            await this.moviesContainer.loadRelation('documents');
+        if (!this.moviesContainer.isRelationLoaded('documents')) {
+            await this.loadMoviesContainerDocuments();
+
+            ModelsCache.remember(this.moviesContainer, { documents: this.moviesContainer.documents });
+        }
 
         this.moviesContainer.setRelationModels('movies', []);
 
@@ -139,20 +144,20 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         await this.loadMoviesFromDatabaseByChunks(documents);
     }
 
-    private async loadMoviesFromDatabaseByChunks(documents: SolidDocument[]): Promise<void> {
+    private async loadMoviesFromDatabaseByChunks(documents: SolidDocumentModel[]): Promise<void> {
         const totalDocuments = documents.length;
-        const chunks = Arr.chunk(documents, MOVIES_CHUNK_SIZE);
+        const chunks = arrayChunk(documents, MAX_REQUESTS_CHUNK_SIZE);
 
         for (let i = 0; i < chunks.length; i++) {
             const chunk = chunks[i];
 
-            this.updateProgressMessage(`Loading movies data (${i*MOVIES_CHUNK_SIZE}/${totalDocuments})...`);
+            this.updateProgressMessage(`Loading movies data (${i*MAX_REQUESTS_CHUNK_SIZE}/${totalDocuments})...`);
 
             await this.loadMoviesFromDocuments(chunk);
         }
     }
 
-    private async loadMoviesFromDocuments(documents: SolidDocument[]): Promise<void> {
+    private async loadMoviesFromDocuments(documents: SolidDocumentModel[]): Promise<void> {
         const movies = await Movie.from(this.moviesContainer.url).all<Movie>({
             $in: documents.map(document => document.url),
         });
@@ -165,6 +170,32 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
         await Promise.all(movies.map(movie => ModelsCache.remember(movie, { actions: movie.actions! })));
 
         this.moviesContainer.movies!.push(...movies);
+    }
+
+    // TODO remove when this is fixed in soukai-solid.
+    private async loadMoviesContainerDocuments(): Promise<void> {
+        if (!(Soukai.engine instanceof SolidEngine)) {
+            await this.moviesContainer.loadRelation('documents');
+
+            return;
+        }
+
+        const chunks = arrayChunk(this.moviesContainer.resourceUrls, MAX_REQUESTS_CHUNK_SIZE);
+        const documents: SolidDocument[] = [];
+
+        for (const resourceUrls of chunks) {
+            const chunkDocuments = await Promise.all(resourceUrls.map(url => fetchSolidDocument(url, SolidAuth.fetch)));
+
+            documents.push(...chunkDocuments);
+        }
+
+        this.moviesContainer.setRelationModels(
+            'documents',
+            documents.map(document => new SolidDocumentModel(
+                { url: document.url, updatedAt: document.getLastModified() },
+                true,
+            )),
+        );
     }
 
     private async migrateContainerSchema(name: string, container: MediaContainer): Promise<void> {

@@ -1,0 +1,11 @@
+@prefix schema: <https://schema.org/> .
+@prefix ldp: <http://www.w3.org/ns/ldp#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix XML: <http://www.w3.org/2001/XMLSchema#> .
+
+<#it>
+    a schema:Movie ;
+    schema:name "Spirited Away" ;
+    schema:image "https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg" ;
+    terms:created "2021-09-03T14:40:00Z"^^XML:dateTime ;
+    terms:modified "2021-09-03T14:40:00Z"^^XML:dateTime .

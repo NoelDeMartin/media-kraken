@@ -1,4 +1,5 @@
 import { SolidModel, SolidHasManyRelation } from 'soukai-solid';
+import { urlRoute } from '@noeldemartin/utils';
 import Soukai, { FieldType, MultiModelRelation } from 'soukai';
 
 import Arr from '@/utils/Arr';
@@ -113,6 +114,15 @@ export default class Movie extends SolidModel {
     public is(movie: Movie): boolean {
         return this.slug === movie.slug
             || !!this.externalUrls.find(url => Arr.contains(url, movie.externalUrls));
+    }
+
+    // TODO remove when this is fixed in soukai-solid.
+    public getSourceDocumentUrl(): string | null {
+        const originalSourceDocumentUrl = super.getSourceDocumentUrl();
+
+        return originalSourceDocumentUrl
+            ? urlRoute(originalSourceDocumentUrl)
+            : null;
     }
 
     public actionsRelationship(): MultiModelRelation {
