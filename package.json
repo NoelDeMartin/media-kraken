@@ -1,6 +1,6 @@
 {
   "name": "media-kraken",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "@inrupt/solid-client-authn-browser": "^1.11.2",
-    "@noeldemartin/solid-utils": "0.0.0-next.f9716490938d6dbabb0920bc834315c53ccd2505",
-    "@noeldemartin/utils": "0.1.0-next.2e7b395df8655ad88b6281827fffe1b13611c745",
+    "@noeldemartin/solid-utils": "^0.1.1",
+    "@noeldemartin/utils": "^0.2.1",
     "@sentry/browser": "^5.20.0",
     "@types/n3": "^1.1.6",
     "@types/rdf-js": "^3.0.0",
