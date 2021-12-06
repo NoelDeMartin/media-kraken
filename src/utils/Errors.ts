@@ -1,10 +1,9 @@
 import { DocumentFormat, MalformedDocumentError } from 'soukai-solid';
 import { init, captureException } from '@sentry/browser';
+import { UnauthorizedError } from '@noeldemartin/solid-utils';
 
 import Arr from '@/utils/Arr';
 import Storage from '@/utils/Storage';
-
-import UnauthorizedError from '@/errors/UnauthorizedError';
 
 const STORAGE_ENABLED_KEY = 'media-kraken-error-reporting';
 
@@ -25,8 +24,8 @@ interface MalformedDocumentErrorData {
 }
 
 interface UnauthorizedErrorData {
-    forbidden: boolean;
     url: string;
+    responseStatus?: number;
 }
 
 class Errors {
@@ -106,8 +105,8 @@ class Errors {
 
         if (error instanceof UnauthorizedError) {
             const data: UnauthorizedErrorData = {
-                forbidden: error.forbidden,
                 url: error.url,
+                responseStatus: error.responseStatus,
             };
 
             serializedError.errorClass = 'unauthorized';
@@ -132,7 +131,7 @@ class Errors {
                 case 'unauthorized': {
                     const data = serializedError.errorData as UnauthorizedErrorData;
 
-                    return new UnauthorizedError(data.forbidden, data.url);
+                    return new UnauthorizedError(data.url, data.responseStatus);
                 }
                 case 'malformed-document': {
                     const data = serializedError.errorData as MalformedDocumentErrorData;

@@ -1,4 +1,5 @@
 import { MalformedDocumentError } from 'soukai-solid';
+import { UnauthorizedError } from '@noeldemartin/solid-utils';
 
 import { MediaParser } from '@/utils/parsers';
 import Arr from '@/utils/Arr';
@@ -12,7 +13,6 @@ import Time from '@/utils/Time';
 import TVisoMoviesParser from '@/utils/parsers/TVisoMoviesParser';
 
 import MediaValidationError from '@/errors/MediaValidationError';
-import UnauthorizedError from '@/errors/UnauthorizedError';
 import UnsuitableMediaError from '@/errors/UnsuitableMediaError';
 
 import MediaContainer from '@/models/soukai/MediaContainer';
@@ -181,7 +181,7 @@ export default class Media extends Service<State, ComputedState> {
                 log.added.push(movie);
             } catch (error) {
                 log.failed.push({
-                    error,
+                    error: error as Error,
                     data: movieData,
                 });
             }
@@ -282,7 +282,7 @@ export default class Media extends Service<State, ComputedState> {
                 return;
             }
 
-            this.handleUnknownError(error);
+            this.handleUnknownError(error as Error);
         }
     }
 

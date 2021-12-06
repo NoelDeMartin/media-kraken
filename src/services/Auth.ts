@@ -1,4 +1,5 @@
 import { Dictionary } from 'vue-router/types/router';
+import { NetworkRequestError, UnauthorizedError } from '@noeldemartin/solid-utils';
 
 import Service from '@/services/Service';
 import Services from '@/services';
@@ -13,9 +14,6 @@ import SolidAuth from '@/authentication/SolidAuth';
 
 import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
-
-import NetworkRequestError from '@/errors/NetworkRequestError';
-import UnauthorizedError from '@/errors/UnauthorizedError';
 
 import OfflineLogoutModal from '@/components/modals/OfflineLogoutModal.vue';
 
