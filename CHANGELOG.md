@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Changed
 
-- Removed christmas attire.
+- Removed Christmas attire.
 
 ## [v0.1.11](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.11) - 2021-12-06
 
