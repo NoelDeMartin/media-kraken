@@ -28,7 +28,7 @@ The core technologies used in this project are the following:
 - [TailwindCSS](https://tailwindcss.com/)
 - [Soukai](https://soukai.js.org/)
 - [Soukai Solid](https://github.com/NoelDeMartin/soukai-solid)
-- [Solid Auth Client](https://github.com/solid/solid-auth-client)
+- [Inrupt's Auth Client](https://github.com/inrupt/solid-client-authn-js/)
 - [TypeScript](https://www.typescriptlang.org/)
 - [Jest](https://jestjs.io/)
 - [Cypress](https://www.cypress.io/)
