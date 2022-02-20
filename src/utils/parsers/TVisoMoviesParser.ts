@@ -1,7 +1,6 @@
 import MediaValidationError from '@/errors/MediaValidationError';
 import UnsuitableMediaError from '@/errors/UnsuitableMediaError';
 
-import Arr from '@/utils/Arr';
 import Time from '@/utils/Time';
 
 import Movie from '@/models/soukai/Movie';
@@ -37,7 +36,7 @@ class TVisoMoviesParser implements MediaParser<Data, Movie> {
         if (
             typeof data.title !== 'string' ||
             (data.imdb !== null && typeof data.imdb !== 'string') ||
-            !Arr.contains(data.status, Object.values(Status)) ||
+            !Object.values(Status).includes(data.status) ||
             !Time.isValidDateString(data.checkedDate)
         )
             throw new MediaValidationError(['Invalid format']);

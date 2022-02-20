@@ -4,10 +4,6 @@ class Arr {
         return Array.isArray(item) ? item : [item];
     }
 
-    public contains<T>(needle: T, haystack: T[]): boolean {
-        return haystack.indexOf(needle) !== -1;
-    }
-
     public flatten<T>(items: T[][]): T[] {
         return items.reduce((flattenedItems, nestedItems) => [...flattenedItems, ...nestedItems], []);
     }

@@ -2,7 +2,6 @@ import { SolidModel, SolidHasManyRelation } from 'soukai-solid';
 import { urlRoute } from '@noeldemartin/utils';
 import Soukai, { FieldType, MultiModelRelation } from 'soukai';
 
-import Arr from '@/utils/Arr';
 import Str from '@/utils/Str';
 import TMDBMoviesParser from '@/utils/parsers/TMDBMoviesParser';
 import TMDBResolver from '@/utils/media/TMDBResolver';
@@ -113,7 +112,7 @@ export default class Movie extends SolidModel {
 
     public is(movie: Movie): boolean {
         return this.slug === movie.slug
-            || !!this.externalUrls.find(url => Arr.contains(url, movie.externalUrls));
+            || !!this.externalUrls.find(url => movie.externalUrls.includes(url));
     }
 
     // TODO remove when this is fixed in soukai-solid.

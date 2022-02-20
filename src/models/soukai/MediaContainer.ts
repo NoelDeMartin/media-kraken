@@ -104,11 +104,11 @@ export default class MediaContainer extends SolidContainerModel {
         ];
 
         return properties.length !== expectedProperties.length
-            || expectedProperties.some(property => !Arr.contains(property, properties))
-            || Arr.create(containerResource['@type']).some((type: string) => !Arr.contains(type, [
+            || expectedProperties.some(property => !properties.includes(property))
+            || Arr.create(containerResource['@type']).some((type: string) => ![
                 'https://www.w3.org/ns/ldp#Resource',
                 'https://www.w3.org/ns/ldp#Container',
-            ]));
+            ].includes(type));
     }
 
     private fixLegacyAttributes(name: string, updatedAt: Date): void {

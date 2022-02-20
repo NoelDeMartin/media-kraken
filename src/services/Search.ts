@@ -6,7 +6,6 @@ import Services from '@/services';
 
 import TheMovieDBApi from '@/api/TheMovieDBApi';
 
-import Arr from '@/utils/Arr';
 import DOM from '@/utils/DOM';
 import Str from '@/utils/Str';
 import Time, { DebouncedFunction } from '@/utils/Time';
@@ -251,7 +250,7 @@ export default class Search extends Service<State> {
     private captureHotKey({ target, key }: KeyboardEvent): boolean {
         if (
             !this.open &&
-            Arr.contains(key.toLowerCase(), ['s', '/']) &&
+            ['s', '/'].includes(key.toLowerCase()) &&
             !DOM.isWritable(target)
         ) {
             this.start();
