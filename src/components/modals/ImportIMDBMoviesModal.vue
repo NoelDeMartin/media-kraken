@@ -3,10 +3,10 @@
         :id="id"
         :options="options"
         class="w-full"
-        title="Import from IMDB"
+        title="Import from IMDb"
     >
         <p class="mb-3 text-gray-700 leading-relaxed">
-            At the moment, importing data from IMDB is limited given their <BaseLink url="https://www.imdb.com/interfaces/">
+            At the moment, importing data from IMDb is limited given their <BaseLink url="https://www.imdb.com/interfaces/">
                 lack of APIs
             </BaseLink>.
         </p>
