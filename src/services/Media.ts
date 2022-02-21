@@ -6,7 +6,7 @@ import Arr from '@/utils/Arr';
 import EventBus from '@/utils/EventBus';
 import Files from '@/utils/Files';
 import GoodFilmsMoviesParser from '@/utils/parsers/GoodFilmsMoviesParser';
-import IMDBMoviesParser from '@/utils/parsers/IMDBMoviesParser';
+import IMDbMoviesParser from '@/utils/parsers/IMDbMoviesParser';
 import JSONLDMoviesParser from '@/utils/parsers/JSONLDMoviesParser';
 import Storage from '@/utils/Storage';
 import Time from '@/utils/Time';
@@ -69,7 +69,7 @@ export interface MediaContainers {
 }
 
 export enum MediaSource {
-    IMDB = 'imdb',
+    IMDb = 'imdb',
     JSONLD = 'jsonld',
     TViso = 'tviso',
     GoodFilms = 'goodfilms',
@@ -295,8 +295,8 @@ export default class Media extends Service<State, ComputedState> {
 
     private getMoviesParser(source: MediaSource): MediaParser<any, Movie> {
         switch (source) {
-            case MediaSource.IMDB:
-                return IMDBMoviesParser;
+            case MediaSource.IMDb:
+                return IMDbMoviesParser;
             case MediaSource.JSONLD:
                 return JSONLDMoviesParser;
             case MediaSource.TViso:

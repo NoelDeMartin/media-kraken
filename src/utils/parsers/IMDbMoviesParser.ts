@@ -14,7 +14,7 @@ interface Data {
     imdb: string;
 }
 
-class IMDBMoviesParser implements MediaParser<Data, Movie> {
+class IMDbMoviesParser implements MediaParser<Data, Movie> {
 
     public async validate(data: Data): Promise<void> {
         if (typeof data.imdb !== 'string')
@@ -50,4 +50,4 @@ class IMDBMoviesParser implements MediaParser<Data, Movie> {
 
 }
 
-export default new IMDBMoviesParser();
+export default new IMDbMoviesParser();

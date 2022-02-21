@@ -86,7 +86,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 - `soukai` dependency has been updated to 0.4.0.
 - `soukai-solid` dependency has been updated to 0.4.0.
-- Improved IMDB import (detect mobile urls, and ignore non-movie urls).
+- Improved IMDb import (detect mobile urls, and ignore non-movie urls).
 - Improved error handling overall.
 
 ## [v0.1.3](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.3) - 2020-07-24

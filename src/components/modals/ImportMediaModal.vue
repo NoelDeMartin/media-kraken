@@ -55,7 +55,7 @@
 <script lang="ts">
 import { MediaSource } from '@/services/Media';
 
-import ImportIMDBMoviesModal from '@/components/modals/ImportIMDBMoviesModal.vue';
+import ImportIMDbMoviesModal from '@/components/modals/ImportIMDbMoviesModal.vue';
 import Modal from '@/components/mixins/Modal';
 
 import CSV from '@/utils/CSV';
@@ -68,7 +68,7 @@ export default Modal.extend({
     }),
     computed: {
         mediaSourceNames: () => ({
-            [MediaSource.IMDB]: 'IMDB',
+            [MediaSource.IMDb]: 'IMDb',
             [MediaSource.JSONLD]: 'JSON-LD',
             [MediaSource.TViso]: 'TViso',
             [MediaSource.GoodFilms]: 'Good Fil.ms',
@@ -108,7 +108,7 @@ export default Modal.extend({
         },
         async getSourceData(source: MediaSource): Promise<object[]> {
             switch (source) {
-                case MediaSource.IMDB:
+                case MediaSource.IMDb:
                     return this.getDataFromModal();
                 case MediaSource.GoodFilms:
                     return this.getDataFromFile(MediaType.CSV);
@@ -128,7 +128,7 @@ export default Modal.extend({
             return data;
         },
         async getDataFromModal(): Promise<object[]> {
-            const modal = this.$ui.openModal<object[]>(ImportIMDBMoviesModal);
+            const modal = this.$ui.openModal<object[]>(ImportIMDbMoviesModal);
             const data = await modal.result;
 
             return data || [];
