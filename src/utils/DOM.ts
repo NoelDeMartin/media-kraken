@@ -1,5 +1,3 @@
-import Arr from './Arr';
-
 const NON_WRITABLE_INPUT_TYPES = ['submit', 'reset', 'checkbox', 'radio'];
 
 class DOM {
@@ -13,10 +11,7 @@ class DOM {
         return name === 'select'
             || (
                 name === 'input' &&
-                !Arr.contains(
-                    (element.getAttribute('type') || 'text').toLowerCase(),
-                    NON_WRITABLE_INPUT_TYPES,
-                )
+                !NON_WRITABLE_INPUT_TYPES.includes((element.getAttribute('type') || 'text').toLowerCase())
             )
             || name === 'textarea'
             || element.isContentEditable;

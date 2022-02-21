@@ -2,7 +2,6 @@ import { DocumentFormat, MalformedDocumentError } from 'soukai-solid';
 import { init, captureException } from '@sentry/browser';
 import { UnauthorizedError } from '@noeldemartin/solid-utils';
 
-import Arr from '@/utils/Arr';
 import Storage from '@/utils/Storage';
 
 const STORAGE_ENABLED_KEY = 'media-kraken-error-reporting';
@@ -160,7 +159,7 @@ class Errors {
 
         const url = new URL(location.href);
 
-        return Arr.contains(url.searchParams.get('error_reporting'), ['1', 'true', 'on', 'yes']);
+        return ['1', 'true', 'on', 'yes'].includes(url.searchParams.get('error_reporting')!!);
     }
 
     private initializeSentry(): void {

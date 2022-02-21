@@ -13,7 +13,6 @@ import User from '@/models/users/User';
 
 import SolidAuth from '@/authentication/SolidAuth';
 
-import Arr from '@/utils/Arr';
 import JSONUserParser from '@/utils/parsers/JSONUserParser';
 
 import WebWorker from './WebWorker';
@@ -117,7 +116,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
 
     private async loadMoviesFromCache(): Promise<void> {
         const operations = this.moviesContainer.documents.map(async document => {
-            if (Arr.contains(document.url, this.config.ignoredDocumentUrls))
+            if (this.config.ignoredDocumentUrls.includes(document.url))
                 return;
 
             const models = await ModelsCache.getFromDocument(document);
@@ -134,8 +133,8 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
 
     private async loadMoviesFromDatabase(): Promise<void> {
         const documents = this.moviesContainer.documents.filter(document =>
-            !Arr.contains(document.url, this.config.ignoredDocumentUrls) &&
-            !Arr.contains(document.url, this.processedDocumentsUrls),
+            !this.config.ignoredDocumentUrls.includes(document.url) &&
+            !this.processedDocumentsUrls.includes(document.url),
         );
 
         if (documents.length === 0)
