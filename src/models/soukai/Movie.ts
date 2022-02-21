@@ -86,11 +86,11 @@ export default class Movie extends SolidModel {
     }
 
     public get imdbUrl(): string | null {
-        return this.externalUrls.find(url => Str.contains(url, 'imdb.com')) || null;
+        return this.externalUrls.find(url => url.includes('imdb.com')) || null;
     }
 
     public get tmdbUrl(): string | null {
-        return this.externalUrls.find(url => Str.contains(url, 'themoviedb.org')) || null;
+        return this.externalUrls.find(url => url.includes('themoviedb.org')) || null;
     }
 
     public get imdbId(): string | null {
@@ -161,7 +161,7 @@ export default class Movie extends SolidModel {
         const sourceDocumentUrl = this.getSourceDocumentUrl();
 
         return (documentUrl !== null && sourceDocumentUrl !== null && documentUrl !== sourceDocumentUrl)
-            || !Str.contains(this.url, '#');
+            || !this.url.includes('#');
     }
 
     public async migrateSchema(): Promise<void> {

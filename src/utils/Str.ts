@@ -48,10 +48,6 @@ class Str {
         return text;
     }
 
-    public contains(haystack: string, needle: string): boolean {
-        return haystack.indexOf(needle) !== -1;
-    }
-
     public studly(text: string): string {
         return text.split(/_|-|\s/)
             .map(

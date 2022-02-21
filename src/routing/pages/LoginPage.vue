@@ -78,7 +78,6 @@ import Vue from 'vue';
 
 import { AuthenticationMethod } from '@/authentication';
 import SolidAuth from '@/authentication/SolidAuth';
-import Str from '@/utils/Str';
 
 import LoginPrevious from '@/components/LoginPrevious.vue';
 import LoginSolid from '@/components/LoginSolid.vue';
@@ -149,7 +148,7 @@ export default Vue.extend({
             this.loginUrl = this.loginUrl!.replace('solid.community', 'solidcommunity.net');
         },
         isUsingLegacySolidCommunity(): boolean {
-            return Str.contains(this.loginUrl!, 'solid.community');
+            return this.loginUrl!.includes('solid.community');
         },
         replaceLegacySolidCommunity(): Promise<boolean> {
             return this.$ui.confirm(

@@ -204,7 +204,7 @@ export default class Search extends Service<State> {
                 const filterText = Str.slug(query, '');
 
                 return Services.$media.searchIndex
-                    .filter(entry => Str.contains(entry.searchableText, filterText))
+                    .filter(entry => entry.searchableText.includes(filterText))
                     .map(entry => entry.movie);
             }
 

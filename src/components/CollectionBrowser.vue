@@ -257,7 +257,7 @@ export default Vue.extend({
             if (this.searching) {
                 const filterText = Str.slug(this.searchFilter!, '');
 
-                filteredIndex = filteredIndex.filter(entry => Str.contains(entry.searchableText, filterText));
+                filteredIndex = filteredIndex.filter(entry => entry.searchableText.includes(filterText));
             }
 
             return filteredIndex.map(entry => entry.movie);
