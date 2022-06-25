@@ -17,6 +17,7 @@ function cssLogin() {
     cy.get('#email').type('alice@example.com');
     cy.get('#password').type('secret');
     cy.contains('button', 'Log in').click();
+    cy.contains('button', 'Consent').click();
 }
 
 function cssRegister() {
@@ -26,7 +27,7 @@ function cssRegister() {
     cy.get('#confirmPassword').type('secret');
     cy.get('#podName').type('alice');
     cy.contains('button', 'Sign up').click();
-    cy.contains('log in').click();
+    cy.contains('a', 'log in').click();
 }
 
 function cssResetPOD(options: Partial<ResetOptions> = {}) {

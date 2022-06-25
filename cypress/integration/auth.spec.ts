@@ -181,7 +181,7 @@ describe('Authentication', () => {
         // Act - Reload and log in again
         cy.reload({ stubFetch: false });
         cy.contains('Log in again').click();
-        cy.contains('Continue').click();
+        cy.contains('Consent').click();
         cy.waitForReload({ stubFetch: false });
 
         // Assert

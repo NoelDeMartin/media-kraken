@@ -14,6 +14,7 @@
     "test:serve-pod": "community-solid-server -p 4000 -l warn",
     "cy:open": "cypress open",
     "cy:run": "cypress run",
+    "cy:dev": "concurrently --kill-others \"npm run test:serve-app\" \"npm run test:serve-pod\" \"npm run cy:open\"",
     "cy:test": "start-server-and-test test:serve-app http-get://localhost:8080 test:serve-pod http-get://localhost:4000 cy:run"
   },
   "dependencies": {
@@ -38,7 +39,7 @@
   "devDependencies": {
     "@cypress/webpack-preprocessor": "^5.1.1",
     "@fullhuman/postcss-purgecss": "^2.0.5",
-    "@solid/community-server": "^1.1.0",
+    "@solid/community-server": "^4.0.1",
     "@types/faker": "^4.1.11",
     "@types/jest": "^25.2.1",
     "@types/marked": "^0.7.3",
@@ -51,6 +52,7 @@
     "@vue/cli-plugin-typescript": "^4.3.0",
     "@vue/cli-service": "~4.2.3",
     "@vue/eslint-config-typescript": "^5.0.1",
+    "concurrently": "^7.2.2",
     "cypress": "^8.3.1",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",
