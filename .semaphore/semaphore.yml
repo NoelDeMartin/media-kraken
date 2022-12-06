@@ -1,0 +1,35 @@
+version: v1.0
+name: Media Kraken
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: CI
+    task:
+      prologue:
+        commands:
+          - checkout
+          - sem-version node 14
+          - cache restore
+          - npm ci
+          - cache store
+      jobs:
+        - name: Linting
+          commands:
+            - npm run lint
+        - name: Unit Tests
+          commands:
+            - npm test
+        - name: Integration Tests
+          commands:
+            - npm run cy:test
+        - name: Build
+          commands:
+            - npm run build
+      epilogue:
+        on_fail:
+          commands:
+            - artifact push job cypress/screenshots
+    skip:
+      when: branch = 'gh-pages'
