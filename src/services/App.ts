@@ -31,6 +31,7 @@ export default class App extends Service<State> {
 
     public environment!: string;
     public sourceUrl!: string;
+    public releaseNotesUrl!: string;
     public version!: string;
     public versionName!: string;
 
@@ -89,6 +90,7 @@ export default class App extends Service<State> {
 
         this.environment = process.env.NODE_ENV as string;
         this.sourceUrl = process.env.VUE_APP_SOURCE_URL as string;
+        this.releaseNotesUrl = process.env.VUE_APP_RELEASE_NOTES_URL as string;
         this.version = process.env.VUE_APP_VERSION as string;
         this.versionName = process.env.VUE_APP_VERSION_NAME as string;
 

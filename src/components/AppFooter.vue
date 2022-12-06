@@ -18,7 +18,13 @@
             >
                 source
             </BaseLink>
-            | {{ $app.versionName }}
+            | <BaseLink
+                title="View application source code"
+                :url="$app.releaseNotesUrl"
+                class="mx-1"
+            >
+                {{ $app.versionName }}
+            </BaseLink>
         </div>
     </footer>
 </template>

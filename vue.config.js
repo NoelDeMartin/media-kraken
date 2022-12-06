@@ -5,17 +5,20 @@ const { execSync } = require('child_process');
 const path = require('path');
 const version = require('./package.json').version;
 const isProduction = process.env.NODE_ENV === 'production';
-const versionName = 'v' + version + (isProduction ? '' : ('-next-' + execSync('git rev-parse HEAD')));
+const sourceCommitHash = execSync('git rev-parse HEAD').toString();
+const versionName = 'v' + version + (isProduction ? '' : ('-next-' + sourceCommitHash));
 const isTesting = process.env.NODE_ENV === 'testing';
 const publicPath = isProduction ? '/media-kraken/' : '/';
 const title = 'Media Kraken';
 const description = 'Track your movies with Media Kraken and never miss a beat!';
 const baseUrl = isProduction ? 'https://noeldemartin.github.io/media-kraken/' : 'http://localhost:8080';
 const sourceUrl = 'https://github.com/noeldemartin/media-kraken';
+const releaseNotesUrl = sourceUrl + (isProduction ? `/releases/tag/${versionName}` : `/tree/${sourceCommitHash}`);
 
 process.env.VUE_APP_VERSION = version;
 process.env.VUE_APP_VERSION_NAME = versionName;
 process.env.VUE_APP_SOURCE_URL = sourceUrl;
+process.env.VUE_APP_RELEASE_NOTES_URL = releaseNotesUrl;
 process.env.VUE_APP_PUBLIC_PATH = publicPath;
 
 module.exports = {
