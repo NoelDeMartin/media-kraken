@@ -79,6 +79,7 @@
 </template>
 
 <script lang="ts">
+import ModelsCache from '@/models/ModelsCache';
 import Movie from '@/models/soukai/Movie';
 
 import Modal from '@/components/mixins/Modal';
@@ -103,6 +104,7 @@ export default Modal.extend({
 
                     await movie.fetchMissingAttributes();
                     await this.$media.moviesContainer!.relatedMovies.save(movie);
+                    await ModelsCache.forgetDocument(this.$media.moviesContainer!.url);
                 },
                 `Adding **${movie.title}** to your collection...`,
             );

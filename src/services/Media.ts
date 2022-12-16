@@ -194,6 +194,7 @@ export default class Media extends Service<State, ComputedState> {
         Time.wait(0).then(() => {
             Services.$ui.closeModal(progressModalId, true);
             Services.$ui.openModal(ImportResultModal, { log }, { cancellable: false });
+            ModelsCache.forgetDocument(this.moviesContainer!.url);
         });
     }
 
