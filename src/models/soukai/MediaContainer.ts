@@ -29,7 +29,13 @@ export default class MediaContainer extends SolidContainerModel {
     }
 
     public async hasLegacySchema(): Promise<boolean> {
-        return this.exists() && !this.wasRecentlyCreated() && !this.name;
+        // TODO this previously looked at the container name, but latest versions of CSS don't permit setting
+        // metadata on container creation. So even containers created with the latest version of the app won't have it.
+        // Until that's fixed, this will be commented out.
+        // See https://github.com/CommunitySolidServer/CommunitySolidServer/issues/1027#issuecomment-1022214820
+        // return this.exists() && !this.wasRecentlyCreated() && !this.name;
+
+        return false;
     }
 
     public async migrateSchema(name: string, describedBy?: string): Promise<void> {
