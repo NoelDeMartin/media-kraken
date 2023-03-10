@@ -125,13 +125,7 @@ class SolidAuth {
             return;
 
         const profile = await fetchLoginUserProfile(session.webId, session.authenticator.fetch) as SolidUserProfile;
-        const user = new SolidUser(
-            profile.webId,
-            profile.name ?? 'Unknown',
-            profile.avatarUrl ?? null,
-            profile.storageUrls,
-            profile.privateTypeIndexUrl,
-        );
+        const user = new SolidUser(profile);
 
         this.session = session;
         this.listener.onUserUpdated(user);
