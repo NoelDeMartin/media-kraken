@@ -165,6 +165,7 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
 
                 return movies;
             } catch (error) {
+                // eslint-disable-next-line no-console
                 console.warn(`There was a problem loading movies from ${document.url}`, error);
 
                 return [];
