@@ -157,9 +157,21 @@ export default class LoadMediaWorker extends WebWorker<Parameters, Result> {
     }
 
     private async loadMoviesFromDocuments(documents: SolidDocumentModel[]): Promise<void> {
-        const movies = await Movie.from(this.moviesContainer.url).all<Movie>({
-            $in: documents.map(document => document.url),
-        });
+        const documentsMovies = await Promise.all(documents.map(async document => {
+            try {
+                const movies = await Movie.from(this.moviesContainer.url).all<Movie>({
+                    $in: [document.url],
+                });
+
+                return movies;
+            } catch (error) {
+                console.warn(`There was a problem loading movies from ${document.url}`, error);
+
+                return [];
+            }
+        }));
+
+        const movies = documentsMovies.flat();
 
         await Promise.all(movies.map(movie => movie.loadRelationIfUnloaded('actions')));
 
