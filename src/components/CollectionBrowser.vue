@@ -140,6 +140,7 @@ import Vue from 'vue';
 
 import DOM from '@/utils/DOM';
 import Str from '@/utils/Str';
+import { getQueryParameter, updateQueryParameters } from '@/utils/location';
 
 import Movie from '@/models/soukai/Movie';
 
@@ -166,7 +167,7 @@ interface Data {
     watchedFilter: WatchedFilter;
     searchFilter: string | null;
     showGoTop: boolean;
-    removeClickAwayListener: Function | null;
+    removeClickAwayListener: Function | true | null;
     scrollListener: any | null;
     keyboardListener: any | null;
 }
@@ -266,7 +267,33 @@ export default Vue.extend({
             return this.$viewer.isActive ? 'the' : 'your';
         },
     },
+    watch: {
+        searchFilter(searchFilter: string) {
+            updateQueryParameters({ searchFilter: searchFilter && searchFilter.length > 0 ? searchFilter : undefined });
+        },
+        WatchedFilter(watchedFilter: WatchedFilter) {
+            updateQueryParameters({ status: watchedFilter === WatchedFilter.All ? undefined : watchedFilter });
+        },
+    },
+    created() {
+        this.searchFilter = getQueryParameter('search');
+        this.watchedFilter = getQueryParameter('status') as WatchedFilter ?? WatchedFilter.All;
+
+        if (this.searchFilter) {
+            this.removeClickAwayListener = true;
+        }
+    },
     mounted() {
+        if (this.removeClickAwayListener === true) {
+            const input = this.$refs.searchFilter as HTMLInputElement;
+            const trigger = (this.$refs.filtersTrigger as Vue).$el as HTMLButtonElement;
+
+            this.removeClickAwayListener = this.$ui.onClickAway(
+                [input, trigger],
+                () => this.searchFilter!.length === 0 && this.hideFilters(),
+            );
+        }
+
         document.addEventListener('scroll', this.scrollListener = () => this.showGoTop = hasScrolled());
         document.addEventListener('keydown', this.keyboardListener = (event: KeyboardEvent) => {
             if (!this.captureHotKey(event))
@@ -314,10 +341,13 @@ export default Vue.extend({
             this.$nextTick(() => input.focus());
         },
         hideFilters() {
-            if (this.removeClickAwayListener === null)
+            if (this.removeClickAwayListener === null) {
                 return;
+            }
 
-            this.removeClickAwayListener();
+            if (typeof this.removeClickAwayListener === 'function') {
+                this.removeClickAwayListener();
+            }
 
             this.searchFilter = null;
             this.removeClickAwayListener = null;
