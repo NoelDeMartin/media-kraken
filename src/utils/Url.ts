@@ -51,12 +51,8 @@ class Url {
     }
 
     public parseRootDomain(url: string): string | null {
-        const parts = this.parse(url);
 
-        if (!parts || !parts.domain)
-            return null;
-
-        return parts.domain.split('.').slice(-2).join('.');
+        return this.parse(url)?.domain?.replace(/^www\./, '') ?? null;
     }
 
     public parse(url: string): UrlParts | null {
@@ -66,7 +62,7 @@ class Url {
             return null;
 
         const host = match[4] || '';
-        const [domain, port]: string[] = host.split(':');
+        const [domain, port]: string[] = host.indexOf(':') === -1 ? [host] : host.split(':');
 
         return {
             protocol: match[2] || undefined,
