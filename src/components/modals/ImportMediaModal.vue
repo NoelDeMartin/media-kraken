@@ -21,7 +21,8 @@
                         :aria-label="'Import from ' + mediaSourceNames[source]"
                         @click="importMedia(source)"
                     >
-                        <BaseIcon v-if="source !== 'goodfilms'" :name="source" class="w-24 h-24" />
+                        <BaseIcon v-if="source === 'netflix'" :name="source" class="w-full h-full" />
+                        <BaseIcon v-else-if="source !== 'goodfilms'" :name="source" class="w-24 h-24" />
                         <div v-else style="background: #2c2c2c" class="w-24 h-24 p-2 flex items-center justify-center">
                             <img src="@/assets/img/logos/goodfilms.png">
                         </div>
@@ -69,6 +70,7 @@ export default Modal.extend({
     computed: {
         mediaSourceNames: () => ({
             [MediaSource.IMDb]: 'IMDb',
+            [MediaSource.Netflix]: 'Netflix',
             [MediaSource.JSONLD]: 'JSON-LD',
             [MediaSource.TViso]: 'TViso',
             [MediaSource.GoodFilms]: 'Good Fil.ms',
@@ -111,6 +113,7 @@ export default Modal.extend({
                 case MediaSource.IMDb:
                     return this.getDataFromModal();
                 case MediaSource.GoodFilms:
+                case MediaSource.Netflix:
                     return this.getDataFromFile(MediaType.CSV);
                 default:
                     return this.getDataFromFile(MediaType.JSON);

@@ -8,6 +8,7 @@ import Files from '@/utils/Files';
 import GoodFilmsMoviesParser from '@/utils/parsers/GoodFilmsMoviesParser';
 import IMDbMoviesParser from '@/utils/parsers/IMDbMoviesParser';
 import JSONLDMoviesParser from '@/utils/parsers/JSONLDMoviesParser';
+import NetflixMoviesParser from '@/utils/parsers/NetflixMoviesParser';
 import Storage from '@/utils/Storage';
 import Time from '@/utils/Time';
 import TVisoMoviesParser from '@/utils/parsers/TVisoMoviesParser';
@@ -70,6 +71,7 @@ export interface MediaContainers {
 
 export enum MediaSource {
     IMDb = 'imdb',
+    Netflix = 'netflix',
     JSONLD = 'jsonld',
     TViso = 'tviso',
     GoodFilms = 'goodfilms',
@@ -298,6 +300,8 @@ export default class Media extends Service<State, ComputedState> {
         switch (source) {
             case MediaSource.IMDb:
                 return IMDbMoviesParser;
+            case MediaSource.Netflix:
+                return NetflixMoviesParser;
             case MediaSource.JSONLD:
                 return JSONLDMoviesParser;
             case MediaSource.TViso:
