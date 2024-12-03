@@ -4,6 +4,22 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.18](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.18) - 2024-12-03
+
+### Added
+
+- [#28](https://github.com/NoelDeMartin/media-kraken/issues/28) Import from Netflix.
+- [#36](https://github.com/NoelDeMartin/media-kraken/issues/36) Remember collection filters.
+
+### Changed
+
+- [Christmas attire](https://github.com/NoelDeMartin/media-kraken/tree/v0.1.18/src/assets/icons/media-kraken.svg).
+
+### Fixed
+
+- [#34](https://github.com/NoelDeMartin/media-kraken/issues/34) Importing collections with malformed documents (errors will be logged in the console instead).
+- [#37](https://github.com/NoelDeMartin/media-kraken/issues/37) Parsing domains with country TLDs.
+
 ## [v0.1.17](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.17) - 2024-01-07
 
 ### Changed
