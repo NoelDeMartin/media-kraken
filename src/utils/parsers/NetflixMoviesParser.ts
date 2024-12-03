@@ -58,8 +58,6 @@ class NetflixMoviesParser implements MediaParser<Data, Movie> {
 
     private async findMovie(data: Data): Promise<TMDBMovie | null> {
         if (matches.has(data)) {
-            console.log('use cache!');
-
             return matches.get(data)?.match ?? null;
         }
 
