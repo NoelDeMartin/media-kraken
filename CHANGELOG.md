@@ -4,6 +4,40 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.20](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.20) - 2024-12-05
+
+### Changed
+
+- Updated top 100 IMDb movies.
+
+In case you're curious, the following movies were added:
+
+- [Spider-Man: Across the Spider-Verse](https://www.imdb.com/title/tt9362722)
+- [Dune: Part Two](https://www.imdb.com/title/tt15239678)
+- [12th Fail](https://www.imdb.com/title/tt23849204)
+- [Singin' in the Rain](https://www.imdb.com/title/tt0045152)
+- [Come and See](https://www.imdb.com/title/tt0091251)
+- [Toy Story 3](https://www.imdb.com/title/tt0435761)
+- [Ikiru](https://www.imdb.com/title/tt0044741)
+- [Lawrence of Arabia](https://www.imdb.com/title/tt0056172)
+- [The Apartment](https://www.imdb.com/title/tt0053604)
+
+Whilst the following were removed:
+
+- [Like Stars on Earth](https://www.imdb.com/title/tt0986264)
+- [1917](https://www.imdb.com/title/tt8579674)
+- [Vertigo](https://www.imdb.com/title/tt0052357)
+- [M](https://www.imdb.com/title/tt0022100)
+- [Dangal](https://www.imdb.com/title/tt5074352)
+- [Citizen Kane](https://www.imdb.com/title/tt0033467)
+- [Full Metal Jacket](https://www.imdb.com/title/tt0093058)
+- [Bicycle Thieves](https://www.imdb.com/title/tt0040522)
+- [North by Northwest](https://www.imdb.com/title/tt0053125)
+
+### Fixed
+
+- [#28](https://github.com/NoelDeMartin/media-kraken/issues/28) Import from Netflix (date parsing didn't work in some regions).
+
 ## [v0.1.19](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.19) - 2024-12-03
 
 ### Fixed
