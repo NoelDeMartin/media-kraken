@@ -99,14 +99,22 @@ export default Modal.extend({
             this.$search.start();
         },
         async importMedia(source: MediaSource) {
-            const data = await this.getSourceData(source);
+            try {
+                const data = await this.getSourceData(source);
 
-            if (data.length === 0)
-                return;
+                if (data.length === 0) {
+                    return;
+                }
 
-            await this.$media.importMovies(data, source);
+                await this.$media.importMovies(data, source);
 
-            this.close();
+                this.close();
+            } catch (error) {
+                this.$ui.alert(
+                    'Import failed',
+                    'There was a problem importing that file, are you sure it\'s in the correct format?',
+                );
+            }
         },
         async getSourceData(source: MediaSource): Promise<object[]> {
             switch (source) {

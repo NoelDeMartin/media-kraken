@@ -95,6 +95,39 @@ describe('Media', () => {
         cy.anchorWithLabel(`${jaws.name} (Watch later)`).should('be.visible');
     });
 
+    it('Imports movies from Netflix', () => {
+        // Arrange
+        cy.fetchRoute(`/movie/${jawsTmdbSearchResult.id}`, jawsTmdb);
+        cy.fetchRoute(`/movie/${loveExposureTmdbSearchResult.id}`, loveExposureTmdb);
+        cy.fetchRoute('/search/movie?query=Jaws', { results: [jawsTmdbSearchResult] });
+        cy.fetchRoute('/search/movie?query=Love+Exposure', {
+            results: [loveExposureTmdbSearchResult],
+        });
+        cy.fetchRoute('/search/movie?query=Lost+Girls', { results: [] });
+
+        // Act
+        cy.contains('Yes, I have some movies I\'d like to import').click();
+        cy.buttonWithLabel('Import from Netflix').click();
+        cy.uploadFixture('NetflixViewingHistory.csv');
+
+        // Assert
+        cy.see('2 watched movies have been added to your collection');
+        cy.see('17 were ignored');
+        cy.see('7 failed on import');
+        cy.contains('OK').click();
+
+        cy.see('You don\'t have anything pending to watch');
+        cy.contains('My Collection').click();
+
+        cy.see('Collection');
+        cy.see('(2)');
+        cy.seeImage(loveExposure.image);
+        cy.seeImage(jaws.image);
+
+        cy.anchorWithLabel(`${loveExposure.name} (Watched)`).click();
+        cy.see('watched');
+    });
+
     it('Exports collection', () => {
         // Arrange
         const downloadsFolder = Cypress.config('downloadsFolder');

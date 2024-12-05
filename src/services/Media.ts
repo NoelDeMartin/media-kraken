@@ -13,6 +13,7 @@ import Storage from '@/utils/Storage';
 import Time from '@/utils/Time';
 import TVisoMoviesParser from '@/utils/parsers/TVisoMoviesParser';
 
+import MediaNotFoundError from '@/errors/MediaNotFoundError';
 import MediaValidationError from '@/errors/MediaValidationError';
 import UnsuitableMediaError from '@/errors/UnsuitableMediaError';
 
@@ -59,6 +60,7 @@ export interface ImportOperationLog {
         data: any;
     }[];
     failed: {
+        notFound: boolean;
         error: Error;
         data: any;
     }[];
@@ -134,6 +136,8 @@ export default class Media extends Service<State, ComputedState> {
 
         this.setState({ importOperation: operation });
 
+        parser.prepare?.(data);
+
         for (const movieData of data) {
             await Time.waitAnimationFrame();
 
@@ -183,6 +187,7 @@ export default class Media extends Service<State, ComputedState> {
                 log.added.push(movie);
             } catch (error) {
                 log.failed.push({
+                    notFound: error instanceof MediaNotFoundError,
                     error: error as Error,
                     data: movieData,
                 });

@@ -150,11 +150,16 @@ export default Modal.extend({
             let counter = 0;
             const logs = ['# The following movies caused some errors'];
 
-            for (const { data } of this.log.failed) {
-                logs.push(
-                    `${++counter}. An unexpected error ocurred parsing this — `+
-                        `<a href="custom:${counter - 1}">view details</a>`,
-                );
+            for (const { notFound, error, data } of this.log.failed) {
+                if (notFound) {
+                    logs.push(`${++counter}. ${error.message}`);
+                } else {
+                    logs.push(
+                        `${++counter}. An unexpected error ocurred parsing this — `+
+                            `<a href="custom:${counter - 1}">view details</a>`,
+                    );
+                }
+
                 logs.push(Markdown.codeBlock(JSON.stringify(data)));
             }
 

@@ -170,9 +170,16 @@ const customCommands = {
 
         cy.fixture(name)
             .then(content => {
+                if (name.endsWith('.json')) {
+                    return Cypress.Blob.base64StringToBlob(
+                        btoa(JSON.stringify(content)),
+                        'application/json',
+                    );
+                }
+
                 return Cypress.Blob.base64StringToBlob(
-                    btoa(JSON.stringify(content)),
-                    'application/json',
+                    btoa(unescape(encodeURIComponent(content))),
+                    'text/plain',
                 );
             })
             .then(b => blob = b);
