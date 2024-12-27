@@ -269,9 +269,9 @@ export default Vue.extend({
     },
     watch: {
         searchFilter(searchFilter: string) {
-            updateQueryParameters({ searchFilter: searchFilter && searchFilter.length > 0 ? searchFilter : undefined });
+            updateQueryParameters({ search: searchFilter && searchFilter.length > 0 ? searchFilter : undefined });
         },
-        WatchedFilter(watchedFilter: WatchedFilter) {
+        watchedFilter(watchedFilter: WatchedFilter) {
             updateQueryParameters({ status: watchedFilter === WatchedFilter.All ? undefined : watchedFilter });
         },
     },
