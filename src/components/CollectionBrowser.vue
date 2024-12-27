@@ -88,6 +88,7 @@
                             hover:bg-black-overlay
                         "
                         style="padding:0"
+                        aria-label="Filter collection"
                         :title="`Press &quot;f&quot; to filter ${collectionQualifier} collection`"
                         @click="showFilters"
                     />
@@ -98,7 +99,7 @@
                         ref="searchFilter"
                         v-model="searchFilter"
                         :placeholder="`Search in ${collectionQualifier} collection...`"
-                        aria-label="Filter collection"
+                        aria-label="Collection filter"
                         class="
                             absolute w-full right-0 top-1/2 transform -translate-y-1/2
                             text-sm py-1 bg-transparent appearance-none border-b-2 border-primary-200
