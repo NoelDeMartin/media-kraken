@@ -4,7 +4,7 @@
 
 If you want to secure your data and access it from other devices, you should use Solid.
 
-[Solid](https://solidproject.org) is a decentralized storage protocol built on top of web standards that aims to bring data ownership to the web. In order to use it you need to own a Solid POD, you can get one [here](https://solid.inrupt.com/get-a-solid-pod).
+[Solid](https://solidproject.org) is a decentralized storage protocol built on top of web standards that aims to bring data ownership to the web. In order to use it you need to own a Solid POD, you can get one [here](https://solidproject.org/for-developers#hosted-pod-services).
 
 [learn more](https://solidproject.org)
 
