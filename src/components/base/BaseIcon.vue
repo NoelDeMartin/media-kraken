@@ -1,5 +1,6 @@
 <template>
-    <component :is="iconComponent" class="fill-current" />
+    <img v-if="costumeImageUrl" :src="costumeImageUrl" alt="">
+    <component :is="iconComponent" v-else class="fill-current" />
 </template>
 
 <script lang="ts">
@@ -15,6 +16,13 @@ export default Vue.extend({
     computed: {
         iconComponent(): Vue {
             return require(`@/assets/icons/${this.name}.svg`).default;
+        },
+        costumeImageUrl(): string | null {
+            if (this.name !== 'media-kraken') {
+                return null;
+            }
+
+            return this.$app.costumeImageUrl;
         },
     },
 });

@@ -20,6 +20,8 @@ export interface CrashReportAction {
 }
 
 interface State {
+    visits: number;
+    costumeImageUrl: string | null;
     crashReport: CrashReport | null;
     isErrorReportingAvailable: boolean;
     isErrorReportingEnabled: boolean;
@@ -27,6 +29,7 @@ interface State {
 
 export default class App extends Service<State> {
 
+    public static readonly VISITS_STORAGE_KEY = 'media-kraken-visits';
     public static readonly VERSION_STORAGE_KEY = 'media-kraken-version';
 
     public environment!: string;
@@ -57,6 +60,10 @@ export default class App extends Service<State> {
         return this.crashReport !== null;
     }
 
+    public get costumeImageUrl(): string | null {
+        return this.state.costumeImageUrl;
+    }
+
     public get isErrorReportingAvailable(): boolean {
         return this.state.isErrorReportingAvailable;
     }
@@ -82,6 +89,8 @@ export default class App extends Service<State> {
 
     protected async boot(): Promise<void> {
         await super.boot();
+        await this.increaseVisits();
+        await this.prepareHalloweenCostume();
 
         Errors.registerListener({
             onReportingDisabled: () => this.setState({ isErrorReportingEnabled: false }),
@@ -100,10 +109,34 @@ export default class App extends Service<State> {
 
     protected getInitialState(): State {
         return {
+            visits: Storage.get(App.VISITS_STORAGE_KEY, 0),
+            costumeImageUrl: null,
             crashReport: null,
             isErrorReportingAvailable: Errors.isReportingAvailable,
             isErrorReportingEnabled: Errors.isReportingEnabled,
         };
+    }
+
+    private async increaseVisits() {
+        this.setState({ visits: this.state.visits + 1 });
+
+        Storage.set(App.VISITS_STORAGE_KEY, this.state.visits);
+    }
+
+    private async prepareHalloweenCostume() {
+        const costume = this.state.visits < 5 || Math.random() < 0.33
+            ? 'halloween'
+            : `halloween-${Math.round(Math.random() * 4) + 1}`;
+        const img = document.createElement('img');
+        const image = await import(`@/assets/img/costumes/${costume}.png`);
+
+        img.src = image.default;
+        img.alt = '';
+        img.classList.add('logo');
+
+        document.querySelector('svg.logo')?.replaceWith(img);
+
+        this.setState({ costumeImageUrl: image.default });
     }
 
     private async upgradeStorage() {
