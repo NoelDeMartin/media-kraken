@@ -105,10 +105,11 @@ export default class Viewer extends Service<State, ComputedState> {
                     return [];
 
                 const movies = moviesContainer.movies || [];
+                const now = Date.now();
 
                 return movies
                     .slice(0)
-                    .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+                    .sort((a, b) => b.createdAt?.getTime() ?? now - a.createdAt?.getTime() ?? now)
                     .map(movie => ({ movie, searchableText: movie.uuid!.replace(/-/g, '') }));
             },
         };
