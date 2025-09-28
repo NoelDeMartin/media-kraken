@@ -35,13 +35,13 @@ export default class Movie extends SolidModel {
             rdfProperty: 'schema:datePublished',
         },
         posterUrl: {
-            type: FieldType.String,
+            type: FieldType.Key,
             rdfProperty: 'schema:image',
         },
         externalUrls: {
             type: FieldType.Array,
             rdfProperty: 'schema:sameAs',
-            items: { type: FieldType.String },
+            items: { type: FieldType.Key },
         },
     };
 
