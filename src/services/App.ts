@@ -5,6 +5,7 @@ import Errors from '@/utils/Errors';
 import Storage from '@/utils/Storage';
 
 import migrations from '@/migrations';
+import HalloweenRecommendationsModal from '@/components/modals/HalloweenRecommendationsModal.vue';
 
 export interface CrashReport {
     error: Error;
@@ -22,6 +23,7 @@ export interface CrashReportAction {
 interface State {
     visits: number;
     costumeImageUrl: string | null;
+    hasSeenHalloweenRecommendations: boolean;
     crashReport: CrashReport | null;
     isErrorReportingAvailable: boolean;
     isErrorReportingEnabled: boolean;
@@ -30,6 +32,7 @@ interface State {
 export default class App extends Service<State> {
 
     public static readonly VISITS_STORAGE_KEY = 'media-kraken-visits';
+    public static readonly HALLOWEEN_RECOMMENDATIONS_STORAGE_KEY = 'media-kraken-halloween-recommendations';
     public static readonly VERSION_STORAGE_KEY = 'media-kraken-version';
 
     public environment!: string;
@@ -87,6 +90,16 @@ export default class App extends Service<State> {
         this.setState({ crashReport: null });
     }
 
+    public showHalloweenRecommendations(force: boolean = false): void {
+        if ((Services.$media.movies.length === 0 || this.state.hasSeenHalloweenRecommendations) && !force) {
+            return;
+        }
+
+        Storage.set(App.HALLOWEEN_RECOMMENDATIONS_STORAGE_KEY, true);
+        this.setState({ hasSeenHalloweenRecommendations: true });
+        Services.$ui.openModal(HalloweenRecommendationsModal);
+    }
+
     protected async boot(): Promise<void> {
         await super.boot();
         await this.increaseVisits();
@@ -110,6 +123,7 @@ export default class App extends Service<State> {
     protected getInitialState(): State {
         return {
             visits: Storage.get(App.VISITS_STORAGE_KEY, 0),
+            hasSeenHalloweenRecommendations: Storage.get(App.HALLOWEEN_RECOMMENDATIONS_STORAGE_KEY, false),
             costumeImageUrl: null,
             crashReport: null,
             isErrorReportingAvailable: Errors.isReportingAvailable,

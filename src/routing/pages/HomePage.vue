@@ -88,6 +88,7 @@ import Vue from 'vue';
 
 import Movie from '@/models/soukai/Movie';
 
+import EventBus from '@/utils/EventBus';
 import Storage from '@/utils/Storage';
 
 import { MenuOption } from '@/components/base/BaseMenu.vue';
@@ -160,6 +161,12 @@ export default Vue.extend({
         this.gridColumns = this.measureGridColumns();
 
         window.addEventListener('resize', this.resizeListener = () => this.gridColumns = this.measureGridColumns());
+
+        if (this.$media.loaded) {
+            this.$app.showHalloweenRecommendations();
+        } else {
+            EventBus.once('media-loaded', () => this.$app.showHalloweenRecommendations());
+        }
     },
     destroyed() {
         if (!this.resizeListener)

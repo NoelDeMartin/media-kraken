@@ -118,6 +118,12 @@
                                 @click="menuOption.handler"
                             >
                                 <BaseIcon
+                                    v-if="menuOption.icon === 'halloween'"
+                                    class="w-5 h-5 mr-1"
+                                    :name="menuOption.icon"
+                                />
+                                <BaseIcon
+                                    v-else
                                     :name="menuOption.icon"
                                     class="mr-2"
                                     :class="{
@@ -178,6 +184,11 @@ export default Vue.extend({
             };
 
             return [
+                {
+                    name: 'Halloween recommendations',
+                    icon: 'halloween',
+                    handler: optionHandler(() => this.$app.showHalloweenRecommendations(true)),
+                },
                 { name: 'Settings', icon: 'wrench', handler: optionHandler(() => this.$ui.openModal(SettingsModal)) },
                 { name: 'Log out', icon: 'logout', handler: optionHandler(() => this.$auth.logout()) },
             ];
