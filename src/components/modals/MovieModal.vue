@@ -47,6 +47,20 @@
                 <p v-if="movie.description" class="text-sm text-gray-700 mb-2 leading-relaxed overflow-y-auto">
                     {{ movie.description }}
                 </p>
+                <ul v-if="externalModels" class="flex items-center justify-end mt-4">
+                    <li v-for="externalModel of externalModels" :key="externalModel.domain" class="mr-2">
+                        <a :href="externalModel.url" target="_blank">
+                            <BaseIcon
+                                v-if="externalModel.icon"
+                                :name="externalModel.icon"
+                                class="w-auto h-5"
+                            />
+                            <span v-else class="text-sm text-primary-700 hover:underline hover:text-primary-900">
+                                view at {{ externalModel.domain }}
+                            </span>
+                        </a>
+                    </li>
+                </ul>
                 <div class="flex-grow" />
                 <div class="flex justify-end flex-col desktop:flex-row desktop:items-center">
                     <p class="text-sm font-medium ml-0 m-2 desktop:my-0">
@@ -58,7 +72,7 @@
                             class="bg-blue-500 text-white mr-2 hover:bg-blue-700"
                             text-class="font-semibold text-sm"
                             icon-class="w-4 h-4 mr-2"
-                            @click="addToCollection(false) && close()"
+                            @click="addToCollection(false), close()"
                         >
                             watch later
                         </BaseButton>
@@ -67,7 +81,7 @@
                             class="bg-green-500 text-white mr-2 hover:bg-green-700"
                             text-class="font-semibold text-sm"
                             icon-class="w-4 h-4 mr-2"
-                            @click="addToCollection(true) && close()"
+                            @click="addToCollection(true), close()"
                         >
                             watched
                         </BaseButton>
@@ -84,6 +98,19 @@ import Movie from '@/models/soukai/Movie';
 
 import Modal from '@/components/mixins/Modal';
 import MoviePoster from '@/components/MoviePoster.vue';
+import Url from '@/utils/Url';
+
+
+interface ExternalModel {
+    url: string;
+    domain: string;
+    icon: string | null;
+}
+
+const DOMAIN_ICONS: { [domain: string]: string } = {
+    'imdb.com': 'imdb',
+    'themoviedb.org': 'tmdb',
+};
 
 export default Modal.extend({
     components: { MoviePoster },
@@ -91,6 +118,22 @@ export default Modal.extend({
         movie: {
             type: Object as () => Movie,
             required: true,
+        },
+    },
+    computed: {
+        externalModels(): ExternalModel[] | null {
+            if (!this.movie)
+                return null;
+
+            return this.movie.externalUrls.map(url => {
+                const domain = Url.parseRootDomain(url) as string;
+
+                return {
+                    url,
+                    domain,
+                    icon: DOMAIN_ICONS[domain] || null,
+                };
+            });
         },
     },
     methods: {

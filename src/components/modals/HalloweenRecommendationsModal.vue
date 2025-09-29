@@ -5,7 +5,15 @@
         </p>
         <div class="relative grid grid-cols-fill-32 gap-3">
             <div v-for="movie in movies" :key="movie.id" class="relative movies-grid-item">
-                <MoviePoster :url="movie.posterUrl" :title="movie.title" />
+                <button
+                    type="button"
+                    class="block w-full h-auto group"
+                    :title="movie.title"
+                    @click="inspect(movie)"
+                >
+                    <MoviePoster :url="movie.posterUrl" />
+                    <div class="absolute inset-0 bg-black opacity-0 group-hover:opacity-25" />
+                </button>
                 <component
                     :is="movie.watched ? 'div' : 'button'"
                     v-if="movie.exists()"
@@ -51,6 +59,7 @@ import Modal from '@/components/mixins/Modal';
 import Movie from '@/models/soukai/Movie';
 import MoviesGrid from '@/components/MoviesGrid.vue';
 import MoviePoster from '@/components/MoviePoster.vue';
+import MovieModal from '@/components/modals/MovieModal.vue';
 import halloweenMovies from '@/assets/data/halloween-movies.json';
 import JSONLDMoviesParser from '@/utils/parsers/JSONLDMoviesParser';
 import ModelsCache from '@/models/ModelsCache';
@@ -83,6 +92,9 @@ export default Modal.extend({
         this.movies = movies;
     },
     methods: {
+        async inspect(movie: Movie) {
+            this.$ui.openModal(MovieModal, { movie });
+        },
         async importHalloweenMovies() {
             await this.$ui.loading(
                 async () => {
