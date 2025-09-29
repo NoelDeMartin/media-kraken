@@ -79,10 +79,11 @@
                         v-show="$ui.menuOpen || $ui.mobile"
                         ref="desktop-menu"
                         class="
-                            w-56 right-0 top-full mt-2 origin-top-right
+                            right-0 top-full mt-2 origin-top-right
                             rounded-md
                             desktop:absolute desktop:shadow-lg
                         "
+                        style="width: 270px"
                         :class="{
                             'pb-1 rounded-lg bg-white border border-gray-300 overflow-hidden': $ui.desktop,
                             '-mt-4': $ui.desktop && !user.avatarUrl,
