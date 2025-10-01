@@ -1,4 +1,4 @@
-# Media Kraken [![Build Status](https://noeldemartin.semaphoreci.com/badges/media-kraken/branches/main.svg?key=779dea16-fa45-4a09-9eba-83f4c04046af)](https://noeldemartin.semaphoreci.com/projects/media-kraken)
+# Media Kraken
 
 Track your movies with Media Kraken: [noeldemartin.github.io/media-kraken](https://noeldemartin.github.io/media-kraken)
 
