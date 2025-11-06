@@ -184,15 +184,20 @@ export default Vue.extend({
                 handler();
             };
 
-            return [
-                {
-                    name: 'Halloween recommendations',
-                    icon: 'halloween',
-                    handler: optionHandler(() => this.$app.showHalloweenRecommendations(true)),
-                },
+            const options: MenuOption[] = [
                 { name: 'Settings', icon: 'wrench', handler: optionHandler(() => this.$ui.openModal(SettingsModal)) },
                 { name: 'Log out', icon: 'logout', handler: optionHandler(() => this.$auth.logout()) },
             ];
+
+            if (this.$app.isHalloween) {
+                options.unshift({
+                    name: 'Halloween recommendations',
+                    icon: 'halloween',
+                    handler: optionHandler(() => this.$app.showHalloweenRecommendations(true)),
+                });
+            }
+
+            return options;
         },
         userWebId(): string | null {
             return this.$auth.user instanceof SolidUser

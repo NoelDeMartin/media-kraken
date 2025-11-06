@@ -35,6 +35,7 @@ export default class App extends Service<State> {
     public static readonly HALLOWEEN_RECOMMENDATIONS_STORAGE_KEY = 'media-kraken-halloween-recommendations';
     public static readonly VERSION_STORAGE_KEY = 'media-kraken-version';
 
+    public isHalloween = false;
     public environment!: string;
     public sourceUrl!: string;
     public releaseNotesUrl!: string;
@@ -103,7 +104,10 @@ export default class App extends Service<State> {
     protected async boot(): Promise<void> {
         await super.boot();
         await this.increaseVisits();
-        await this.prepareHalloweenCostume();
+
+        if (this.isHalloween) {
+            await this.prepareHalloweenCostume();
+        }
 
         Errors.registerListener({
             onReportingDisabled: () => this.setState({ isErrorReportingEnabled: false }),

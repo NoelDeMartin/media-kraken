@@ -162,10 +162,10 @@ export default Vue.extend({
 
         window.addEventListener('resize', this.resizeListener = () => this.gridColumns = this.measureGridColumns());
 
-        if (this.$media.loaded) {
-            this.$app.showHalloweenRecommendations();
-        } else {
-            EventBus.once('media-loaded', () => this.$app.showHalloweenRecommendations());
+        if (this.$app.isHalloween) {
+            this.$media.loaded
+                ? this.$app.showHalloweenRecommendations()
+                : EventBus.once('media-loaded', () => this.$app.showHalloweenRecommendations());
         }
     },
     destroyed() {
