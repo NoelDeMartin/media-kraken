@@ -123,6 +123,7 @@ export default Vue.extend({
                 return;
 
             try {
+                this.loginUrl = this.loginUrl.trim();
                 await this.replaceLegacyDomains();
                 await this.$auth.loginWithSolid(this.loginUrl, authenticationMethod);
             } catch (error) {
