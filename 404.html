@@ -1,0 +1,61 @@
+<!DOCTYPE html><html lang=en prefix="og: http://ogp.me/ns#"><head><meta charset=utf-8><meta http-equiv=X-UA-Compatible content="IE=edge"><meta name=viewport content="width=device-width,initial-scale=1"><!--[if IE]><link rel="icon" href="https://noeldemartin.github.io/media-kraken/favicon.ico"><![endif]--><title>Media Kraken</title><meta property=og:title content="Media Kraken"><meta property=og:type content=website><meta property=og:description content=""><meta property=og:url content=https://noeldemartin.github.io/media-kraken/ ><meta property=og:image content=https://noeldemartin.github.io/media-kraken/img/icons/android-chrome-512x512.png><meta property=og:image:width content=512><meta property=og:image:height content=512><style>body {
+                margin: 0;
+                background: #fff7f7;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 100vw;
+                height: 100vh;
+            }
+            #error-message {
+                opacity: 100;
+                transition: opacity 300ms;
+                font-size: 1.5rem;
+                font-family: Montserrat,sans-serif;
+                text-align: center;
+                margin: 1rem;
+            }
+            #error-message a {
+                display: inline-block;
+            }
+            footer {
+                opacity: 100;
+                transition: opacity 300ms;
+                position: fixed;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                color: #e02c2c;
+                font-size: .75rem;
+                margin-bottom: .5rem;
+                font-weight: 400;
+                font-family: Montserrat,sans-serif;
+            }
+            body:not(.redirecting-error) #error-message {
+                opacity: 0;
+            }
+            body:not(.redirecting-error) footer {
+                opacity: 0;
+            }</style><link rel=icon type=image/png sizes=32x32 href=/media-kraken/img/icons/favicon-32x32.png><link rel=icon type=image/png sizes=16x16 href=/media-kraken/img/icons/favicon-16x16.png><link rel=manifest href=/media-kraken/manifest.json><meta name=theme-color content=#fed7d7><meta name=apple-mobile-web-app-capable content=no><meta name=apple-mobile-web-app-status-bar-style content=default><meta name=apple-mobile-web-app-title content="Media Kraken"><link rel=apple-touch-icon href=/media-kraken/img/icons/apple-touch-icon-152x152.png><link rel=mask-icon href=/media-kraken/img/icons/safari-pinned-tab.svg color=#fed7d7><meta name=msapplication-TileImage content=/media-kraken/img/icons/msapplication-icon-144x144.png><meta name=msapplication-TileColor content=#fed7d7></head><body data-public-path=/media-kraken/ ><noscript><strong>We're sorry but Media Kraken doesn't work properly without JavaScript enabled. Please enable it to continue.</strong></noscript><p id=error-message>There was an error redirecting to this page, please <a href=/media-kraken/ >go home</a> instead.</p><footer>v0.1.27</footer><script>setTimeout(function() {
+                document.body.classList.add('redirecting-error');
+            }, 2000);
+
+            (function () {
+                function redirectTo(publicPath, baseUrl) {
+                    if (location.href === baseUrl)
+                        return;
+                    var url = new URL(location.href);
+                    var searchParams = {};
+                    url.searchParams.forEach(function (value, key) { return searchParams[key] = value; });
+                    localStorage.setItem('github-pages-redirect', JSON.stringify({
+                        path: url.pathname.substr(publicPath.length),
+                        hash: url.hash,
+                        query: searchParams,
+                    }));
+                    location.href = baseUrl;
+                }
+                var publicPath = document.body.dataset.publicPath;
+                var anchor = document.createElement('a');
+                anchor.href = publicPath;
+                redirectTo(publicPath, anchor.href);
+            })();</script></body></html>

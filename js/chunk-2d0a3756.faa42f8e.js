@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d0a3756"],{"01ed":function(n,a,o){"use strict";o.r(a),a["default"]="# Migrate old data?\n\nSome data in your media collection is using an old format that can be updated.\n\nDo you want to proceed with the migration? Media Kraken could missbehave if you don't!\n\n[learn more](https://github.com/NoelDeMartin/media-kraken/blob/main/docs/schema-migration.md)\n"}}]);
+//# sourceMappingURL=chunk-2d0a3756.faa42f8e.js.map
