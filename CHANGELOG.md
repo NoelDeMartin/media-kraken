@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/), and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v0.1.28](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.28) - 2026-05-23
+
+### Added
+
+- [#54](https://github.com/NoelDeMartin/media-kraken/issues/54) Autologin using the `?loginWith=...` query parameter.
+
 ## [v0.1.27](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.27) - 2026-01-09
 
 ### Changed
