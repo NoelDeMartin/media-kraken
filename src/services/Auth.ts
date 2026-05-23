@@ -16,6 +16,7 @@ import Errors from '@/utils/Errors';
 import EventBus from '@/utils/EventBus';
 
 import OfflineLogoutModal from '@/components/modals/OfflineLogoutModal.vue';
+import { getQueryParameter } from '@/utils/location';
 
 interface State {
     user: User | null;
@@ -65,7 +66,7 @@ export default class Auth extends Service<State> {
 
     public async loginWithSolid(loginUrl: string, authenticationMethod?: AuthenticationMethod): Promise<void> {
         const status = await Services.$ui.loading(
-            () => SolidAuth.login(loginUrl, authenticationMethod),
+            () => SolidAuth.login(loginUrl, authenticationMethod ?? undefined),
             'Logging in...',
         );
 
@@ -130,8 +131,7 @@ export default class Auth extends Service<State> {
             },
         });
 
-        if (OfflineUser.isLoggedIn())
-            await this.updateUser(new OfflineUser());
+        this.autoLogin();
     }
 
     protected getInitialState(): State {
@@ -170,6 +170,27 @@ export default class Auth extends Service<State> {
             Services.$router.replace({ name: 'home' });
 
         EventBus.emit('login', newUser);
+    }
+
+    private async autoLogin(): Promise<void> {
+        if (this.loggedIn || SolidAuth.previousLogin) {
+            return;
+        }
+
+        if (OfflineUser.isLoggedIn()) {
+            await this.updateUser(new OfflineUser());
+
+            return;
+        }
+
+        const loginUrl = getQueryParameter('loginWith');
+        const authenticator = getQueryParameter('authenticator') as AuthenticationMethod | null;
+
+        if (!loginUrl) {
+            return;
+        }
+
+        await this.loginWithSolid(loginUrl, authenticator ?? undefined);
     }
 
     private handleSolidSessionError(error: Error, title?: string, subtitle?: string): void {
