@@ -8,6 +8,7 @@ import Files from '@/utils/Files';
 import GoodFilmsMoviesParser from '@/utils/parsers/GoodFilmsMoviesParser';
 import IMDbMoviesParser from '@/utils/parsers/IMDbMoviesParser';
 import JSONLDMoviesParser from '@/utils/parsers/JSONLDMoviesParser';
+import LetterBoxdParser from '@/utils/parsers/LetterBoxdParser';
 import NetflixMoviesParser from '@/utils/parsers/NetflixMoviesParser';
 import Storage from '@/utils/Storage';
 import Time from '@/utils/Time';
@@ -77,6 +78,7 @@ export enum MediaSource {
     JSONLD = 'jsonld',
     TViso = 'tviso',
     GoodFilms = 'goodfilms',
+    LetterBoxd = 'letterboxd'
 }
 
 export default class Media extends Service<State, ComputedState> {
@@ -313,6 +315,8 @@ export default class Media extends Service<State, ComputedState> {
                 return TVisoMoviesParser;
             case MediaSource.GoodFilms:
                 return GoodFilmsMoviesParser;
+            case MediaSource.LetterBoxd:
+                return LetterBoxdParser;
         }
     }
 

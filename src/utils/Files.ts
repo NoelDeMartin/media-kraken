@@ -2,6 +2,7 @@ import Time from '@/utils/Time';
 
 export const enum Format {
     Raw = 'raw',
+    Binary = 'binary',
 }
 
 export const enum MediaType {
@@ -20,7 +21,7 @@ interface UploadConfig {
     accept?: MediaType;
 }
 
-type UploadResult = string | null;
+type UploadResult = string | ArrayBuffer | null;
 
 const BODY_CANCEL_EVENTS = ['focus', 'mousemove', 'touchmove'];
 
@@ -121,6 +122,9 @@ class Files {
         switch(activeUpload.output) {
             case Format.Raw:
                 reader.readAsText(this.input.files[0]);
+                break;
+            case Format.Binary:
+                reader.readAsArrayBuffer(this.input.files[0]);
                 break;
         }
     }

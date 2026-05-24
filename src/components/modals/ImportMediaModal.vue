@@ -74,6 +74,7 @@ export default Modal.extend({
             [MediaSource.JSONLD]: 'JSON-LD',
             [MediaSource.TViso]: 'TViso',
             [MediaSource.GoodFilms]: 'Good Fil.ms',
+            [MediaSource.LetterBoxd]: 'Letterboxd',
         }),
         helpReplacements(): any {
             const filePath = 'docs#data-schema';
@@ -123,6 +124,8 @@ export default Modal.extend({
                 case MediaSource.GoodFilms:
                 case MediaSource.Netflix:
                     return this.getDataFromFile(MediaType.CSV);
+                case MediaSource.LetterBoxd:
+                    return this.getLetterBoxdZipData();
                 default:
                     return this.getDataFromFile(MediaType.JSON);
             }
@@ -135,6 +138,19 @@ export default Modal.extend({
             const data = this.parseData(format, fileContents);
             if (!Array.isArray(data))
                 throw new Error('Invalid file format, expecting array');
+
+            return data;
+        },
+        async getLetterBoxdZipData(): Promise<object[]> {
+            const fileBuffer = await Files.upload({ output: 'binary' as any, accept: '.zip' as any });
+            if (fileBuffer === null)
+                return [];
+
+            const LetterBoxdParser = (await import('@/utils/parsers/LetterBoxdParser')).default;
+            const data = await LetterBoxdParser.extractAndPrepare(fileBuffer as ArrayBuffer);
+
+            if (!Array.isArray(data))
+                throw new Error('Invalid ZIP file format');
 
             return data;
         },
