@@ -1,1 +1,0 @@
-beforeEach(() => cy.resetBrowser());

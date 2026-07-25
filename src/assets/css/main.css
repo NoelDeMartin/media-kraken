@@ -1,0 +1,4 @@
+@import '@aerogel/core';
+@import '@aerogel/plugin-solid';
+@import '@aerogel/plugin-local-first';
+@import '@aerogel/plugin-routing';
