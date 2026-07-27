@@ -1,0 +1,92 @@
+[
+    {
+        "id": 1,
+        "title": "Inception",
+        "year": 2010,
+        "genre": "Sci-Fi",
+        "overview": "A thief who enters dreams to steal secrets.",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/9gk7adHYeDvHkCSEqAvQNLV5Uge.jpg",
+        "watched": false
+    },
+    {
+        "id": 2,
+        "title": "Interstellar",
+        "year": 2014,
+        "genre": "Adventure",
+        "overview": "A team travels through a wormhole in search of a new home for humanity.",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+        "watched": true
+    },
+    {
+        "id": 3,
+        "title": "The Matrix",
+        "year": 1999,
+        "genre": "Action",
+        "overview": "A hacker discovers the disturbing truth about reality.",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/invalid.jpg",
+        "watched": false
+    },
+    {
+        "id": 4,
+        "title": "Blade Runner 2049",
+        "year": 2017,
+        "genre": "Neo-noir",
+        "overview": "A replicant hunter uncovers a long-buried secret.",
+        "posterUrl": "",
+        "watched": false
+    },
+    {
+        "id": 5,
+        "title": "Dune",
+        "year": 2021,
+        "genre": "Epic",
+        "overview": "A noble family takes control of a desert planet and its spice.",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/pc15b0pi8o1oUv9vNhakwMQ9TxA.jpg",
+        "watched": false
+    },
+    {
+        "id": 6,
+        "title": "Parasite",
+        "year": 2019,
+        "genre": "Thriller",
+        "overview": "A poor family schemes to infiltrate a wealthy household.",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+        "watched": false
+    },
+    {
+        "id": 7,
+        "title": "Arrival",
+        "year": 2016,
+        "genre": "Drama",
+        "overview": "A linguist is recruited to communicate with extraterrestrials.",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/dqXMSuD3Iq1a4oCIJf4T7csrqjD.jpg",
+        "watched": false
+    },
+    {
+        "id": 8,
+        "title": "Spider-Man: Into the Spider-Verse",
+        "year": 2018,
+        "genre": "Animation",
+        "overview": "A teenager discovers a multiverse of spider-powered heroes.",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg",
+        "watched": false
+    },
+    {
+        "id": 9,
+        "title": "Gladiator",
+        "year": 2000,
+        "genre": "Historical",
+        "overview": "A betrayed general seeks revenge in ancient Rome.",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/d1zEEovHcID7Hyj4S0DSPe7akVs.jpg",
+        "watched": false
+    },
+    {
+        "id": 10,
+        "title": "Mad Max: Fury Road",
+        "year": 2015,
+        "genre": "Action",
+        "overview": "A woman and a drifter fight through a post-apocalyptic wasteland.",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/dJlitHyniEguSN9eZLZOBbPTKuo.jpg",
+        "watched": false
+    }
+]

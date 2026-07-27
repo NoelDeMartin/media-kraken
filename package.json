@@ -14,7 +14,8 @@
         "e2e:test:chromium": "start-server-and-test e2e:serve-app http-get://localhost:5001 e2e:serve-pod http-get://localhost:3000 'pnpm run e2e:run --project=chromium'",
         "e2e:test:firefox": "start-server-and-test e2e:serve-app http-get://localhost:5001 e2e:serve-pod http-get://localhost:3000 'pnpm run e2e:run --project=firefox'",
         "e2e:test:webkit": "start-server-and-test e2e:serve-app http-get://localhost:5001 e2e:serve-pod http-get://localhost:3000 'pnpm run e2e:run --project=webkit'",
-        "type-check": "vue-tsc --noEmit"
+        "type-check": "vue-tsc --noEmit",
+        "storybook": "storybook dev -p 6006"
     },
     "dependencies": {
         "@aerogel/core": "next",
@@ -42,12 +43,14 @@
         "@noeldemartin/scripts": "next",
         "@playwright/test": "^1.60.0",
         "@solid/community-server": "7.1.6",
+        "@storybook/vue3-vite": "^10.5.4",
         "@total-typescript/ts-reset": "^0.4.2",
         "@tsconfig/node24": "^24.0.3",
         "@types/node": "^24.10.4",
         "@vue/tsconfig": "^0.9.1",
         "concurrently": "^10.0.3",
         "start-server-and-test": "^3.0.8",
+        "storybook": "^10.5.4",
         "typescript": "~6.0.2",
         "unplugin-icons": "^22.1.0",
         "unplugin-vue-components": "^28.4.1",

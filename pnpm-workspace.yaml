@@ -1,5 +1,6 @@
 allowBuilds:
     core-js: true
+    esbuild: true
     vue-demi: true
 catalog:
     '@noeldemartin/solid-utils': next

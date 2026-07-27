@@ -4,3 +4,4 @@
 /solid
 /src/types/components.d.ts
 /test-results
+*storybook.log
