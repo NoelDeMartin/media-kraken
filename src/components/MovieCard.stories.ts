@@ -3,6 +3,7 @@ import { computed } from 'vue';
 
 import movies from '../data/movies.json';
 import MovieCard from './MovieCard.vue';
+import MoviesGrid from './MoviesGrid.vue';
 
 interface StoryArgs {
     movieId: number;
@@ -48,15 +49,13 @@ export const Default: Story = {
 
 export const Grid: Story = {
     render: () => ({
-        components: { MovieCard },
+        components: { MovieCard, MoviesGrid },
         setup() {
             return { movies };
         },
         template: `
             <div style="max-width:90vw; width:90%; margin:0 auto;">
-                <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1rem;">
-                    <MovieCard v-for="movie in movies" :key="movie.id" :movie />
-                </div>
+                <MoviesGrid :movies />
             </div>
         `,
     }),
