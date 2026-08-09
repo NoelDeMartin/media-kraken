@@ -6,6 +6,7 @@
             </Link>
         </h1>
         <div class="grow" />
+        <AppHeaderNav />
         <ErrorLogs />
         <Account />
     </header>
