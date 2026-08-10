@@ -1,6 +1,6 @@
 <template>
     <article class="relative border border-slate-200 bg-white shadow-sm">
-        <img :src="movie.posterUrl" alt="" class="size-full object-cover" />
+        <MoviePoster :movie class="size-full" />
         <MovieCardBadge :movie class="absolute -top-3 -right-4" />
         <h2>
             <a href="#" :title="movie.title">
