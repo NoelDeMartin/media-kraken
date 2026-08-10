@@ -43,6 +43,7 @@
         "@noeldemartin/scripts": "next",
         "@playwright/test": "^1.60.0",
         "@solid/community-server": "7.1.6",
+        "@storybook/addon-docs": "^10.5.7",
         "@storybook/vue3-vite": "^10.5.4",
         "@total-typescript/ts-reset": "^0.4.2",
         "@tsconfig/node24": "^24.0.3",
@@ -59,5 +60,5 @@
         "vitest": "^4.1.9",
         "vue-tsc": "^3.2.7"
     },
-    "packageManager": "pnpm@11.5.2"
+    "packageManager": "pnpm@11.21.0"
 }

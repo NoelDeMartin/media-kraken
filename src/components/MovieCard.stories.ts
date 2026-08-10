@@ -30,7 +30,7 @@ const meta: Meta<typeof MovieCard> & { argTypes: Record<string, unknown>; args: 
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-export const Default: Story = {
+export const Primary: Story = {
     render: (_args) => ({
         components: { MovieCard },
         setup() {
