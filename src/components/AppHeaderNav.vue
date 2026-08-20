@@ -1,9 +1,13 @@
 <template>
-    <nav class="relative overflow-hidden transition-all focus-within:pb-20">
-        <span class="opacity-0">My Collection</span>
-        <ul class="absolute inset-y-0 left-0">
-            <li><Link route="movies.index">My Movies</Link></li>
-            <li><Link route="shows.index">My Shows</Link></li>
-        </ul>
-    </nav>
+    <i-bi-collection class="size-4" />
+    <NavMenu :label="$t('app.nav.collection')" :sections />
 </template>
+
+<script setup lang="ts">
+import { translate } from '@aerogel/core';
+
+const sections = [
+    { label: translate('app.nav.movies'), route: 'movies.index' },
+    { label: translate('app.nav.shows'), route: 'shows.index' },
+];
+</script>

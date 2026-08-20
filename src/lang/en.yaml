@@ -1,5 +1,9 @@
 app:
     title: 'Media Kraken'
+    nav:
+        collection: 'My Collection'
+        movies: 'My Movies'
+        shows: 'My Shows'
 
 movies:
     watch: 'Watch'
