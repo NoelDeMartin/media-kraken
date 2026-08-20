@@ -37,6 +37,7 @@
     "devDependencies": {
         "@aerogel/cli": "next",
         "@aerogel/playwright": "next",
+        "@aerogel/storybook": "next",
         "@aerogel/vite": "next",
         "@iconify/json": "2.2.341",
         "@intlify/unplugin-vue-i18n": "^6.0.5",

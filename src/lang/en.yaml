@@ -1,2 +1,7 @@
 app:
     title: 'Media Kraken'
+
+movies:
+    watch: 'Watch'
+    watched: 'Watched'
+    pending: 'Pending'

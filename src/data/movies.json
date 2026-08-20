@@ -1,6 +1,6 @@
 [
     {
-        "id": 1,
+        "url": "https://example.org/1",
         "title": "Inception",
         "year": 2010,
         "genre": "Sci-Fi",
@@ -9,7 +9,7 @@
         "watched": false
     },
     {
-        "id": 2,
+        "url": "https://example.org/2",
         "title": "Interstellar",
         "year": 2014,
         "genre": "Adventure",
@@ -18,25 +18,7 @@
         "watched": true
     },
     {
-        "id": 3,
-        "title": "The Matrix",
-        "year": 1999,
-        "genre": "Action",
-        "overview": "A hacker discovers the disturbing truth about reality.",
-        "posterUrl": "https://image.tmdb.org/t/p/w500/invalid.jpg",
-        "watched": false
-    },
-    {
-        "id": 4,
-        "title": "Blade Runner 2049",
-        "year": 2017,
-        "genre": "Neo-noir",
-        "overview": "A replicant hunter uncovers a long-buried secret.",
-        "posterUrl": "",
-        "watched": false
-    },
-    {
-        "id": 5,
+        "url": "https://example.org/3",
         "title": "Dune",
         "year": 2021,
         "genre": "Epic",
@@ -45,7 +27,7 @@
         "watched": false
     },
     {
-        "id": 6,
+        "url": "https://example.org/4",
         "title": "Parasite",
         "year": 2019,
         "genre": "Thriller",
@@ -54,7 +36,7 @@
         "watched": false
     },
     {
-        "id": 7,
+        "url": "https://example.org/5",
         "title": "Arrival",
         "year": 2016,
         "genre": "Drama",
@@ -63,7 +45,12 @@
         "watched": false
     },
     {
-        "id": 8,
+        "url": "https://example.org/6",
+        "title": "Invalid Poster",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/invalid.jpg"
+    },
+    {
+        "url": "https://example.org/7",
         "title": "Spider-Man: Into the Spider-Verse",
         "year": 2018,
         "genre": "Animation",
@@ -72,7 +59,7 @@
         "watched": false
     },
     {
-        "id": 9,
+        "url": "https://example.org/8",
         "title": "Gladiator",
         "year": 2000,
         "genre": "Historical",
@@ -81,7 +68,11 @@
         "watched": false
     },
     {
-        "id": 10,
+        "url": "https://example.org/9",
+        "title": "Missing Poster",
+        "posterUrl": ""
+    },
+    {
         "title": "Mad Max: Fury Road",
         "year": 2015,
         "genre": "Action",
