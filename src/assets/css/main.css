@@ -2,3 +2,33 @@
 @import '@aerogel/plugin-solid';
 @import '@aerogel/plugin-local-first';
 @import '@aerogel/plugin-routing';
+
+@import './fonts.css' layer(base);
+
+@theme {
+    --font-*: initial;
+    --font-montserrat: 'Montserrat', sans-serif;
+
+    --color-primary-100: #fed7d7;
+    --color-primary-200: #feb2b2;
+    --color-primary-300: #f79e9e;
+    --color-primary-400: #f76e6e;
+    --color-primary-500: #f05252;
+    --color-primary-600: #ef4545;
+    --color-primary-700: #e02c2c;
+    --color-primary-800: #bd2424;
+    --color-primary-900: #961f1f;
+
+    --color-gray-100: #fff7f7;
+    --color-gray-200: #f4eded;
+    --color-gray-300: #dedede;
+    --color-gray-400: #d1caca;
+    --color-gray-500: #afa4a3;
+    --color-gray-600: #837b7b;
+    --color-gray-700: #5d5556;
+    --color-gray-800: #1b1b1b;
+    --color-gray-900: #080201;
+
+    --color-primary: var(--color-primary-500);
+    --color-background: var(--color-gray-100);
+}

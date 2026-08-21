@@ -1,5 +1,5 @@
 <template>
-    <AppLayout>
+    <AppLayout class="font-montserrat">
         <AppHeader />
         <router-view />
     </AppLayout>

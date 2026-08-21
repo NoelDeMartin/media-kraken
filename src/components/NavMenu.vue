@@ -12,7 +12,7 @@
         @mouseenter="expand"
         @mouseleave="collapse"
     >
-        <div class="h-(--item-height) min-w-(--max-item-width)" />
+        <div class="h-(--item-height) min-w-[calc(var(--max-item-width)+(--spacing(1)))]" />
         <div
             :class="[
                 'absolute top-0 left-0 h-(--item-height) overflow-hidden',
@@ -46,7 +46,9 @@
                         :key="section.route"
                         :class="{ 'font-bold': activeSectionIndex === index }"
                     >
-                        <Link :route="section.route" @click="open = false">{{ section.label }}</Link>
+                        <Link :route="section.route" @click="open = false" class="text-primary-text">
+                            {{ section.label }}
+                        </Link>
                     </li>
                 </ul>
             </div>

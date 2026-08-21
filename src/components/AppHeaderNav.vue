@@ -1,6 +1,8 @@
 <template>
-    <i-bi-collection class="size-4" />
-    <NavMenu :label="$t('app.nav.collection')" :sections />
+    <div class="flex items-center gap-1">
+        <i-bi-collection class="size-4" />
+        <NavMenu :label="$t('app.nav.collection')" :sections />
+    </div>
 </template>
 
 <script setup lang="ts">
