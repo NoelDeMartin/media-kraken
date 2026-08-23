@@ -1,11 +1,20 @@
 app:
     title: 'Media Kraken'
     nav:
+        search: 'Press "s" to start searching'
         collection: 'My Collection'
         movies: 'My Movies'
         shows: 'My Shows'
+    search:
+        label: 'Search movies'
+        placeholder: 'Search movies...'
+        loading: 'Searching...'
+        noResults: 'No results found'
+        resultsCount: '{count} results found'
 
 movies:
     watch: 'Watch'
     watched: 'Watched'
     pending: 'Pending'
+    watchLater: 'Watch later'
+    added: '**{movie}** has been added to your collection!'

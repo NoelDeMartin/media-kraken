@@ -6,9 +6,13 @@ import solid from '@aerogel/plugin-solid';
 
 import './assets/css/main.css';
 import App from './App.vue';
+import env from './lib/env';
 import routes from './pages/index';
+import { services } from './services';
 
 await bootstrap(App, {
+    env,
+    services,
     plugins: [
         i18n({ messages: import.meta.glob('@/lang/*.yaml') }),
         routing({ routes }),

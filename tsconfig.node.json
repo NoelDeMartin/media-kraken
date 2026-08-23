@@ -1,11 +1,14 @@
 {
     "extends": "@tsconfig/node24/tsconfig.json",
-    "include": ["vite.config.ts", "playwright.config.ts"],
+    "include": ["vite.config.ts", "playwright.config.ts", "e2e/**/*.ts"],
     "compilerOptions": {
         "module": "preserve",
         "moduleResolution": "bundler",
         "types": ["node"],
         "noEmit": true,
+        "paths": {
+            "@e2e/*": ["./e2e/*"]
+        },
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo"
     }
 }

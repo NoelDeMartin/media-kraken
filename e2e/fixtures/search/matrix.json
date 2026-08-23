@@ -1,0 +1,25 @@
+{
+    "page": 1,
+    "total_results": 3,
+    "total_pages": 1,
+    "results": [
+        {
+            "id": 603,
+            "title": "The Matrix",
+            "release_date": "1999-03-31",
+            "poster_path": "/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg"
+        },
+        {
+            "id": 604,
+            "title": "The Matrix Reloaded",
+            "release_date": "2003-05-15",
+            "poster_path": "/9TghfnYGaWEzZ9hGaLCq4oATxoA.jpg"
+        },
+        {
+            "id": 605,
+            "title": "The Matrix Revolutions",
+            "release_date": "2003-11-05",
+            "poster_path": "/qEWiJXJ7XJT5FcxATJYoQh6B0pG.jpg"
+        }
+    ]
+}

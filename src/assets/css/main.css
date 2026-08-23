@@ -31,4 +31,5 @@
 
     --color-primary: var(--color-primary-500);
     --color-background: var(--color-gray-100);
+    --color-hover: var(--color-gray-200);
 }

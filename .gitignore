@@ -1,7 +1,8 @@
+.env
+*storybook.log
 /dist
 /node_modules
 /playwright-report
 /solid
 /src/types/components.d.ts
 /test-results
-*storybook.log
