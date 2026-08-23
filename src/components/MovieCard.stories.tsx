@@ -34,8 +34,9 @@ export const Primary: Story = {
         const movie = {
             // oxlint-disable-next-line typescript/no-misused-spread
             ...movies.resolve(args.movie),
+            actions: args.watched ? [{}] : [],
             watched: !!args.watched,
-        } as Movie;
+        } as unknown as Movie;
 
         return (
             <div style={{ maxWidth: '90vw', width: '90%', margin: '0 auto' }}>

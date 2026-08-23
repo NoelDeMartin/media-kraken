@@ -5,6 +5,7 @@ import { z } from 'zod';
 const TMDBMovieSchema = z.object({
     id: z.number(),
     title: z.string(),
+    overview: z.string().optional(),
     release_date: z.string().optional(),
     poster_path: z.string().nullable(),
 });
