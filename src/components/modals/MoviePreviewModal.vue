@@ -15,7 +15,7 @@
                         :href="url"
                         target="_blank"
                         rel="noopener noreferrer"
-                        class="text-xs text-primary-700 hover:underline"
+                        class="text-primary-700 text-xs hover:underline"
                     >
                         view at {{ getDomain(url) }}
                     </a>

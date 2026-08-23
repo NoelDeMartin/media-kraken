@@ -36,7 +36,7 @@ export default class Movie extends Model {
     public async watch(date?: Date): Promise<WatchAction> {
         date = date || new Date();
 
-        return this.relatedActions.create({ startTime: date, endTime: date });
+        return (await this.relatedActions.create({ startTime: date, endTime: date })) as WatchAction;
     }
 }
 

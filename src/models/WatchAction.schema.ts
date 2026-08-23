@@ -12,9 +12,6 @@ export default defineSchema({
         endTime: date().rdfProperty('endTime').optional(),
     },
     relations: {
-        movie: belongsToOne(
-            () => (globalThis as Record<string, unknown>).Movie as typeof Movie,
-            'object',
-        ),
+        movie: belongsToOne(() => (globalThis as Record<string, unknown>).Movie as typeof Movie, 'object'),
     },
 });
