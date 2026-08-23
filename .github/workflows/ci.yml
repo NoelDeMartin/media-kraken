@@ -30,6 +30,7 @@ jobs:
               with:
                   node-version-file: '.node-version'
                   cache: true
+            - run: echo 'VITE_TMDB_API_KEY=stub' >> .env
             - run: vpx playwright install --with-deps ${{ matrix.browser }}
             - run: vp run e2e:test:${{ matrix.browser }}
             - name: Upload Playwright artifacts
