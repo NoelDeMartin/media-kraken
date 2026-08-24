@@ -10,6 +10,7 @@
                     query: $solid.hasLoggedIn() ? { url: movie.url } : undefined,
                 }"
                 :title="movie.title"
+                class="-mt-1 block h-1"
             >
                 <span class="sr-only">
                     {{ movie.title }} ({{ movie.watched ? $t('movies.watched') : $t('movies.pending') }})

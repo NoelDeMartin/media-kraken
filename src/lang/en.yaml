@@ -18,4 +18,5 @@ movies:
     watched: 'Watched'
     pending: 'Pending'
     watchLater: 'Watch later'
+    openActionsMenu: 'Open actions menu'
     added: '**{movie}** has been added to your collection!'
