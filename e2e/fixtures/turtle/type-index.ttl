@@ -1,0 +1,9 @@
+@prefix solid: <http://www.w3.org/ns/solid/terms#> .
+@prefix schema: <https://schema.org/> .
+
+<> a solid:TypeIndex .
+
+<#movies>
+    a solid:TypeRegistration ;
+    solid:forClass schema:Movie ;
+    solid:instanceContainer <../movies/> .

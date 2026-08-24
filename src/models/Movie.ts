@@ -1,4 +1,4 @@
-import { parseDate } from '@noeldemartin/utils';
+import { parseDate, stringToSlug } from '@noeldemartin/utils';
 import type { HasManyRelation } from 'soukai-bis';
 
 import type { TMDBMovie } from '@/services/TMDB';
@@ -35,6 +35,18 @@ export default class Movie extends Model {
 
     public get watched(): boolean | null {
         return this.watchActions ? this.watchActions.length > 0 : null;
+    }
+
+    public getSlug(): string | null {
+        if (!this.title) {
+            return null;
+        }
+
+        if (!this.releaseDate) {
+            return stringToSlug(this.title);
+        }
+
+        return `${stringToSlug(this.title)}-${this.releaseDate.getFullYear()}`;
     }
 
     public async watch(): Promise<void> {

@@ -1,0 +1,9 @@
+INSERT DATA {
+    @prefix schema: <https://schema.org/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#watched>
+        a schema:WatchAction ;
+        schema:endTime "2026-08-24T11:04:23.476Z"^^xsd:dateTime ;
+        schema:object <#it> .
+ }

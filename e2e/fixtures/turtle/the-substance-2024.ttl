@@ -1,0 +1,17 @@
+@prefix schema: <https://schema.org/> .
+@prefix crdts: <https://vocab.noeldemartin.com/crdt/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<#it>
+  a schema:Movie ;
+  schema:name "The Substance" ;
+  schema:description "A fading celebrity decides to use a black market drug, a cell-replicating substance that temporarily creates a younger, better version of herself.";
+  schema:datePublished "2024-09-07T00:00:00.000Z"^^xsd:dateTime;
+  schema:image <https://image.tmdb.org/t/p/w500/uYJvxMWMb9W4zIY3cbM50sj3dpC.jpg>;
+  schema:sameAs <https://www.themoviedb.org/movie/933260>.
+
+<#it-metadata>
+  a crdts:Metadata ;
+  crdts:resource <#it> ;
+  crdts:createdAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime ;
+  crdts:updatedAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime .
