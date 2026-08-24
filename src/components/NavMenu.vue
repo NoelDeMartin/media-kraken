@@ -4,7 +4,7 @@
         class="group relative"
         :style="{
             '--item-height': sizes ? `${sizes.itemHeight}px` : '0px',
-            '--max-item-width': sizes ? `${sizes.maxItemWidth}px` : '0px',
+            '--wrapper-width': sizes ? `${sizes.wrapperWidth}px` : '0px',
             '--menu-height': sizes ? `${sizes.itemHeight * (sections.length + 1)}px` : '0px',
         }"
         @focusin="expand"
@@ -12,7 +12,7 @@
         @mouseenter="expand"
         @mouseleave="collapse"
     >
-        <div class="h-(--item-height) min-w-[calc(var(--max-item-width)+(--spacing(1)))]" />
+        <div class="h-(--item-height) min-w-[calc(var(--wrapper-width)+(--spacing(1)))]" />
         <div
             :class="[
                 'absolute top-0 left-0 h-(--item-height) overflow-hidden',
@@ -31,7 +31,8 @@
                         sizes && activeSectionIndex !== -1 ? `${(activeSectionIndex + 1) * sizes.itemHeight}px` : '0px',
                 }"
             >
-                <div
+                <h2
+                    :id="labelId"
                     :class="[
                         'flex h-(--item-height) items-center text-sm',
                         open && 'translate-y-2 text-xs opacity-50',
@@ -39,8 +40,11 @@
                     ]"
                 >
                     {{ label }}
-                </div>
-                <ul>
+                </h2>
+                <span ref="labelMeasurement" aria-hidden="true" class="pointer-events-none absolute text-sm opacity-0">
+                    {{ label }}
+                </span>
+                <ul :aria-labelledby="labelId">
                     <li
                         v-for="(section, index) of sections"
                         :key="section.route"
@@ -58,7 +62,7 @@
 
 <script setup lang="ts">
 import { Router } from '@aerogel/plugin-routing';
-import { after } from '@noeldemartin/utils';
+import { after, uuid } from '@noeldemartin/utils';
 import { computed, onMounted, onUnmounted, ref, useTemplateRef, watch } from 'vue';
 
 const { sections, startOpen, selectedIndex } = defineProps<{
@@ -68,10 +72,12 @@ const { sections, startOpen, selectedIndex } = defineProps<{
     selectedIndex?: number;
 }>();
 
+const labelId = `nav-menu-label-${uuid()}`;
 const open = ref(startOpen ?? false);
 const animate = ref(false);
 const $wrapper = useTemplateRef('wrapper');
-const sizes = ref<{ itemHeight: number; maxItemWidth: number } | null>(null);
+const $labelMeasurement = useTemplateRef('labelMeasurement');
+const sizes = ref<{ itemHeight: number; wrapperWidth: number } | null>(null);
 const activeSectionIndex = computed(
     () =>
         selectedIndex ??
@@ -82,17 +88,18 @@ const observer = new ResizeObserver(() => {
         return;
     }
 
+    const labelRect = $labelMeasurement.value?.getBoundingClientRect();
     const [firstItemRect, ...restItemRects] = Array.from($wrapper.value.querySelectorAll('li')).map((item) =>
         item.getBoundingClientRect(),
     );
 
-    if (!firstItemRect) {
+    if (!labelRect || !firstItemRect) {
         return;
     }
 
     sizes.value = {
         itemHeight: firstItemRect.height,
-        maxItemWidth: Math.max(firstItemRect.width, ...restItemRects.map((item) => item.width)),
+        wrapperWidth: Math.max(labelRect.width, firstItemRect.width, ...restItemRects.map((item) => item.width)),
     };
 });
 
@@ -106,6 +113,15 @@ function collapse() {
 
 watch(
     $wrapper,
+    (value, oldValue) => {
+        oldValue && observer.unobserve(oldValue); // oxlint-disable-line no-unused-expressions
+        value && observer.observe(value); // oxlint-disable-line no-unused-expressions
+    },
+    { immediate: true },
+);
+
+watch(
+    $labelMeasurement,
     (value, oldValue) => {
         oldValue && observer.unobserve(oldValue); // oxlint-disable-line no-unused-expressions
         value && observer.observe(value); // oxlint-disable-line no-unused-expressions

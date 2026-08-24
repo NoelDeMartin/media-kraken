@@ -2,6 +2,7 @@ app:
     title: 'Media Kraken'
     nav:
         search: 'Press "s" to start searching'
+        label: 'Main navigation'
         collection: 'My Collection'
         movies: 'My Movies'
         shows: 'My Shows'

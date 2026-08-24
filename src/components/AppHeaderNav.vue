@@ -1,8 +1,8 @@
 <template>
-    <div class="flex items-center gap-1">
+    <nav class="flex items-center gap-1" :aria-label="$t('app.nav.label')">
         <i-bi-collection class="size-4" />
         <NavMenu :label="$t('app.nav.collection')" :sections />
-    </div>
+    </nav>
 </template>
 
 <script setup lang="ts">
