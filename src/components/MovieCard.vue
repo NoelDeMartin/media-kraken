@@ -3,12 +3,19 @@
         <MoviePoster :movie class="size-full" />
         <MovieCardBadge :movie class="absolute -top-3 -right-4 z-10" />
         <h2>
-            <a href="#" :title="movie.title">
+            <RouterLink
+                :to="{
+                    name: 'movies.show',
+                    params: { movie: movie.slug },
+                    query: $solid.hasLoggedIn() ? { url: movie.url } : undefined,
+                }"
+                :title="movie.title"
+            >
                 <span class="sr-only">
                     {{ movie.title }} ({{ movie.watched ? $t('movies.watched') : $t('movies.pending') }})
                 </span>
                 <span class="absolute inset-0" />
-            </a>
+            </RouterLink>
         </h2>
     </article>
 </template>

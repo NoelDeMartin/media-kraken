@@ -29,6 +29,10 @@ export default class Movie extends Model {
         return instance;
     }
 
+    public get slug(): string {
+        return this.requireSlug();
+    }
+
     public get releaseYear(): number | null {
         return this.releaseDate ? this.releaseDate.getFullYear() : null;
     }
