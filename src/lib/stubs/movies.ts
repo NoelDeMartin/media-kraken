@@ -1,4 +1,4 @@
-import moviesData from '@/data/movies.json';
+import moviesData from '@/lib/fixtures/movies.json';
 import type Movie from '@/models/Movie';
 
 import { defineStub } from './helpers';

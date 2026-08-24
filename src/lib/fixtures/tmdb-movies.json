@@ -1,0 +1,19 @@
+[
+    {
+        "id": 1,
+        "title": "The Matrix",
+        "release_date": "1999-03-31",
+        "poster_path": "/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
+        "overview": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers."
+    },
+    {
+        "id": 2,
+        "title": "Invalid Poster",
+        "poster_path": "/invalid.jpg"
+    },
+    {
+        "id": 3,
+        "title": "Missing Poster",
+        "poster_path": null
+    }
+]

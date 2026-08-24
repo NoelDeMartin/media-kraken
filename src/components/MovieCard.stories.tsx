@@ -26,10 +26,6 @@ const meta: Meta<StoryArgs> = {
 };
 
 export const Primary: Story = {
-    args: {
-        movie: 'Inception',
-    },
-
     render(args) {
         const movie = {
             // oxlint-disable-next-line typescript/no-misused-spread

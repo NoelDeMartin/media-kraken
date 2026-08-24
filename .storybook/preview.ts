@@ -1,5 +1,5 @@
 import i18n from '@aerogel/plugin-i18n';
-import { setup } from '@aerogel/storybook';
+import { setup, decorators } from '@aerogel/storybook';
 import docs from '@storybook/addon-docs';
 import { definePreview } from '@storybook/vue3-vite';
 
@@ -12,4 +12,5 @@ setup({
 export default definePreview({
     addons: [docs()],
     tags: ['autodocs'],
+    decorators,
 });
