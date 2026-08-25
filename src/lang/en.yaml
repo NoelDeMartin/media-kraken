@@ -3,6 +3,7 @@ app:
     nav:
         search: 'Press "s" to start searching'
         label: 'Main navigation'
+        discover: 'Discover'
         collection: 'My Collection'
         movies: 'My Movies'
         shows: 'My Shows'
@@ -14,6 +15,17 @@ app:
         noResults: 'No results found'
         resultsCount: '{count} results found'
 
+welcome:
+    title: 'Welcome to Media Kraken!'
+    message: |
+        I will help you keep track of your movies and TV shows so that you don't miss a beat. Build **your own collection**,
+        create lists, and check out what your friends are watching.
+
+        Let's get started. Do you have some movies or shows from another service that you'd like to import?
+    import: "Yes, I have some content I'd like to import"
+    discover: 'No, help me discover something new'
+    getStarted: 'No, just give me something to watch'
+
 movies:
     watch: 'Watch'
     watched: 'Watched'
@@ -21,3 +33,12 @@ movies:
     watchLater: 'Watch later'
     openActionsMenu: 'Open actions menu'
     added: '**{movie}** has been added to your collection!'
+
+shows:
+    title: 'Shows'
+
+lists:
+    title: 'Lists'
+
+discover:
+    title: 'Discover'

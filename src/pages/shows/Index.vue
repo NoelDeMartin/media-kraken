@@ -1,6 +1,6 @@
 <template>
     <Page>
-        <h1 class="text-3xl font-semibold text-slate-900">Shows ({{ shows.length }})</h1>
+        <h1 class="text-3xl font-semibold text-slate-900">{{ $t('shows.title') }} ({{ shows.length }})</h1>
     </Page>
 </template>
 

@@ -2,6 +2,7 @@ import { defineRouteBindings, defineRoutes } from '@aerogel/plugin-routing';
 
 import Movie from '@/models/Movie.ts';
 
+import Discover from './Discover.vue';
 import Home from './Home.vue';
 import ListsIndex from './lists/Index.vue';
 import MoviesIndex from './movies/Index.vue';
@@ -23,4 +24,5 @@ export default defineRoutes([
     },
     { name: 'shows.index', path: '/shows', component: ShowsIndex },
     { name: 'lists.index', path: '/lists', component: ListsIndex },
+    { name: 'discover', path: '/discover', component: Discover },
 ]);
