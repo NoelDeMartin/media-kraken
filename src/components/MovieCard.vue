@@ -1,7 +1,7 @@
 <template>
     <article class="relative isolate border border-slate-200 bg-white shadow-sm">
         <MoviePoster :movie class="size-full" />
-        <MovieCardBadge :movie class="absolute -top-3 -right-4 z-10" />
+        <MovieCardBadge :movie class="absolute -top-1 -right-3.5 z-10" />
         <h2>
             <RouterLink
                 :to="{
