@@ -19,6 +19,7 @@ jobs:
             - run: vp run type-check
             - run: vp test
             - run: vp build
+            - run: vp run build:storybook
     e2e:
         runs-on: ubuntu-latest
         env:

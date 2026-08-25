@@ -3,6 +3,7 @@
     "type": "module",
     "scripts": {
         "build": "vp build",
+        "build:storybook": "storybook build",
         "dev": "vp dev",
         "dev:serve-pod": "community-solid-server -c @css:config/file.json -f ./solid",
         "deploy": "noeldemartin-deploy-app",
