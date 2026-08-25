@@ -2,7 +2,7 @@ import { Button, UI } from '@aerogel/core';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { onMounted } from 'vue';
 
-import tmdbMovies from '@/lib/stubs/tmdbMovies';
+import tmdbMovies from '@/lib/stubs/tmdb-movies';
 
 import MoviePreviewModal from './MoviePreviewModal.vue';
 

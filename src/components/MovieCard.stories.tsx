@@ -1,7 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import movies from '@/lib/stubs/movies';
-import type Movie from '@/models/Movie';
+import movies from '@/lib/stubs/solid-movies';
 
 import MovieCard from './MovieCard.vue';
 import MoviesGrid from './MoviesGrid.vue';
@@ -10,7 +9,6 @@ type Story = StoryObj<typeof meta>;
 
 type StoryArgs = {
     movie: string;
-    watched: boolean;
 };
 
 const meta: Meta<StoryArgs> = {
@@ -18,7 +16,6 @@ const meta: Meta<StoryArgs> = {
     component: MovieCard,
     argTypes: {
         movie: movies.control,
-        watched: { control: 'boolean' },
     },
     args: {
         movie: movies.first,
@@ -26,16 +23,16 @@ const meta: Meta<StoryArgs> = {
 };
 
 export const Primary: Story = {
+    args: {
+        movie: 'Symbol',
+    },
+
     render(args) {
-        const movie = {
-            // oxlint-disable-next-line typescript/no-misused-spread
-            ...movies.resolve(args.movie),
-            watched: !!args.watched,
-        } as Movie;
+        const movie = movies.resolve(args.movie);
 
         return (
-            <div style={{ maxWidth: '90vw', width: '90%', margin: '0 auto' }}>
-                <MovieCard movie={movie} style={{ aspectRatio: '2/3' }} />
+            <div style={{ maxWidth: '90vw', width: '90%', height: '90%', margin: '0 auto' }}>
+                <MovieCard movie={movie} style={{ aspectRatio: '2/3', maxHeight: '300px' }} />
             </div>
         );
     },

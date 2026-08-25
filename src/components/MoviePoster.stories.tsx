@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import movies from '@/lib/stubs/movies';
+import movies from '@/lib/stubs/solid-movies';
 
 import MoviePoster from './MoviePoster.vue';
 
