@@ -11,5 +11,6 @@ import { translate } from '@aerogel/core';
 const sections = [
     { label: translate('app.nav.movies'), route: 'movies.index' },
     { label: translate('app.nav.shows'), route: 'shows.index' },
+    { label: translate('app.nav.lists'), route: 'lists.index' },
 ];
 </script>

@@ -2,6 +2,7 @@
     {
         "url": "https://example.org/1",
         "title": "Inception",
+        "slug": "inception",
         "year": 2010,
         "genre": "Sci-Fi",
         "overview": "A thief who enters dreams to steal secrets.",
@@ -11,6 +12,7 @@
     {
         "url": "https://example.org/2",
         "title": "Interstellar",
+        "slug": "interstellar",
         "year": 2014,
         "genre": "Adventure",
         "overview": "A team travels through a wormhole in search of a new home for humanity.",
@@ -20,6 +22,7 @@
     {
         "url": "https://example.org/3",
         "title": "Dune",
+        "slug": "dune",
         "year": 2021,
         "genre": "Epic",
         "overview": "A noble family takes control of a desert planet and its spice.",
@@ -29,6 +32,7 @@
     {
         "url": "https://example.org/4",
         "title": "Parasite",
+        "slug": "parasite",
         "year": 2019,
         "genre": "Thriller",
         "overview": "A poor family schemes to infiltrate a wealthy household.",
@@ -38,6 +42,7 @@
     {
         "url": "https://example.org/5",
         "title": "Arrival",
+        "slug": "arrival",
         "year": 2016,
         "genre": "Drama",
         "overview": "A linguist is recruited to communicate with extraterrestrials.",
@@ -47,11 +52,13 @@
     {
         "url": "https://example.org/6",
         "title": "Invalid Poster",
+        "slug": "invalid-poster",
         "posterUrl": "https://image.tmdb.org/t/p/w500/invalid.jpg"
     },
     {
         "url": "https://example.org/7",
         "title": "Spider-Man: Into the Spider-Verse",
+        "slug": "spider-man-into-the-spider-verse",
         "year": 2018,
         "genre": "Animation",
         "overview": "A teenager discovers a multiverse of spider-powered heroes.",
@@ -61,6 +68,7 @@
     {
         "url": "https://example.org/8",
         "title": "Gladiator",
+        "slug": "gladiator",
         "year": 2000,
         "genre": "Historical",
         "overview": "A betrayed general seeks revenge in ancient Rome.",
@@ -70,10 +78,13 @@
     {
         "url": "https://example.org/9",
         "title": "Missing Poster",
+        "slug": "missing-poster",
         "posterUrl": ""
     },
     {
+        "url": "https://example.org/10",
         "title": "Mad Max: Fury Road",
+        "slug": "mad-max-fury-road",
         "year": 2015,
         "genre": "Action",
         "overview": "A woman and a drifter fight through a post-apocalyptic wasteland.",

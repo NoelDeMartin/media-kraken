@@ -10,12 +10,12 @@
                     query: $solid.hasLoggedIn() ? { url: movie.url } : undefined,
                 }"
                 :title="movie.title"
-                class="-mt-1 block h-1"
+                class="group absolute inset-0"
             >
+                <div class="absolute inset-0 hidden bg-black/20 group-focus-within:block group-hover:block" />
                 <span class="sr-only">
                     {{ movie.title }} ({{ movie.watched ? $t('movies.watched') : $t('movies.pending') }})
                 </span>
-                <span class="absolute inset-0" />
             </RouterLink>
         </h2>
     </article>

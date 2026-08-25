@@ -6,6 +6,7 @@ app:
         collection: 'My Collection'
         movies: 'My Movies'
         shows: 'My Shows'
+        lists: 'My Lists'
     search:
         label: 'Search movies'
         placeholder: 'Search movies...'

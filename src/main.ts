@@ -10,7 +10,7 @@ import env from './lib/env';
 import routes, { bindings } from './pages/index';
 import { services } from './services';
 
-await bootstrap(App, {
+export default await bootstrap(App, {
     env,
     services,
     plugins: [
