@@ -1,7 +1,7 @@
 <template>
     <Page>
         <article class="flex flex-row gap-6">
-            <MoviePoster :movie class="aspect-2/3 w-64 shrink-0 rounded shadow" />
+            <MediaImage :url="movie.posterUrl" class="aspect-2/3 w-64 shrink-0 rounded shadow" />
             <div class="flex flex-1 flex-col">
                 <div class="flex items-center justify-between gap-2">
                     <h1 class="text-2xl font-semibold text-gray-900">

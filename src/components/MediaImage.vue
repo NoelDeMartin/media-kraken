@@ -1,11 +1,5 @@
 <template>
-    <img
-        v-if="computedPosterUrl && !loadFailed"
-        alt=""
-        :src="computedPosterUrl"
-        :class="renderedClasses"
-        @error="loadFailed = true"
-    />
+    <img v-if="url && !loadFailed" alt="" :src="url" :class="renderedClasses" @error="loadFailed = true" />
     <div v-else :class="renderedClasses">
         <i-mdi-image-remove
             v-if="loadFailed"
@@ -23,20 +17,19 @@ import { classes } from '@aerogel/core';
 import type { Nullable } from '@noeldemartin/utils';
 import { computed, ref, watch, type HTMLAttributes } from 'vue';
 
-import Movie from '@/models/Movie';
-
-const {
-    movie,
-    posterUrl,
-    class: className,
-} = defineProps<{ movie?: Nullable<Movie>; posterUrl?: Nullable<string>; class?: HTMLAttributes['class'] }>();
+const { url, class: className } = defineProps<{
+    url?: Nullable<string>;
+    class?: HTMLAttributes['class'];
+}>();
 const loadFailed = ref(false);
-const computedPosterUrl = computed(() => movie?.posterUrl || posterUrl);
 const renderedClasses = computed(() =>
-    computedPosterUrl.value && !loadFailed.value
+    url && !loadFailed.value
         ? classes('size-full object-cover', className)
         : classes('relative size-full bg-gray-300', className),
 );
 
-watch(computedPosterUrl, () => (loadFailed.value = false));
+watch(
+    () => url,
+    () => (loadFailed.value = false),
+);
 </script>

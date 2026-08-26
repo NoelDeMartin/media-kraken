@@ -1,7 +1,7 @@
 <template>
     <Modal wrapper-class="sm:max-w-2xl" class="flex flex-row p-0">
-        <MoviePoster
-            :poster-url="model.posterUrl"
+        <MediaImage
+            :url="model.posterUrl"
             class="m-1 aspect-2/3 w-56 rounded-[calc(var(--radius-lg)-(--spacing(1)))]"
         />
         <div class="flex flex-1 flex-col gap-3 p-4">

@@ -60,7 +60,7 @@
                                 :id="`result-${movie.url}`"
                                 class="relative flex cursor-pointer items-center gap-3 rounded-md px-2 py-1 text-gray-900 transition-colors duration-150 select-none data-highlighted:bg-gray-100 data-highlighted:font-medium data-highlighted:text-gray-900"
                             >
-                                <MoviePoster :poster-url="movie.posterUrl" class="size-12 rounded" />
+                                <MediaImage :url="movie.posterUrl" class="size-12 rounded" />
                                 <div class="min-w-0 flex-auto">
                                     <p class="truncate text-sm font-medium">{{ movie.title }}</p>
                                     <p class="text-xs text-gray-500">{{ movie.releaseYear ?? '—' }}</p>

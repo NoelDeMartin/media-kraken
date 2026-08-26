@@ -1,6 +1,6 @@
 <template>
     <article class="relative isolate border border-slate-200 bg-white shadow-sm">
-        <MoviePoster :movie class="size-full" />
+        <MediaImage :url="movie.posterUrl" class="size-full" />
         <MovieCardBadge :movie class="absolute -top-1 -right-3.5 z-10" />
         <h2>
             <RouterLink

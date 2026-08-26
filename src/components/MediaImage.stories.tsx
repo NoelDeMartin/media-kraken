@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import movies from '@/lib/stubs/solid-movies';
 
-import MoviePoster from './MoviePoster.vue';
+import MediaImage from './MediaImage.vue';
 
 type Story = StoryObj<typeof meta>;
 
@@ -11,8 +11,8 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'MoviePoster',
-    component: MoviePoster,
+    title: 'MediaImage',
+    component: MediaImage,
     argTypes: {
         movie: movies.control,
     },
@@ -24,7 +24,7 @@ const meta: Meta<StoryArgs> = {
 
         return (
             <div style={{ maxWidth: '300px', width: '90%', margin: '0 auto', aspectRatio: '2/3' }}>
-                <MoviePoster movie={movie} />
+                <MediaImage url={movie.posterUrl} />
             </div>
         );
     },
