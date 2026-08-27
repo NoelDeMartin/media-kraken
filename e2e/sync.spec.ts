@@ -13,6 +13,8 @@ import {
 import { requiredFixture } from '@e2e/lib/fixtures';
 import { test, expect } from '@e2e/lib/setup';
 
+test.describe.configure({ mode: 'serial' });
+
 test.beforeEach(async ({ page }) => {
     await solidReset();
     await page.goto('/');
@@ -24,7 +26,7 @@ test('Imports a movie from tmdb', async ({ page }) => {
 
     await localFirstLogin(page);
     await press(page, 'Press "s" to start searching');
-    await input(page, 'Search movies').fill('matrix');
+    await input(page, 'Search movies and shows').fill('matrix');
     await press(page, 'The Matrix');
     await press(page, 'Watched');
     await waitSync(page);
