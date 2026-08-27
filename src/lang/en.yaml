@@ -9,11 +9,13 @@ app:
         shows: 'My Shows'
         lists: 'My Lists'
     search:
-        label: 'Search movies'
-        placeholder: 'Search movies...'
+        label: 'Search movies and shows'
+        placeholder: 'Search movies and shows...'
         loading: 'Searching...'
         noResults: 'No results found'
         resultsCount: '{count} results found'
+        movie: 'Movie'
+        show: 'Show'
 
 welcome:
     title: 'Welcome to Media Kraken!'
@@ -36,6 +38,14 @@ movies:
 
 shows:
     title: 'Shows'
+    status: 'Status'
+    add: 'Add to collection'
+    added: '**{show}** has been added to your collection!'
+    statuses:
+        watching: 'Watching'
+        completed: 'Completed'
+        dropped: 'Dropped'
+        pending: 'Pending'
 
 lists:
     title: 'Lists'

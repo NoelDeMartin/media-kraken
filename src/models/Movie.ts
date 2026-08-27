@@ -18,7 +18,7 @@ export default class Movie extends Model {
             title: movie.title,
             description: movie.overview,
             releaseDate: parseDate(movie.release_date) ?? undefined,
-            posterUrl: TMDB.moviePosterUrl(movie, options.posterSize),
+            posterUrl: TMDB.posterUrl(movie, options.posterSize),
             externalUrls: [TMDB.movieUrl(movie)],
         });
 

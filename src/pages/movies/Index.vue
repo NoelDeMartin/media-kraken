@@ -1,7 +1,9 @@
 <template>
     <Page>
         <h1 class="text-3xl font-semibold text-slate-900">Movies ({{ movies.length }})</h1>
-        <MoviesGrid :movies="movies" class="mt-6" />
+        <MediaGrid class="mt-6">
+            <MovieCard v-for="movie in movies" :key="movie.url" :movie class="aspect-2/3" />
+        </MediaGrid>
     </Page>
 </template>
 

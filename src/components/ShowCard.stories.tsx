@@ -1,34 +1,34 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import movies from '@/lib/stubs/solid-movies';
+import shows from '@/lib/stubs/solid-shows';
 
 import MediaGrid from './MediaGrid.vue';
-import MovieCard from './MovieCard.vue';
+import ShowCard from './ShowCard.vue';
 
 type Story = StoryObj<typeof meta>;
 
 type StoryArgs = {
-    movie: string;
+    show: string;
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'MovieCard',
-    component: MovieCard,
+    title: 'ShowCard',
+    component: ShowCard,
     argTypes: {
-        movie: movies.control,
+        show: shows.control,
     },
     args: {
-        movie: movies.first,
+        show: shows.first,
     },
 };
 
 export const Primary: Story = {
     render(args) {
-        const movie = movies.resolve(args.movie);
+        const show = shows.resolve(args.show);
 
         return (
             <div style={{ maxWidth: '90vw', width: '90%', height: '90%', margin: '0 auto' }}>
-                <MovieCard movie={movie} style={{ aspectRatio: '2/3', maxHeight: '300px' }} />
+                <ShowCard show={show} style={{ aspectRatio: '2/3', maxHeight: '300px' }} />
             </div>
         );
     },
@@ -38,8 +38,8 @@ export const Grid: Story = {
     render: () => (
         <div style={{ maxWidth: '90vw', width: '90%', margin: '0 auto' }}>
             <MediaGrid>
-                {movies.all.map((movie) => (
-                    <MovieCard key={movie.url} movie={movie} class="aspect-2/3" />
+                {shows.all.map((show) => (
+                    <ShowCard key={show.url} show={show} class="aspect-2/3" />
                 ))}
             </MediaGrid>
         </div>

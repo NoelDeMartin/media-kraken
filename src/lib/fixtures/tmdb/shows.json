@@ -1,0 +1,19 @@
+[
+    {
+        "id": 2382,
+        "name": "Freaks and Geeks",
+        "first_air_date": "1999-09-25",
+        "poster_path": "/tPqV63zcW6ZV0Hd48DMGb5UzQIG.jpg",
+        "overview": "High school mathlete Lindsay Weir rebels and begins hanging out with a crowd of burnouts (the \"freaks\"), while her brother Sam Weir navigates a different part of the social universe with his nerdy friends (the \"geeks\")."
+    },
+    {
+        "id": 2,
+        "name": "Invalid Poster",
+        "poster_path": "/invalid.jpg"
+    },
+    {
+        "id": 3,
+        "name": "Missing Poster",
+        "poster_path": null
+    }
+]

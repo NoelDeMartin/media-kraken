@@ -3,7 +3,7 @@ import { stringToSlug } from '@noeldemartin/utils';
 import type { Page } from '@playwright/test';
 
 function handleRequest(url: URL) {
-    if (url.pathname === '/3/search/movie') {
+    if (url.pathname === '/3/search/multi') {
         return handleSearch(url.searchParams.get('query') ?? '');
     }
 
