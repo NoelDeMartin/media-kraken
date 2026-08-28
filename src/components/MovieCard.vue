@@ -1,5 +1,6 @@
 <template>
     <article class="group/card relative isolate border border-slate-200 bg-white shadow-sm">
+        <!-- TODO focus ring (badge & link)-->
         <div class="size-full overflow-hidden">
             <MediaImage
                 :url="movie.posterUrl"

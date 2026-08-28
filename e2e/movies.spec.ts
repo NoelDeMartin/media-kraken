@@ -35,3 +35,5 @@ test('Marks movies as watched', async ({ page }) => {
     await press(page, 'Watch');
     await see(page, 'Watched');
 });
+
+// TODO shows spec
