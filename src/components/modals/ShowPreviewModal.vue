@@ -35,6 +35,7 @@ import { computed, ref } from 'vue';
 
 import Show from '@/models/Show';
 import { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@/models/ShowWatching';
+import Catalog from '@/services/Catalog';
 import type { TMDBShow } from '@/services/TMDB';
 
 const { show } = defineProps<{ show: TMDBShow }>();
@@ -50,13 +51,7 @@ function renderStatus(option: ShowWatchingStatus): string {
 async function saveToCollection() {
     close();
 
-    if (status.value !== 'pending') {
-        model.value.mintUrl();
-
-        await model.value.updateWatchingStatus(status.value);
-    }
-
-    await model.value.save();
+    await Catalog.importFromTMDB(show, { watchingStatus: status.value });
 
     UI.toast(translate('shows.added', { show: model.value.name }));
 }

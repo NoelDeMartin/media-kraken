@@ -1,6 +1,8 @@
+import Catalog from './Catalog';
 import TMDB from './TMDB';
 
 export const services = {
+    $catalog: Catalog,
     $tmdb: TMDB,
 };
 

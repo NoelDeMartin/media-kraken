@@ -18,6 +18,35 @@ const TMDBShowSchema = z.object({
     poster_path: z.string().nullable(),
 });
 
+const TMDBShowExternalIdsSchema = z.object({
+    imdb_id: z.string().nullable().optional(),
+});
+
+const TMDBSeasonSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    season_number: z.number(),
+    episode_count: z.number().optional(),
+    overview: z.string().optional(),
+    air_date: z.string().nullable(),
+});
+
+const TMDBEpisodeSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    episode_number: z.number(),
+    season_number: z.number(),
+    overview: z.string().optional(),
+    air_date: z.string().nullable(),
+    runtime: z.number().nullable(),
+});
+
+const TMDBShowDetailsSchema = TMDBShowSchema.extend({
+    seasons: z.array(TMDBSeasonSchema),
+});
+
+const TMDBSeasonDetailsSchema = TMDBSeasonSchema.extend({ episodes: z.array(TMDBEpisodeSchema) });
+
 const SearchMovieResultSchema = TMDBMovieSchema.extend({
     media_type: z.literal('movie'),
 });
@@ -41,7 +70,13 @@ const SearchMultiResponseSchema = z.object({
 
 export type TMDBMovie = z.infer<typeof TMDBMovieSchema>;
 export type TMDBShow = z.infer<typeof TMDBShowSchema>;
+export type TMDBSeason = z.infer<typeof TMDBSeasonSchema>;
+export type TMDBEpisode = z.infer<typeof TMDBEpisodeSchema>;
+export type TMDBShowDetails = z.infer<typeof TMDBShowDetailsSchema>;
+export type TMDBShowExternalIds = z.infer<typeof TMDBShowExternalIdsSchema>;
 export type TMDBSearchResult = z.infer<typeof SearchMovieResultSchema> | z.infer<typeof SearchShowResultSchema>;
+
+type TMDBSeasonDetails = z.infer<typeof TMDBSeasonDetailsSchema>;
 
 export class TMDBService extends Service {
     public movieUrl(movie: TMDBMovie): string {
@@ -70,6 +105,41 @@ export class TMDBService extends Service {
         });
 
         return response.results.filter((result): result is TMDBSearchResult => types.includes(result.media_type));
+    }
+
+    public async getShow(
+        id: number,
+        options: { includeSeasons: boolean },
+    ): Promise<{
+        details: TMDBShowDetails;
+        externalIds: TMDBShowExternalIds;
+        seasons: { season: TMDBShowDetails['seasons'][number]; details: TMDBSeasonDetails }[];
+    }> {
+        const [details, externalIds] = await Promise.all([this.getShowDetails(id), this.getShowExternalIds(id)]);
+        const seasons = options.includeSeasons
+            ? await Promise.all(
+                  details.seasons
+                      .filter((season) => season.season_number !== 0)
+                      .map(async (season) => ({
+                          season,
+                          details: await this.getSeasonDetails(details.id, season.season_number),
+                      })),
+              )
+            : [];
+
+        return { details, externalIds, seasons };
+    }
+
+    private async getShowDetails(id: number): Promise<TMDBShowDetails> {
+        return this.request(TMDBShowDetailsSchema, `tv/${id}`);
+    }
+
+    private async getShowExternalIds(id: number): Promise<TMDBShowExternalIds> {
+        return this.request(TMDBShowExternalIdsSchema, `tv/${id}/external_ids`);
+    }
+
+    private async getSeasonDetails(showId: number, seasonNumber: number): Promise<TMDBSeasonDetails> {
+        return this.request(TMDBSeasonDetailsSchema, `tv/${showId}/season/${seasonNumber}`);
     }
 
     private getSizeShorthand(size: 'small' | 'large'): string {

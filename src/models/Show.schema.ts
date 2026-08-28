@@ -1,5 +1,7 @@
-import { defineSchema, hasOne, requireBootedModel } from 'soukai-bis';
+import { belongsToMany, defineSchema, hasOne, requireBootedModel } from 'soukai-bis';
 import { array, date, string, url } from 'zod';
+
+import Season from '@/models/Season';
 
 export default defineSchema({
     rdfContext: 'https://schema.org/',
@@ -9,9 +11,11 @@ export default defineSchema({
         description: string().optional(),
         startDate: date().rdfProperty('startDate').optional(),
         posterUrl: url().rdfProperty('image').optional(),
+        seasonUrls: array(url()).rdfProperty('containsSeason').default([]),
         externalUrls: array(url()).rdfProperty('sameAs').default([]),
     },
     relations: {
+        seasons: belongsToMany(Season, 'seasonUrls').usingSameDocument(),
         watching: hasOne(() => requireBootedModel('ShowWatching'), 'showUrl').usingSameDocument(),
     },
 });

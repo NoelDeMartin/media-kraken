@@ -1,6 +1,8 @@
 import { parseDate, stringToSlug, tap } from '@noeldemartin/utils';
-import type { HasOneRelation } from 'soukai-bis';
+import { emitModelEvent, InvalidationStrategies, loaded } from 'soukai-bis';
+import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation } from 'soukai-bis';
 
+import type Season from '@/models/Season';
 import type { TMDBShow } from '@/services/TMDB';
 import TMDB from '@/services/TMDB';
 
@@ -9,10 +11,25 @@ import ShowWatching, { SHOW_WATCHING_STATUSES } from './ShowWatching';
 import type { ShowWatchingStatus } from './ShowWatching';
 
 export default class Show extends Model {
-    public static cloud = true;
+    public static cloud = { depth: 1 };
+    public static computed = {
+        pendingEpisodeDates: {
+            invalidationStrategy: InvalidationStrategies.CONTAINER,
+            compute(show: Show) {
+                return loaded(show, 'seasons').flatMap((season) =>
+                    loaded(season, 'episodes')
+                        .filter((episode) => !loaded(episode, 'watched'))
+                        .map((episode) => episode.publishedAt),
+                );
+            },
+        },
+    };
 
+    declare public readonly pendingEpisodeDates: ComputedAttribute<Date[]>;
     declare public readonly watching?: ShowWatching;
     declare public readonly relatedWatching: HasOneRelation<this, ShowWatching, typeof ShowWatching>;
+    declare public readonly seasons?: Season[];
+    declare public readonly relatedSeasons: BelongsToManyRelation<this, Season, typeof Season>;
 
     static fromTMDB(show: TMDBShow, options: { posterSize?: 'small' | 'large'; mintUrl?: boolean } = {}): Show {
         const instance = new Show({
@@ -42,6 +59,27 @@ export default class Show extends Model {
         return this.watching?.status ?? 'pending';
     }
 
+    public get tmdbId(): number | null {
+        const id = this.externalUrls
+            .find((url) => url.startsWith('https://www.themoviedb.org/tv/'))
+            ?.split('/')
+            .pop()
+            ?.replace(/\D/g, '')
+            .trim();
+
+        return id ? Number(id) : null;
+    }
+
+    public get imdbId(): string | null {
+        const id = this.externalUrls
+            .find((url) => url.includes('imdb.com/title/'))
+            ?.split('/')
+            .filter(Boolean)
+            .pop();
+
+        return id?.split(/[?#]/)[0] ?? null;
+    }
+
     public getSlug(): string | null {
         if (!this.name) {
             return null;
@@ -52,6 +90,23 @@ export default class Show extends Model {
         }
 
         return `${stringToSlug(this.name)}-${this.startDate.getFullYear()}`;
+    }
+
+    public async loadAllRelationsIfUnloaded(): Promise<void> {
+        await this.loadRelationIfUnloaded('seasons');
+        await Promise.all(this.seasons?.map((season) => season.loadRelationIfUnloaded('episodes')) ?? []);
+
+        for (const season of this.seasons ?? []) {
+            for (const episode of season.episodes ?? []) {
+                if (episode.isRelationLoaded('watched')) {
+                    continue;
+                }
+
+                episode.relatedWatched.related = null;
+
+                await emitModelEvent(episode, 'relation-loaded', episode.relatedWatched);
+            }
+        }
     }
 
     public async updateWatchingStatus(status: ShowWatchingStatus): Promise<void> {

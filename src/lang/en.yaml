@@ -41,6 +41,7 @@ shows:
     status: 'Status'
     add: 'Add to collection'
     added: '**{show}** has been added to your collection!'
+    upcomingEpisodes: '({count} new episodes)'
     statuses:
         watching: 'Watching'
         completed: 'Completed'

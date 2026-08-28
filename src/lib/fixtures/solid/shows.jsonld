@@ -1,1 +1,833 @@
-[{"@graph":[{"@id":"solid://shows/freaks-and-geeks-1999#it","@type":["https://schema.org/TVSeries"],"https://schema.org/name":[{"@value":"Freaks and Geeks"}],"https://schema.org/description":[{"@value":"High school mathlete Lindsay Weir rebels and begins hanging out with a crowd of burnouts (the \"freaks\"), while her brother Sam Weir navigates a different part of the social universe with his nerdy friends (the \"geeks\")."}],"https://schema.org/startDate":[{"@value":"1999-09-25T00:00:00.000Z","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"https://schema.org/image":[{"@id":"https://image.tmdb.org/t/p/w500/tPqV63zcW6ZV0Hd48DMGb5UzQIG.jpg"}],"https://schema.org/sameAs":[{"@id":"https://www.themoviedb.org/tv/2382"}]},{"@id":"solid://shows/freaks-and-geeks-1999#it-metadata","@type":["https://vocab.noeldemartin.com/crdt/Metadata"],"https://vocab.noeldemartin.com/crdt/resource":[{"@id":"solid://shows/freaks-and-geeks-1999#it"}],"https://vocab.noeldemartin.com/crdt/createdAt":[{"@value":"2026-08-26T15:57:56.424Z","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"https://vocab.noeldemartin.com/crdt/updatedAt":[{"@value":"2026-08-26T15:57:56.424Z","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}]}]},{"@graph":[{"@id":"solid://shows/tokyo-vampire-hotel-2017#it","@type":["https://schema.org/TVSeries"],"https://schema.org/name":[{"@value":"Tokyo Vampire Hotel"}],"https://schema.org/description":[{"@value":"Manami suddenly encounters mass murder at a pub on her 22nd birthday as she is hunted down by two warring vampire clans, the Draculas and the Corvins. Manami is a child of prophecy who is meant to help the Draculas overcome their Corvin enemies who have driven them underground. Meanwhile, droves of young men and women are gathered at the Hotel Requiem by a Corvin named Yamada who informs them that the world is about to end, with this hotel being the only refuge."}],"https://schema.org/startDate":[{"@value":"2017-06-16T00:00:00.000Z","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"https://schema.org/image":[{"@id":"https://image.tmdb.org/t/p/w500/sg2MBPMW8Ys11VTS51NxtLAC1vU.jpg"}],"https://schema.org/sameAs":[{"@id":"https://www.themoviedb.org/tv/71495"}]},{"@id":"solid://shows/tokyo-vampire-hotel-2017#it-metadata","@type":["https://vocab.noeldemartin.com/crdt/Metadata"],"https://vocab.noeldemartin.com/crdt/resource":[{"@id":"solid://shows/tokyo-vampire-hotel-2017#it"}],"https://vocab.noeldemartin.com/crdt/createdAt":[{"@value":"2026-08-26T19:38:27.330Z","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"https://vocab.noeldemartin.com/crdt/updatedAt":[{"@value":"2026-08-26T19:38:27.330Z","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}]}]},{"@graph":[{"@id":"solid://shows/flcl-2000#it","@type":["https://schema.org/TVSeries"],"https://schema.org/name":[{"@value":"FLCL"}],"https://schema.org/description":[{"@value":"Naota is a normal boy who kills some time with a normal girl by a stream that flows underneath a bridge. Nothing unusual happens in this town. The fact that Haruhara Haruko crashes into the main character with her Vespa a short while later and subsequently hits him over the head with her Rickenbacker 4003 bass guitar doesn’t really make any difference to any other day here. The at first glance unconnected, bizarre events that don’t seem to follow any pattern whatsoever don’t change anything about Naota’s boring life, either – because nothing incredible ever happens in this town."}],"https://schema.org/startDate":[{"@value":"2000-04-26T00:00:00.000Z","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"https://schema.org/image":[{"@id":"https://image.tmdb.org/t/p/w500/FkgA8CcmiLJGVCRYRQ2g2UfVtF.jpg"}],"https://schema.org/sameAs":[{"@id":"https://www.themoviedb.org/tv/5895"}]},{"@id":"solid://shows/flcl-2000#it-metadata","@type":["https://vocab.noeldemartin.com/crdt/Metadata"],"https://vocab.noeldemartin.com/crdt/createdAt":[{"@value":"2026-08-26T19:41:02.147Z","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"https://vocab.noeldemartin.com/crdt/updatedAt":[{"@value":"2026-08-26T19:41:02.147Z","@type":"http://www.w3.org/2001/XMLSchema#dateTime"}],"https://vocab.noeldemartin.com/crdt/resource":[{"@id":"solid://shows/flcl-2000#it"}]}]}]
+[
+    {
+      "@graph": [
+        {
+          "@id": "solid://shows/freaks-and-geeks-1999#0d45f23f-b50a-41ad-9772-51ac1b6be4a3",
+          "@type": [
+            "https://schema.org/WatchAction"
+          ],
+          "https://schema.org/object": [
+            {
+              "@id": "solid://shows/freaks-and-geeks-1999#it"
+            }
+          ],
+          "https://schema.org/actionStatus": [
+            {
+              "@id": "https://schema.org/CompletedActionStatus"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/freaks-and-geeks-1999#0d45f23f-b50a-41ad-9772-51ac1b6be4a3-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/freaks-and-geeks-1999#0d45f23f-b50a-41ad-9772-51ac1b6be4a3"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:24.735Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:24.735Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/freaks-and-geeks-1999#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6",
+          "@type": [
+            "https://schema.org/TVSeason"
+          ],
+          "https://schema.org/seasonNumber": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ],
+          "https://schema.org/episode": [
+            {
+              "@id": "solid://shows/season-1/episode-1#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-2#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-3#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-4#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-5#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-6#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-7#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-8#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-9#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-10#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-11#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-12#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-13#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-14#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-15#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-16#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-17#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-18#it"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/freaks-and-geeks-1999#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/freaks-and-geeks-1999#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:24.705Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:24.735Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/freaks-and-geeks-1999#it",
+          "@type": [
+            "https://schema.org/TVSeries"
+          ],
+          "https://schema.org/name": [
+            {
+              "@value": "Freaks and Geeks"
+            }
+          ],
+          "https://schema.org/description": [
+            {
+              "@value": "High school mathlete Lindsay Weir rebels and begins hanging out with a crowd of burnouts (the \"freaks\"), while her brother Sam Weir navigates a different part of the social universe with his nerdy friends (the \"geeks\")."
+            }
+          ],
+          "https://schema.org/startDate": [
+            {
+              "@value": "1999-09-25T00:00:00.000Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://schema.org/image": [
+            {
+              "@id": "https://image.tmdb.org/t/p/w500/tPqV63zcW6ZV0Hd48DMGb5UzQIG.jpg"
+            }
+          ],
+          "https://schema.org/containsSeason": [
+            {
+              "@id": "solid://shows/freaks-and-geeks-1999#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6"
+            }
+          ],
+          "https://schema.org/sameAs": [
+            {
+              "@id": "https://www.themoviedb.org/tv/2382"
+            },
+            {
+              "@id": "https://www.imdb.com/title/tt0193676/"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/freaks-and-geeks-1999#it-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/freaks-and-geeks-1999#it"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:24.696Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:24.735Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@graph": [
+        {
+          "@id": "solid://shows/lego-one-piece-2026#it",
+          "@type": [
+            "https://schema.org/TVSeries"
+          ],
+          "https://schema.org/name": [
+            {
+              "@value": "LEGO ONE PIECE"
+            }
+          ],
+          "https://schema.org/description": [
+            {
+              "@value": "Usopp spins a tall tale about the Straw Hats' journey across the East Blue into the Grand Line before Chopper joined the crew."
+            }
+          ],
+          "https://schema.org/startDate": [
+            {
+              "@value": "2026-09-29T00:00:00.000Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://schema.org/image": [
+            {
+              "@id": "https://image.tmdb.org/t/p/w500/j3aJ4BtFC29nOdV7FsEYD8kQk35.jpg"
+            }
+          ],
+          "https://schema.org/sameAs": [
+            {
+              "@id": "https://www.themoviedb.org/tv/318918"
+            },
+            {
+              "@id": "https://www.imdb.com/title/tt41538904/"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/lego-one-piece-2026#it-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/lego-one-piece-2026#it"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:09:35.176Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:09:35.176Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@graph": [
+        {
+          "@id": "solid://shows/pluribus-2025#5a5e4555-c788-49d8-a1c9-28219ae25826",
+          "@type": [
+            "https://schema.org/TVSeason"
+          ],
+          "https://schema.org/seasonNumber": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ],
+          "https://schema.org/episode": [
+            {
+              "@id": "solid://shows/season-1/episode-1#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-2#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-3#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-4#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-5#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-6#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-7#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-8#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-9#it"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/pluribus-2025#5a5e4555-c788-49d8-a1c9-28219ae25826-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/pluribus-2025#5a5e4555-c788-49d8-a1c9-28219ae25826"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:47.108Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:47.120Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/pluribus-2025#d61fb038-8a1c-4508-b5d0-a7d5cb2834df",
+          "@type": [
+            "https://schema.org/WatchAction"
+          ],
+          "https://schema.org/object": [
+            {
+              "@id": "solid://shows/pluribus-2025#it"
+            }
+          ],
+          "https://schema.org/actionStatus": [
+            {
+              "@id": "https://schema.org/ActiveActionStatus"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/pluribus-2025#d61fb038-8a1c-4508-b5d0-a7d5cb2834df-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/pluribus-2025#d61fb038-8a1c-4508-b5d0-a7d5cb2834df"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:47.120Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:47.120Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/pluribus-2025#it",
+          "@type": [
+            "https://schema.org/TVSeries"
+          ],
+          "https://schema.org/name": [
+            {
+              "@value": "Pluribus"
+            }
+          ],
+          "https://schema.org/description": [
+            {
+              "@value": "The most miserable person on Earth must save the world from happiness."
+            }
+          ],
+          "https://schema.org/startDate": [
+            {
+              "@value": "2025-11-06T00:00:00.000Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://schema.org/image": [
+            {
+              "@id": "https://image.tmdb.org/t/p/w500/z7Nga7Q9IGFWs5OEduY2gGFxnX3.jpg"
+            }
+          ],
+          "https://schema.org/containsSeason": [
+            {
+              "@id": "solid://shows/pluribus-2025#5a5e4555-c788-49d8-a1c9-28219ae25826"
+            }
+          ],
+          "https://schema.org/sameAs": [
+            {
+              "@id": "https://www.themoviedb.org/tv/225171"
+            },
+            {
+              "@id": "https://www.imdb.com/title/tt22202452/"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/pluribus-2025#it-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/pluribus-2025#it"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:47.101Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:47.120Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@graph": [
+        {
+          "@id": "solid://shows/severance-2022#0605bd05-24e4-4e06-8600-f3b50f99e414",
+          "@type": [
+            "https://schema.org/TVSeason"
+          ],
+          "https://schema.org/seasonNumber": [
+            {
+              "@value": "2",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ],
+          "https://schema.org/episode": [
+            {
+              "@id": "solid://shows/season-2/episode-1#it"
+            },
+            {
+              "@id": "solid://shows/season-2/episode-2#it"
+            },
+            {
+              "@id": "solid://shows/season-2/episode-3#it"
+            },
+            {
+              "@id": "solid://shows/season-2/episode-4#it"
+            },
+            {
+              "@id": "solid://shows/season-2/episode-5#it"
+            },
+            {
+              "@id": "solid://shows/season-2/episode-6#it"
+            },
+            {
+              "@id": "solid://shows/season-2/episode-7#it"
+            },
+            {
+              "@id": "solid://shows/season-2/episode-8#it"
+            },
+            {
+              "@id": "solid://shows/season-2/episode-9#it"
+            },
+            {
+              "@id": "solid://shows/season-2/episode-10#it"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/season-1/episode-1#it",
+          "@type": [
+            "https://schema.org/TVEpisode"
+          ],
+          "https://schema.org/name": [
+            {
+              "@value": "S01E01"
+            }
+          ],
+          "https://schema.org/episodeNumber": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ],
+          "https://schema.org/datePublished": [
+            {
+              "@value": "2026-01-28T14:07:47.120Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/severance-2022#0605bd05-24e4-4e06-8600-f3b50f99e414-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/severance-2022#0605bd05-24e4-4e06-8600-f3b50f99e414"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:38.782Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:38.799Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/severance-2022#16dd92da-beee-46b1-bc5c-9d5202fac4aa",
+          "@type": [
+            "https://schema.org/TVSeason"
+          ],
+          "https://schema.org/seasonNumber": [
+            {
+              "@value": "3",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/severance-2022#16dd92da-beee-46b1-bc5c-9d5202fac4aa-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/severance-2022#16dd92da-beee-46b1-bc5c-9d5202fac4aa"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:38.796Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:38.799Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/severance-2022#1b0cad98-3b27-46f1-bccc-b9ee26a541c6",
+          "@type": [
+            "https://schema.org/WatchAction"
+          ],
+          "https://schema.org/object": [
+            {
+              "@id": "solid://shows/severance-2022#it"
+            }
+          ],
+          "https://schema.org/actionStatus": [
+            {
+              "@id": "https://schema.org/ActiveActionStatus"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/severance-2022#1b0cad98-3b27-46f1-bccc-b9ee26a541c6-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/severance-2022#1b0cad98-3b27-46f1-bccc-b9ee26a541c6"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:38.799Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:38.799Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/severance-2022#6ec1cf6e-62c1-4956-8429-91ad3443e39c",
+          "@type": [
+            "https://schema.org/TVSeason"
+          ],
+          "https://schema.org/seasonNumber": [
+            {
+              "@value": "1",
+              "@type": "http://www.w3.org/2001/XMLSchema#integer"
+            }
+          ],
+          "https://schema.org/episode": [
+            {
+              "@id": "solid://shows/season-1/episode-1#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-2#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-3#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-4#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-5#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-6#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-7#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-8#it"
+            },
+            {
+              "@id": "solid://shows/season-1/episode-9#it"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/severance-2022#6ec1cf6e-62c1-4956-8429-91ad3443e39c-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/severance-2022#6ec1cf6e-62c1-4956-8429-91ad3443e39c"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:38.768Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:38.799Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/severance-2022#it",
+          "@type": [
+            "https://schema.org/TVSeries"
+          ],
+          "https://schema.org/name": [
+            {
+              "@value": "Severance"
+            }
+          ],
+          "https://schema.org/description": [
+            {
+              "@value": "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs."
+            }
+          ],
+          "https://schema.org/startDate": [
+            {
+              "@value": "2022-02-17T00:00:00.000Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://schema.org/image": [
+            {
+              "@id": "https://image.tmdb.org/t/p/w500/pPHpeI2X1qEd1CS1SeyrdhZ4qnT.jpg"
+            }
+          ],
+          "https://schema.org/containsSeason": [
+            {
+              "@id": "solid://shows/severance-2022#6ec1cf6e-62c1-4956-8429-91ad3443e39c"
+            },
+            {
+              "@id": "solid://shows/severance-2022#0605bd05-24e4-4e06-8600-f3b50f99e414"
+            },
+            {
+              "@id": "solid://shows/severance-2022#16dd92da-beee-46b1-bc5c-9d5202fac4aa"
+            }
+          ],
+          "https://schema.org/sameAs": [
+            {
+              "@id": "https://www.themoviedb.org/tv/95396"
+            },
+            {
+              "@id": "https://www.imdb.com/title/tt11280740/"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/severance-2022#it-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/severance-2022#it"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:07:38.763Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:07:38.799Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "@graph": [
+        {
+          "@id": "solid://shows/succession-2018#e1a9210d-107c-4b04-a3d0-e68283a247bb",
+          "@type": [
+            "https://schema.org/WatchAction"
+          ],
+          "https://schema.org/object": [
+            {
+              "@id": "solid://shows/succession-2018#it"
+            }
+          ],
+          "https://schema.org/actionStatus": [
+            {
+              "@id": "https://schema.org/FailedActionStatus"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/succession-2018#e1a9210d-107c-4b04-a3d0-e68283a247bb-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/succession-2018#e1a9210d-107c-4b04-a3d0-e68283a247bb"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:08:08.969Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:08:08.969Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/succession-2018#it",
+          "@type": [
+            "https://schema.org/TVSeries"
+          ],
+          "https://schema.org/name": [
+            {
+              "@value": "Succession"
+            }
+          ],
+          "https://schema.org/description": [
+            {
+              "@value": "Follow the lives of the Roy family as they contemplate their future once their aging father begins to step back from the media and entertainment conglomerate they control."
+            }
+          ],
+          "https://schema.org/startDate": [
+            {
+              "@value": "2018-06-03T00:00:00.000Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://schema.org/image": [
+            {
+              "@id": "https://image.tmdb.org/t/p/w500/z0XiwdrCQ9yVIr4O0pxzaAYRxdW.jpg"
+            }
+          ],
+          "https://schema.org/sameAs": [
+            {
+              "@id": "https://www.themoviedb.org/tv/76331"
+            },
+            {
+              "@id": "https://www.imdb.com/title/tt7660850/"
+            }
+          ]
+        },
+        {
+          "@id": "solid://shows/succession-2018#it-metadata",
+          "@type": [
+            "https://vocab.noeldemartin.com/crdt/Metadata"
+          ],
+          "https://vocab.noeldemartin.com/crdt/resource": [
+            {
+              "@id": "solid://shows/succession-2018#it"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/createdAt": [
+            {
+              "@value": "2026-08-28T14:08:08.960Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ],
+          "https://vocab.noeldemartin.com/crdt/updatedAt": [
+            {
+              "@value": "2026-08-28T14:08:08.969Z",
+              "@type": "http://www.w3.org/2001/XMLSchema#dateTime"
+            }
+          ]
+        }
+      ]
+    }
+  ]
