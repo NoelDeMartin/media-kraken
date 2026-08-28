@@ -24,7 +24,7 @@ test('Imports a movie from tmdb', async ({ page }) => {
 
     await localFirstLogin(page);
     await press(page, 'Press "s" to start searching');
-    await input(page, 'Search movies').fill('matrix');
+    await input(page, 'Search movies and shows').fill('matrix');
     await press(page, 'The Matrix');
     await press(page, 'Watched');
     await waitSync(page);

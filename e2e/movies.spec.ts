@@ -7,7 +7,7 @@ test.beforeEach(async ({ page }) => {
 
 test('Adds movies from search', async ({ page }) => {
     await press(page, 'Press "s" to start searching');
-    await input(page, 'Search movies').fill('matrix');
+    await input(page, 'Search movies and shows').fill('matrix');
     await press(page, 'The Matrix');
     await press(page, 'Watch later');
     await see(page, 'The Matrix has been added to your collection!');
@@ -15,7 +15,7 @@ test('Adds movies from search', async ({ page }) => {
 
 test('Adds watched movies from search', async ({ page }) => {
     await press(page, 'Press "s" to start searching');
-    await input(page, 'Search movies').fill('matrix');
+    await input(page, 'Search movies and shows').fill('matrix');
     await press(page, 'The Matrix');
     await press(page, 'Watched');
     await see(page, 'The Matrix has been added to your collection!');
@@ -25,7 +25,7 @@ test('Adds watched movies from search', async ({ page }) => {
 
 test('Marks movies as watched', async ({ page }) => {
     await press(page, 'Press "s" to start searching');
-    await input(page, 'Search movies').fill('matrix');
+    await input(page, 'Search movies and shows').fill('matrix');
     await press(page, 'The Matrix');
     await press(page, 'Watch later');
     await see(page, 'The Matrix has been added to your collection!');
