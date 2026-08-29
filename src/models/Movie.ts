@@ -54,6 +54,7 @@ export default class Movie extends Model {
     }
 
     public async watch(): Promise<void> {
+        await this.loadRelationIfUnloaded('watchActions');
         await this.relatedWatchActions.create({ endTime: new Date() });
     }
 

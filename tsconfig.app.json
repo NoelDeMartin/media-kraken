@@ -1,11 +1,12 @@
 {
     "extends": "@vue/tsconfig/tsconfig.dom.json",
-    "include": ["src/**/*", "src/**/*.vue", ".storybook/**/*"],
+    "include": ["src/**/*", "src/**/*.vue", ".storybook/**/*", "e2e/**/*.ts"],
     "compilerOptions": {
         "noUncheckedIndexedAccess": true,
         "types": ["@aerogel/vite/shims", "unplugin-icons/types/vue3"],
         "paths": {
-            "@/*": ["./src/*"]
+            "@/*": ["./src/*"],
+            "@e2e/*": ["./e2e/*"]
         },
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
     }

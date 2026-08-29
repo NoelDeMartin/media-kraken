@@ -24,7 +24,10 @@
 </template>
 
 <script setup lang="ts">
+import { computedModel } from '@aerogel/plugin-solid';
+
 import Movie from '@/models/Movie';
 
-defineProps<{ movie: Movie }>();
+const { movie: movieProp } = defineProps<{ movie: Movie }>();
+const movie = computedModel(() => movieProp);
 </script>
