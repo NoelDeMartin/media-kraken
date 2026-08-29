@@ -1,5 +1,5 @@
 import { Service } from '@aerogel/core';
-import { arrayUnique, facade } from '@noeldemartin/utils';
+import { arrayUnique, facade, parseDate } from '@noeldemartin/utils';
 import type { Nullable } from '@noeldemartin/utils';
 import { ComputedAttribute } from 'soukai-bis';
 import type { GetModelInput } from 'soukai-bis';
@@ -65,7 +65,7 @@ export class CatalogService extends Service {
             ComputedAttribute.enableLoadingRelations();
         }
 
-        await show.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
+        await show.pendingEpisodes.updateValue({ refresh: true, loadRelations: true });
     }
 
     private getShowAttributes(details: TMDBShowDetails, externalIds: TMDBShowExternalIds): GetModelInput<typeof Show> {
@@ -79,7 +79,8 @@ export class CatalogService extends Service {
             name: details.name,
             description: details.overview,
             posterUrl: TMDB.posterUrl(details),
-            startDate: details.first_air_date ? new Date(details.first_air_date) : undefined,
+            backdropUrl: TMDB.backdropUrl(details),
+            startDate: parseDate(details.first_air_date) ?? undefined,
             externalUrls,
         };
     }
@@ -159,7 +160,7 @@ export class CatalogService extends Service {
             ComputedAttribute.enableLoadingRelations();
         }
 
-        await show.pendingEpisodeDates.updateValue({ refresh: true, loadRelations: true });
+        await show.pendingEpisodes.updateValue({ refresh: true, loadRelations: true });
     }
 }
 

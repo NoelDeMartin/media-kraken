@@ -1,16 +1,21 @@
 import { DAY_MILLISECONDS } from '@noeldemartin/utils';
 import type { HasOneRelation, MintUrlOptions } from 'soukai-bis';
 
+import { NOW } from '@/lib/time';
 import type EpisodeWatched from '@/models/EpisodeWatched';
 import type Season from '@/models/Season';
 
 import Model from './Episode.schema';
 
-const UPCOMING_THRESHOLD = Date.now() + DAY_MILLISECONDS;
+const UPCOMING_THRESHOLD = NOW + 7 * DAY_MILLISECONDS;
 
 export default class Episode extends Model {
     public static isUpcoming(date: Date) {
         return date.getTime() < UPCOMING_THRESHOLD;
+    }
+
+    public static isReleased(date: Date) {
+        return date.getTime() < NOW;
     }
 
     declare public readonly watched?: EpisodeWatched;

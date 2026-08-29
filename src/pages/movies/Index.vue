@@ -1,8 +1,8 @@
 <template>
     <Page>
-        <h1 class="text-3xl font-semibold text-slate-900">Movies ({{ movies.length }})</h1>
+        <h1 class="text-3xl font-semibold text-slate-900">{{ $t('movies.title') }} ({{ movies.length }})</h1>
         <MediaGrid class="mt-6">
-            <MovieCard v-for="movie in movies" :key="movie.url" :movie class="aspect-2/3" />
+            <MovieCard v-for="movie in movies" :key="movie.url" :movie />
         </MediaGrid>
     </Page>
 </template>

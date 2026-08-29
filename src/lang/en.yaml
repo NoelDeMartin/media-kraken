@@ -28,7 +28,15 @@ welcome:
     discover: 'No, help me discover something new'
     getStarted: 'No, just give me something to watch'
 
+home:
+    title: 'Home'
+    shows: 'Continue watching'
+    showsAll: 'View all shows'
+    movies: 'Prepare the popcorn'
+    moviesAll: 'View all movies'
+
 movies:
+    title: 'Movies'
     watch: 'Watch'
     watched: 'Watched'
     pending: 'Pending'
@@ -38,10 +46,14 @@ movies:
 
 shows:
     title: 'Shows'
+    watch: 'Watch'
     status: 'Status'
     add: 'Add to collection'
     added: '**{show}** has been added to your collection!'
+    nextEpisode: '{season}x{number} {name}'
     upcomingEpisodes: '({count} new episodes)'
+    upcomingEpisodeIn: 'in {days} days'
+    noUpcomingEpisodes: 'No new episodes'
     statuses:
         watching: 'Watching'
         completed: 'Completed'

@@ -11,6 +11,7 @@ export default defineSchema({
         description: string().optional(),
         startDate: date().rdfProperty('startDate').optional(),
         posterUrl: url().rdfProperty('image').optional(),
+        backdropUrl: url().rdfProperty('thumbnailUrl').optional(),
         seasonUrls: array(url()).rdfProperty('containsSeason').default([]),
         externalUrls: array(url()).rdfProperty('sameAs').default([]),
     },

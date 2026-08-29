@@ -2,7 +2,7 @@
     <Page>
         <h1 class="text-3xl font-semibold text-slate-900">{{ $t('shows.title') }} ({{ shows.length }})</h1>
         <MediaGrid class="mt-6">
-            <ShowCard v-for="show in shows" :key="show.url" :show class="aspect-2/3" />
+            <ShowCard v-for="show in shows" :key="show.url" :show />
         </MediaGrid>
     </Page>
 </template>

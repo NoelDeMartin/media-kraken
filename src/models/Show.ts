@@ -1,6 +1,6 @@
-import { parseDate, stringToSlug, tap } from '@noeldemartin/utils';
+import { parseDate, stringToSlug, tap, urlResolve, uuid } from '@noeldemartin/utils';
 import { emitModelEvent, InvalidationStrategies, loaded } from 'soukai-bis';
-import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation } from 'soukai-bis';
+import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, MintUrlOptions } from 'soukai-bis';
 
 import type Season from '@/models/Season';
 import type { TMDBShow } from '@/services/TMDB';
@@ -10,22 +10,36 @@ import Model from './Show.schema';
 import ShowWatching, { SHOW_WATCHING_STATUSES } from './ShowWatching';
 import type { ShowWatchingStatus } from './ShowWatching';
 
+export type PendingEpisode = {
+    url: string;
+    seasonNumber: number;
+    episodeNumber: number;
+    name: string;
+    publishedAt: Date;
+};
+
 export default class Show extends Model {
     public static cloud = { depth: 1 };
     public static computed = {
-        pendingEpisodeDates: {
+        pendingEpisodes: {
             invalidationStrategy: InvalidationStrategies.CONTAINER,
             compute(show: Show) {
                 return loaded(show, 'seasons').flatMap((season) =>
                     loaded(season, 'episodes')
-                        .filter((episode) => !loaded(episode, 'watched'))
-                        .map((episode) => episode.publishedAt),
+                        .filter((episode) => !loaded(episode, 'watched') && episode.publishedAt)
+                        .map((episode) => ({
+                            url: episode.url,
+                            seasonNumber: episode.season?.number ?? 1,
+                            episodeNumber: episode.number,
+                            name: episode.name,
+                            publishedAt: episode.publishedAt,
+                        })),
                 );
             },
         },
     };
 
-    declare public readonly pendingEpisodeDates: ComputedAttribute<Date[]>;
+    declare public readonly pendingEpisodes: ComputedAttribute<PendingEpisode[]>;
     declare public readonly watching?: ShowWatching;
     declare public readonly relatedWatching: HasOneRelation<this, ShowWatching, typeof ShowWatching>;
     declare public readonly seasons?: Season[];
@@ -120,5 +134,11 @@ export default class Show extends Model {
         );
 
         await this.relatedWatching.save(watching);
+    }
+
+    protected newUrlDocumentUrl(options: MintUrlOptions = {}): string {
+        const slug = this.getSlug() ?? uuid();
+
+        return urlResolve(options.containerUrl ?? this.static('defaultContainerUrl'), `${slug}/info`);
     }
 }

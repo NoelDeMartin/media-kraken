@@ -1,6 +1,6 @@
 <template>
-    <article class="relative isolate border border-slate-200 bg-white shadow-sm">
-        <MediaImage :url="movie.posterUrl" class="size-full" />
+    <article class="rounded-card relative isolate aspect-2/3 border border-slate-200 bg-white shadow-sm">
+        <MediaImage :url="movie.posterUrl" class="rounded-card size-full" />
         <h2 class="peer">
             <RouterLink
                 :to="{

@@ -8,7 +8,7 @@
                 'text-gray-200': show.watchingStatus === 'dropped',
             }"
         />
-        <ShowCardUpcomingEpisodes
+        <ShowPendingEpisodesCount
             v-if="show.watchingStatus === 'watching'"
             :show
             aria-hidden="true"
@@ -20,7 +20,7 @@
             <template #fallback-empty>
                 <i-mdi-clock-outline class="size-5 text-green-600" />
             </template>
-        </ShowCardUpcomingEpisodes>
+        </ShowPendingEpisodesCount>
         <i-mdi-clock-outline
             v-else-if="show.watchingStatus === 'pending'"
             class="absolute top-1/2 left-1/2 size-5 -translate-x-1/2 -translate-y-1/2 text-blue-600"

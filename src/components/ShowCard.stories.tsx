@@ -28,7 +28,7 @@ export const Primary: Story = {
 
         return (
             <div style={{ maxWidth: '90vw', width: '90%', height: '90%', margin: '0 auto' }}>
-                <ShowCard show={show} style={{ aspectRatio: '2/3', maxHeight: '300px' }} />
+                <ShowCard show={show} style={{ maxHeight: '300px' }} />
             </div>
         );
     },
@@ -39,7 +39,7 @@ export const Grid: Story = {
         <div style={{ maxWidth: '90vw', width: '90%', margin: '0 auto' }}>
             <MediaGrid>
                 {shows.all.map((show) => (
-                    <ShowCard key={show.url} show={show} class="aspect-2/3" />
+                    <ShowCard key={show.url} show={show} />
                 ))}
             </MediaGrid>
         </div>

@@ -1,6 +1,6 @@
 <template>
-    <article class="group relative isolate border border-slate-200 bg-white shadow-sm">
-        <MediaImage :url="show.posterUrl" class="size-full" />
+    <article class="group rounded-card relative isolate aspect-2/3 border border-slate-200 bg-white shadow-sm">
+        <MediaImage :url="show.posterUrl" class="rounded-card size-full" />
         <ShowCardBadge class="absolute -top-1 -right-3.5 z-10" :show />
         <h2>
             <RouterLink
@@ -18,7 +18,7 @@
                 <span class="sr-only">
                     {{ show.name }}
                     <template v-if="show.watchingStatus === 'watching'">
-                        <ShowCardUpcomingEpisodes
+                        <ShowPendingEpisodesCount
                             v-if="show.watchingStatus === 'watching'"
                             :show
                             class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm font-bold text-green-600"

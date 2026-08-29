@@ -16,6 +16,7 @@ const TMDBShowSchema = z.object({
     overview: z.string().optional(),
     first_air_date: z.string().optional(),
     poster_path: z.string().nullable(),
+    backdrop_path: z.string().nullable(),
 });
 
 const TMDBShowExternalIdsSchema = z.object({
@@ -90,6 +91,12 @@ export class TMDBService extends Service {
     public posterUrl(media: TMDBMovie | TMDBShow, size: 'small' | 'large' = 'large'): string | undefined {
         return media.poster_path
             ? `https://image.tmdb.org/t/p/${this.getSizeShorthand(size)}${media.poster_path}`
+            : undefined;
+    }
+
+    public backdropUrl(media: TMDBShow, size: 'small' | 'large' = 'large'): string | undefined {
+        return media.backdrop_path
+            ? `https://image.tmdb.org/t/p/${this.getSizeShorthand(size)}${media.backdrop_path}`
             : undefined;
     }
 
