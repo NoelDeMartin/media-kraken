@@ -52,6 +52,7 @@ shows:
     add: 'Add to collection'
     added: '**{show}** has been added to your collection!'
     seasons: 'Seasons'
+    specials: 'Specials'
     noSeasons: 'No seasons yet'
     seasonNumber: 'Season {number}'
     episodesWatched: '{watched}/{total} episodes watched'

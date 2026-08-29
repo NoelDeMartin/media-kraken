@@ -8,7 +8,7 @@
                 aria-hidden="true"
             />
             <h3 class="text-lg font-medium text-gray-900">
-                {{ $t('shows.seasonNumber', { number: season.number }) }}
+                {{ season.number === 0 ? $t('shows.specials') : $t('shows.seasonNumber', { number: season.number }) }}
             </h3>
             <span class="text-sm text-gray-500">
                 {{

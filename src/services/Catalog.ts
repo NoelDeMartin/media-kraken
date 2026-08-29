@@ -19,6 +19,10 @@ import TMDB, {
 const WATCHING_STATUSES_WITHOUT_SEASONS = ['dropped', 'pending'] satisfies ShowWatchingStatus[];
 
 export class CatalogService extends Service {
+    public ignoresSeasons(watchingStatus: ShowWatchingStatus): boolean {
+        return WATCHING_STATUSES_WITHOUT_SEASONS.includes(watchingStatus);
+    }
+
     public async syncIfNeeded(show: Show): Promise<void> {
         const needsSync = await this.needsSync(show);
 
@@ -34,8 +38,7 @@ export class CatalogService extends Service {
         options: { watchingStatus?: Nullable<ShowWatchingStatus> } = {},
     ): Promise<void> {
         const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id, {
-            includeSeasons:
-                !!options.watchingStatus && !WATCHING_STATUSES_WITHOUT_SEASONS.includes(options.watchingStatus),
+            includeSeasons: !!options.watchingStatus && !this.ignoresSeasons(options.watchingStatus),
         });
 
         const showAttributes = this.getShowAttributes(details, externalIds);

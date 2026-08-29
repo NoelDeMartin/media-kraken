@@ -21,6 +21,7 @@
                     <i-mdi-play-circle-outline v-else-if="show.watchingStatus === 'watching'" class="size-4" />
                     <i-mdi-clock-outline v-else-if="show.watchingStatus === 'pending'" class="size-4" />
                     <i-ph-archive-fill v-else class="size-4" />
+                    &nbsp;
                     <span>{{ $t(`shows.statuses.${show.watchingStatus}`) }}</span>
                     &nbsp;
                     <ShowPendingEpisodesCount
@@ -34,7 +35,11 @@
                 </p>
             </div>
         </article>
-        <section v-if="show.seasons" class="mt-10" aria-labelledby="seasons">
+        <section
+            v-if="show.seasons && !$catalog.ignoresSeasons(show.watchingStatus)"
+            class="mt-10"
+            aria-labelledby="seasons"
+        >
             <h2 id="seasons" class="text-xl font-semibold text-gray-900">{{ $t('shows.seasons') }}</h2>
             <p v-if="show.seasons.length === 0" class="mt-4 text-sm text-gray-500">{{ $t('shows.noSeasons') }}</p>
             <div v-else class="mt-6 flex flex-col gap-8">
@@ -56,9 +61,12 @@ import Show from '@/models/Show';
 
 const { show } = defineProps<{ show: Show }>();
 const defaultSeason = computed(() => {
-    const firstUnwatchedSeason = show.seasons?.find((season) => season.episodes?.some((episode) => !episode.watched));
+    const seasonsWithoutSpecials = show.seasons?.filter((season) => season.number !== 0) ?? [];
+    const firstUnwatchedSeason = seasonsWithoutSpecials.find((season) =>
+        season.episodes?.some((episode) => !episode.watched),
+    );
 
-    return firstUnwatchedSeason ?? show.seasons?.at(-1);
+    return firstUnwatchedSeason ?? seasonsWithoutSpecials.at(-1) ?? show.seasons?.at(-1);
 });
 
 onMounted(() => show.loadAllRelationsIfUnloaded());

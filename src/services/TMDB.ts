@@ -125,12 +125,10 @@ export class TMDBService extends Service {
         const [details, externalIds] = await Promise.all([this.getShowDetails(id), this.getShowExternalIds(id)]);
         const seasons = options.includeSeasons
             ? await Promise.all(
-                  details.seasons
-                      .filter((season) => season.season_number !== 0)
-                      .map(async (season) => ({
-                          season,
-                          details: await this.getSeasonDetails(details.id, season.season_number),
-                      })),
+                  details.seasons.map(async (season) => ({
+                      season,
+                      details: await this.getSeasonDetails(details.id, season.season_number),
+                  })),
               )
             : [];
 

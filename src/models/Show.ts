@@ -24,17 +24,19 @@ export default class Show extends Model {
         pendingEpisodes: {
             invalidationStrategy: InvalidationStrategies.CONTAINER,
             compute(show: Show) {
-                return loaded(show, 'seasons').flatMap((season) =>
-                    loaded(season, 'episodes')
-                        .filter((episode) => !loaded(episode, 'watched') && episode.publishedAt)
-                        .map((episode) => ({
-                            url: episode.url,
-                            seasonNumber: episode.season?.number ?? 1,
-                            episodeNumber: episode.number,
-                            name: episode.name,
-                            publishedAt: episode.publishedAt,
-                        })),
-                );
+                return loaded(show, 'seasons')
+                    .filter((season) => season.number !== 0)
+                    .flatMap((season) =>
+                        loaded(season, 'episodes')
+                            .filter((episode) => !loaded(episode, 'watched') && episode.publishedAt)
+                            .map((episode) => ({
+                                url: episode.url,
+                                seasonNumber: season.number,
+                                episodeNumber: episode.number,
+                                name: episode.name,
+                                publishedAt: episode.publishedAt,
+                            })),
+                    );
             },
         },
     };
