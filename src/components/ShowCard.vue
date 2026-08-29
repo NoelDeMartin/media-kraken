@@ -21,7 +21,6 @@
                         <ShowPendingEpisodesCount
                             v-if="show.watchingStatus === 'watching'"
                             :show
-                            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm font-bold text-green-600"
                             lang-key="shows.upcomingEpisodes"
                         />
                     </template>

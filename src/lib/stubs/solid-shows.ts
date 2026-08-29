@@ -36,6 +36,9 @@ for (const episode of episodes) {
 
 if (pluribus) {
     const season = pluribus.seasons?.find((s) => s.number === 1) ?? pluribus.relatedSeasons.attach({ number: 1 });
+
+    await season.loadRelationIfUnloaded('episodes');
+
     const episode = season.relatedEpisodes.attach({
         number: 4,
         name: 'Please, Carol',

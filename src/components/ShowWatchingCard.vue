@@ -18,7 +18,7 @@
         </RouterLink>
         <span
             v-if="hasUpcomingEpisodes"
-            class="bg-primary-200 text-primary-600 pointer-events-none absolute top-3 right-3 flex items-center justify-center text-xs font-medium shadow-sm"
+            class="pointer-events-none absolute top-3 right-3 flex items-center justify-center bg-blue-200 text-xs font-semibold text-blue-600 shadow-sm"
             :class="{
                 'rounded-full px-2.5 py-1': !hasPendingEpisodes,
                 'size-7 rounded-full': hasPendingEpisodes,

@@ -1,7 +1,6 @@
 <template>
     <span>
         <slot v-if="!pendingEpisodes" name="fallback-loading" />
-        <slot v-else-if="pendingEpisodes.length === 0" name="fallback-empty" />
         <template v-else>
             {{ langKey ? $t(langKey, { count: pendingEpisodes.length }) : pendingEpisodes.length }}
         </template>
