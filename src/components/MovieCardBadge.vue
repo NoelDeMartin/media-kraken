@@ -5,7 +5,14 @@
             class="absolute top-1/2 left-1/2 size-6 -translate-x-1/2 -translate-y-1/2 text-green-600"
         />
     </span>
-    <button v-else type="button" :class="renderedButtonClass" @click="run(movie.watch())" :disabled="loading">
+    <button
+        v-else
+        type="button"
+        :class="renderedButtonClass"
+        :disabled="loading"
+        :title="$t('movies.watch')"
+        @click="run(movie.watch())"
+    >
         <i-app-bookmark class="size-12 text-blue-200 group-focus-within:text-green-200 group-hover:text-green-200" />
         <i-mdi-clock-outline
             class="absolute top-1/2 left-1/2 size-5 -translate-x-1/2 -translate-y-1/2 text-blue-600 group-focus-within:hidden group-hover:hidden"

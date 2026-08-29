@@ -37,7 +37,7 @@ home:
 
 movies:
     title: 'Movies'
-    watch: 'Watch'
+    watch: 'Mark as watched'
     watched: 'Watched'
     pending: 'Pending'
     watchLater: 'Watch later'
