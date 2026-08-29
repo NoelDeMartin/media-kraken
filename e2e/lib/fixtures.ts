@@ -1,7 +1,8 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-import { applyReplacements, Replacements, required } from '@noeldemartin/utils';
+import { applyReplacements, required } from '@noeldemartin/utils';
+import type { Replacements } from '@noeldemartin/utils';
 
 export function requiredFixture(path: string, replacements?: Replacements) {
     return required(fixture(path, replacements), `Fixture '${path}' not found`);
