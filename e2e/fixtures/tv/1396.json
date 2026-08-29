@@ -1,0 +1,17 @@
+{
+    "id": 1396,
+    "name": "Breaking Bad",
+    "overview": "When an unassuming high school chemistry teacher discovers he has a rare form of lung cancer, he decides to team up with a former student and create a top of the line crystal meth in a used RV, to provide for his family once he is gone.",
+    "first_air_date": "2008-01-20",
+    "poster_path": "/ggFHVNu6YYI5L9pCfOacjizxH.jpg",
+    "backdrop_path": "/tsRy63Mu5cu8etL1E7ZQxfE8WZJ.jpg",
+    "seasons": [
+        {
+            "id": 3572,
+            "name": "Season 1",
+            "season_number": 1,
+            "episode_count": 7,
+            "air_date": "2008-01-20"
+        }
+    ]
+}

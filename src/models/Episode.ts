@@ -23,6 +23,26 @@ export default class Episode extends Model {
     declare public readonly season?: Season;
     declare public readonly relatedSeason: HasOneRelation<this, Season, typeof Season>;
 
+    public async watch(): Promise<void> {
+        await this.loadRelationIfUnloaded('watched');
+
+        if (this.watched) {
+            return;
+        }
+
+        await this.relatedWatched.save(this.relatedWatched.attach({ date: new Date() }));
+    }
+
+    public async unwatch(): Promise<void> {
+        const watched = await this.loadRelationIfUnloaded('watched');
+
+        if (!watched) {
+            return;
+        }
+
+        await this.relatedWatched.delete();
+    }
+
     protected newUrlDocumentUrl(options: MintUrlOptions = {}): string {
         if (!this.season?.getContainerUrl()) {
             return super.newUrlDocumentUrl(options);

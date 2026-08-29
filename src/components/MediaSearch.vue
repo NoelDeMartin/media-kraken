@@ -41,7 +41,7 @@
                 {{ $t('app.search.noResults') }}
             </HeadlessComboboxEmpty>
             <HeadlessComboboxGroup v-else>
-                <HeadlessComboboxOption v-for="result in results" :key="result.url" :value="result" as-child>
+                <HeadlessComboboxOption v-for="result of results" :key="result.url" :value="result" as-child>
                     <li
                         :id="`result-${result.url}`"
                         class="relative flex cursor-pointer items-center gap-3 rounded-md px-2 py-1 text-gray-900 transition-colors duration-150 select-none data-highlighted:bg-gray-100 data-highlighted:font-medium data-highlighted:text-gray-900"

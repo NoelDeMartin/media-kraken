@@ -1,0 +1,64 @@
+{
+    "id": 3572,
+    "name": "Season 1",
+    "season_number": 1,
+    "air_date": "2008-01-20",
+    "episodes": [
+        {
+            "id": 62085,
+            "name": "Pilot",
+            "episode_number": 1,
+            "season_number": 1,
+            "air_date": "2008-01-20",
+            "runtime": 58
+        },
+        {
+            "id": 62086,
+            "name": "Cat's in the Bag...",
+            "episode_number": 2,
+            "season_number": 1,
+            "air_date": "2008-01-27",
+            "runtime": 48
+        },
+        {
+            "id": 62087,
+            "name": "...And the Bag's in the River",
+            "episode_number": 3,
+            "season_number": 1,
+            "air_date": "2008-02-10",
+            "runtime": 48
+        },
+        {
+            "id": 62088,
+            "name": "Cancer Man",
+            "episode_number": 4,
+            "season_number": 1,
+            "air_date": "2008-02-17",
+            "runtime": 48
+        },
+        {
+            "id": 62089,
+            "name": "Gray Matter",
+            "episode_number": 5,
+            "season_number": 1,
+            "air_date": "2008-02-24",
+            "runtime": 48
+        },
+        {
+            "id": 62090,
+            "name": "Crazy Handful of Nothin'",
+            "episode_number": 6,
+            "season_number": 1,
+            "air_date": "2008-03-02",
+            "runtime": 48
+        },
+        {
+            "id": 62091,
+            "name": "A No-Rough-Stuff-Type Deal",
+            "episode_number": 7,
+            "season_number": 1,
+            "air_date": "2008-03-09",
+            "runtime": 48
+        }
+    ]
+}

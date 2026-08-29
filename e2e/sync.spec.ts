@@ -13,6 +13,8 @@ import {
 import { requiredFixture } from '@e2e/lib/fixtures';
 import { test, expect } from '@e2e/lib/setup';
 
+test.describe.configure({ mode: 'serial' });
+
 test.beforeEach(async ({ page }) => {
     await solidReset();
     await page.goto('/');

@@ -58,7 +58,7 @@
             </div>
             <Button v-if="hasPendingEpisodes" variant="ghost" size="icon" class="-mr-1 shrink-0">
                 <i-material-symbols-check class="size-6 text-gray-900" />
-                <span class="sr-only">{{ $t('shows.watch') }}</span>
+                <span class="sr-only">{{ $t('shows.watchEpisode') }}</span>
             </Button>
             <i-mdi-clock-outline v-else-if="hasUpcomingEpisodes" class="size-5 shrink-0 text-gray-600" />
         </div>

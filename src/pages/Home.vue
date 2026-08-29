@@ -15,7 +15,7 @@
                     </Link>
                 </div>
                 <MediaGrid class="mt-4" item-width="14rem">
-                    <ShowWatchingCard v-for="show in activeShows" :key="show.url" :show />
+                    <ShowWatchingCard v-for="show of activeShows" :key="show.url" :show />
                 </MediaGrid>
             </template>
             <template v-if="pendingMovies.length > 0">
@@ -33,7 +33,7 @@
                     </Link>
                 </div>
                 <MediaGrid class="mt-4">
-                    <MovieCard v-for="movie in pendingMovies" :key="movie.url" :movie />
+                    <MovieCard v-for="movie of pendingMovies" :key="movie.url" :movie />
                 </MediaGrid>
             </template>
         </template>

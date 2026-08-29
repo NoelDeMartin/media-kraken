@@ -7,6 +7,24 @@ function handleRequest(url: URL) {
         return handleSearch(url.searchParams.get('query') ?? '');
     }
 
+    const showMatch = url.pathname.match(/^\/3\/tv\/(\d+)$/);
+
+    if (showMatch) {
+        return fixture(`/tv/${showMatch[1]}.json`);
+    }
+
+    const externalIdsMatch = url.pathname.match(/^\/3\/tv\/(\d+)\/external_ids$/);
+
+    if (externalIdsMatch) {
+        return fixture(`/tv/${externalIdsMatch[1]}/external_ids.json`);
+    }
+
+    const seasonMatch = url.pathname.match(/^\/3\/tv\/(\d+)\/season\/(\d+)$/);
+
+    if (seasonMatch) {
+        return fixture(`/tv/${seasonMatch[1]}/season/${seasonMatch[2]}.json`);
+    }
+
     return null;
 }
 
