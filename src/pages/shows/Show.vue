@@ -66,15 +66,15 @@
             </div>
         </article>
         <section
-            v-if="show.seasons && !$catalog.ignoresSeasons(show.watchingStatus)"
+            v-if="seasons && !$catalog.ignoresSeasons(show.watchingStatus)"
             class="mt-10"
             aria-labelledby="seasons"
         >
             <h2 id="seasons" class="text-xl font-semibold text-gray-900">{{ $t('shows.seasons') }}</h2>
-            <p v-if="show.seasons.length === 0" class="mt-4 text-sm text-gray-500">{{ $t('shows.noSeasons') }}</p>
+            <p v-if="seasons.length === 0" class="mt-4 text-sm text-gray-500">{{ $t('shows.noSeasons') }}</p>
             <div v-else class="mt-6 flex flex-col gap-8">
                 <ShowSeason
-                    v-for="season of show.seasons"
+                    v-for="season of seasons"
                     :key="season.url"
                     :season
                     :open="defaultSeason?.url === season.url"
@@ -86,6 +86,7 @@
 
 <script setup lang="ts">
 import { translate, useLoading } from '@aerogel/core';
+import { arraySorted } from '@noeldemartin/utils';
 import { computed, onMounted } from 'vue';
 import IconCheck from '~icons/material-symbols/check';
 import IconClock from '~icons/mdi/clock-outline';
@@ -98,6 +99,7 @@ import Catalog from '@/services/Catalog';
 
 const { show } = defineProps<{ show: Show }>();
 const { loading: syncing, run: runSyncing } = useLoading();
+const seasons = computed(() => show.seasons && arraySorted(show.seasons, 'number'));
 const watchingStatusOptions = computed(() => {
     const statuses = [
         {
@@ -138,12 +140,12 @@ const watchingStatusOptions = computed(() => {
 });
 
 const defaultSeason = computed(() => {
-    const seasonsWithoutSpecials = show.seasons?.filter((season) => season.number !== 0) ?? [];
+    const seasonsWithoutSpecials = seasons.value?.filter((season) => season.number !== 0) ?? [];
     const firstUnwatchedSeason = seasonsWithoutSpecials.find((season) =>
         season.episodes?.some((episode) => !episode.watched),
     );
 
-    return firstUnwatchedSeason ?? seasonsWithoutSpecials.at(-1) ?? show.seasons?.at(-1);
+    return firstUnwatchedSeason ?? seasonsWithoutSpecials.at(-1) ?? seasons.value?.at(-1);
 });
 
 async function sync() {
