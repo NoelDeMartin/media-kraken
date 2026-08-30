@@ -2,6 +2,7 @@ import { parseDate, stringToSlug, tap, urlResolve, uuid } from '@noeldemartin/ut
 import { emitModelEvent, InvalidationStrategies, loaded } from 'soukai-bis';
 import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, MintUrlOptions } from 'soukai-bis';
 
+import { findExternalId, parseImdbId, parseTmdbId } from '@/lib/domains';
 import type Season from '@/models/Season';
 import type { TMDBShow } from '@/services/TMDB';
 import TMDB from '@/services/TMDB';
@@ -76,24 +77,11 @@ export default class Show extends Model {
     }
 
     public get tmdbId(): number | null {
-        const id = this.externalUrls
-            .find((url) => url.startsWith('https://www.themoviedb.org/tv/'))
-            ?.split('/')
-            .pop()
-            ?.replace(/\D/g, '')
-            .trim();
-
-        return id ? Number(id) : null;
+        return findExternalId('https://www.themoviedb.org/tv/', this.externalUrls, parseTmdbId);
     }
 
     public get imdbId(): string | null {
-        const id = this.externalUrls
-            .find((url) => url.includes('imdb.com/title/'))
-            ?.split('/')
-            .filter(Boolean)
-            .pop();
-
-        return id?.split(/[?#]/)[0] ?? null;
+        return findExternalId('https://www.imdb.com/title/', this.externalUrls, parseImdbId);
     }
 
     public getSlug(): string | null {

@@ -8,22 +8,27 @@
                         {{ movie.title }}
                         <span v-if="movie.releaseYear" class="text-lg font-medium"> ({{ movie.releaseYear }}) </span>
                     </h1>
+                    <IconSync v-if="syncing" class="m-2.5 size-5 animate-spin" />
                     <DropdownMenu
+                        v-else
                         align="end"
                         :options="[
                             movie.watched
                                 ? {
                                       label: $t('movies.watchLater'),
-                                      async click() {
-                                          await movie.unwatch();
-                                      },
+                                      icon: IconClock,
+                                      click: () => movie.unwatch(),
                                   }
                                 : {
                                       label: $t('movies.watch'),
-                                      async click() {
-                                          await movie.watch();
-                                      },
+                                      icon: IconCheck,
+                                      click: () => movie.watch(),
                                   },
+                            {
+                                label: $t('movies.synchronize'),
+                                icon: IconSync,
+                                click: () => runSyncing($catalog.sync(movie)),
+                            },
                         ]"
                     >
                         <Button
@@ -50,13 +55,27 @@
                 <p v-if="movie.description" class="mt-2 leading-relaxed text-gray-700">
                     {{ movie.description }}
                 </p>
+
+                <div class="flex-1" />
+
+                <ul :aria-label="$t('movies.externalSites')" class="flex items-center justify-end gap-2">
+                    <li v-for="(url, index) of movie.externalUrls" :key="index">
+                        <ExternalSiteLink :url />
+                    </li>
+                </ul>
             </div>
         </article>
     </Page>
 </template>
 
 <script setup lang="ts">
+import { useLoading } from '@aerogel/core';
+import IconCheck from '~icons/material-symbols/check';
+import IconClock from '~icons/mdi/clock-outline';
+import IconSync from '~icons/mdi/sync';
+
 import Movie from '@/models/Movie';
 
-defineProps<{ movie: Movie }>();
+const { movie } = defineProps<{ movie: Movie }>();
+const { loading: syncing, run: runSyncing } = useLoading();
 </script>

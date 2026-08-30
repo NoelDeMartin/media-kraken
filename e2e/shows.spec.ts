@@ -1,5 +1,15 @@
-import { comboboxSelect, input, press, see } from '@aerogel/playwright';
+import { comboboxSelect, dontSee, input, press, see } from '@aerogel/playwright';
 import { test } from '@e2e/lib/setup';
+import type { Page } from '@playwright/test';
+
+async function seedShow(page: Page) {
+    await press(page, 'Press "s" to start searching');
+    await input(page, 'Search movies and shows').fill('breaking bad');
+    await press(page, 'Breaking Bad');
+    await comboboxSelect(page, 'Status', 'Watching');
+    await press(page, 'Add to collection');
+    await see(page, 'Breaking Bad has been added to your collection!');
+}
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -16,17 +26,23 @@ test('Adds shows from search', async ({ page }) => {
     await see(page, 'Watching (7 new episodes)');
 });
 
-test('Views shows page', async ({ page }) => {
-    await press(page, 'Press "s" to start searching');
-    await input(page, 'Search movies and shows').fill('breaking bad');
-    await press(page, 'Breaking Bad');
-    await comboboxSelect(page, 'Status', 'Watching');
-    await press(page, 'Add to collection');
-    await see(page, 'Breaking Bad has been added to your collection!');
+test('Views show details', async ({ page }) => {
+    await seedShow(page);
 
     await page.goto('/shows/breaking-bad-2008');
     await see(page, 'Seasons');
     await see(page, 'Season 1');
     await see(page, '0/7 episodes watched');
     await see(page, 'Pilot');
+});
+
+test('Changes watching status from details page', async ({ page }) => {
+    await seedShow(page);
+
+    await page.goto('/shows/breaking-bad-2008');
+    await press(page, 'Open actions menu');
+    await press(page, 'Mark as completed');
+    await see(page, 'completed');
+    await dontSee(page, 'Watching');
+    await see(page, 'Completed');
 });

@@ -8,6 +8,28 @@
                         {{ show.name }}
                         <span v-if="show.releaseYear" class="text-lg font-medium"> ({{ show.releaseYear }}) </span>
                     </h1>
+                    <IconSync v-if="syncing" class="m-2.5 size-5 animate-spin" />
+                    <DropdownMenu
+                        v-else
+                        align="end"
+                        :options="[
+                            ...watchingStatusOptions,
+                            {
+                                label: $t('shows.synchronize'),
+                                icon: IconSync,
+                                click: sync,
+                            },
+                        ]"
+                    >
+                        <Button
+                            size="icon"
+                            variant="ghost"
+                            :aria-label="$t('shows.openActionsMenu')"
+                            :title="$t('shows.openActionsMenu')"
+                        >
+                            <i-mdi-dots-vertical class="size-5" />
+                        </Button>
+                    </DropdownMenu>
                 </div>
                 <div
                     class="flex items-center text-sm lowercase"
@@ -33,6 +55,14 @@
                 <p v-if="show.description" class="mt-2 leading-relaxed text-gray-700">
                     {{ show.description }}
                 </p>
+
+                <div class="flex-1" />
+
+                <ul :aria-label="$t('shows.externalSites')" class="flex items-center justify-end gap-2">
+                    <li v-for="(url, index) of show.externalUrls" :key="index">
+                        <ExternalSiteLink :url />
+                    </li>
+                </ul>
             </div>
         </article>
         <section
@@ -55,11 +85,58 @@
 </template>
 
 <script setup lang="ts">
+import { translate, useLoading } from '@aerogel/core';
 import { computed, onMounted } from 'vue';
+import IconCheck from '~icons/material-symbols/check';
+import IconClock from '~icons/mdi/clock-outline';
+import IconPlay from '~icons/mdi/play-circle-outline';
+import IconSync from '~icons/mdi/sync';
+import IconArchive from '~icons/ph/archive-fill';
 
 import Show from '@/models/Show';
+import Catalog from '@/services/Catalog';
 
 const { show } = defineProps<{ show: Show }>();
+const { loading: syncing, run: runSyncing } = useLoading();
+const watchingStatusOptions = computed(() => {
+    const statuses = [
+        {
+            value: 'watching' as const,
+            label: translate('shows.markAsWatching'),
+            icon: IconPlay,
+        },
+        {
+            value: 'completed' as const,
+            label: translate('shows.markAsCompleted'),
+            icon: IconCheck,
+        },
+        {
+            value: 'dropped' as const,
+            label: translate('shows.markAsDropped'),
+            icon: IconArchive,
+        },
+        {
+            value: 'pending' as const,
+            label: translate('shows.markAsPending'),
+            icon: IconClock,
+        },
+    ];
+
+    return statuses
+        .filter((status) => status.value !== show.watchingStatus)
+        .map((status) => ({
+            label: status.label,
+            icon: status.icon,
+            async click() {
+                await show.updateWatchingStatus(status.value);
+
+                if (await Catalog.needsSync(show)) {
+                    await sync();
+                }
+            },
+        }));
+});
+
 const defaultSeason = computed(() => {
     const seasonsWithoutSpecials = show.seasons?.filter((season) => season.number !== 0) ?? [];
     const firstUnwatchedSeason = seasonsWithoutSpecials.find((season) =>
@@ -68,6 +145,10 @@ const defaultSeason = computed(() => {
 
     return firstUnwatchedSeason ?? seasonsWithoutSpecials.at(-1) ?? show.seasons?.at(-1);
 });
+
+async function sync() {
+    await runSyncing(Catalog.sync(show));
+}
 
 onMounted(() => show.loadAllRelationsIfUnloaded());
 </script>

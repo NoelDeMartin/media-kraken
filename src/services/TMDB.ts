@@ -19,6 +19,10 @@ const TMDBShowSchema = z.object({
     backdrop_path: z.string().nullable(),
 });
 
+const TMDBMovieExternalIdsSchema = z.object({
+    imdb_id: z.string().nullable().optional(),
+});
+
 const TMDBShowExternalIdsSchema = z.object({
     imdb_id: z.string().nullable().optional(),
 });
@@ -70,6 +74,7 @@ const SearchMultiResponseSchema = z.object({
 });
 
 export type TMDBMovie = z.infer<typeof TMDBMovieSchema>;
+export type TMDBMovieExternalIds = z.infer<typeof TMDBMovieExternalIdsSchema>;
 export type TMDBShow = z.infer<typeof TMDBShowSchema>;
 export type TMDBSeason = z.infer<typeof TMDBSeasonSchema>;
 export type TMDBEpisode = z.infer<typeof TMDBEpisodeSchema>;
@@ -114,6 +119,12 @@ export class TMDBService extends Service {
         return response.results.filter((result): result is TMDBSearchResult => types.includes(result.media_type));
     }
 
+    public async getMovie(id: number): Promise<{ details: TMDBMovie; externalIds: TMDBMovieExternalIds }> {
+        const [details, externalIds] = await Promise.all([this.getMovieDetails(id), this.getMovieExternalIds(id)]);
+
+        return { details, externalIds };
+    }
+
     public async getShow(
         id: number,
         options: { includeSeasons: boolean },
@@ -133,6 +144,14 @@ export class TMDBService extends Service {
             : [];
 
         return { details, externalIds, seasons };
+    }
+
+    private async getMovieDetails(id: number): Promise<TMDBMovie> {
+        return this.request(TMDBMovieSchema, `movie/${id}`);
+    }
+
+    private async getMovieExternalIds(id: number): Promise<TMDBMovieExternalIds> {
+        return this.request(TMDBMovieExternalIdsSchema, `movie/${id}/external_ids`);
     }
 
     private async getShowDetails(id: number): Promise<TMDBShowDetails> {

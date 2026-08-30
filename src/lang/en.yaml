@@ -16,6 +16,7 @@ app:
         resultsCount: '{count} results found'
         movie: 'Movie'
         show: 'Show'
+    openIn: 'Open in {domain}'
 
 welcome:
     title: 'Welcome to Media Kraken!'
@@ -41,6 +42,8 @@ movies:
     watched: 'Watched'
     pending: 'Pending'
     watchLater: 'Watch later'
+    synchronize: 'Synchronize metadata'
+    externalSites: 'External sites'
     openActionsMenu: 'Open actions menu'
     added: '**{movie}** has been added to your collection!'
 
@@ -61,6 +64,13 @@ shows:
     upcomingEpisodes: '({count} new episodes)'
     upcomingEpisodeIn: 'in {days} days'
     noUpcomingEpisodes: 'No new episodes'
+    synchronize: 'Synchronize metadata'
+    externalSites: 'External sites'
+    openActionsMenu: 'Open actions menu'
+    markAsWatching: 'Mark as watching'
+    markAsCompleted: 'Mark as completed'
+    markAsDropped: 'Mark as dropped'
+    markAsPending: 'Mark as pending'
     statuses:
         watching: 'Watching'
         completed: 'Completed'

@@ -1,6 +1,7 @@
 import { parseDate, stringToSlug } from '@noeldemartin/utils';
 import type { HasManyRelation } from 'soukai-bis';
 
+import { findExternalId, parseImdbId, parseTmdbId } from '@/lib/domains';
 import type { TMDBMovie } from '@/services/TMDB';
 import TMDB from '@/services/TMDB';
 
@@ -27,6 +28,14 @@ export default class Movie extends Model {
         }
 
         return instance;
+    }
+
+    public get tmdbId(): number | null {
+        return findExternalId('https://www.themoviedb.org/movie/', this.externalUrls, parseTmdbId);
+    }
+
+    public get imdbId(): string | null {
+        return findExternalId('https://www.imdb.com/title/', this.externalUrls, parseImdbId);
     }
 
     public get slug(): string {

@@ -6,6 +6,11 @@ import type Show from '@/models/Show';
 import type ShowWatching from '@/models/ShowWatching';
 import type WatchAction from '@/models/WatchAction';
 
+export default import.meta.glob(['@/models/*', '!**/*.test.ts'], { eager: true }) as Record<
+    string,
+    Record<string, unknown>
+>;
+
 declare module 'soukai-bis' {
     interface ModelsRegistry {
         Episode: typeof Episode;

@@ -30,7 +30,7 @@ test('Marks movies as watched from collection', async ({ page }) => {
     await see(page, 'The Matrix (Watched)');
 });
 
-test('Marks movies as watched from movie page', async ({ page }) => {
+test('Marks movies as watched from details page', async ({ page }) => {
     await page.goto('/movies');
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await press(page, 'The Matrix');

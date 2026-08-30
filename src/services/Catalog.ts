@@ -5,11 +5,14 @@ import { ComputedAttribute } from 'soukai-bis';
 import type { GetModelInput } from 'soukai-bis';
 
 import type Episode from '@/models/Episode';
+import Movie from '@/models/Movie';
 import type Season from '@/models/Season';
 import Show from '@/models/Show';
 import type { ShowWatchingStatus } from '@/models/ShowWatching';
 import TMDB, {
     type TMDBEpisode,
+    type TMDBMovie,
+    type TMDBMovieExternalIds,
     type TMDBSeason,
     type TMDBShow,
     type TMDBShowDetails,
@@ -23,14 +26,36 @@ export class CatalogService extends Service {
         return WATCHING_STATUSES_WITHOUT_SEASONS.includes(watchingStatus);
     }
 
-    public async syncIfNeeded(show: Show): Promise<void> {
-        const needsSync = await this.needsSync(show);
+    public async needsSync(media: Show | Movie): Promise<boolean> {
+        if (media instanceof Movie) {
+            return false;
+        }
+
+        if (WATCHING_STATUSES_WITHOUT_SEASONS.includes(media.watchingStatus)) {
+            return false;
+        }
+
+        await media.loadRelationIfUnloaded('seasons');
+
+        return !media.seasons || media.seasons.length === 0;
+    }
+
+    public async syncIfNeeded(media: Show | Movie): Promise<void> {
+        const needsSync = await this.needsSync(media);
 
         if (!needsSync) {
             return;
         }
 
-        await this.sync(show);
+        await this.sync(media);
+    }
+
+    public async sync(media: Show | Movie): Promise<void> {
+        if (media instanceof Show) {
+            return this.syncShow(media);
+        }
+
+        await this.syncMovie(media);
     }
 
     public async importFromTMDB(
@@ -71,6 +96,22 @@ export class CatalogService extends Service {
         await show.pendingEpisodes.updateValue({ refresh: true, loadRelations: true });
     }
 
+    private getMovieAttributes(details: TMDBMovie, externalIds: TMDBMovieExternalIds): GetModelInput<typeof Movie> {
+        const externalUrls = [TMDB.movieUrl(details)];
+
+        if (externalIds.imdb_id) {
+            externalUrls.push(`https://www.imdb.com/title/${externalIds.imdb_id}/`);
+        }
+
+        return {
+            title: details.title,
+            description: details.overview,
+            posterUrl: TMDB.posterUrl(details),
+            releaseDate: parseDate(details.release_date) ?? undefined,
+            externalUrls,
+        };
+    }
+
     private getShowAttributes(details: TMDBShowDetails, externalIds: TMDBShowExternalIds): GetModelInput<typeof Show> {
         const externalUrls = [TMDB.showUrl(details)];
 
@@ -102,17 +143,7 @@ export class CatalogService extends Service {
         };
     }
 
-    private async needsSync(show: Show): Promise<boolean> {
-        if (WATCHING_STATUSES_WITHOUT_SEASONS.includes(show.watchingStatus)) {
-            return false;
-        }
-
-        await show.loadRelationIfUnloaded('seasons');
-
-        return !show.seasons || show.seasons.length === 0;
-    }
-
-    private async sync(show: Show): Promise<void> {
+    private async syncShow(show: Show): Promise<void> {
         if (!show.tmdbId) {
             return;
         }
@@ -164,6 +195,22 @@ export class CatalogService extends Service {
         }
 
         await show.pendingEpisodes.updateValue({ refresh: true, loadRelations: true });
+    }
+
+    private async syncMovie(movie: Movie): Promise<void> {
+        if (!movie.tmdbId) {
+            return;
+        }
+
+        const { details, externalIds } = await TMDB.getMovie(movie.tmdbId);
+        const attributes = this.getMovieAttributes(details, externalIds);
+
+        movie.setAttributes({
+            ...attributes,
+            externalUrls: arrayUnique([...movie.externalUrls, ...(attributes.externalUrls ?? [])]),
+        });
+
+        await movie.save();
     }
 }
 
