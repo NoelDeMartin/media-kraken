@@ -73,6 +73,16 @@ const SearchMultiResponseSchema = z.object({
     ),
 });
 
+const FindResponseSchema = z.object({
+    movie_results: z.array(TMDBMovieSchema),
+    tv_results: z.array(TMDBShowSchema),
+    person_results: z.array(z.looseObject({})),
+});
+
+const SearchMoviesResponseSchema = z.object({
+    results: z.array(TMDBMovieSchema),
+});
+
 export type TMDBMovie = z.infer<typeof TMDBMovieSchema>;
 export type TMDBMovieExternalIds = z.infer<typeof TMDBMovieExternalIdsSchema>;
 export type TMDBShow = z.infer<typeof TMDBShowSchema>;
@@ -117,6 +127,26 @@ export class TMDBService extends Service {
         });
 
         return response.results.filter((result): result is TMDBSearchResult => types.includes(result.media_type));
+    }
+
+    public async searchMovies(query: string): Promise<TMDBMovie[]> {
+        if (query.length === 0) {
+            return [];
+        }
+
+        const response = await this.request(SearchMoviesResponseSchema, 'search/movie', { query });
+
+        return response.results;
+    }
+
+    public async findImdb(imdbId: string): Promise<(TMDBMovie & { imdb_id?: string }) | null> {
+        const response = await this.request(FindResponseSchema, `find/${imdbId}`, {
+            external_source: 'imdb_id',
+        });
+
+        const movie = response.movie_results[0] ?? null;
+
+        return movie ? { ...movie, imdb_id: imdbId } : null;
     }
 
     public async getMovie(id: number): Promise<{ details: TMDBMovie; externalIds: TMDBMovieExternalIds }> {

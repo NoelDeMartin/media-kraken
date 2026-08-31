@@ -48,6 +48,7 @@ test('Imports movies from JSON-LD', async ({ page }) => {
     await see(page, '1 movies have been added to your collection to watch later.');
 
     await press(page, 'OK');
+    await page.goto('/movies');
     await see(page, 'Symbol (Watched)');
     await see(page, 'Jaws (Pending)');
 });

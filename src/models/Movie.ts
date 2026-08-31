@@ -14,13 +14,22 @@ export default class Movie extends Model {
     declare public readonly watchActions?: WatchAction[];
     declare public readonly relatedWatchActions: HasManyRelation<this, WatchAction, typeof WatchAction>;
 
-    static fromTMDB(movie: TMDBMovie, options: { posterSize?: 'small' | 'large'; mintUrl?: boolean } = {}): Movie {
+    static fromTMDB(
+        movie: TMDBMovie & { imdb_id?: string | null },
+        options: { posterSize?: 'small' | 'large'; mintUrl?: boolean } = {},
+    ): Movie {
+        const externalUrls = [TMDB.movieUrl(movie)];
+
+        if (movie.imdb_id) {
+            externalUrls.push(`https://www.imdb.com/title/${movie.imdb_id}`);
+        }
+
         const instance = new Movie({
             title: movie.title,
             description: movie.overview,
             releaseDate: parseDate(movie.release_date) ?? undefined,
             posterUrl: TMDB.posterUrl(movie, options.posterSize),
-            externalUrls: [TMDB.movieUrl(movie)],
+            externalUrls,
         });
 
         if (options.mintUrl) {
@@ -62,13 +71,13 @@ export default class Movie extends Model {
         return `${stringToSlug(this.title)}-${this.releaseDate.getFullYear()}`;
     }
 
-    public async watch(): Promise<void> {
+    public async watch(date?: Date): Promise<void> {
         if (this.watched) {
             return;
         }
 
         await this.loadRelationIfUnloaded('watchActions');
-        await this.relatedWatchActions.create({ endTime: new Date() });
+        await this.relatedWatchActions.create({ endTime: date ?? new Date() });
     }
 
     public async unwatch(): Promise<void> {

@@ -94,7 +94,8 @@ function openHelp(markdown: string) {
 async function importFrom(source: MediaSource) {
     if (source === MediaSource.IMDb) {
         close();
-        const data = await UI.modal(ImportIMDbMoviesModal);
+        const modal = await UI.modal(ImportIMDbMoviesModal);
+        const data = modal?.response;
 
         if (data && data.length > 0) {
             await startImport(data, source);

@@ -38,6 +38,7 @@ home:
 
 movies:
     title: 'Movies'
+    import: 'Import movies'
     watch: 'Mark as watched'
     watched: 'Watched'
     pending: 'Pending'
@@ -46,6 +47,28 @@ movies:
     externalSites: 'External sites'
     openActionsMenu: 'Open actions menu'
     added: '**{movie}** has been added to your collection!'
+    importModals:
+        title: 'Import Movies'
+        description: 'You can import movies from the following sources:'
+        importing: 'Importing movies...'
+        stop: 'Stop'
+        ok: 'OK'
+        close: 'Close'
+        cancel: 'Cancel'
+        errorDetails: 'Error details'
+        imdb:
+            title: 'Import from IMDb'
+            description: 'Introduce a text containing movie URLs from imdb.com and they will be added to your collection.'
+            submit: 'Import Movies'
+        result:
+            title: 'Import completed'
+            watchedAdded: 'watched movies have been added to your collection.'
+            pendingAdded: 'movies have been added to your collection to watch later.'
+            ignored: 'were ignored.'
+            unprocessed: "weren't processed because you stopped the operation."
+            invalid: 'contained validation errors.'
+            failed: 'failed on import.'
+            viewDetails: 'view details'
 
 shows:
     title: 'Shows'
