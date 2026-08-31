@@ -38,3 +38,28 @@ test('Marks movies as watched from details page', async ({ page }) => {
     await press(page, 'Watch');
     await see(page, 'Watched');
 });
+
+test('Imports movies from JSON-LD', async ({ page }) => {
+    await press(page, "Yes, I have some content I'd like to import");
+    await press(page, 'JSON-LD');
+    await page.setInputFiles('input[type="file"]', 'e2e/fixtures/collection.json');
+
+    await see(page, '1 watched movies have been added to your collection.');
+    await see(page, '1 movies have been added to your collection to watch later.');
+
+    await press(page, 'OK');
+    await see(page, 'Symbol (Watched)');
+    await see(page, 'Jaws (Pending)');
+});
+
+test('Imports movies from IMDb', async ({ page }) => {
+    await page.goto('/movies');
+    await press(page, 'Open actions menu');
+    await press(page, 'Import movies');
+    await press(page, 'IMDb');
+    await page.locator('textarea').fill('https://www.imdb.com/title/tt0245429');
+    await press(page, 'Import Movies');
+
+    await see(page, '1 movies have been added to your collection to watch later.');
+    await press(page, 'OK');
+});
