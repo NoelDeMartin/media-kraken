@@ -46,7 +46,7 @@
                 </span>
                 <ul :aria-labelledby="labelId">
                     <li
-                        v-for="(section, index) of sections"
+                        v-for="(section, index) in sections"
                         :key="section.route"
                         :class="{ 'font-bold': activeSectionIndex === index }"
                     >

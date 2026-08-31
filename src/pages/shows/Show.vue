@@ -59,7 +59,7 @@
                 <div class="flex-1" />
 
                 <ul :aria-label="$t('shows.externalSites')" class="flex items-center justify-end gap-2">
-                    <li v-for="(url, index) of show.externalUrls" :key="index">
+                    <li v-for="(url, index) in show.externalUrls" :key="index">
                         <ExternalSiteLink :url />
                     </li>
                 </ul>

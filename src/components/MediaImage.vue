@@ -1,5 +1,13 @@
 <template>
-    <img v-if="url && !loadFailed" alt="" :src="url" :class="renderedClasses" @error="loadFailed = true" />
+    <img
+        v-if="url && !loadFailed"
+        alt=""
+        :src="url"
+        :class="renderedClasses"
+        loading="lazy"
+        decoding="async"
+        @error="loadFailed = true"
+    />
     <div v-else :class="renderedClasses">
         <i-mdi-image-remove
             v-if="loadFailed"
