@@ -1,8 +1,5 @@
 <template>
-    <article
-        class="rounded-card relative isolate aspect-2/3 border border-slate-200 bg-white shadow-sm"
-        style="content-visibility: auto; contain-intrinsic-size: auto none"
-    >
+    <article class="rounded-card relative isolate aspect-2/3 border border-slate-200 bg-white shadow-sm">
         <MediaImage :url="movie.posterUrl" class="rounded-card size-full" />
         <h2 class="peer">
             <RouterLink
