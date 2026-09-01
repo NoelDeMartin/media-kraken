@@ -51,7 +51,7 @@ function renderStatus(option: ShowWatchingStatus): string {
 async function saveToCollection() {
     close();
 
-    await Catalog.importFromTMDB(show, { watchingStatus: status.value });
+    await Catalog.importShowFromTMDB(show, { watchingStatus: status.value });
 
     UI.toast(translate('shows.added', { show: model.value.name }));
 }

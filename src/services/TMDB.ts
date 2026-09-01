@@ -73,6 +73,12 @@ const SearchMultiResponseSchema = z.object({
     ),
 });
 
+const FindResponseSchema = z.object({
+    movie_results: z.array(TMDBMovieSchema),
+    tv_results: z.array(TMDBShowSchema),
+    person_results: z.array(z.looseObject({})),
+});
+
 export type TMDBMovie = z.infer<typeof TMDBMovieSchema>;
 export type TMDBMovieExternalIds = z.infer<typeof TMDBMovieExternalIdsSchema>;
 export type TMDBShow = z.infer<typeof TMDBShowSchema>;
@@ -80,7 +86,9 @@ export type TMDBSeason = z.infer<typeof TMDBSeasonSchema>;
 export type TMDBEpisode = z.infer<typeof TMDBEpisodeSchema>;
 export type TMDBShowDetails = z.infer<typeof TMDBShowDetailsSchema>;
 export type TMDBShowExternalIds = z.infer<typeof TMDBShowExternalIdsSchema>;
-export type TMDBSearchResult = z.infer<typeof SearchMovieResultSchema> | z.infer<typeof SearchShowResultSchema>;
+export type TMDBMovieSearchResult = z.infer<typeof SearchMovieResultSchema>;
+export type TMDBShowSearchResult = z.infer<typeof SearchShowResultSchema>;
+export type TMDBSearchResult = TMDBMovieSearchResult | TMDBShowSearchResult;
 
 type TMDBSeasonDetails = z.infer<typeof TMDBSeasonDetailsSchema>;
 
@@ -105,18 +113,29 @@ export class TMDBService extends Service {
             : undefined;
     }
 
-    public async search(query: string): Promise<TMDBSearchResult[]> {
+    public async search(query: string, options: { types?: 'movie' | 'tv' } = {}): Promise<TMDBSearchResult[]> {
         if (query.length === 0) {
             return [];
         }
 
-        const types = ['movie', 'tv'];
+        const types = options.types ? [options.types] : ['movie', 'tv'];
         const response = await this.request(SearchMultiResponseSchema, 'search/multi', {
             query,
             type: types.join(','),
         });
 
         return response.results.filter((result): result is TMDBSearchResult => types.includes(result.media_type));
+    }
+
+    public async findByImdbId(imdbId: string): Promise<{ movie: TMDBMovie | null; show: TMDBShow | null }> {
+        const response = await this.request(FindResponseSchema, `find/${imdbId}`, {
+            external_source: 'imdb_id',
+        });
+
+        return {
+            movie: response.movie_results[0] ?? null,
+            show: response.tv_results[0] ?? null,
+        };
     }
 
     public async getMovie(id: number): Promise<{ details: TMDBMovie; externalIds: TMDBMovieExternalIds }> {

@@ -31,6 +31,7 @@ import { translate, UI, useModal } from '@aerogel/core';
 import { computed } from 'vue';
 
 import Movie from '@/models/Movie';
+import Catalog from '@/services/Catalog';
 import type { TMDBMovie } from '@/services/TMDB';
 
 const { movie } = defineProps<{ movie: TMDBMovie }>();
@@ -40,13 +41,7 @@ const model = computed(() => Movie.fromTMDB(movie, { posterSize: 'large' }));
 async function saveToCollection(options: { watched: boolean }) {
     close();
 
-    if (options.watched) {
-        model.value.mintUrl();
-
-        await model.value.watch();
-    }
-
-    await model.value.save();
+    await Catalog.importMovieFromTMDB(movie, { watched: options.watched });
 
     UI.toast(translate('movies.added', { movie: model.value.title }));
 }

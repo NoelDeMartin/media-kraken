@@ -62,13 +62,13 @@ export default class Movie extends Model {
         return `${stringToSlug(this.title)}-${this.releaseDate.getFullYear()}`;
     }
 
-    public async watch(): Promise<void> {
+    public async watch(date?: Date): Promise<void> {
         if (this.watched) {
             return;
         }
 
         await this.loadRelationIfUnloaded('watchActions');
-        await this.relatedWatchActions.create({ endTime: new Date() });
+        await this.relatedWatchActions.create({ endTime: date ?? new Date() });
     }
 
     public async unwatch(): Promise<void> {

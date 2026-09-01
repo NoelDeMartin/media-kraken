@@ -38,6 +38,7 @@ home:
 
 movies:
     title: 'Movies'
+    import: 'Import movies'
     watch: 'Mark as watched'
     watched: 'Watched'
     pending: 'Pending'
@@ -82,3 +83,100 @@ lists:
 
 discover:
     title: 'Discover'
+
+import:
+    title: 'Import Media'
+    description: 'You can import movies from the following sources:'
+    helpForSource: 'Help for {source}'
+    importing: 'Importing movies...'
+    stop: 'Stop'
+    errorDetails: 'Error details'
+    invalidFileTitle: 'Invalid file'
+    invalidFileDescription: "There was a problem importing that file, are you sure it's in the correct format?"
+    imdb:
+        name: 'IMDb'
+        title: 'Import from IMDb'
+        description: 'Introduce a text containing movie URLs from imdb.com and they will be added to your collection.'
+        urls: 'Urls'
+        noMatches: 'No IMDb movies found'
+        placeholder: |
+            Examples of valid urls:
+            - https://www.imdb.com/title/tt2576852
+            - https://m.imdb.com/title/tt2576852
+            - https://imdb.com/title/tt2576852
+        submit: 'Import'
+    netflix:
+        name: 'Netflix'
+        title: 'Import from Netflix'
+        description: |
+            You can import the movies you've watched in Netflix by [exporting your viewing history](https://help.netflix.com/en/node/101917).
+
+            Essentially, you'll have to open your [viewing activity](http://www.netflix.com/settings/viewing-history), and download a CSV file.
+    custom:
+        name: 'Others'
+        title: 'Import from other sources'
+        description: If you need to import your data from some other service, you simply need to create a CSV using the format below.
+        formatDetails: CSV format
+        aiInstructions: No idea how to do this? Ask your favorite AI assistant to help you!
+        aiInstructionsContent: |
+            Help me create a CSV file to import my movie watch history into Media Kraken.
+
+            ## CSV format
+
+            Create a CSV with exactly these column headers: Name, IMDb, Date
+
+            - Name — Required if IMDb is missing. The movie title. Used to search TMDB when no IMDb ID is available.
+            - IMDb — Required if Name is missing. The IMDb ID (e.g. tt0137523). Prefer this when the source provides it.
+            - Date — Optional. When I watched the movie, using any date format accepted by JavaScript's Date.parse(). If omitted, the movie will be added to watch later.
+
+            Each row is one movie. At least one of Name or IMDb must be filled in per row. Only movies are supported — skip TV shows.
+
+            ## Example
+
+            Name,IMDb,Date
+            Spirited Away,tt0245429,2024-03-15
+            The Matrix,tt0133093,2024-01-20
+            Inception,,2023-12-01
+
+            ## What to do next
+
+            Ask me to provide the data exported from the 3rd party service (e.g. Letterboxd, Plex, Trakt, a personal spreadsheet, etc.). If I don't know how to do it, guide me through the steps to obtain it.
+        aiInstructionsCopy: Copy AI instructions
+        aiInstructionsCopied: AI instructions copied to clipboard
+        csv:
+            column: Column
+            format: Format
+            description: Description
+            name: 'Name'
+            nameFormat: Required if IMDb is missing
+            nameDescription: 'The name of the movie. If the IMDb id is missing, this will be used to search [TMDB](https://www.themoviedb.org/) for a match.'
+            date: 'Date'
+            dateFormat: Optional
+            dateDescription: "The date when you watched the movie, using any standard JavaScript format. If this isn't provided, it will be added to watch later."
+            imdb: 'IMDb'
+            imdbFormat: Required if Name is missing
+            imdbDescription: 'The IMDb ID of the movie.'
+    result:
+        title: 'Import completed'
+        watchedAdded: '**1** watched movie has been added.|**{count}** watched movies have been added.'
+        pendingAdded: '**1** movie has been added to watch later.|**{count}** movies have been added to watch later.'
+        ignored: 'were ignored.'
+        unprocessed: "weren't processed because you stopped the operation."
+        invalid: 'contained validation errors.'
+        failed: 'failed on import.'
+        viewDetails: 'view details'
+        movieAlreadyInCollection: 'You already have **{title}** in your collection.'
+        details:
+            watchedTitle: 'Watched movies added'
+            pendingTitle: 'Pending movies added'
+            ignoredTitle: 'Ignored items'
+            unprocessedTitle: 'Unprocessed items'
+            unprocessedItem: 'Item'
+            invalidTitle: 'Invalid items'
+            failedTitle: 'Failed items'
+            error: 'Error: {message}'
+
+ui:
+    cancel: Cancel
+    close: Close
+    ok: OK

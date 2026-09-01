@@ -1,9 +1,11 @@
 import { Service } from '@aerogel/core';
-import { arrayUnique, facade, parseDate } from '@noeldemartin/utils';
+import { arrayUnique, facade, parseDate, stringToSlug } from '@noeldemartin/utils';
 import type { Nullable } from '@noeldemartin/utils';
 import { ComputedAttribute } from 'soukai-bis';
 import type { GetModelInput } from 'soukai-bis';
 
+import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
+import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import type Episode from '@/models/Episode';
 import Movie from '@/models/Movie';
 import type Season from '@/models/Season';
@@ -13,6 +15,7 @@ import TMDB, {
     type TMDBEpisode,
     type TMDBMovie,
     type TMDBMovieExternalIds,
+    type TMDBMovieSearchResult,
     type TMDBSeason,
     type TMDBShow,
     type TMDBShowDetails,
@@ -58,7 +61,36 @@ export class CatalogService extends Service {
         await this.syncMovie(media);
     }
 
-    public async importFromTMDB(
+    public async newFromExternal(media: ExternalMedia): Promise<Movie> {
+        if (media.imdbId) {
+            return this.newMovieFromImdb(media.imdbId, { watchedAt: media.watchedAt });
+        }
+
+        if (media.type && media.type !== 'movie') {
+            throw new Error(`Importing ${media.type} is not supported yet`);
+        }
+
+        if (!media.name) {
+            throw new MediaNotFoundError();
+        }
+
+        return this.newMovieFromName(media.name, { watchedAt: media.watchedAt });
+    }
+
+    public async importMovieFromTMDB(tmdbMovie: TMDBMovie, options: { watched?: boolean } = {}): Promise<void> {
+        const { details, externalIds } = await TMDB.getMovie(tmdbMovie.id);
+        const movie = new Movie(this.getMovieAttributes(details, externalIds));
+
+        if (options.watched) {
+            movie.mintUrl();
+
+            await movie.watch();
+        }
+
+        await movie.save();
+    }
+
+    public async importShowFromTMDB(
         tmdbShow: TMDBShow,
         options: { watchingStatus?: Nullable<ShowWatchingStatus> } = {},
     ): Promise<void> {
@@ -211,6 +243,52 @@ export class CatalogService extends Service {
         });
 
         await movie.save();
+    }
+
+    private async newMovieFromImdb(imdbId: string, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
+        const { movie, show } = await TMDB.findByImdbId(imdbId);
+
+        if (show) {
+            throw new Error(`Importing shows is not supported yet`);
+        }
+
+        if (!movie) {
+            throw new MediaNotFoundError();
+        }
+
+        return this.newMovieFromTMDB(movie.id, { watchedAt: options.watchedAt });
+    }
+
+    private async newMovieFromName(name: string, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
+        const slug = stringToSlug(name);
+        const results = await TMDB.search(name, { types: 'movie' });
+        const match =
+            results.find(
+                (result): result is TMDBMovieSearchResult =>
+                    result.media_type === 'movie' &&
+                    !!result.release_date &&
+                    (!options.watchedAt || new Date(result.release_date) <= options.watchedAt) &&
+                    stringToSlug(result.title) === slug,
+            ) ?? null;
+
+        if (!match) {
+            throw new MediaNotFoundError();
+        }
+
+        return this.newMovieFromTMDB(match.id, { watchedAt: options.watchedAt });
+    }
+
+    private async newMovieFromTMDB(tmdbId: number, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
+        const { details, externalIds } = await TMDB.getMovie(tmdbId);
+        const movie = new Movie(this.getMovieAttributes(details, externalIds));
+
+        movie.mintUrl();
+
+        if (options.watchedAt) {
+            await movie.watch(options.watchedAt);
+        }
+
+        return movie;
     }
 }
 

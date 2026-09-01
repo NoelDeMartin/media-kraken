@@ -6,9 +6,10 @@ INSERT DATA {
     <#it>
         a schema:Movie ;
         schema:name "{{ name }}" ;
+        schema:description "[[.*]]" ;
         schema:image <[[.*]]> ;
         schema:datePublished "[[.*]]"^^xsd:dateTime ;
-        schema:sameAs <https://www.themoviedb.org/movie/[[.*]]> .
+        schema:sameAs <https://www.themoviedb.org/movie/[[.*]]>, <https://www.imdb.com/title/[[.*]]/> .
 
     <#it-metadata>
         a crdt:Metadata ;
