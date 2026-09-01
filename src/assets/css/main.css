@@ -8,6 +8,8 @@
 @theme {
     --font-*: initial;
     --font-montserrat: 'Montserrat', sans-serif;
+    --text-page-title--font-weight: var(--font-weight-medium);
+
     --breakpoint-content: 900px;
 
     --color-primary-100: #fed7d7;
