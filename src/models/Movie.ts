@@ -14,22 +14,13 @@ export default class Movie extends Model {
     declare public readonly watchActions?: WatchAction[];
     declare public readonly relatedWatchActions: HasManyRelation<this, WatchAction, typeof WatchAction>;
 
-    static fromTMDB(
-        movie: TMDBMovie & { imdb_id?: string | null },
-        options: { posterSize?: 'small' | 'large'; mintUrl?: boolean } = {},
-    ): Movie {
-        const externalUrls = [TMDB.movieUrl(movie)];
-
-        if (movie.imdb_id) {
-            externalUrls.push(`https://www.imdb.com/title/${movie.imdb_id}`);
-        }
-
+    static fromTMDB(movie: TMDBMovie, options: { posterSize?: 'small' | 'large'; mintUrl?: boolean } = {}): Movie {
         const instance = new Movie({
             title: movie.title,
             description: movie.overview,
             releaseDate: parseDate(movie.release_date) ?? undefined,
             posterUrl: TMDB.posterUrl(movie, options.posterSize),
-            externalUrls,
+            externalUrls: [TMDB.movieUrl(movie)],
         });
 
         if (options.mintUrl) {

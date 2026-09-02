@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-const { itemWidth = '11rem' } = defineProps<{
+const { itemWidth = '9rem' } = defineProps<{
     itemWidth?: string;
 }>();
 </script>

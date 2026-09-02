@@ -3,7 +3,7 @@
         <h1 class="text-2xl font-bold">{{ $t('welcome.title') }}</h1>
         <Markdown lang-key="welcome.message" />
         <div class="flex flex-col gap-4">
-            <Button variant="outline" class="w-full" @click="openImportModal">
+            <Button variant="outline" class="w-full" @click="$ui.modal(ImportMediaModal)">
                 {{ $t('welcome.import') }}
             </Button>
             <Button variant="outline" route="discover" class="w-full">
@@ -17,11 +17,5 @@
 </template>
 
 <script setup lang="ts">
-import { UI } from '@aerogel/core';
-
-import ImportMoviesModal from '@/components/modals/ImportMoviesModal.vue';
-
-function openImportModal() {
-    UI.modal(ImportMoviesModal);
-}
+import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 </script>

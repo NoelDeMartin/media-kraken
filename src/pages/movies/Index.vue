@@ -1,14 +1,13 @@
 <template>
     <Page>
-        <div class="flex items-center justify-between">
-            <h1 class="text-3xl font-semibold text-slate-900">{{ $t('movies.title') }} ({{ movies.length }})</h1>
+        <div class="flex items-center justify-start">
             <DropdownMenu
-                align="end"
+                align="start"
                 :options="[
                     {
-                        label: $t('movies.import'),
                         icon: IconUpload,
-                        click: openImportModal,
+                        label: $t('movies.import'),
+                        click: () => $ui.modal(ImportMediaModal),
                     },
                 ]"
             >
@@ -17,28 +16,25 @@
                     variant="ghost"
                     :aria-label="$t('movies.openActionsMenu')"
                     :title="$t('movies.openActionsMenu')"
+                    class="clickable -ml-3 rounded-md p-1"
                 >
                     <i-mdi-dots-vertical class="size-5" />
                 </Button>
             </DropdownMenu>
+            <PageTitle>{{ $t('movies.title') }} ({{ movies.length }})</PageTitle>
         </div>
-        <VirtualMediaGrid v-slot="{ item: movie }" class="mt-6" by="url" :items="movies">
+        <VirtualMediaGrid v-slot="{ item: movie }" class="mt-2" by="url" :items="movies">
             <MovieCard :movie />
         </VirtualMediaGrid>
     </Page>
 </template>
 
 <script setup lang="ts">
-import { UI } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-solid';
 import IconUpload from '~icons/mdi/upload';
 
-import ImportMoviesModal from '@/components/modals/ImportMoviesModal.vue';
+import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 import Movie from '@/models/Movie';
 
 const movies = useModelCollection(Movie);
-
-function openImportModal() {
-    UI.modal(ImportMoviesModal);
-}
 </script>

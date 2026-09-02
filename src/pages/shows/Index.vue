@@ -1,7 +1,6 @@
 <template>
-    <Page>
-        <h1 class="text-3xl font-semibold text-slate-900">{{ $t('shows.title') }} ({{ shows.length }})</h1>
-        <VirtualMediaGrid v-slot="{ item: show }" class="mt-6" by="url" :items="shows">
+    <Page :title="`${$t('shows.title')} (${shows.length})`">
+        <VirtualMediaGrid v-slot="{ item: show }" class="mt-2" by="url" :items="shows">
             <ShowCard :show />
         </VirtualMediaGrid>
     </Page>
