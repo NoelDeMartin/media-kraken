@@ -12,7 +12,7 @@ async function seedShow(page: Page) {
 }
 
 test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/shows');
 });
 
 test('Adds shows from search', async ({ page }) => {

@@ -2,7 +2,7 @@ import { createModel, input, press, see } from '@aerogel/playwright';
 import { test } from '@e2e/lib/setup';
 
 test.beforeEach(async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/movies');
 });
 
 test('Adds movies from search', async ({ page }) => {
@@ -19,19 +19,16 @@ test('Adds watched movies from search', async ({ page }) => {
     await press(page, 'The Matrix');
     await press(page, 'Watched');
     await see(page, 'The Matrix has been added to your collection!');
-    await page.goto('/movies');
     await see(page, 'The Matrix (Watched)');
 });
 
 test('Marks movies as watched from collection', async ({ page }) => {
-    await page.goto('/movies');
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await press(page, 'Watch');
     await see(page, 'The Matrix (Watched)');
 });
 
 test('Marks movies as watched from details page', async ({ page }) => {
-    await page.goto('/movies');
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await press(page, 'The Matrix');
     await press(page, 'Open actions menu');

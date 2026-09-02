@@ -27,11 +27,11 @@
                     {{ $t('import.result.viewDetails') }}
                 </button>
             </li>
-            <li v-if="log.ignored.length > 0" class="flex flex-col">
+            <li v-if="result.ignored.length > 0" class="flex flex-col">
                 <div class="flex items-center gap-2 text-sm text-gray-800">
                     <i-mdi-information-outline class="size-5 text-blue-600" />
                     <span>
-                        <strong>{{ log.ignored.length }}</strong> {{ $t('import.result.ignored') }}
+                        <strong>{{ result.ignored.length }}</strong> {{ $t('import.result.ignored') }}
                     </span>
                 </div>
                 <button
@@ -42,11 +42,11 @@
                     {{ $t('import.result.viewDetails') }}
                 </button>
             </li>
-            <li v-if="log.unprocessed.length > 0" class="flex flex-col">
+            <li v-if="result.unprocessed.length > 0" class="flex flex-col">
                 <div class="flex items-center gap-2 text-sm text-gray-800">
                     <i-mdi-information-outline class="size-5 text-blue-600" />
                     <span>
-                        <strong>{{ log.unprocessed.length }}</strong>
+                        <strong>{{ result.unprocessed.length }}</strong>
                         {{ $t('import.result.unprocessed') }}
                     </span>
                 </div>
@@ -58,11 +58,11 @@
                     {{ $t('import.result.viewDetails') }}
                 </button>
             </li>
-            <li v-if="log.invalid.length > 0" class="flex flex-col">
+            <li v-if="result.invalid.length > 0" class="flex flex-col">
                 <div class="flex items-center gap-2 text-sm text-gray-800">
                     <i-mdi-alert-circle-outline class="size-5 text-red-600" />
                     <span>
-                        <strong>{{ log.invalid.length }}</strong> {{ $t('import.result.invalid') }}
+                        <strong>{{ result.invalid.length }}</strong> {{ $t('import.result.invalid') }}
                     </span>
                 </div>
                 <button
@@ -73,11 +73,11 @@
                     {{ $t('import.result.viewDetails') }}
                 </button>
             </li>
-            <li v-if="log.failed.length > 0" class="flex flex-col">
+            <li v-if="result.failed.length > 0" class="flex flex-col">
                 <div class="flex items-center gap-2 text-sm text-gray-800">
                     <i-mdi-alert-circle-outline class="size-5 text-red-600" />
                     <span>
-                        <strong>{{ log.failed.length }}</strong> {{ $t('import.result.failed') }}
+                        <strong>{{ result.failed.length }}</strong> {{ $t('import.result.failed') }}
                     </span>
                 </div>
                 <button
@@ -101,22 +101,22 @@
 import { translate, UI, useModal } from '@aerogel/core';
 import { computed } from 'vue';
 
-import type { ImportOperationLog } from '@/jobs/ImportMedia';
+import type { ImportMediaJobResult } from '@/jobs/ImportMedia';
 
-const { log } = defineProps<{ log: ImportOperationLog }>();
+const { result } = defineProps<{ result: ImportMediaJobResult }>();
 const { close } = useModal();
 
-const watchedCount = computed(() => log.added.filter((m) => m.watched).length);
-const pendingCount = computed(() => log.added.filter((m) => !m.watched).length);
+const watchedCount = computed(() => result.added.filter((m) => m.watched).length);
+const pendingCount = computed(() => result.added.filter((m) => !m.watched).length);
 
 function inspectWatched() {
-    const lines = log.added.filter((m) => m.watched).map((m, i) => `${i + 1}. ${m.title}`);
+    const lines = result.added.filter((m) => m.watched).map((m, i) => `${i + 1}. ${m.title}`);
 
     UI.alert(translate('import.result.details.watchedTitle'), lines.join('\n'));
 }
 
 function inspectPending() {
-    const lines = log.added.filter((m) => !m.watched).map((m, i) => `${i + 1}. ${m.title}`);
+    const lines = result.added.filter((m) => !m.watched).map((m, i) => `${i + 1}. ${m.title}`);
 
     UI.alert(translate('import.result.details.pendingTitle'), lines.join('\n'));
 }
@@ -124,7 +124,7 @@ function inspectPending() {
 function inspectIgnored() {
     const lines: string[] = [];
 
-    log.ignored.forEach(({ reason, data }, i) => {
+    result.ignored.forEach(({ reason, data }, i) => {
         lines.push(`${i + 1}. ${reason}`);
         lines.push('```json\n' + JSON.stringify(data, null, 2) + '\n```');
     });
@@ -135,7 +135,7 @@ function inspectIgnored() {
 function inspectUnprocessed() {
     const lines: string[] = [];
 
-    log.unprocessed.forEach((data, i) => {
+    result.unprocessed.forEach((data, i) => {
         lines.push(`${i + 1}. ${translate('import.result.details.unprocessedItem')}`);
         lines.push('```json\n' + JSON.stringify(data, null, 2) + '\n```');
     });
@@ -146,7 +146,7 @@ function inspectUnprocessed() {
 function inspectInvalid() {
     const lines: string[] = [];
 
-    log.invalid.forEach(({ reason, data }, i) => {
+    result.invalid.forEach(({ reason, data }, i) => {
         lines.push(`${i + 1}. ${reason}`);
         lines.push('```json\n' + JSON.stringify(data, null, 2) + '\n```');
     });
@@ -157,7 +157,7 @@ function inspectInvalid() {
 function inspectFailed() {
     const lines: string[] = [];
 
-    log.failed.forEach(({ notFound, error, data }, i) => {
+    result.failed.forEach(({ notFound, error, data }, i) => {
         if (notFound) {
             lines.push(`${i + 1}. ${error.message}`);
         } else {

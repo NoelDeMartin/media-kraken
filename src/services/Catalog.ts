@@ -77,6 +77,20 @@ export class CatalogService extends Service {
         return this.newMovieFromName(media.name, { watchedAt: media.watchedAt });
     }
 
+    public async newMovieFromImdb(imdbId: string, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
+        const { movie, show } = await TMDB.findByImdbId(imdbId);
+
+        if (show) {
+            throw new Error(`Importing shows is not supported yet`);
+        }
+
+        if (!movie) {
+            throw new MediaNotFoundError();
+        }
+
+        return this.newMovieFromTMDB(movie.id, { watchedAt: options.watchedAt });
+    }
+
     public async importMovieFromTMDB(tmdbMovie: TMDBMovie, options: { watched?: boolean } = {}): Promise<void> {
         const { details, externalIds } = await TMDB.getMovie(tmdbMovie.id);
         const movie = new Movie(this.getMovieAttributes(details, externalIds));
@@ -243,20 +257,6 @@ export class CatalogService extends Service {
         });
 
         await movie.save();
-    }
-
-    private async newMovieFromImdb(imdbId: string, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
-        const { movie, show } = await TMDB.findByImdbId(imdbId);
-
-        if (show) {
-            throw new Error(`Importing shows is not supported yet`);
-        }
-
-        if (!movie) {
-            throw new MediaNotFoundError();
-        }
-
-        return this.newMovieFromTMDB(movie.id, { watchedAt: options.watchedAt });
     }
 
     private async newMovieFromName(name: string, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {

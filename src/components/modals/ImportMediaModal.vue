@@ -41,7 +41,8 @@ import IconNetflix from '~icons/selfhst/netflix';
 
 import ImportMediaFromImdbModal from '@/components/modals/ImportMediaFromImdbModal.vue';
 import ImportMediaHelpForCustomModal from '@/components/modals/ImportMediaHelpForCustomModal.vue';
-import ImportMediaProgressModal from '@/components/modals/ImportMediaProgressModal.vue';
+import ImportMediaResultModal from '@/components/modals/ImportMediaResultModal.vue';
+import ImportMedia from '@/jobs/ImportMedia';
 import CustomParser from '@/lib/parsers/CustomParser';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import NetflixParser from '@/lib/parsers/NetflixParser';
@@ -108,7 +109,9 @@ async function importFrom(source: MediaSource) {
             return;
         }
 
-        await launchJob(matches.map((match) => ({ imdbId: match.imdbId, raw: match.url })));
+        close();
+
+        await processData(matches.map((match) => ({ imdbId: match.imdbId, raw: match.url })));
 
         return;
     }
@@ -141,7 +144,7 @@ async function handleFileUpload(event: Event) {
 
     close();
 
-    await launchJob(data);
+    await processData(data);
 }
 
 async function parseFileContents(file: File, source: MediaSource): Promise<ExternalMedia[] | undefined> {
@@ -169,12 +172,15 @@ async function parseRawFileContents(file: File): Promise<object[] | undefined> {
     }
 }
 
-async function launchJob(data: ExternalMedia[]) {
+async function processData(data: ExternalMedia[]) {
     if (data.length === 0) {
         return;
     }
 
-    await UI.closeAllModals();
-    await UI.modal(ImportMediaProgressModal, { data });
+    const result = await UI.runJob(new ImportMedia(data), {
+        message: translate('import.importing'),
+    });
+
+    await UI.modal(ImportMediaResultModal, { result });
 }
 </script>

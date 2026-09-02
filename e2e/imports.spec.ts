@@ -6,9 +6,7 @@ test.beforeEach(async ({ page }) => {
 });
 
 test('Imports movies from IMDb', async ({ page }) => {
-    await page.goto('/movies');
-    await press(page, 'Open actions menu');
-    await press(page, 'Import movies');
+    await press(page, "Yes, I have some content I'd like to import");
     await press(page, 'IMDb');
     await input(page, 'Urls').fill('https://www.imdb.com/title/tt0073195/');
     await press(page, 'Import');

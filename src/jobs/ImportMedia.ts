@@ -5,7 +5,9 @@ import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import Movie from '@/models/Movie';
 import Catalog from '@/services/Catalog';
 
-export interface ImportOperationLog {
+import ProcessingJob from './ProcessingJob';
+
+export interface ImportMediaJobResult {
     added: Movie[];
     ignored: {
         reason: string;
@@ -23,32 +25,13 @@ export interface ImportOperationLog {
     unprocessed: ExternalMedia[];
 }
 
-export interface ImportProgressState {
-    current: number;
-    total: number;
-    cancelled: boolean;
-}
-
-export class ImportMedia {
-    static async run(
-        data: ExternalMedia[],
-        onProgress?: (progress: ImportProgressState) => void,
-        checkCancelled?: () => boolean,
-    ): Promise<ImportOperationLog> {
-        return new ImportMedia().run(data, onProgress, checkCancelled);
+export default class ImportMedia extends ProcessingJob<ExternalMedia, ImportMediaJobResult> {
+    constructor(data: ExternalMedia[]) {
+        super(data);
     }
 
-    public async run(
-        data: ExternalMedia[],
-        onProgress?: (progress: ImportProgressState) => void,
-        checkCancelled?: () => boolean,
-    ): Promise<ImportOperationLog> {
-        const progress: ImportProgressState = {
-            current: 0,
-            total: data.length,
-            cancelled: false,
-        };
-        const log: ImportOperationLog = {
+    public async run(): Promise<ImportMediaJobResult> {
+        const result: ImportMediaJobResult = {
             added: [],
             ignored: [],
             invalid: [],
@@ -58,40 +41,37 @@ export class ImportMedia {
 
         const existingMovies = await Movie.all();
 
-        for (const media of data) {
-            if (checkCancelled?.()) {
-                progress.cancelled = true;
-                log.unprocessed = data.slice(progress.current);
-                break;
-            }
+        for (const [index, media] of this.items.entries()) {
+            if (this.cancellationRequested) {
+                result.unprocessed = this.items.slice(index);
 
-            progress.current++;
-            onProgress?.(progress);
-
-            if (media.validationError) {
-                log.invalid.push({
-                    reason: media.validationError,
-                    data: media.raw,
-                });
-
-                continue;
-            }
-
-            if (media.skippedMessage) {
-                log.ignored.push({
-                    reason: media.skippedMessage,
-                    data: media.raw,
-                });
-
-                continue;
+                this.assertNotCancelled(result);
             }
 
             try {
+                if (media.validationError) {
+                    result.invalid.push({
+                        reason: media.validationError,
+                        data: media.raw,
+                    });
+
+                    continue;
+                }
+
+                if (media.skippedMessage) {
+                    result.ignored.push({
+                        reason: media.skippedMessage,
+                        data: media.raw,
+                    });
+
+                    continue;
+                }
+
                 const movie = await Catalog.newFromExternal(media);
                 const matchingInCollection = existingMovies.find((existing) => this.isSameMovie(existing, movie));
 
                 if (matchingInCollection) {
-                    log.ignored.push({
+                    result.ignored.push({
                         reason: translate('import.result.movieAlreadyInCollection', {
                             title: matchingInCollection.title,
                         }),
@@ -103,18 +83,20 @@ export class ImportMedia {
 
                 const savedMovie = await movie.save();
 
-                log.added.push(savedMovie);
+                result.added.push(savedMovie);
                 existingMovies.push(savedMovie);
             } catch (error) {
-                log.failed.push({
+                result.failed.push({
                     notFound: error instanceof MediaNotFoundError,
                     error: error as Error,
                     data: media.raw,
                 });
+            } finally {
+                await this.markItemCompleted(index);
             }
         }
 
-        return log;
+        return result;
     }
 
     private isSameMovie(existing: Movie, movie: Movie): boolean {

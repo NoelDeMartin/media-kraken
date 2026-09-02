@@ -9,7 +9,7 @@
             <Button variant="outline" route="discover" class="w-full">
                 {{ $t('welcome.discover') }}
             </Button>
-            <Button variant="outline" class="w-full">
+            <Button variant="outline" class="w-full" @click="$ui.modal(SeedCollectionModal)">
                 {{ $t('welcome.getStarted') }}
             </Button>
         </div>
@@ -18,4 +18,5 @@
 
 <script setup lang="ts">
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
+import SeedCollectionModal from '@/components/modals/SeedCollectionModal.vue';
 </script>

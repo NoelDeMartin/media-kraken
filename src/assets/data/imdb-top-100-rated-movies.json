@@ -1,0 +1,702 @@
+[
+    {
+        "title": "The Shawshank Redemption",
+        "description": "Imprisoned in the 1940s for the double murder of his wife and her lover, upstanding banker Andy Dufresne begins a new life at the Shawshank prison, where he puts his accounting skills to work for an amoral warden. During his long stretch in prison, Dufresne comes to be admired by the other inmates -- including an older prisoner named Red -- for his integrity and unquenchable sense of hope.",
+        "releaseDate": "1994-09-23T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/9cqNxx0GxF0bflZmeSMuL5tnGzr.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/278", "https://www.imdb.com/title/tt0111161"]
+    },
+    {
+        "title": "The Godfather",
+        "description": "Spanning the years 1945 to 1955, a chronicle of the fictional Italian-American Corleone crime family. When organized crime family patriarch, Vito Corleone barely survives an attempt on his life, his youngest son, Michael steps in to take care of the would-be killers, launching a campaign of bloody revenge.",
+        "releaseDate": "1972-03-14T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/3bhkrj58Vtu7enYsRolD1fZdja1.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/238", "https://www.imdb.com/title/tt0068646"]
+    },
+    {
+        "title": "The Dark Knight",
+        "description": "Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.",
+        "releaseDate": "2008-07-16T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/155", "https://www.imdb.com/title/tt0468569"]
+    },
+    {
+        "title": "The Godfather Part II",
+        "description": "In the continuing saga of the Corleone crime family, a young Vito Corleone grows up in Sicily and in 1910s New York. In the 1950s, Michael Corleone attempts to expand the family business into Las Vegas, Hollywood and Cuba.",
+        "releaseDate": "1974-12-20T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/hek3koDUyRQk7FIhPXsa6mT2Zc3.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/240", "https://www.imdb.com/title/tt0071562"]
+    },
+    {
+        "title": "12 Angry Men",
+        "description": "The defense and the prosecution have rested and the jury is filing into the jury room to decide if a young Spanish-American is guilty or innocent of murdering his father. What begins as an open and shut case soon becomes a mini-drama of each of the jurors' prejudices and preconceptions about the trial, the accused, and each other.",
+        "releaseDate": "1957-04-10T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/ow3wq89wM8qd5X7hWKxiRfsFf9C.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/389", "https://www.imdb.com/title/tt0050083"]
+    },
+    {
+        "title": "The Lord of the Rings: The Return of the King",
+        "description": "As armies mass for a final battle that will decide the fate of the world--and powerful, ancient forces of Light and Dark compete to determine the outcome--one member of the Fellowship of the Ring is revealed as the noble heir to the throne of the Kings of Men. Yet, the sole hope for triumph over evil lies with a brave hobbit, Frodo, who, accompanied by his loyal friend Sam and the hideous, wretched Gollum, ventures deep into the very dark heart of Mordor on his seemingly impossible quest to destroy the Ring of Power.​",
+        "releaseDate": "2003-12-17T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/rCzpDGLbOoPwLjy3OAm5NUPOTrC.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/122", "https://www.imdb.com/title/tt0167260"]
+    },
+    {
+        "title": "Schindler's List",
+        "description": "The true story of how businessman Oskar Schindler saved over a thousand Jewish lives from the Nazis while they worked as slaves in his factory during World War II.",
+        "releaseDate": "1993-12-15T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/sF1U4EUQS8YHUYjNl3pMGNIQyr0.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/424", "https://www.imdb.com/title/tt0108052"]
+    },
+    {
+        "title": "Pulp Fiction",
+        "description": "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+        "releaseDate": "1994-09-10T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/d5iIlFn5s0ImszYzBPb8JPIfbXD.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/680", "https://www.imdb.com/title/tt0110912"]
+    },
+    {
+        "title": "The Lord of the Rings: The Fellowship of the Ring",
+        "description": "Young hobbit Frodo Baggins, after inheriting a mysterious ring from his uncle Bilbo, must leave his home in order to keep it from falling into the hands of its evil creator. Along the way, a fellowship is formed to protect the ringbearer and make sure that the ring arrives at its final destination: Mt. Doom, the only place where it can be destroyed.",
+        "releaseDate": "2001-12-18T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/6oom5QYQ2yQTMJIbnvbkBL9cHo6.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/120", "https://www.imdb.com/title/tt0120737"]
+    },
+    {
+        "title": "The Good, the Bad and the Ugly",
+        "description": "While the Civil War rages on between the Union and the Confederacy, three men – a quiet loner, a ruthless hitman, and a Mexican bandit – comb the American Southwest in search of a strongbox containing $200,000 in stolen gold.",
+        "releaseDate": "1966-12-22T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/bX2xnavhMYjWDoZp1VM6VnU1xwe.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/429", "https://www.imdb.com/title/tt0060196"]
+    },
+    {
+        "title": "Forrest Gump",
+        "description": "A man with a low IQ has accomplished great things in his life and been present during significant historic events—in each case, far exceeding what anyone imagined he could do. But despite all he has achieved, his one true love eludes him.",
+        "releaseDate": "1994-06-23T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/arw2vcBveWOVZr6pxd9XTd1TdQa.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/13", "https://www.imdb.com/title/tt0109830"]
+    },
+    {
+        "title": "The Lord of the Rings: The Two Towers",
+        "description": "Frodo Baggins and the other members of the Fellowship continue on their sacred quest to destroy the One Ring--but on separate paths. Their destinies lie at two towers--Orthanc Tower in Isengard, where the corrupt wizard Saruman awaits, and Sauron's fortress at Barad-dur, deep within the dark lands of Mordor. Frodo and Sam are trekking to Mordor to destroy the One Ring of Power while Gimli, Legolas and Aragorn search for the orc-captured Merry and Pippin. All along, nefarious wizard Saruman awaits the Fellowship members at the Orthanc Tower in Isengard.",
+        "releaseDate": "2002-12-18T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/5VTN0pR8gcqV3EPUHHfMGnJYN9L.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/121", "https://www.imdb.com/title/tt0167261"]
+    },
+    {
+        "title": "Fight Club",
+        "description": "A ticking-time-bomb insomniac and a slippery soap salesman channel primal male aggression into a shocking new form of therapy. Their concept catches on, with underground \"fight clubs\" forming in every town, until an eccentric gets in the way and ignites an out-of-control spiral toward oblivion.",
+        "releaseDate": "1999-10-15T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/pB8BM7pdSp6B6Ih7QZ4DrQ3PmJK.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/550", "https://www.imdb.com/title/tt0137523"]
+    },
+    {
+        "title": "Inception",
+        "description": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
+        "releaseDate": "2010-07-15T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/oYuLEt3zVCKq57qu2F8dT7NIa6f.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/27205", "https://www.imdb.com/title/tt1375666"]
+    },
+    {
+        "title": "The Empire Strikes Back",
+        "description": "The epic saga continues as Luke Skywalker, in hopes of defeating the evil Galactic Empire, learns the ways of the Jedi from aging master Yoda. But Darth Vader is more determined than ever to capture Luke. Meanwhile, rebel leader Princess Leia, cocky Han Solo, Chewbacca, and droids C-3PO and R2-D2 are thrown into various stages of capture, betrayal and despair.",
+        "releaseDate": "1980-05-20T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/nNAeTmF4CtdSgMDplXTDPOpYzsX.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/1891", "https://www.imdb.com/title/tt0080684"]
+    },
+    {
+        "title": "The Matrix",
+        "description": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.",
+        "releaseDate": "1999-03-31T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/p96dm7sCMn4VYAStA6siNz30G1r.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/603", "https://www.imdb.com/title/tt0133093"]
+    },
+    {
+        "title": "GoodFellas",
+        "description": "The true story of Henry Hill, a half-Irish, half-Sicilian Brooklyn kid who is adopted by neighbourhood gangsters at an early age and climbs the ranks of a Mafia family under the guidance of Jimmy Conway.",
+        "releaseDate": "1990-09-12T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/aKuFiU82s5ISJpGZp7YkIr3kCUd.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/769", "https://www.imdb.com/title/tt0099685"]
+    },
+    {
+        "title": "One Flew Over the Cuckoo's Nest",
+        "description": "A petty criminal fakes insanity to serve his sentence in a mental ward rather than prison. He soon finds himself as a leader to the other patients—and an enemy to the cruel, domineering nurse who runs the ward.",
+        "releaseDate": "1975-11-19T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/kjWsMh72V6d8KRLV4EOoSJLT1H7.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/510", "https://www.imdb.com/title/tt0073486"]
+    },
+    {
+        "title": "Interstellar",
+        "description": "The adventures of a group of explorers who make use of a newly discovered wormhole to surpass the limitations on human space travel and conquer the vast distances involved in an interstellar voyage.",
+        "releaseDate": "2014-11-05T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/gEU2QniE6E77NI6lCU6MxlNBvIx.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/157336", "https://www.imdb.com/title/tt0816692"]
+    },
+    {
+        "title": "Se7en",
+        "description": "Two homicide detectives are on a desperate hunt for a serial killer whose crimes are based on the \"seven deadly sins\" in this dark and haunting film that takes viewers from the tortured remains of one victim to the next. The seasoned Det. Sommerset researches each sin in an effort to get inside the killer's mind, while his novice partner, Mills, scoffs at his efforts to unravel the case.",
+        "releaseDate": "1995-09-22T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/191nKfP0ehp3uIvWqgPbFmI4lv9.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/807", "https://www.imdb.com/title/tt0114369"]
+    },
+    {
+        "title": "It's a Wonderful Life",
+        "description": "A holiday favourite for generations...  George Bailey has spent his entire life giving to the people of Bedford Falls.  All that prevents rich skinflint Mr. Potter from taking over the entire town is George's modest building and loan company.  But on Christmas Eve the business's $8,000 is lost and George's troubles begin.",
+        "releaseDate": "1946-12-20T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/bSqt9rhDZx1Q7UZ86dBPKdNomp2.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/1585", "https://www.imdb.com/title/tt0038650"]
+    },
+    {
+        "title": "Seven Samurai",
+        "description": "A samurai answers a village's request for protection after he falls on hard times. The town needs protection from bandits, so the samurai gathers six others to help him teach the people how to defend themselves, and the villagers provide the soldiers with food.",
+        "releaseDate": "1954-04-26T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/iAq0sq42vKTLneVGqHn1D4GzgrM.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/346", "https://www.imdb.com/title/tt0047478"]
+    },
+    {
+        "title": "The Silence of the Lambs",
+        "description": "Clarice Starling is a top student at the FBI's training academy.  Jack Crawford wants Clarice to interview Dr. Hannibal Lecter, a brilliant psychiatrist who is also a violent psychopath, serving life behind bars for various acts of murder and cannibalism.  Crawford believes that Lecter may have insight into a case and that Starling, as an attractive young woman, may be just the bait to draw him out.",
+        "releaseDate": "1991-02-14T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/uS9m8OBk1A8eM9I042bx8XXpqAq.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/274", "https://www.imdb.com/title/tt0102926"]
+    },
+    {
+        "title": "Saving Private Ryan",
+        "description": "As U.S. troops storm the beaches of Normandy, three brothers lie dead on the battlefield, with a fourth trapped behind enemy lines. Ranger captain John Miller and seven men are tasked with penetrating German-held territory and bringing the boy home.",
+        "releaseDate": "1998-07-24T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/AdpcyHDrwxUuBi6OCSvNbAmRLKK.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/857", "https://www.imdb.com/title/tt0120815"]
+    },
+    {
+        "title": "City of God",
+        "description": "In the poverty-stricken favelas of Rio de Janeiro in the 1970s, two young men choose different paths. Rocket is a budding photographer who documents the increasing drug-related violence of his neighborhood, while José “Zé” Pequeno is an ambitious drug dealer diving into a dangerous life of crime.",
+        "releaseDate": "2002-08-30T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/k7eYdWvhYQyRQoU2TB2A2Xu2TfD.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/598", "https://www.imdb.com/title/tt0317248"]
+    },
+    {
+        "title": "The Green Mile",
+        "description": "A supernatural tale set on death row in a Southern prison, where gentle giant John Coffey possesses the mysterious power to heal people's ailments. When the cell block's head guard, Paul Edgecomb, recognizes Coffey's miraculous gift, he tries desperately to help stave off the condemned man's execution.",
+        "releaseDate": "1999-12-10T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/8VG8fDNiy50H4FedGwdSVUPoaJe.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/497", "https://www.imdb.com/title/tt0120689"]
+    },
+    {
+        "title": "Life Is Beautiful",
+        "description": "A touching story of an Italian book seller of Jewish ancestry who lives in his own little fairy tale. His creative and happy life would come to an abrupt halt when his entire family is deported to a concentration camp during World War II. While locked up he tries to convince his son that the whole thing is just a game.",
+        "releaseDate": "1997-12-20T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/74hLDKjD5aGYOotO6esUVaeISa2.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/637", "https://www.imdb.com/title/tt0118799"]
+    },
+    {
+        "title": "Terminator 2: Judgment Day",
+        "description": "Set ten years after the events of the original, James Cameron’s classic sci-fi action flick tells the story of a second attempt to get the rid of rebellion leader John Connor, this time targeting the boy himself. However, the rebellion has sent a reprogrammed terminator to protect Connor.",
+        "releaseDate": "1991-07-03T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/5M0j0B18abtBI5gi2RhfjjurTqb.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/280", "https://www.imdb.com/title/tt0103064"]
+    },
+    {
+        "title": "Star Wars",
+        "description": "Princess Leia is captured and held hostage by the evil Imperial forces in their effort to take over the galactic Empire. Venturesome Luke Skywalker and dashing captain Han Solo team together with the loveable robot duo R2-D2 and C-3PO to rescue the beautiful princess and restore peace and justice in the Empire.",
+        "releaseDate": "1977-05-25T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/6FfCtAuVAW8XJjZ7eWeLibRLWTw.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/11", "https://www.imdb.com/title/tt0076759"]
+    },
+    {
+        "title": "Back to the Future",
+        "description": "Eighties teenager Marty McFly is accidentally sent back in time to 1955, inadvertently disrupting his parents' first meeting and attracting his mother's romantic interest. Marty must repair the damage to history by rekindling his parents' romance and - with the help of his eccentric inventor friend Doc Brown - return to 1985.",
+        "releaseDate": "1985-07-03T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/fNOH9f1aA7XRTzl1sAOx9iF553Q.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/105", "https://www.imdb.com/title/tt0088763"]
+    },
+    {
+        "title": "Spirited Away",
+        "description": "A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.",
+        "releaseDate": "2001-07-20T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/129", "https://www.imdb.com/title/tt0245429"]
+    },
+    {
+        "title": "The Pianist",
+        "description": "The true story of pianist Władysław Szpilman's experiences in Warsaw during the Nazi occupation. When the Jews of the city find themselves forced into a ghetto, Szpilman finds work playing in a café; and when his family is deported in 1942, he stays behind, works for a while as a laborer, and eventually goes into hiding in the ruins of the war-torn city.",
+        "releaseDate": "2002-09-17T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/2hFvxCCWrTmCYwfy7yum0GKRi3Y.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/423", "https://www.imdb.com/title/tt0253474"]
+    },
+    {
+        "title": "Parasite",
+        "description": "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
+        "releaseDate": "2019-05-30T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/496243", "https://www.imdb.com/title/tt6751668"]
+    },
+    {
+        "title": "Gladiator",
+        "description": "After the death of Emperor Marcus Aurelius, his devious son takes power and demotes Maximus, one of Rome's most capable generals who Marcus preferred. Eventually, Maximus is forced to become a gladiator and battle to the death against other men for the amusement of paying audiences.",
+        "releaseDate": "2000-05-04T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/ty8TGRuvJLPUmAR1H1nRIsgwvim.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/98", "https://www.imdb.com/title/tt0172495"]
+    },
+    {
+        "title": "Psycho",
+        "description": "When larcenous real estate clerk Marion Crane goes on the lam with a wad of cash and hopes of starting a new life, she ends up at the notorious Bates Motel, where manager Norman Bates cares for his housebound mother.",
+        "releaseDate": "1960-06-22T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/yz4QVqPx3h1hD1DfqqQkCq3rmxW.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/539", "https://www.imdb.com/title/tt0054215"]
+    },
+    {
+        "title": "The Lion King",
+        "description": "Young lion prince Simba, eager to one day become king of the Pride Lands, grows up under the watchful eye of his father Mufasa; all the while his villainous uncle Scar conspires to take the throne for himself. Amid betrayal and tragedy, Simba must confront his past and find his rightful place in the Circle of Life.",
+        "releaseDate": "1994-06-24T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/sKCr78MXSLixwmZ8DyJLrpMsd15.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/8587", "https://www.imdb.com/title/tt0110357"]
+    },
+    {
+        "title": "The Departed",
+        "description": "To take down South Boston's Irish Mafia, the police send in one of their own to infiltrate the underworld, not realizing the syndicate has done likewise. While an undercover cop curries favor with the mob kingpin, a career criminal rises through the police ranks. But both sides soon discover there's a mole among them.",
+        "releaseDate": "2006-10-04T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/nT97ifVT2J1yMQmeq20Qblg61T.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/1422", "https://www.imdb.com/title/tt0407887"]
+    },
+    {
+        "title": "Grave of the Fireflies",
+        "description": "In the final months of World War II, 14-year-old Seita and his sister Setsuko are orphaned when their mother is killed during an air raid in Kobe, Japan. After a falling out with their aunt, they move into an abandoned bomb shelter. With no surviving relatives and their emergency rations depleted, Seita and Setsuko struggle to survive.",
+        "releaseDate": "1988-04-16T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/k9tv1rXZbOhH7eiCk378x61kNQ1.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/12477", "https://www.imdb.com/title/tt0095327"]
+    },
+    {
+        "title": "Spider-Man: Across the Spider-Verse",
+        "description": "After reuniting with Gwen Stacy, Brooklyn’s full-time, friendly neighborhood Spider-Man is catapulted across the Multiverse, where he encounters the Spider Society, a team of Spider-People charged with protecting the Multiverse’s very existence. But when the heroes clash on how to handle a new threat, Miles finds himself pitted against the other Spiders and must set out on his own to save those he loves most.",
+        "releaseDate": "2023-05-31T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/8Vt6mWEReuy4Of61Lnj5Xj704m8.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/569094", "https://www.imdb.com/title/tt9362722"]
+    },
+    {
+        "title": "Whiplash",
+        "description": "Under the direction of a ruthless instructor, a talented young drummer begins to pursue perfection at any cost, even his humanity.",
+        "releaseDate": "2014-10-10T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/7fn624j5lj3xTme2SgiLCeuedmO.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/244786", "https://www.imdb.com/title/tt2582802"]
+    },
+    {
+        "title": "American History X",
+        "description": "Derek Vineyard is paroled after serving 3 years in prison for killing two African-American men. Through his brother, Danny Vineyard's narration, we learn that before going to prison, Derek was a skinhead and the leader of a violent white supremacist gang that committed acts of racial crime throughout L.A. and his actions greatly influenced Danny. Reformed and fresh out of prison, Derek severs contact with the gang and becomes determined to keep Danny from going down the same violent path as he did.",
+        "releaseDate": "1998-07-01T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/euypWkaYFOLW3e5rLIcTAjWnhhT.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/73", "https://www.imdb.com/title/tt0120586"]
+    },
+    {
+        "title": "Léon: The Professional",
+        "description": "Léon, the top hit man in New York, has earned a rep as an effective \"cleaner\". But when his next-door neighbors are wiped out by a loose-cannon DEA agent, he becomes the unwilling custodian of 12-year-old Mathilda. Before long, Mathilda's thoughts turn to revenge, and she considers following in Léon's footsteps.",
+        "releaseDate": "1994-09-14T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/yI6X2cCM5YPJtxMhUd3dPGqDAhw.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/101", "https://www.imdb.com/title/tt0110413"]
+    },
+    {
+        "title": "The Prestige",
+        "description": "A mysterious story of two magicians whose intense rivalry leads them on a life-long battle for supremacy -- full of obsession, deceit and jealousy with dangerous and deadly consequences.",
+        "releaseDate": "2006-10-17T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/tRNlZbgNCNOpLpbPEz5L8G8A0JN.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/1124", "https://www.imdb.com/title/tt0482571"]
+    },
+    {
+        "title": "Harakiri",
+        "description": "Down-on-his-luck veteran Tsugumo Hanshirō enters the courtyard of the prosperous House of Iyi. Unemployed, and with no family, he hopes to find a place to commit seppuku—and a worthy second to deliver the coup de grâce in his suicide ritual. The senior counselor for the Iyi clan questions the ronin’s resolve and integrity, suspecting Hanshirō of seeking charity rather than an honorable end. What follows is a pair of interlocking stories which lay bare the difference between honor and respect, and promises to examine the legendary foundations of the Samurai code.",
+        "releaseDate": "1962-09-15T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/5konZnIbcAxZjP616Cz5o9bKEfW.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/14537", "https://www.imdb.com/title/tt0056058"]
+    },
+    {
+        "title": "Casablanca",
+        "description": "In Casablanca, Morocco in December 1941, a cynical American expatriate meets a former lover, with unforeseen complications.",
+        "releaseDate": "1943-01-15T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/5K7cOHoay2mZusSLezBOY0Qxh8a.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/289", "https://www.imdb.com/title/tt0034583"]
+    },
+    {
+        "title": "The Usual Suspects",
+        "description": "Held in an L.A. interrogation room, Verbal Kint attempts to convince the feds that a mythic crime lord, Keyser Soze, not only exists, but was also responsible for drawing him and his four partners into a multi-million dollar heist that ended with an explosion in San Pedro harbor – leaving few survivors. Verbal lures his interrogators with an incredible story of the crime lord's almost supernatural prowess.",
+        "releaseDate": "1995-07-19T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/rWbsxdwF9qQzpTPCLmDfVnVqTK1.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/629", "https://www.imdb.com/title/tt0114814"]
+    },
+    {
+        "title": "The Intouchables",
+        "description": "A true story of two men who should never have met – a quadriplegic aristocrat who was injured in a paragliding accident and a young man from the projects.",
+        "releaseDate": "2011-11-02T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/1QU7HKgsQbGpzsJbJK4pAVQV9F5.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/77338", "https://www.imdb.com/title/tt1675434"]
+    },
+    {
+        "title": "Cinema Paradiso",
+        "description": "A filmmaker recalls his childhood, when he fell in love with the movies at his village's theater and formed a deep friendship with the theater's projectionist.",
+        "releaseDate": "1988-11-17T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/rf99GAg2zHKFj79QKn8ed8iPCVF.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/11216", "https://www.imdb.com/title/tt0095765"]
+    },
+    {
+        "title": "Dune: Part Two",
+        "description": "Follow the mythic journey of Paul Atreides as he unites with Chani and the Fremen while on a path of revenge against the conspirators who destroyed his family. Facing a choice between the love of his life and the fate of the known universe, Paul endeavors to prevent a terrible future only he can foresee.",
+        "releaseDate": "2024-02-27T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/6izwz7rsy95ARzTR3poZ8H6c5pp.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/693134", "https://www.imdb.com/title/tt15239678"]
+    },
+    {
+        "title": "Modern Times",
+        "description": "A bumbling tramp desires to build a home with a young woman, yet is thwarted time and time again by his lack of experience and habit of being in the wrong place at the wrong time..",
+        "releaseDate": "1936-02-05T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/9baQjJ85LKQZFFpNWR563SsK2rz.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/3082", "https://www.imdb.com/title/tt0027977"]
+    },
+    {
+        "title": "Alien",
+        "description": "During its return to the earth, commercial spaceship Nostromo intercepts a distress signal from a distant planet. When a three-member team of the crew discovers a chamber containing thousands of eggs on the planet, a creature inside one of the eggs attacks an explorer. The entire crew is unaware of the impending nightmare set to descend upon them when the alien parasite planted inside its unfortunate host is birthed.",
+        "releaseDate": "1979-05-25T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/vfrQk5IPloGg1v9Rzbh2Eg3VGyM.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/348", "https://www.imdb.com/title/tt0078748"]
+    },
+    {
+        "title": "Rear Window",
+        "description": "A wheelchair-bound photographer spies on his neighbors from his apartment window and becomes convinced one of them has committed murder.",
+        "releaseDate": "1954-08-01T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/ILVF0eJxHMddjxeQhswFtpMtqx.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/567", "https://www.imdb.com/title/tt0047396"]
+    },
+    {
+        "title": "Once Upon a Time in the West",
+        "description": "As the railroad builders advance unstoppably through the Arizona desert on their way to the sea, Jill arrives in the small town of Flagstone with the intention of starting a new life.",
+        "releaseDate": "1968-12-21T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/qbYgqOczabWNn2XKwgMtVrntD6P.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/335", "https://www.imdb.com/title/tt0064116"]
+    },
+    {
+        "title": "Django Unchained",
+        "description": "With the help of a German bounty hunter, a freed slave sets out to rescue his wife from a brutal Mississippi plantation owner.",
+        "releaseDate": "2012-12-25T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/7oWY8VDWW7thTzWh3OKYRkWUlD5.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/68718", "https://www.imdb.com/title/tt1853728"]
+    },
+    {
+        "title": "City Lights",
+        "description": "A tramp falls in love with a beautiful blind flower girl. His on-and-off friendship with a wealthy man allows him to be the girl's benefactor and suitor.",
+        "releaseDate": "1931-02-06T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/ugmakEL5y294I5bXgiBqApuZpwc.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/901", "https://www.imdb.com/title/tt0021749"]
+    },
+    {
+        "title": "Apocalypse Now",
+        "description": "At the height of the Vietnam war, Captain Benjamin Willard is sent on a dangerous mission that, officially, \"does not exist, nor will it ever exist.\" His goal is to locate - and eliminate - a mysterious Green Beret Colonel named Walter Kurtz, who has been leading his personal army on illegal guerrilla missions into enemy territory.",
+        "releaseDate": "1979-08-15T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/gQB8Y5RCMkv2zwzFHbUJX3kAhvA.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/28", "https://www.imdb.com/title/tt0078788"]
+    },
+    {
+        "title": "Memento",
+        "description": "Leonard Shelby is tracking down the man who raped and murdered his wife. The difficulty of locating his wife's killer, however, is compounded by the fact that he suffers from a rare, untreatable form of short-term memory loss. Although he can recall details of life before his accident, Leonard cannot remember what happened fifteen minutes ago, where he's going, or why.",
+        "releaseDate": "2000-10-11T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/nWtySDlffTfwAa0rSfq61o33ZXV.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/77", "https://www.imdb.com/title/tt0209144"]
+    },
+    {
+        "title": "WALL·E",
+        "description": "What if mankind had to leave Earth and somebody forgot to turn the last robot off? After hundreds of years doing what he was built for, WALL•E discovers a new purpose in life when he meets a sleek search robot named EVE. EVE comes to realize that WALL•E has inadvertently stumbled upon the key to the planet's future, and races back to space to report to the humans. Meanwhile, WALL•E chases EVE across the galaxy and sets into motion one of the most imaginative adventures ever brought to the big screen.",
+        "releaseDate": "2008-06-22T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/hbhFnRzzg6ZDmm8YAmxBnQpQIPh.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/10681", "https://www.imdb.com/title/tt0910970"]
+    },
+    {
+        "title": "Raiders of the Lost Ark",
+        "description": "When Dr. Indiana Jones – the tweed-suited professor who just happens to be a celebrated archaeologist – is hired by the government to locate the legendary Ark of the Covenant, he finds himself up against the entire Nazi regime.",
+        "releaseDate": "1981-06-12T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/ceG9VzoRAVGwivFU403Wc3AHRys.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/85", "https://www.imdb.com/title/tt0082971"]
+    },
+    {
+        "title": "The Lives of Others",
+        "description": "In 1984 East Berlin, an agent of the Stasi secret police, conducting surveillance on a writer and his lover, finds himself becoming increasingly absorbed by their lives.",
+        "releaseDate": "2006-03-23T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/cVUDMnskSc01rdbyH0tLATTJUdP.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/582", "https://www.imdb.com/title/tt0405094"]
+    },
+    {
+        "title": "12th Fail",
+        "description": "Based on the true story of IPS officer Manoj Kumar Sharma, 12th Fail sheds limelight on fearlessly embracing the idea of restarting the academic journey despite the setbacks and challenges and reclaiming one's destiny at a place where millions of students attempt the world's toughest competitive exam: UPSC.",
+        "releaseDate": "2023-10-27T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/eebUPRI4Z5e1Z7Hev4JZAwMIFkX.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/1163258", "https://www.imdb.com/title/tt23849204"]
+    },
+    {
+        "title": "Avengers: Infinity War",
+        "description": "As the Avengers and their allies have continued to protect the world from threats too large for any one hero to handle, a new danger has emerged from the cosmic shadows: Thanos. A despot of intergalactic infamy, his goal is to collect all six Infinity Stones, artifacts of unimaginable power, and use them to inflict his twisted will on all of reality. Everything the Avengers have fought for has led up to this moment - the fate of Earth and existence itself has never been more uncertain.",
+        "releaseDate": "2018-04-25T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/7WsyChQLEftFiDOVTGkv3hFpyyt.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/299536", "https://www.imdb.com/title/tt4154756"]
+    },
+    {
+        "title": "Sunset Boulevard",
+        "description": "A hack screenwriter writes a screenplay for a former silent film star who has faded into Hollywood obscurity.",
+        "releaseDate": "1950-08-10T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/sC4Dpmn87oz9AuxZ15Lmip0Ftgr.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/599", "https://www.imdb.com/title/tt0043014"]
+    },
+    {
+        "title": "Spider-Man: Into the Spider-Verse",
+        "description": "Struggling to find his place in the world while juggling school and family, Brooklyn teenager Miles Morales is unexpectedly bitten by a radioactive spider and develops unfathomable powers just like the one and only Spider-Man. While wrestling with the implications of his new abilities, Miles discovers a super collider created by the madman Wilson \"Kingpin\" Fisk, causing others from across the Spider-Verse to be inadvertently transported to his dimension.",
+        "releaseDate": "2018-12-06T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/iiZZdoQBEYBv6id8su7ImL0oCbD.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/324857", "https://www.imdb.com/title/tt4633694"]
+    },
+    {
+        "title": "Paths of Glory",
+        "description": "A commanding officer defends three scapegoats on trial for a failed offensive that occurred within the French Army in 1916.",
+        "releaseDate": "1957-10-25T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/tJXwtzOSNUC8dxJfrdvkNtGrrgW.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/975", "https://www.imdb.com/title/tt0050825"]
+    },
+    {
+        "title": "Witness for the Prosecution",
+        "description": "An ailing famous barrister agrees to defend a man in a sensational murder trial where his self-possessed wife's unconvincing testimony confuses him.",
+        "releaseDate": "1957-12-17T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/mM5Cad2ESBprh6ucPnMzMfI34Cu.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/37257", "https://www.imdb.com/title/tt0051201"]
+    },
+    {
+        "title": "The Shining",
+        "description": "Jack Torrance accepts a caretaker job at the Overlook Hotel, where he, along with his wife Wendy and their son Danny, must live isolated from the rest of the world for the winter. But they aren't prepared for the madness that lurks within.",
+        "releaseDate": "1980-05-23T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/nRj5511mZdTl4saWEPoj9QroTIu.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/694", "https://www.imdb.com/title/tt0081505"]
+    },
+    {
+        "title": "The Great Dictator",
+        "description": "Dictator Adenoid Hynkel tries to expand his empire while a poor Jewish barber tries to avoid persecution from Hynkel's regime.",
+        "releaseDate": "1940-10-15T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/x0L9EQuQRsIrnov5aiHXrRegaGI.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/914", "https://www.imdb.com/title/tt0032553"]
+    },
+    {
+        "title": "Aliens",
+        "description": "Ripley, the sole survivor of the Nostromo's deadly encounter with the monstrous Alien, returns to Earth after drifting through space in hypersleep for 57 years. Although her story is initially met with skepticism, she agrees to accompany a team of Colonial Marines back to LV-426.",
+        "releaseDate": "1986-07-18T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/r1x5JGpyqZU8PYhbs4UcrO1Xb6x.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/679", "https://www.imdb.com/title/tt0090605"]
+    },
+    {
+        "title": "Inglourious Basterds",
+        "description": "In Nazi-occupied France during World War II, a group of Jewish-American soldiers known as \"The Basterds\" are chosen specifically to spread fear throughout the Third Reich by scalping and brutally killing Nazis. The Basterds, lead by Lt. Aldo Raine soon cross paths with a French-Jewish teenage girl who runs a movie theater in Paris which is targeted by the soldiers.",
+        "releaseDate": "2009-08-02T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/7sfbEnaARXDDhKm0CZ7D7uc2sbo.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/16869", "https://www.imdb.com/title/tt0361748"]
+    },
+    {
+        "title": "The Dark Knight Rises",
+        "description": "Following the death of District Attorney Harvey Dent, Batman assumes responsibility for Dent's crimes to protect the late attorney's reputation and is subsequently hunted by the Gotham City Police Department. Eight years later, Batman encounters the mysterious Selina Kyle and the villainous Bane, a new terrorist leader who overwhelms Gotham's finest. The Dark Knight resurfaces to protect a city that has branded him an enemy.",
+        "releaseDate": "2012-07-17T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/hr0L2aueqlP2BYUblTTjmtn0hw4.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/49026", "https://www.imdb.com/title/tt1345836"]
+    },
+    {
+        "title": "Coco",
+        "description": "Despite his family’s baffling generations-old ban on music, Miguel dreams of becoming an accomplished musician like his idol, Ernesto de la Cruz. Desperate to prove his talent, Miguel finds himself in the stunning and colorful Land of the Dead following a mysterious chain of events. Along the way, he meets charming trickster Hector, and together, they set off on an extraordinary journey to unlock the real story behind Miguel's family history.",
+        "releaseDate": "2017-10-27T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/gGEsBPAijhVUFoiNpgZXqRVWJt2.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/354912", "https://www.imdb.com/title/tt2380307"]
+    },
+    {
+        "title": "Amadeus",
+        "description": "Disciplined Italian composer Antonio Salieri becomes consumed by jealousy and resentment towards the hedonistic and remarkably talented young Viennese composer Wolfgang Amadeus Mozart.",
+        "releaseDate": "1984-09-19T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/1n5VUlCqgmVax1adxGZm8oCFaKc.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/279", "https://www.imdb.com/title/tt0086879"]
+    },
+    {
+        "title": "Toy Story",
+        "description": "Led by Woody, Andy's toys live happily in his room until Andy's birthday brings Buzz Lightyear onto the scene. Afraid of losing his place in Andy's heart, Woody plots against Buzz. But when circumstances separate Buzz and Woody from their owner, the duo eventually learns to put aside their differences.",
+        "releaseDate": "1995-10-30T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/uXDfjJbdP4ijW5hWSBrPrlKpxab.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/862", "https://www.imdb.com/title/tt0114709"]
+    },
+    {
+        "title": "Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb",
+        "description": "After the insane General Jack D. Ripper initiates a nuclear strike on the Soviet Union, a war room full of politicians, generals and a Russian diplomat all frantically try to stop the nuclear strike.",
+        "releaseDate": "1964-01-29T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/7SixLzxcqezkZEYU8pcHZgbkmjp.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/935", "https://www.imdb.com/title/tt0057012"]
+    },
+    {
+        "title": "Oldboy",
+        "description": "With no clue how he came to be imprisoned, drugged and tortured for 15 years, a desperate man seeks revenge on his captors.",
+        "releaseDate": "2003-11-21T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/pWDtjs568ZfOTMbURQBYuT4Qxka.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/670", "https://www.imdb.com/title/tt0364569"]
+    },
+    {
+        "title": "American Beauty",
+        "description": "Lester Burnham, a depressed suburban father in a mid-life crisis, decides to turn his hectic life around after developing an infatuation with his daughter's attractive friend.",
+        "releaseDate": "1999-09-15T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/wby9315QzVKdW9BonAefg8jGTTb.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/14", "https://www.imdb.com/title/tt0169547"]
+    },
+    {
+        "title": "Avengers: Endgame",
+        "description": "After the devastating events of Avengers: Infinity War, the universe is in ruins due to the efforts of the Mad Titan, Thanos. With the help of remaining allies, the Avengers must assemble once more in order to undo Thanos' actions and restore order to the universe once and for all, no matter what consequences may be in store.",
+        "releaseDate": "2019-04-24T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/299534", "https://www.imdb.com/title/tt4154796"]
+    },
+    {
+        "title": "Good Will Hunting",
+        "description": "When professors discover that an aimless janitor is also a math genius, a therapist helps the young man confront the demons that are holding him back.",
+        "releaseDate": "1997-12-05T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/bABCBKYBK7A5G1x0FzoeoNfuj2.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/489", "https://www.imdb.com/title/tt0119217"]
+    },
+    {
+        "title": "Das Boot",
+        "description": "A German submarine hunts allied ships during the Second World War, but it soon becomes the hunted. The crew tries to survive below the surface, while stretching both the boat and themselves to their limits.",
+        "releaseDate": "1981-09-17T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/hafqfgdsbvZIDgml6GmRKs5VL4m.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/387", "https://www.imdb.com/title/tt0082096"]
+    },
+    {
+        "title": "Braveheart",
+        "description": "Enraged at the slaughter of Murron, his new bride and childhood love, Scottish warrior William Wallace slays a platoon of the local English lord's soldiers. This leads the village to revolt and, eventually, the entire country to rise up against English rule.",
+        "releaseDate": "1995-05-24T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/or1gBugydmjToAEq7OZY0owwFk.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/197", "https://www.imdb.com/title/tt0112573"]
+    },
+    {
+        "title": "Princess Mononoke",
+        "description": "Ashitaka, a prince of the disappearing Emishi people, is cursed by a demonized boar god and must journey to the west to find a cure. Along the way, he encounters San, a young human woman fighting to protect the forest, and Lady Eboshi, who is trying to destroy it. Ashitaka must find a way to bring balance to this conflict.",
+        "releaseDate": "1997-07-12T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/cMYCDADoLKLbB83g4WnJegaZimC.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/128", "https://www.imdb.com/title/tt0119698"]
+    },
+    {
+        "title": "Your Name.",
+        "description": "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. This bizarre occurrence continues to happen randomly, and the two must adjust their lives around each other.",
+        "releaseDate": "2016-08-26T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/vfJFJPepRKapMd5G2ro7klIRysq.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/372058", "https://www.imdb.com/title/tt5311514"]
+    },
+    {
+        "title": "High and Low",
+        "description": "In the midst of an attempt to take over his company, a powerhouse executive is hit with a huge ransom demand when his chauffeur's son is kidnapped by mistake.",
+        "releaseDate": "1963-03-01T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/tgNjemQPG96uIezpiUiXFcer5ga.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/12493", "https://www.imdb.com/title/tt0057565"]
+    },
+    {
+        "title": "Joker",
+        "description": "During the 1980s, a failed stand-up comedian is driven insane and turns to a life of crime and chaos in Gotham City while becoming an infamous psychopathic crime figure.",
+        "releaseDate": "2019-10-01T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/475557", "https://www.imdb.com/title/tt7286456"]
+    },
+    {
+        "title": "3 Idiots",
+        "description": "Rascal. Joker. Dreamer. Genius... You've never met a college student quite like \"Rancho.\" From the moment he arrives at India's most prestigious university, Rancho's outlandish schemes turn the campus upside down—along with the lives of his two newfound best friends. Together, they make life miserable for \"Virus,\" the school’s uptight and heartless dean. But when Rancho catches the eye of the dean's daughter, Virus sets his sights on flunking out the \"3 idiots\" once and for all.",
+        "releaseDate": "2009-12-23T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/66A9MqXOyVFCssoloscw79z8Tew.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/20453", "https://www.imdb.com/title/tt1187043"]
+    },
+    {
+        "title": "Once Upon a Time in America",
+        "description": "A former Prohibition-era Jewish gangster returns to the Lower East Side of Manhattan over thirty years later, where he once again must confront the ghosts and regrets of his old life.",
+        "releaseDate": "1984-05-23T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/7jPWSo0yn6gW72LDuZvZq29uqpG.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/311", "https://www.imdb.com/title/tt0087843"]
+    },
+    {
+        "title": "Singin' in the Rain",
+        "description": "In 1927 Hollywood, a silent film production company and cast make a difficult transition to sound.",
+        "releaseDate": "1952-04-09T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/w03EiJVHP8Un77boQeE7hg9DVdU.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/872", "https://www.imdb.com/title/tt0045152"]
+    },
+    {
+        "title": "Capernaum",
+        "description": "After running away from his negligent parents, committing a violent crime and being sentenced to five years in jail, a hardened, streetwise 12-year-old Lebanese boy sues his parents in protest of the life they have given him.",
+        "releaseDate": "2018-09-20T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/mFnfTVADj8yOxwzprYOmTPselk8.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/517814", "https://www.imdb.com/title/tt8267604"]
+    },
+    {
+        "title": "Come and See",
+        "description": "The invasion of a village in Byelorussia by German forces sends young Florya into the forest to join the weary Resistance fighters, against his family's wishes. There he meets a girl, Glasha, who accompanies him back to his village. On returning home, Florya finds his family and fellow peasants massacred. His continued survival amidst the brutal debris of war becomes increasingly nightmarish, a battle between despair and hope.",
+        "releaseDate": "1985-10-17T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/qNbMsKVzigERgJUbwf8pKyZogpb.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/25237", "https://www.imdb.com/title/tt0091251"]
+    },
+    {
+        "title": "Requiem for a Dream",
+        "description": "The drug-induced utopias of four Coney Island residents are shattered when their addictions run deep.",
+        "releaseDate": "2000-10-06T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/nOd6vjEmzCT0k4VYqsA2hwyi87C.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/641", "https://www.imdb.com/title/tt0180093"]
+    },
+    {
+        "title": "Toy Story 3",
+        "description": "Woody, Buzz, and the rest of Andy's toys haven't been played with in years. With Andy about to go to college, the gang find themselves accidentally left at a nefarious day care center. The toys must band together to escape and return home to Andy.",
+        "releaseDate": "2010-06-16T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/AbbXspMOwdvwWZgVN0nabZq03Ec.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/10193", "https://www.imdb.com/title/tt0435761"]
+    },
+    {
+        "title": "Return of the Jedi",
+        "description": "Luke Skywalker leads a mission to rescue his friend Han Solo from the clutches of Jabba the Hutt, while the Emperor seeks to destroy the Rebellion once and for all with a second dreaded Death Star.",
+        "releaseDate": "1983-05-25T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/jQYlydvHm3kUix1f8prMucrplhm.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/1892", "https://www.imdb.com/title/tt0086190"]
+    },
+    {
+        "title": "The Hunt",
+        "description": "A teacher lives a lonely life, all the while struggling over his son’s custody. His life slowly gets better as he finds love and receives good news from his son, but his new luck is about to be brutally shattered by an innocent little lie.",
+        "releaseDate": "2012-06-13T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/jkixsXzRh28q3PCqFoWcf7unghT.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/103663", "https://www.imdb.com/title/tt2106476"]
+    },
+    {
+        "title": "Eternal Sunshine of the Spotless Mind",
+        "description": "Joel Barish, heartbroken that his girlfriend underwent a procedure to erase him from her memory, decides to do the same. However, as he watches his memories of her fade away, he realises that he still loves her, and may be too late to correct his mistake.",
+        "releaseDate": "2004-03-19T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/5MwkWH9tYHv3mV9OdYTMR5qreIz.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/38", "https://www.imdb.com/title/tt0338013"]
+    },
+    {
+        "title": "Ikiru",
+        "description": "Kanji Watanabe is a middle-aged man who has worked in the same monotonous bureaucratic position for decades. Learning he has cancer, he starts to look for the meaning of his life.",
+        "releaseDate": "1952-10-09T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/dgNTS4EQDDVfkzJI5msKuHu2Ei3.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/3782", "https://www.imdb.com/title/tt0044741"]
+    },
+    {
+        "title": "2001: A Space Odyssey",
+        "description": "Humanity finds a mysterious object buried beneath the lunar surface and sets off to find its origins with the help of HAL 9000, the world's most advanced super computer.",
+        "releaseDate": "1968-04-02T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/ve72VxNqjGM69Uky4WTo2bK6rfq.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/62", "https://www.imdb.com/title/tt0062622"]
+    },
+    {
+        "title": "Reservoir Dogs",
+        "description": "A botched robbery indicates a police informant, and the pressure mounts in the aftermath at a warehouse. Crime begets violence as the survivors -- veteran Mr. White, newcomer Mr. Orange, psychopathic parolee Mr. Blonde, bickering weasel Mr. Pink and Nice Guy Eddie -- unravel.",
+        "releaseDate": "1992-09-02T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/xi8Iu6qyTfyZVDVy60raIOYJJmk.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/500", "https://www.imdb.com/title/tt0105236"]
+    },
+    {
+        "title": "Lawrence of Arabia",
+        "description": "The story of British officer T.E. Lawrence's mission to aid the Arab tribes in their revolt against the Ottoman Empire during the First World War. Lawrence becomes a flamboyant, messianic figure in the cause of Arab unity but his psychological instability threatens to undermine his achievements.",
+        "releaseDate": "1962-12-11T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/AiAm0EtDvyGqNpVoieRw4u65vD1.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/947", "https://www.imdb.com/title/tt0056172"]
+    },
+    {
+        "title": "The Apartment",
+        "description": "Bud Baxter is a minor clerk in a huge New York insurance company, until he discovers a quick way to climb the corporate ladder. He lends out his apartment to the executives as a place to take their mistresses. Although he often has to deal with the aftermath of their visits, one night he's left with a major problem to solve.",
+        "releaseDate": "1960-06-21T00:00:00.000Z",
+        "posterUrl": "https://image.tmdb.org/t/p/w500/hhSRt1KKfRT0yEhEtRW3qp31JFU.jpg",
+        "externalUrls": ["https://www.themoviedb.org/movie/284", "https://www.imdb.com/title/tt0053604"]
+    }
+]

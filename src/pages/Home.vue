@@ -35,22 +35,50 @@
                 <MediaGrid class="mt-4">
                     <MovieCard v-for="movie of pendingMovies" :key="movie.url" :movie />
                 </MediaGrid>
+                <div
+                    v-if="pendingMovies.length === SAMPLE_MOVIES_LENGTH"
+                    class="mt-4 flex items-center justify-center text-sm"
+                >
+                    <span>{{ moreMoviesParts.start.replace(/ $/, '\u00A0') }}</span>
+                    <Link route="movies.index">{{ $t('home.moreMoviesLink') }}</Link>
+                    <span>{{ moreMoviesParts.end.replace(/^ /, '\u00A0') }}</span>
+                </div>
             </template>
         </template>
     </Page>
 </template>
 
 <script setup lang="ts">
+import { translate } from '@aerogel/core';
 import { computedModels, useModelCollection } from '@aerogel/plugin-solid';
+import { arrayReversed } from '@noeldemartin/utils';
 
 import Episode from '@/models/Episode';
 import Movie from '@/models/Movie';
 import Show from '@/models/Show';
 
+const SAMPLE_MOVIES_LENGTH = 10;
+
 const shows = useModelCollection(Show);
 const movies = useModelCollection(Movie);
 const activeShows = computedModels(Show, () => shows.value.filter((show) => show.watchingStatus === 'watching'));
-const pendingMovies = computedModels(Movie, () => movies.value.filter((movie) => !movie.watched).slice(0, 20));
+const pendingMovies = computedModels(Movie, () => {
+    const sample: Movie[] = [];
+
+    for (const movie of arrayReversed(movies.value)) {
+        if (movie.watched) {
+            continue;
+        }
+
+        sample.push(movie);
+
+        if (sample.length === SAMPLE_MOVIES_LENGTH) {
+            break;
+        }
+    }
+
+    return sample;
+});
 const upcomingShows = computedModels(
     Show,
     () =>
@@ -59,4 +87,9 @@ const upcomingShows = computedModels(
         ),
     { watch: ['pendingEpisodes'] },
 );
+const moreMovies = translate('home.moreMovies', { link: `%LINK_PLACEHOLDER%` });
+const moreMoviesParts = {
+    start: moreMovies.split('%LINK_PLACEHOLDER%')[0] ?? '',
+    end: moreMovies.split('%LINK_PLACEHOLDER%')[1] ?? '',
+};
 </script>

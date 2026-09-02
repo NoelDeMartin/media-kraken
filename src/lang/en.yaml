@@ -35,6 +35,8 @@ home:
     showsAll: 'View all shows'
     movies: 'Prepare the popcorn'
     moviesAll: 'View all movies'
+    moreMovies: 'Find more movies {link}.'
+    moreMoviesLink: 'in your collection'
 
 movies:
     title: 'Movies'
@@ -83,6 +85,15 @@ lists:
 
 discover:
     title: 'Discover'
+
+seedCollection:
+    title: 'Kickstart'
+    description: |
+        Ok, if you really don't know where to start I can help you. I understand how intimidating a blank canvas can be!
+
+        Using the button below, I'll add the top 100 rated movies from IMDb to your collection. But after this, you're not getting any more suggestions from me! Ask your friends for recommendations, and every time that you come across something you like, come back to save it. Never forget a movie again!
+    submit: 'Add the top 100 rated movies from IMDb to my collection'
+    seeding: 'Seeding collection...'
 
 import:
     title: 'Import Media'
