@@ -49,6 +49,13 @@ movies:
     externalSites: 'External sites'
     openActionsMenu: 'Open actions menu'
     added: '**{movie}** has been added to your collection!'
+    itemsName: 'movies'
+    viewGrid: 'View as grid'
+    viewList: 'View as list'
+    table:
+        title: 'Title'
+        year: 'Year'
+        watched: 'Watched'
 
 shows:
     title: 'Shows'
@@ -191,3 +198,12 @@ ui:
     cancel: Cancel
     close: Close
     ok: OK
+
+pagination:
+    sortAscending: 'Sort ascending'
+    sortDescending: 'Sort descending'
+    unsort: 'Reset sort'
+    label: 'Pagination'
+    previous: 'Previous'
+    next: 'Next'
+    summary: 'Showing {start} to {end} of {total} {items}'

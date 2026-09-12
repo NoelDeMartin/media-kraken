@@ -1,4 +1,4 @@
-import { parseDate, stringToSlug } from '@noeldemartin/utils';
+import { arraySorted, parseDate, stringToSlug } from '@noeldemartin/utils';
 import type { HasManyRelation } from 'soukai-bis';
 
 import { findExternalId, parseImdbId, parseTmdbId } from '@/lib/domains';
@@ -48,6 +48,13 @@ export default class Movie extends Model {
 
     public get watched(): boolean | null {
         return this.watchActions ? this.watchActions.length > 0 : null;
+    }
+
+    public get watchedAt(): Date | null {
+        const watchActions = this.watchActions?.filter((action) => action.endTime) ?? [];
+        const [firstWatch] = arraySorted(watchActions, 'endTime', 'asc');
+
+        return firstWatch?.endTime ?? null;
     }
 
     public getSlug(): string | null {

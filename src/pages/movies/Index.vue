@@ -22,19 +22,38 @@
                 </Button>
             </DropdownMenu>
             <PageTitle>{{ $t('movies.title') }} ({{ movies.length }})</PageTitle>
+            <div class="flex-1" />
+            <Button
+                @click="display = display === 'table' ? 'grid' : 'table'"
+                variant="ghost"
+                class="clickable -mr-3"
+                :title="display === 'grid' ? $t('movies.viewList') : $t('movies.viewGrid')"
+            >
+                <template v-if="display === 'grid'">
+                    <i-mdi-view-grid class="size-6" />
+                    <span class="sr-only">{{ $t('movies.viewList') }}</span>
+                </template>
+                <template v-else>
+                    <i-mdi-view-list class="size-6" />
+                    <span class="sr-only">{{ $t('movies.viewGrid') }}</span>
+                </template>
+            </Button>
         </div>
-        <VirtualMediaGrid v-slot="{ item: movie }" class="mt-2" by="url" :items="movies">
+        <VirtualMediaGrid v-if="display === 'grid'" v-slot="{ item: movie }" class="mt-2" by="url" :items="movies">
             <MovieCard :movie />
         </VirtualMediaGrid>
+        <MoviesTable v-else :movies class="mt-2" />
     </Page>
 </template>
 
 <script setup lang="ts">
 import { useModelCollection } from '@aerogel/plugin-solid';
+import { ref } from 'vue';
 import IconUpload from '~icons/mdi/upload';
 
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 import Movie from '@/models/Movie';
 
 const movies = useModelCollection(Movie);
+const display = ref<'grid' | 'table'>('grid');
 </script>
