@@ -1,6 +1,9 @@
 <template>
-    <Page>
-        <div class="flex items-center justify-start">
+    <Page :fullbleed="display === 'table'">
+        <div
+            class="max-w-screen-content mx-auto flex w-full items-center justify-start"
+            :class="{ 'px-edge': display === 'table' }"
+        >
             <DropdownMenu
                 align="start"
                 :options="[

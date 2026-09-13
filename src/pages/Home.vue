@@ -19,11 +19,8 @@
                 </MediaGrid>
             </template>
             <template v-if="pendingMovies.length > 0">
-                <div class="flex items-center justify-between">
-                    <h2
-                        class="flex items-center justify-start gap-1 text-xl font-semibold"
-                        :class="{ 'mt-8': upcomingShows.length > 0 }"
-                    >
+                <div class="flex items-center justify-between" :class="{ 'mt-8': upcomingShows.length > 0 }">
+                    <h2 class="flex items-center justify-start gap-1 text-xl font-semibold">
                         <i-ph-film-slate class="size-6" />
                         {{ $t('home.movies') }}
                     </h2>
