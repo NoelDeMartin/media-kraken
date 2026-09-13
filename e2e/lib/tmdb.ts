@@ -19,12 +19,6 @@ function handleRequest(url: URL) {
         return fixture(`/movie/${movieMatch[1]}.json`);
     }
 
-    const externalMovieIdsMatch = url.pathname.match(/^\/3\/movie\/(\d+)\/external_ids$/);
-
-    if (externalMovieIdsMatch) {
-        return fixture(`/movie/${externalMovieIdsMatch[1]}-external.json`);
-    }
-
     const showMatch = url.pathname.match(/^\/3\/tv\/(\d+)$/);
 
     if (showMatch) {

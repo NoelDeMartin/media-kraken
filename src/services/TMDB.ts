@@ -10,6 +10,10 @@ const TMDBMovieSchema = z.object({
     poster_path: z.string().nullable(),
 });
 
+const TMDBMovieDetailsSchema = TMDBMovieSchema.extend({
+    imdb_id: z.string().nullable().optional(),
+});
+
 const TMDBShowSchema = z.object({
     id: z.number(),
     name: z.string(),
@@ -17,10 +21,6 @@ const TMDBShowSchema = z.object({
     first_air_date: z.string().optional(),
     poster_path: z.string().nullable(),
     backdrop_path: z.string().nullable(),
-});
-
-const TMDBMovieExternalIdsSchema = z.object({
-    imdb_id: z.string().nullable().optional(),
 });
 
 const TMDBShowExternalIdsSchema = z.object({
@@ -80,12 +80,12 @@ const FindResponseSchema = z.object({
 });
 
 export type TMDBMovie = z.infer<typeof TMDBMovieSchema>;
-export type TMDBMovieExternalIds = z.infer<typeof TMDBMovieExternalIdsSchema>;
+export type TMDBMovieDetails = z.infer<typeof TMDBMovieDetailsSchema>;
 export type TMDBShow = z.infer<typeof TMDBShowSchema>;
 export type TMDBSeason = z.infer<typeof TMDBSeasonSchema>;
 export type TMDBEpisode = z.infer<typeof TMDBEpisodeSchema>;
 export type TMDBShowDetails = z.infer<typeof TMDBShowDetailsSchema>;
-export type TMDBShowExternalIds = z.infer<typeof TMDBShowExternalIdsSchema>;
+export type TMDBShowExternalIds = z.infer<typeof TMDBShowExternalIdsSchema>; // TODO is this necessary?
 export type TMDBMovieSearchResult = z.infer<typeof SearchMovieResultSchema>;
 export type TMDBShowSearchResult = z.infer<typeof SearchShowResultSchema>;
 export type TMDBSearchResult = TMDBMovieSearchResult | TMDBShowSearchResult;
@@ -138,10 +138,8 @@ export class TMDBService extends Service {
         };
     }
 
-    public async getMovie(id: number): Promise<{ details: TMDBMovie; externalIds: TMDBMovieExternalIds }> {
-        const [details, externalIds] = await Promise.all([this.getMovieDetails(id), this.getMovieExternalIds(id)]);
-
-        return { details, externalIds };
+    public async getMovie(id: number): Promise<TMDBMovieDetails> {
+        return this.request(TMDBMovieDetailsSchema, `movie/${id}`);
     }
 
     public async getShow(
@@ -163,14 +161,6 @@ export class TMDBService extends Service {
             : [];
 
         return { details, externalIds, seasons };
-    }
-
-    private async getMovieDetails(id: number): Promise<TMDBMovie> {
-        return this.request(TMDBMovieSchema, `movie/${id}`);
-    }
-
-    private async getMovieExternalIds(id: number): Promise<TMDBMovieExternalIds> {
-        return this.request(TMDBMovieExternalIdsSchema, `movie/${id}/external_ids`);
     }
 
     private async getShowDetails(id: number): Promise<TMDBShowDetails> {

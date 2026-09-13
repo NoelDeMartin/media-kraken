@@ -14,7 +14,7 @@ import type { ShowWatchingStatus } from '@/models/ShowWatching';
 import TMDB, {
     type TMDBEpisode,
     type TMDBMovie,
-    type TMDBMovieExternalIds,
+    type TMDBMovieDetails,
     type TMDBMovieSearchResult,
     type TMDBSeason,
     type TMDBShow,
@@ -92,8 +92,8 @@ export class CatalogService extends Service {
     }
 
     public async importMovieFromTMDB(tmdbMovie: TMDBMovie, options: { watched?: boolean } = {}): Promise<void> {
-        const { details, externalIds } = await TMDB.getMovie(tmdbMovie.id);
-        const movie = new Movie(this.getMovieAttributes(details, externalIds));
+        const details = await TMDB.getMovie(tmdbMovie.id);
+        const movie = new Movie(this.getMovieAttributes(details));
 
         if (options.watched) {
             movie.mintUrl();
@@ -142,11 +142,11 @@ export class CatalogService extends Service {
         await show.pendingEpisodes.updateValue({ refresh: true, loadRelations: true });
     }
 
-    private getMovieAttributes(details: TMDBMovie, externalIds: TMDBMovieExternalIds): GetModelInput<typeof Movie> {
+    private getMovieAttributes(details: TMDBMovieDetails): GetModelInput<typeof Movie> {
         const externalUrls = [TMDB.movieUrl(details)];
 
-        if (externalIds.imdb_id) {
-            externalUrls.push(`https://www.imdb.com/title/${externalIds.imdb_id}/`);
+        if (details.imdb_id) {
+            externalUrls.push(`https://www.imdb.com/title/${details.imdb_id}/`);
         }
 
         return {
@@ -248,8 +248,8 @@ export class CatalogService extends Service {
             return;
         }
 
-        const { details, externalIds } = await TMDB.getMovie(movie.tmdbId);
-        const attributes = this.getMovieAttributes(details, externalIds);
+        const details = await TMDB.getMovie(movie.tmdbId);
+        const attributes = this.getMovieAttributes(details);
 
         movie.setAttributes({
             ...attributes,
@@ -279,8 +279,8 @@ export class CatalogService extends Service {
     }
 
     private async newMovieFromTMDB(tmdbId: number, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
-        const { details, externalIds } = await TMDB.getMovie(tmdbId);
-        const movie = new Movie(this.getMovieAttributes(details, externalIds));
+        const details = await TMDB.getMovie(tmdbId);
+        const movie = new Movie(this.getMovieAttributes(details));
 
         movie.mintUrl();
 
