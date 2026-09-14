@@ -11,7 +11,7 @@ jobs:
         runs-on: ubuntu-latest
         steps:
             - uses: actions/checkout@v6
-            - uses: voidzero-dev/setup-vp@v1
+            - uses: voidzero-dev/setup-vp@v1.20.0
               with:
                   node-version-file: '.node-version'
                   cache: true
@@ -29,7 +29,7 @@ jobs:
                 browser: [chromium, firefox, webkit]
         steps:
             - uses: actions/checkout@v6
-            - uses: voidzero-dev/setup-vp@v1
+            - uses: voidzero-dev/setup-vp@v1.20.0
               with:
                   node-version-file: '.node-version'
                   cache: true
@@ -53,7 +53,7 @@ jobs:
             contents: write
         steps:
             - uses: actions/checkout@v6
-            - uses: voidzero-dev/setup-vp@v1
+            - uses: voidzero-dev/setup-vp@v1.20.0
               with:
                   node-version-file: '.node-version'
                   cache: true
