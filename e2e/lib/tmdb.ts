@@ -7,6 +7,10 @@ function handleRequest(url: URL) {
         return handleSearch(url.searchParams.get('query') ?? '');
     }
 
+    if (url.pathname === '/3/genre/movie/list') {
+        return fixture('/genre/movie/list.json');
+    }
+
     const findMatch = url.pathname.match(/^\/3\/find\/([^/]+)$/);
 
     if (findMatch) {

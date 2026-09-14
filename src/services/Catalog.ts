@@ -1,21 +1,25 @@
 import { Service } from '@aerogel/core';
-import { arrayUnique, facade, parseDate, stringToSlug } from '@noeldemartin/utils';
+import { arrayChunk, arrayFrom, arrayUnique, facade, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
 import type { Nullable } from '@noeldemartin/utils';
 import { ComputedAttribute } from 'soukai-bis';
-import type { GetModelInput } from 'soukai-bis';
+import type { BelongsToManyRelation, GetModelInput } from 'soukai-bis';
 
+import { countryUrlFromCode } from '@/lib/countries';
+import { minutesToISODuration } from '@/lib/durations';
 import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import type Episode from '@/models/Episode';
 import Movie from '@/models/Movie';
+import Person from '@/models/Person';
 import type Season from '@/models/Season';
 import Show from '@/models/Show';
 import type { ShowWatchingStatus } from '@/models/ShowWatching';
 import TMDB, {
     type TMDBEpisode,
     type TMDBMovie,
-    type TMDBMovieDetails,
+    type TMDBMovieWithStaff,
     type TMDBMovieSearchResult,
+    type TMDBPerson,
     type TMDBSeason,
     type TMDBShow,
     type TMDBShowDetails,
@@ -31,7 +35,16 @@ export class CatalogService extends Service {
 
     public async needsSync(media: Show | Movie): Promise<boolean> {
         if (media instanceof Movie) {
-            return false;
+            return !(
+                media.releaseDate &&
+                typeof media.duration === 'string' &&
+                media.actorUrls.length > 0 &&
+                media.directorUrls.length > 0 &&
+                media.genreUrls.length > 0 &&
+                media.countryUrls.length > 0 &&
+                media.languages.length > 0 &&
+                media.externalUrls.length >= 2
+            );
         }
 
         if (WATCHING_STATUSES_WITHOUT_SEASONS.includes(media.watchingStatus)) {
@@ -43,22 +56,42 @@ export class CatalogService extends Service {
         return !media.seasons || media.seasons.length === 0;
     }
 
-    public async syncIfNeeded(media: Show | Movie): Promise<void> {
-        const needsSync = await this.needsSync(media);
+    public async syncIfNeeded(media: Show | Movie | (Movie | Show)[]): Promise<void> {
+        const items = arrayFrom(media);
+        const chunks = arrayChunk(items, 10);
 
-        if (!needsSync) {
-            return;
+        for (const chunk of chunks) {
+            await Promise.all(
+                chunk.map(async (item) => {
+                    const needsSync = await this.needsSync(item);
+
+                    if (!needsSync) {
+                        return;
+                    }
+
+                    await this.sync(item);
+                }),
+            );
         }
-
-        await this.sync(media);
     }
 
-    public async sync(media: Show | Movie): Promise<void> {
-        if (media instanceof Show) {
-            return this.syncShow(media);
-        }
+    public async sync(media: Show | Movie | (Movie | Show)[]): Promise<void> {
+        const items = arrayFrom(media);
+        const chunks = arrayChunk(items, 10);
 
-        await this.syncMovie(media);
+        for (const chunk of chunks) {
+            await Promise.all(
+                chunk.map(async (item) => {
+                    if (item instanceof Show) {
+                        await this.syncShow(item);
+
+                        return;
+                    }
+
+                    await this.syncMovie(item);
+                }),
+            );
+        }
     }
 
     public async newFromExternal(media: ExternalMedia): Promise<Movie> {
@@ -95,9 +128,11 @@ export class CatalogService extends Service {
         const details = await TMDB.getMovie(tmdbMovie.id);
         const movie = new Movie(this.getMovieAttributes(details));
 
-        if (options.watched) {
-            movie.mintUrl();
+        movie.mintUrl();
 
+        this.attachStaff(movie, details);
+
+        if (options.watched) {
             await movie.watch();
         }
 
@@ -142,12 +177,22 @@ export class CatalogService extends Service {
         await show.pendingEpisodes.updateValue({ refresh: true, loadRelations: true });
     }
 
-    private getMovieAttributes(details: TMDBMovieDetails): GetModelInput<typeof Movie> {
+    private getMovieAttributes(details: TMDBMovieWithStaff): GetModelInput<typeof Movie> {
         const externalUrls = [TMDB.movieUrl(details)];
 
         if (details.imdb_id) {
             externalUrls.push(`https://www.imdb.com/title/${details.imdb_id}/`);
         }
+
+        const countryCodes =
+            details.origin_country && details.origin_country.length > 0
+                ? details.origin_country
+                : (details.production_countries ?? []).map((country) => country.iso_3166_1);
+
+        const countryUrls = arrayUnique(countryCodes.map(countryUrlFromCode).filter(isTruthy));
+        const genreUrls = (details.genres ?? []).map((genre) => TMDB.genreUrl(genre));
+        const languages = arrayUnique((details.spoken_languages ?? []).map((language) => language.iso_639_1));
+        const duration = details.runtime && details.runtime > 0 ? minutesToISODuration(details.runtime) : undefined;
 
         return {
             title: details.title,
@@ -155,6 +200,10 @@ export class CatalogService extends Service {
             posterUrl: TMDB.posterUrl(details),
             releaseDate: parseDate(details.release_date) ?? undefined,
             externalUrls,
+            countryUrls,
+            genreUrls,
+            languages,
+            duration,
         };
     }
 
@@ -256,7 +305,46 @@ export class CatalogService extends Service {
             externalUrls: arrayUnique([...movie.externalUrls, ...(attributes.externalUrls ?? [])]),
         });
 
+        await movie.loadRelationIfUnloaded('actors');
+        await movie.loadRelationIfUnloaded('directors');
+
+        this.reconcilePersons(movie.relatedActors, details.cast);
+        this.reconcilePersons(movie.relatedDirectors, details.directors);
+
         await movie.save();
+    }
+
+    private attachStaff(movie: Movie, details: TMDBMovieWithStaff): void {
+        for (const actor of details.cast) {
+            movie.relatedActors.attach(Person.fromTMDB(actor), { mintUrl: true });
+        }
+
+        for (const director of details.directors) {
+            movie.relatedDirectors.attach(Person.fromTMDB(director), { mintUrl: true });
+        }
+    }
+
+    private reconcilePersons(
+        relation: BelongsToManyRelation<Movie, Person, typeof Person>,
+        newPersons: TMDBPerson[],
+    ): void {
+        const existingPersons = relation.related ?? [];
+
+        for (const newPerson of newPersons) {
+            const existingPerson = existingPersons.find((person) => person.tmdbId === newPerson.id);
+
+            if (!existingPerson) {
+                relation.attach(Person.fromTMDB(newPerson), { mintUrl: true });
+
+                continue;
+            }
+
+            if (existingPerson.name === newPerson.name) {
+                continue;
+            }
+
+            existingPerson.setAttribute('name', newPerson.name);
+        }
     }
 
     private async newMovieFromName(name: string, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
@@ -283,6 +371,8 @@ export class CatalogService extends Service {
         const movie = new Movie(this.getMovieAttributes(details));
 
         movie.mintUrl();
+
+        this.attachStaff(movie, details);
 
         if (options.watchedAt) {
             await movie.watch(options.watchedAt);

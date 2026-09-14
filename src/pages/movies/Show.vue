@@ -27,7 +27,7 @@
                             {
                                 label: $t('movies.synchronize'),
                                 icon: IconSync,
-                                click: () => runSyncing($catalog.sync(movie)),
+                                click: () => runSync($catalog.sync(movie)),
                             },
                         ]"
                     >
@@ -77,5 +77,5 @@ import IconSync from '~icons/mdi/sync';
 import Movie from '@/models/Movie';
 
 const { movie } = defineProps<{ movie: Movie }>();
-const { loading: syncing, run: runSyncing } = useLoading();
+const { loading: syncing, run: runSync } = useLoading();
 </script>

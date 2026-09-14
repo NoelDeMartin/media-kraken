@@ -46,6 +46,7 @@ movies:
     pending: 'Pending'
     watchLater: 'Watch later'
     synchronize: 'Synchronize metadata'
+    synchronizeAll: 'Synchronize all metadata'
     externalSites: 'External sites'
     openActionsMenu: 'Open actions menu'
     added: '**{movie}** has been added to your collection!'
@@ -55,6 +56,10 @@ movies:
     table:
         title: 'Title'
         year: 'Year'
+        duration: 'Duration'
+        genres: 'Genres'
+        countries: 'Countries'
+        languages: 'Languages'
         watched: 'Watched'
 
 shows:

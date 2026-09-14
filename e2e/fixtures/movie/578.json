@@ -42,5 +42,19 @@
     "title": "Jaws",
     "video": false,
     "vote_average": 7.684,
-    "vote_count": 11798
+    "vote_count": 11798,
+    "credits": {
+        "id": 578,
+        "cast": [
+            { "id": 6355, "name": "Roy Scheider", "order": 0 },
+            { "id": 8606, "name": "Robert Shaw", "order": 1 },
+            { "id": 3037, "name": "Richard Dreyfuss", "order": 2 },
+            { "id": 8607, "name": "Lorraine Gary", "order": 3 },
+            { "id": 8608, "name": "Murray Hamilton", "order": 4 },
+            { "id": 8555, "name": "Carl Gottlieb", "order": 5 },
+            { "id": 8609, "name": "Jeffrey Kramer", "order": 6 },
+            { "id": 8610, "name": "Susan Backlinie", "order": 7 }
+        ],
+        "crew": [{ "id": 488, "name": "Steven Spielberg", "job": "Director" }]
+    }
 }

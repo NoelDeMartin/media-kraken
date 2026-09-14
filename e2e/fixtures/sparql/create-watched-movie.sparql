@@ -9,11 +9,105 @@ INSERT DATA {
         schema:description "[[.*]]" ;
         schema:image <[[.*]]> ;
         schema:datePublished "[[.*]]"^^xsd:dateTime ;
-        schema:sameAs <https://www.themoviedb.org/movie/[[.*]]>, <https://www.imdb.com/title/[[.*]]/> .
+        schema:sameAs <https://www.themoviedb.org/movie/[[.*]]>, <https://www.imdb.com/title/[[.*]]/> ;
+        schema:genre <https://www.themoviedb.org/genre/28>, <https://www.themoviedb.org/genre/878> ;
+        schema:countryOfOrigin <http://www.wikidata.org/entity/Q30> ;
+        schema:inLanguage "en" ;
+        schema:duration "PT2H16M" ;
+        schema:director <#[[director-1][%uuid%]]>, <#[[director-2][%uuid%]]> ;
+        schema:actor <#[[actor-1][%uuid%]]>, <#[[actor-2][%uuid%]]>, <#[[actor-3][%uuid%]]>, <#[[actor-4][%uuid%]]>, <#[[actor-5][%uuid%]]>, <#[[actor-6][%uuid%]]> .
 
     <#it-metadata>
         a crdt:Metadata ;
         crdt:resource <#it> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[director-1][%uuid%]]>
+        a schema:Person ;
+        schema:name "Lana Wachowski" ;
+        schema:sameAs <https://www.themoviedb.org/person/9340> .
+
+    <#[[director-1][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[director-1][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[director-2][%uuid%]]>
+        a schema:Person ;
+        schema:name "Lilly Wachowski" ;
+        schema:sameAs <https://www.themoviedb.org/person/9339> .
+
+    <#[[director-2][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[director-2][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-1][%uuid%]]>
+        a schema:Person ;
+        schema:name "Keanu Reeves" ;
+        schema:sameAs <https://www.themoviedb.org/person/6384> .
+
+    <#[[actor-1][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-1][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-2][%uuid%]]>
+        a schema:Person ;
+        schema:name "Laurence Fishburne" ;
+        schema:sameAs <https://www.themoviedb.org/person/2975> .
+
+    <#[[actor-2][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-2][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-3][%uuid%]]>
+        a schema:Person ;
+        schema:name "Carrie-Anne Moss" ;
+        schema:sameAs <https://www.themoviedb.org/person/530> .
+
+    <#[[actor-3][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-3][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-4][%uuid%]]>
+        a schema:Person ;
+        schema:name "Hugo Weaving" ;
+        schema:sameAs <https://www.themoviedb.org/person/1331> .
+
+    <#[[actor-4][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-4][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-5][%uuid%]]>
+        a schema:Person ;
+        schema:name "Gloria Foster" ;
+        schema:sameAs <https://www.themoviedb.org/person/9364> .
+
+    <#[[actor-5][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-5][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-6][%uuid%]]>
+        a schema:Person ;
+        schema:name "Joe Pantoliano" ;
+        schema:sameAs <https://www.themoviedb.org/person/532> .
+
+    <#[[actor-6][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-6][%uuid%]]> ;
         crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
 

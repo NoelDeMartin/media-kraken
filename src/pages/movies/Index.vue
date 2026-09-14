@@ -4,13 +4,20 @@
             class="max-w-screen-content mx-auto flex w-full items-center justify-start"
             :class="{ 'px-edge': display === 'table' }"
         >
+            <IconSync v-if="syncing" class="m-2.5 size-5 animate-spin" />
             <DropdownMenu
+                v-else
                 align="start"
                 :options="[
                     {
                         icon: IconUpload,
                         label: $t('movies.import'),
                         click: () => $ui.modal(ImportMediaModal),
+                    },
+                    {
+                        icon: IconSync,
+                        label: $t('movies.synchronizeAll'),
+                        click: () => runSync($catalog.syncIfNeeded(movies)),
                     },
                 ]"
             >
@@ -50,8 +57,10 @@
 </template>
 
 <script setup lang="ts">
+import { useLoading } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-solid';
 import { ref } from 'vue';
+import IconSync from '~icons/mdi/sync';
 import IconUpload from '~icons/mdi/upload';
 
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
@@ -59,4 +68,5 @@ import Movie from '@/models/Movie';
 
 const movies = useModelCollection(Movie);
 const display = ref<'grid' | 'table'>('grid');
+const { loading: syncing, run: runSync } = useLoading();
 </script>

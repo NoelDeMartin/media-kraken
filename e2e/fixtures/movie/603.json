@@ -53,5 +53,23 @@
     "title": "The Matrix",
     "video": false,
     "vote_average": 8.256,
-    "vote_count": 28605
+    "vote_count": 28605,
+    "credits": {
+        "id": 603,
+        "cast": [
+            { "id": 6384, "name": "Keanu Reeves", "order": 0 },
+            { "id": 2975, "name": "Laurence Fishburne", "order": 1 },
+            { "id": 530, "name": "Carrie-Anne Moss", "order": 2 },
+            { "id": 1331, "name": "Hugo Weaving", "order": 3 },
+            { "id": 9364, "name": "Gloria Foster", "order": 4 },
+            { "id": 532, "name": "Joe Pantoliano", "order": 5 },
+            { "id": 2977, "name": "Marcus Chong", "order": 6 },
+            { "id": 2978, "name": "Julian Arahanga", "order": 7 },
+            { "id": 2979, "name": "Matt Doran", "order": 8 }
+        ],
+        "crew": [
+            { "id": 9340, "name": "Lana Wachowski", "job": "Director" },
+            { "id": 9339, "name": "Lilly Wachowski", "job": "Director" }
+        ]
+    }
 }

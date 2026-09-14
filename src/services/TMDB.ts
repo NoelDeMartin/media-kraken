@@ -1,6 +1,9 @@
-import { Service, env } from '@aerogel/core';
-import { facade } from '@noeldemartin/utils';
+import { Lang, env } from '@aerogel/core';
+import { facade, objectFromEntries } from '@noeldemartin/utils';
+import { watch } from 'vue';
 import { z } from 'zod';
+
+import Service from './TMDB.state';
 
 const TMDBMovieSchema = z.object({
     id: z.number(),
@@ -10,8 +13,60 @@ const TMDBMovieSchema = z.object({
     poster_path: z.string().nullable(),
 });
 
+const TMDBGenreSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+});
+
+const TMDBGenreListSchema = z.object({
+    genres: z.array(TMDBGenreSchema),
+});
+
+const TMDBCastMemberSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    order: z.number(),
+});
+
+const TMDBCrewMemberSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+    job: z.string(),
+});
+
+const TMDBCreditsSchema = z
+    .object({
+        cast: z
+            .array(TMDBCastMemberSchema)
+            .nullish()
+            .transform((val) => val ?? []),
+        crew: z
+            .array(TMDBCrewMemberSchema)
+            .nullish()
+            .transform((val) => val ?? []),
+    })
+    .nullish();
+
 const TMDBMovieDetailsSchema = TMDBMovieSchema.extend({
     imdb_id: z.string().nullable().optional(),
+    genres: z.array(TMDBGenreSchema).default([]),
+    credits: TMDBCreditsSchema,
+    runtime: z.number().nullable().optional(),
+    origin_country: z.array(z.string()).default([]),
+    production_countries: z
+        .array(
+            z.object({
+                iso_3166_1: z.string(),
+            }),
+        )
+        .default([]),
+    spoken_languages: z
+        .array(
+            z.object({
+                iso_639_1: z.string(),
+            }),
+        )
+        .default([]),
 });
 
 const TMDBShowSchema = z.object({
@@ -79,18 +134,27 @@ const FindResponseSchema = z.object({
     person_results: z.array(z.looseObject({})),
 });
 
+export interface TMDBPerson {
+    id: number;
+    name: string;
+}
+
 export type TMDBMovie = z.infer<typeof TMDBMovieSchema>;
 export type TMDBMovieDetails = z.infer<typeof TMDBMovieDetailsSchema>;
+export type TMDBGenre = z.infer<typeof TMDBGenreSchema>;
+export type TMDBGenreList = z.infer<typeof TMDBGenreListSchema>;
+export type TMDBCastMember = z.infer<typeof TMDBCastMemberSchema>;
+export type TMDBCrewMember = z.infer<typeof TMDBCrewMemberSchema>;
 export type TMDBShow = z.infer<typeof TMDBShowSchema>;
 export type TMDBSeason = z.infer<typeof TMDBSeasonSchema>;
 export type TMDBEpisode = z.infer<typeof TMDBEpisodeSchema>;
 export type TMDBShowDetails = z.infer<typeof TMDBShowDetailsSchema>;
-export type TMDBShowExternalIds = z.infer<typeof TMDBShowExternalIdsSchema>; // TODO is this necessary?
+export type TMDBShowExternalIds = z.infer<typeof TMDBShowExternalIdsSchema>;
 export type TMDBMovieSearchResult = z.infer<typeof SearchMovieResultSchema>;
 export type TMDBShowSearchResult = z.infer<typeof SearchShowResultSchema>;
 export type TMDBSearchResult = TMDBMovieSearchResult | TMDBShowSearchResult;
-
-type TMDBSeasonDetails = z.infer<typeof TMDBSeasonDetailsSchema>;
+export type TMDBSeasonDetails = z.infer<typeof TMDBSeasonDetailsSchema>;
+export type TMDBMovieWithStaff = Omit<TMDBMovieDetails, 'credits'> & { cast: TMDBPerson[]; directors: TMDBPerson[] };
 
 export class TMDBService extends Service {
     public movieUrl(movie: TMDBMovie): string {
@@ -99,6 +163,14 @@ export class TMDBService extends Service {
 
     public showUrl(show: TMDBShow): string {
         return `https://www.themoviedb.org/tv/${show.id}`;
+    }
+
+    public personUrl(person: TMDBPerson): string {
+        return `https://www.themoviedb.org/person/${person.id}`;
+    }
+
+    public genreUrl(genre: TMDBGenre): string {
+        return `https://www.themoviedb.org/genre/${genre.id}`;
     }
 
     public posterUrl(media: TMDBMovie | TMDBShow, size: 'small' | 'large' = 'large'): string | undefined {
@@ -138,8 +210,24 @@ export class TMDBService extends Service {
         };
     }
 
-    public async getMovie(id: number): Promise<TMDBMovieDetails> {
-        return this.request(TMDBMovieDetailsSchema, `movie/${id}`);
+    public async getMovie(id: number): Promise<TMDBMovieWithStaff> {
+        const { credits, ...details } = await this.request(TMDBMovieDetailsSchema, `movie/${id}`, {
+            append_to_response: 'credits',
+        });
+
+        return {
+            ...details,
+            cast:
+                credits?.cast
+                    .slice()
+                    .sort((a, b) => a.order - b.order)
+                    .slice(0, 6)
+                    .map(({ id, name }) => ({ id, name })) ?? [],
+            directors:
+                credits?.crew
+                    .filter((crewMember) => crewMember.job === 'Director')
+                    .map(({ id, name }) => ({ id, name })) ?? [],
+        };
     }
 
     public async getShow(
@@ -163,6 +251,10 @@ export class TMDBService extends Service {
         return { details, externalIds, seasons };
     }
 
+    protected override async boot(): Promise<void> {
+        await this.watchGenres();
+    }
+
     private async getShowDetails(id: number): Promise<TMDBShowDetails> {
         return this.request(TMDBShowDetailsSchema, `tv/${id}`);
     }
@@ -179,21 +271,45 @@ export class TMDBService extends Service {
         return size === 'small' ? 'w92' : 'w500';
     }
 
+    private async getMovieGenres(language: string): Promise<TMDBGenre[]> {
+        const { genres } = await this.request(TMDBGenreListSchema, 'genre/movie/list', { language });
+
+        return genres;
+    }
+
+    private async watchGenres(): Promise<void> {
+        await Lang.booted;
+        watch(
+            () => Lang.locale,
+            async () => {
+                if (!Lang.locale || Lang.locale in this.genreTranslations) {
+                    return;
+                }
+
+                const genres = await this.getMovieGenres(Lang.locale);
+
+                this.genreTranslations = {
+                    ...this.genreTranslations,
+                    [Lang.locale]: objectFromEntries(genres.map((genre) => [genre.id, genre.name])),
+                };
+            },
+            { immediate: true },
+        );
+    }
+
     private async request<T extends z.ZodType>(
         schema: T,
         path: string,
         parameters: Record<string, string | number> = {},
     ): Promise<z.infer<T>> {
         const url = new URL(`https://api.themoviedb.org/3/${path}`);
-
-        Object.entries({
+        const searchParams: Record<string, string | number> = {
             api_key: env('VITE_TMDB_API_KEY'),
             language: 'en-US',
-        }).forEach(([key, value]) => {
-            url.searchParams.append(key, value);
-        });
+            ...parameters,
+        };
 
-        Object.entries(parameters).forEach(([key, value]) => {
+        Object.entries(searchParams).forEach(([key, value]) => {
             url.searchParams.append(key, String(value));
         });
 
