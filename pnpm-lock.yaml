@@ -6,6 +6,9 @@ importers:
   .:
     configDependencies: {}
     packageManagerDependencies:
+      '@pnpm/exe':
+        specifier: 12.4.1
+        version: 12.4.1
       pnpm:
         specifier: 12.4.1
         version: 12.4.1
@@ -89,6 +92,11 @@ packages:
     cpu: [x64]
     os: [win32]
 
+  '@pnpm/exe@12.4.1':
+    resolution: {integrity: sha512-J3tgb70MBqAujwk+7CjD2a2kL7M6qfTkb2tsb97q8qfIQMlsbEqN+UCvf7GELw2SQPQ8KtFhXypgzMBp86zYKg==}
+    engines: {node: '>=18.*'}
+    hasBin: true
+
   pnpm@12.4.1:
     resolution: {integrity: sha512-LoHjmdc/6DkNqyXgaqeIq3pZCCSNL1o3D4K0gRR6ano2e/gEj5pv22Rg8hpm8FQt7bi5TKLIcjWWdBkgsWVtTA==}
     engines: {node: '>=18.*'}
@@ -138,6 +146,23 @@ snapshots:
   '@pnpm/exe.win32-x64@12.4.1':
     optional: true
 
+  '@pnpm/exe@12.4.1':
+    optionalDependencies:
+      '@pnpm/exe.android-arm64': 12.4.1
+      '@pnpm/exe.android-x64': 12.4.1
+      '@pnpm/exe.darwin-arm64': 12.4.1
+      '@pnpm/exe.darwin-x64': 12.4.1
+      '@pnpm/exe.freebsd-x64': 12.4.1
+      '@pnpm/exe.linux-arm64': 12.4.1
+      '@pnpm/exe.linux-arm64-musl': 12.4.1
+      '@pnpm/exe.linux-ppc64': 12.4.1
+      '@pnpm/exe.linux-riscv64': 12.4.1
+      '@pnpm/exe.linux-s390x': 12.4.1
+      '@pnpm/exe.linux-x64': 12.4.1
+      '@pnpm/exe.linux-x64-musl': 12.4.1
+      '@pnpm/exe.win32-arm64': 12.4.1
+      '@pnpm/exe.win32-x64': 12.4.1
+
   pnpm@12.4.1:
     optionalDependencies:
       '@pnpm/exe.android-arm64': 12.4.1
@@ -164,18 +189,6 @@ settings:
 
 catalogs:
   default:
-    '@noeldemartin/solid-utils':
-      specifier: next
-      version: 0.6.1-next.578b41be4a53c59db770a55bf505f58574afd7e0
-    '@noeldemartin/utils':
-      specifier: next
-      version: 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
-    soukai-bis:
-      specifier: next
-      version: 0.0.0-next.0e08a5e23759cfb8727277c0169d5e52815ddd6c
-    vite:
-      specifier: npm:@voidzero-dev/vite-plus-core@latest
-      version: 0.3.1
     vite-plus:
       specifier: latest
       version: 0.3.1
@@ -206,10 +219,10 @@ importers:
         specifier: next
         version: 0.1.2-next.704d94a96bb9a687c7397cee839a43890d9f1972(@aerogel/core@0.1.2-next.3668d9af9a85e3aff135bfd4844c6018c1f24bb3(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.42(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.4))(@aerogel/vite@0.1.2-next.9018e6c749f09bcabc863835dc6f75d45168f67f(@babel/parser@7.29.8)(@voidzero-dev/vite-plus-core@0.3.1(@types/node@24.13.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.42(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.0e08a5e23759cfb8727277c0169d5e52815ddd6c(web-streams-polyfill@3.3.3)(zod@4.6.4))(web-streams-polyfill@3.3.3)
       '@noeldemartin/solid-utils':
-        specifier: 'catalog:'
+        specifier: next
         version: 0.6.1-next.578b41be4a53c59db770a55bf505f58574afd7e0(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils':
-        specifier: 'catalog:'
+        specifier: next
         version: 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
       '@tailwindcss/forms':
         specifier: ^0.5.10
@@ -221,7 +234,7 @@ importers:
         specifier: ^5.7.0
         version: 5.7.0
       soukai-bis:
-        specifier: 'catalog:'
+        specifier: next
         version: 0.0.0-next.0e08a5e23759cfb8727277c0169d5e52815ddd6c(web-streams-polyfill@3.3.3)(zod@4.6.4)
       tailwindcss:
         specifier: ^4.1.1
@@ -306,7 +319,7 @@ importers:
         specifier: ^28.4.1
         version: 28.8.0(@babel/parser@7.29.8)(supports-color@10.2.2)(vue@3.5.42(typescript@6.0.3))
       vite:
-        specifier: 'catalog:'
+        specifier: npm:@voidzero-dev/vite-plus-core@latest
         version: '@voidzero-dev/vite-plus-core@0.3.1(@types/node@24.13.4)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)'
       vite-plugin-multi-root-workspace:
         specifier: next
