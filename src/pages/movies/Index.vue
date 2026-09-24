@@ -24,11 +24,11 @@
                 <Button
                     size="icon"
                     variant="ghost"
-                    :aria-label="$t('movies.openActionsMenu')"
                     :title="$t('movies.openActionsMenu')"
                     class="clickable -ml-3 rounded-md p-1"
                 >
                     <i-mdi-dots-vertical class="size-5" />
+                    <span class="sr-only">{{ $t('movies.openActionsMenu') }}</span>
                 </Button>
             </DropdownMenu>
             <PageTitle>{{ $t('movies.title') }} ({{ movies.length }})</PageTitle>

@@ -31,13 +31,9 @@
                             },
                         ]"
                     >
-                        <Button
-                            size="icon"
-                            variant="ghost"
-                            :aria-label="$t('movies.openActionsMenu')"
-                            :title="$t('movies.openActionsMenu')"
-                        >
+                        <Button size="icon" variant="ghost" :title="$t('movies.openActionsMenu')">
                             <i-mdi-dots-vertical class="size-5" />
+                            <span class="sr-only">{{ $t('movies.openActionsMenu') }}</span>
                         </Button>
                     </DropdownMenu>
                 </div>
