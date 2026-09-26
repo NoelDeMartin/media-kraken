@@ -51,8 +51,14 @@ movies:
     openActionsMenu: 'Open actions menu'
     added: '**{movie}** has been added to your collection!'
     itemsName: 'movies'
+    quickFilter: 'Filter movies...'
+    quickFilterLabel: 'Movies filter'
+    quickFilterTitle: 'Filter movies by title'
+    noResults: "I couldn't find any movie with those filters, try with a different search."
+    emptyCollection: "You don't have any movies in your collection yet, add one using the search box at the top!"
     viewGrid: 'View as grid'
     viewList: 'View as list'
+    clearFilters: 'Clear filters'
     table:
         title: 'Title'
         year: 'Year'
@@ -200,6 +206,8 @@ import:
             error: 'Error: {message}'
 
 ui:
+    searchLabel: 'Search'
+    searchPlaceholder: 'Search...'
     cancel: Cancel
     close: Close
     ok: OK

@@ -28,6 +28,10 @@
                 <span v-else>-</span>
             </template>
         </TableColumn>
+
+        <template v-if="$slots.empty" #empty>
+            <slot name="empty" />
+        </template>
     </Table>
 </template>
 

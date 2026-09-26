@@ -20,7 +20,7 @@ export function formatDuration(duration: { minutes: number }) {
     const minutes = duration.minutes % 60;
     const hours = Math.floor(duration.minutes / 60);
 
-    return durationFormatter.format({ minutes, hours });
+    return durationFormatter.format({ minutes, hours }) || '0m';
 }
 
 export function formatCountry(country: string) {

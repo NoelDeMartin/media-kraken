@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import { isoDurationToMinutes, minutesToISODuration } from '@/lib/durations';
+import { isoDurationToMinutes, minutesToISODuration } from './durations';
 
 describe('durations helpers', () => {
     it('converts minutes to ISO 8601 duration', () => {

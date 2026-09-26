@@ -37,7 +37,7 @@
                     enter-active-class="transition-all ease-out duration-300"
                     enter-from-class="opacity-0"
                     leave-active-class="transition-all ease-in duration-300"
-                    leave-to-class="opacity-0"
+                    leave-to-class="opacity-10"
                     move-class="transition-all ease-out duration-300"
                     @before-leave="sendMovieToCollection"
                 >

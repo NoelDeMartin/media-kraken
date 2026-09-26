@@ -7,12 +7,13 @@
             :data-chunk-index="index"
             :style="chunkStyles[index]"
         >
-            <MediaGrid v-if="isChunkVisible(index)" :item-width>
+            <MediaGrid v-if="isChunkVisible(index)" :item-width v-bind="chunkAttrs">
                 <template v-for="item of chunk" :key="getItemKey(item)">
                     <slot :item="item" />
                 </template>
             </MediaGrid>
         </div>
+        <slot v-if="chunks.length === 0" name="empty" />
     </div>
 </template>
 
@@ -26,6 +27,7 @@ const { items, by } = defineProps<{
     items: T[];
     by: keyof T | ((item: T) => string);
     itemWidth?: string;
+    chunkAttrs?: Record<string, unknown>;
 }>();
 
 let resizeObserver: ResizeObserver | null = null;
