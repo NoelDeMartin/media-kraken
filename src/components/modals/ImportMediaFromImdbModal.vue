@@ -25,7 +25,8 @@
 </template>
 
 <script setup lang="ts">
-import { requiredStringInput, useForm, useModal } from '@aerogel/core';
+import { useForm, useModal } from '@aerogel/core';
+import { z } from 'zod';
 
 type Match = { imdbId: string; url: string };
 type Result = { matches: Match[] };
@@ -33,7 +34,7 @@ type Result = { matches: Match[] };
 defineEmits<{ close: [Result] }>();
 
 const { close } = useModal<Result>();
-const form = useForm({ urls: requiredStringInput() });
+const form = useForm({ urls: z.string() });
 
 function submit() {
     let match: RegExpExecArray | null;

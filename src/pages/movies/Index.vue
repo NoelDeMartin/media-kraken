@@ -49,6 +49,20 @@
                         <span class="sr-only">{{ $t('movies.viewGrid') }}</span>
                     </template>
                 </Button>
+                <Button
+                    variant="ghost"
+                    :title="$t('movies.advancedFilters.button')"
+                    :class="{ 'text-primary-600': hasAdvancedFilters }"
+                    class="clickable relative"
+                    @click="advancedFilter()"
+                >
+                    <i-mdi-filter class="size-6" />
+                    <span
+                        v-if="hasAdvancedFilters"
+                        class="bg-primary-600 pointer-events-none absolute top-1.5 right-1.5 size-2 rounded-full ring-2 ring-white"
+                    />
+                    <span class="sr-only">{{ $t('movies.advancedFilters.button') }}</span>
+                </Button>
                 <FluidSearch
                     v-model="quickFilter"
                     :placeholder="$t('movies.quickFilter')"
@@ -91,29 +105,37 @@
 </template>
 
 <script setup lang="ts">
-import { useLoading } from '@aerogel/core';
+import { UI, useLoading } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-solid';
 import { stringToSlug } from '@noeldemartin/utils';
 import { computed, ref, TransitionGroup } from 'vue';
 import IconSync from '~icons/mdi/sync';
 import IconUpload from '~icons/mdi/upload';
 
+import FilterMoviesModal from '@/components/modals/FilterMoviesModal.vue';
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
+import { hasActiveMovieFilters, movieMatchesFilters, type MoviesFilter } from '@/lib/movies';
 import Movie from '@/models/Movie';
 
 const quickFilter = ref<string | null>(null);
+const advancedFilters = ref<MoviesFilter | null>(null);
 const allMovies = useModelCollection(Movie);
 const hasEmptyCollection = computed(() => allMovies.value.length === 0);
+const hasAdvancedFilters = computed(() => hasActiveMovieFilters(advancedFilters.value));
 
 const filteredMovies = computed(() => {
-    if (!quickFilter.value) {
+    if (!quickFilter.value && !hasAdvancedFilters.value) {
         return allMovies.value;
     }
 
-    const normalizedQuery = stringToSlug(quickFilter.value).replaceAll('-', '');
+    const normalizedQuery = quickFilter.value && stringToSlug(quickFilter.value).replaceAll('-', '');
 
     return allMovies.value.filter((movie) => {
-        return movie.slug.replaceAll('-', '').includes(normalizedQuery);
+        if (normalizedQuery && !movie.slug.replaceAll('-', '').includes(normalizedQuery)) {
+            return false;
+        }
+
+        return movieMatchesFilters(movie, advancedFilters.value);
     });
 });
 const display = ref<'grid' | 'table'>('grid');
@@ -121,6 +143,24 @@ const { loading: syncing, run: runSync } = useLoading();
 
 function clearAllFilters() {
     quickFilter.value = null;
+    advancedFilters.value = null;
+}
+
+async function advancedFilter() {
+    await Promise.all(
+        allMovies.value.map((movie) =>
+            Promise.all([movie.loadRelationIfUnloaded('actors'), movie.loadRelationIfUnloaded('directors')]),
+        ),
+    );
+
+    const { dismissed, ...filters } = await UI.modal(FilterMoviesModal, {
+        filters: advancedFilters.value,
+        movies: allMovies.value,
+    });
+
+    if (!dismissed) {
+        advancedFilters.value = filters;
+    }
 }
 
 function freeze(movie: HTMLElement) {

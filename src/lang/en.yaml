@@ -59,6 +59,25 @@ movies:
     viewGrid: 'View as grid'
     viewList: 'View as list'
     clearFilters: 'Clear filters'
+    advancedFilters:
+        button: 'Advanced movie filters'
+        title: 'Filter movies'
+        genre: 'Genre'
+        allGenres: 'All genres'
+        director: 'Director'
+        allDirectors: 'All directors'
+        cast: 'Cast'
+        allCast: 'All cast'
+        country: 'Country'
+        allCountries: 'All countries'
+        language: 'Language'
+        allLanguages: 'All languages'
+        releaseYear: 'Release year'
+        duration: 'Duration'
+        watchStatus: 'Watch status'
+        allStatuses: 'All'
+        apply: 'Apply'
+        clear: 'Clear filters'
     table:
         title: 'Title'
         year: 'Year'
@@ -211,6 +230,7 @@ ui:
     cancel: Cancel
     close: Close
     ok: OK
+    save: Save
 
 pagination:
     sortAscending: 'Sort ascending'
