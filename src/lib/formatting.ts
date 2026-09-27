@@ -25,7 +25,7 @@ export function formatDuration(duration: { minutes: number }) {
 
 export function formatCountry(country: string) {
     try {
-        return countryFormatter.of(country);
+        return countryFormatter.of(country) || country;
     } catch {
         return country;
     }
@@ -33,7 +33,7 @@ export function formatCountry(country: string) {
 
 export function formatLanguage(language: string) {
     try {
-        return languageFormatter.of(language);
+        return languageFormatter.of(language) || language;
     } catch {
         return language;
     }

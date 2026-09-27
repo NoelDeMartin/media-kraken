@@ -1,4 +1,4 @@
-import { createModel, input, press, see } from '@aerogel/playwright';
+import { comboboxSelect, createModel, dontSee, input, press, see } from '@aerogel/playwright';
 import { test } from '@e2e/lib/setup';
 
 test.beforeEach(async ({ page }) => {
@@ -24,7 +24,7 @@ test('Adds watched movies from search', async ({ page }) => {
 
 test('Marks movies as watched from collection', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'The Matrix' });
-    await press(page, 'Watch');
+    await press(page, 'Mark The Matrix as watched');
     await see(page, 'The Matrix (Watched)');
 });
 
@@ -32,6 +32,33 @@ test('Marks movies as watched from details page', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await press(page, 'The Matrix');
     await press(page, 'Open actions menu');
-    await press(page, 'Watch');
+    await press(page, 'Mark as watched');
     await see(page, 'Watched');
+});
+
+test('Filters movies by title', async ({ page }) => {
+    await createModel(page, 'Movie', { title: 'The Matrix' });
+    await createModel(page, 'Movie', { title: 'Inception' });
+    await see(page, 'Movies (2)');
+
+    await press(page, 'Filter movies by title');
+    await input(page, 'Movies filter').fill('matr');
+    await see(page, 'Movies (1)');
+    await see(page, 'The Matrix (Pending)');
+    await dontSee(page, 'Inception');
+});
+
+test('Filters movies with advanced filters', async ({ page }) => {
+    await createModel(page, 'Movie', { title: 'The Matrix' });
+    await createModel(page, 'Movie', { title: 'Inception' });
+    await press(page, 'Mark The Matrix as watched');
+    await see(page, 'The Matrix (Watched)');
+    await see(page, 'Movies (2)');
+
+    await press(page, 'Advanced movie filters');
+    await comboboxSelect(page, 'Watch status', 'Watched');
+    await press(page, 'Apply');
+    await see(page, 'Movies (1)');
+    await see(page, 'The Matrix (Watched)');
+    await dontSee(page, 'Inception');
 });

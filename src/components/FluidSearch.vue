@@ -12,7 +12,7 @@
             />
             <span class="pointer-events-none opacity-0" aria-hidden="true">{{ query || renderedPlaceholder }}</span>
         </div>
-        <Button v-else variant="ghost" @click="query = ''" :title="renderedLabel">
+        <Button v-else variant="ghost" @click="query = ''" :title="renderedLabel" class="px-1.5">
             <i-mdi-magnify class="size-6" />
             <span class="sr-only">{{ renderedLabel }}</span>
         </Button>

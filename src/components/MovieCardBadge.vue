@@ -20,7 +20,7 @@
         <i-material-symbols-check
             class="absolute top-1/2 left-1/2 hidden size-6 -translate-x-1/2 -translate-y-1/2 text-green-600 group-focus-within:block group-hover:block"
         />
-        <span class="sr-only">{{ $t('movies.watch') }}</span>
+        <span class="sr-only">{{ $t('movies.watchMovie', { movie: movie.title }) }}</span>
     </button>
 </template>
 
