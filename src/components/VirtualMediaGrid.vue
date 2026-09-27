@@ -126,10 +126,11 @@ function measureGrid(el: HTMLElement) {
 
     if (rect.height > 0) {
         const chunkSize = getChunkSize(columnsValue);
+        const rows = computedStyle.gridTemplateRows.trim().split(/\s+/).length;
 
         if (
             chunkSize !== null &&
-            el.children.length === chunkSize &&
+            rows === CHUNK_ROWS &&
             items.length >= chunkSize &&
             rect.height !== fullChunkHeight.value
         ) {
