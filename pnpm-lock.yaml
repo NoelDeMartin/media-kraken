@@ -164,18 +164,6 @@ settings:
 
 catalogs:
   default:
-    '@noeldemartin/solid-utils':
-      specifier: next
-      version: 0.6.1-next.578b41be4a53c59db770a55bf505f58574afd7e0
-    '@noeldemartin/utils':
-      specifier: next
-      version: 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
-    soukai-bis:
-      specifier: next
-      version: 0.0.0-next.152d8403b8c659773f0953def811be98b91d54f8
-    vite:
-      specifier: npm:@voidzero-dev/vite-plus-core@latest
-      version: 1.0.0-rc.1
     vite-plus:
       specifier: latest
       version: 1.0.0-rc.1
@@ -206,10 +194,10 @@ importers:
         specifier: next
         version: 0.1.2-next.9dab1744392e926ae61306cc62afa7b84eed3c9c(@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@aerogel/vite@0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0-rc.1(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.152d8403b8c659773f0953def811be98b91d54f8(web-streams-polyfill@3.3.3)(zod@4.6.5))(web-streams-polyfill@3.3.3)(zod@4.6.5)
       '@noeldemartin/solid-utils':
-        specifier: 'catalog:'
+        specifier: next
         version: 0.6.1-next.578b41be4a53c59db770a55bf505f58574afd7e0(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils':
-        specifier: 'catalog:'
+        specifier: next
         version: 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
       '@tailwindcss/forms':
         specifier: ^0.5.10
@@ -221,7 +209,7 @@ importers:
         specifier: ^5.7.0
         version: 5.7.0
       soukai-bis:
-        specifier: 'catalog:'
+        specifier: next
         version: 0.0.0-next.152d8403b8c659773f0953def811be98b91d54f8(web-streams-polyfill@3.3.3)(zod@4.6.5)
       tailwindcss:
         specifier: ^4.1.1
@@ -306,7 +294,7 @@ importers:
         specifier: ^28.4.1
         version: 28.8.0(@babel/parser@7.29.9)(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))
       vite:
-        specifier: 'catalog:'
+        specifier: npm:@voidzero-dev/vite-plus-core@latest
         version: '@voidzero-dev/vite-plus-core@1.0.0-rc.1(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)'
       vite-plugin-multi-root-workspace:
         specifier: next
