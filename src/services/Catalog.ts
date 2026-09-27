@@ -5,6 +5,7 @@ import { ComputedAttribute } from 'soukai-bis';
 import type { BelongsToManyRelation, GetModelInput } from 'soukai-bis';
 
 import { countryUrlFromCode } from '@/lib/countries';
+import { mergeExternalUrls } from '@/lib/domains';
 import { minutesToISODuration } from '@/lib/durations';
 import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
@@ -253,7 +254,7 @@ export class CatalogService extends Service {
 
         show.setAttributes({
             ...attributes,
-            externalUrls: arrayUnique([...show.externalUrls, ...(attributes.externalUrls ?? [])]),
+            externalUrls: mergeExternalUrls(show.externalUrls, attributes.externalUrls ?? []),
         });
 
         ComputedAttribute.disableRefreshes();
@@ -302,7 +303,7 @@ export class CatalogService extends Service {
 
         movie.setAttributes({
             ...attributes,
-            externalUrls: arrayUnique([...movie.externalUrls, ...(attributes.externalUrls ?? [])]),
+            externalUrls: mergeExternalUrls(movie.externalUrls, attributes.externalUrls ?? []),
         });
 
         await movie.loadRelationIfUnloaded('actors');

@@ -6,6 +6,7 @@ import Person from '@/models/Person';
 export default defineSchema({
     rdfContext: 'https://schema.org/',
     rdfClass: 'Movie',
+    history: true,
     fields: {
         title: string().rdfProperty('name'),
         description: string().optional(),

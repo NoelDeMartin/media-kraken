@@ -4,6 +4,8 @@ import { date, url } from 'zod';
 export default defineSchema({
     rdfContext: 'https://schema.org/',
     rdfClass: 'WatchAction',
+    timestamps: false,
+    tombstone: true,
     fields: {
         object: url().rdfProperty('object'),
         endTime: date().rdfProperty('endTime').optional(),

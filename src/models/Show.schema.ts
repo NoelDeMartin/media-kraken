@@ -6,6 +6,7 @@ import Season from '@/models/Season';
 export default defineSchema({
     rdfContext: 'https://schema.org/',
     rdfClass: 'TVSeries',
+    history: true,
     fields: {
         name: string(),
         description: string().optional(),

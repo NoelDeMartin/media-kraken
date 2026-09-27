@@ -6,6 +6,7 @@ import EpisodeWatched from '@/models/EpisodeWatched';
 export default defineSchema({
     rdfContext: 'https://schema.org/',
     rdfClass: 'TVEpisode',
+    history: true,
     fields: {
         name: string(),
         number: number().rdfProperty('episodeNumber'),

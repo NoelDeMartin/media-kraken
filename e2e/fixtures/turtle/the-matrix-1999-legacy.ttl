@@ -1,0 +1,16 @@
+@prefix : <#>.
+@prefix schem: <https://schema.org/>.
+@prefix terms: <http://purl.org/dc/terms/>.
+@prefix XML: <http://www.w3.org/2001/XMLSchema#>.
+
+:it
+    a schem:Movie;
+    terms:created "2020-09-23T18:59:30Z"^^XML:dateTime;
+    terms:modified "2020-09-23T18:59:30Z"^^XML:dateTime;
+    schem:datePublished "1999-03-30T00:00:00Z"^^XML:dateTime;
+    schem:description "Set in the 22nd century, The Matrix tells the story of a computer hacker.";
+    schem:image "https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg";
+    schem:name "The Matrix";
+    schem:sameAs
+        "https://www.imdb.com/title/tt0133093",
+        "https://www.themoviedb.org/movie/603".
