@@ -1,5 +1,5 @@
 import type { RangeSliderValue } from '@aerogel/core';
-import { isNullable, type Nullable } from '@noeldemartin/utils';
+import { isNullable, stringToSlug, type Nullable } from '@noeldemartin/utils';
 
 import type Movie from '@/models/Movie';
 
@@ -13,6 +13,8 @@ export type MoviesFilter = {
     duration?: Nullable<RangeSliderValue>;
     releaseYear?: Nullable<RangeSliderValue>;
 };
+
+export type MovieSearchEntry = ReturnType<typeof createMovieSearchEntry>;
 
 function matchesAny<T>(selected: T[], values: T[]): boolean {
     return values.some((value) => !isNullable(value) && selected.includes(value));
@@ -45,20 +47,48 @@ export function hasActiveMovieFilters(filters: Nullable<MoviesFilter>): boolean 
     );
 }
 
-export function movieMatchesFilters(movie: Movie, filters: Nullable<MoviesFilter>): boolean {
+export function toMovieSearchText(text: string): string {
+    return stringToSlug(text).replaceAll('-', '');
+}
+
+export function createMovieSearchEntry(movie: Movie) {
+    return {
+        movie,
+        searchText: toMovieSearchText(movie.getSlug() ?? ''),
+        genreIds: movie.genreIds,
+        countryCodes: movie.countryCodes,
+        languages: movie.languages,
+        releaseYear: movie.releaseYear,
+        runtimeMinutes: movie.runtimeMinutes,
+        get watched() {
+            return movie.watched;
+        },
+        get directors() {
+            return movie.directors?.map((director) => director.name) ?? [];
+        },
+        get cast() {
+            return movie.actors?.map((actor) => actor.name) ?? [];
+        },
+    };
+}
+
+export function movieMatchesQuery(entry: MovieSearchEntry, searchQuery: Nullable<string>): boolean {
+    return !searchQuery || entry.searchText.includes(searchQuery);
+}
+
+export function movieMatchesFilters(entry: MovieSearchEntry, filters: Nullable<MoviesFilter>): boolean {
     if (!filters) {
         return true;
     }
 
     return (
-        (isNullable(filters.watched) || filters.watched === movie.watched) &&
-        (isNullable(filters.genres) || matchesAny(filters.genres, movie.genreIds)) &&
-        (isNullable(filters.directors) ||
-            matchesAny(filters.directors, movie.directors?.map((director) => director.name) ?? [])) &&
-        (isNullable(filters.cast) || matchesAny(filters.cast, movie.actors?.map((actor) => actor.name) ?? [])) &&
-        (isNullable(filters.countries) || matchesAny(filters.countries, movie.countryCodes)) &&
-        (isNullable(filters.languages) || matchesAny(filters.languages, movie.languages)) &&
-        (isNullable(filters.releaseYear) || matchesRange(filters.releaseYear, movie.releaseYear)) &&
-        (isNullable(filters.duration) || matchesRange(filters.duration, movie.runtimeMinutes))
+        (isNullable(filters.releaseYear) || matchesRange(filters.releaseYear, entry.releaseYear)) &&
+        (isNullable(filters.duration) || matchesRange(filters.duration, entry.runtimeMinutes)) &&
+        (isNullable(filters.watched) || filters.watched === entry.watched) &&
+        (isNullable(filters.genres) || matchesAny(filters.genres, entry.genreIds)) &&
+        (isNullable(filters.countries) || matchesAny(filters.countries, entry.countryCodes)) &&
+        (isNullable(filters.languages) || matchesAny(filters.languages, entry.languages)) &&
+        (isNullable(filters.directors) || matchesAny(filters.directors, entry.directors)) &&
+        (isNullable(filters.cast) || matchesAny(filters.cast, entry.cast))
     );
 }

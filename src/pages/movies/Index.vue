@@ -102,14 +102,20 @@
 <script setup lang="ts">
 import { UI, useLoading } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-solid';
-import { stringToSlug } from '@noeldemartin/utils';
 import { computed, ref, TransitionGroup } from 'vue';
 import IconSync from '~icons/mdi/sync';
 import IconUpload from '~icons/mdi/upload';
 
 import FilterMoviesModal from '@/components/modals/FilterMoviesModal.vue';
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
-import { hasActiveMovieFilters, movieMatchesFilters, type MoviesFilter } from '@/lib/movies';
+import {
+    createMovieSearchEntry,
+    hasActiveMovieFilters,
+    movieMatchesFilters,
+    movieMatchesQuery,
+    toMovieSearchText,
+    type MoviesFilter,
+} from '@/lib/movies';
 import Movie from '@/models/Movie';
 
 const quickFilter = ref<string | null>(null);
@@ -118,20 +124,17 @@ const allMovies = useModelCollection(Movie);
 const hasEmptyCollection = computed(() => allMovies.value.length === 0);
 const hasAdvancedFilters = computed(() => hasActiveMovieFilters(advancedFilters.value));
 
+const moviesSearchIndex = computed(() => allMovies.value.map(createMovieSearchEntry));
 const filteredMovies = computed(() => {
     if (!quickFilter.value && !hasAdvancedFilters.value) {
         return allMovies.value;
     }
 
-    const normalizedQuery = quickFilter.value && stringToSlug(quickFilter.value).replaceAll('-', '');
+    const searchQuery = quickFilter.value && toMovieSearchText(quickFilter.value);
 
-    return allMovies.value.filter((movie) => {
-        if (normalizedQuery && !movie.slug.replaceAll('-', '').includes(normalizedQuery)) {
-            return false;
-        }
-
-        return movieMatchesFilters(movie, advancedFilters.value);
-    });
+    return moviesSearchIndex.value
+        .filter((entry) => movieMatchesQuery(entry, searchQuery) && movieMatchesFilters(entry, advancedFilters.value))
+        .map((entry) => entry.movie);
 });
 const display = ref<'grid' | 'table'>('grid');
 const { loading: syncing, run: runSync } = useLoading();
@@ -141,6 +144,7 @@ async function updateAdvancedFilters() {
         allMovies.value.map(async (movie) => {
             await movie.loadRelationIfUnloaded('actors');
             await movie.loadRelationIfUnloaded('directors');
+            await movie.loadRelationIfUnloaded('watchActions');
         }),
     );
 
