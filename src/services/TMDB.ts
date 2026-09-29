@@ -26,12 +26,14 @@ const TMDBCastMemberSchema = z.object({
     id: z.number(),
     name: z.string(),
     order: z.number(),
+    profile_path: z.string().nullish(),
 });
 
 const TMDBCrewMemberSchema = z.object({
     id: z.number(),
     name: z.string(),
     job: z.string(),
+    profile_path: z.string().nullish(),
 });
 
 const TMDBCreditsSchema = z
@@ -137,6 +139,7 @@ const FindResponseSchema = z.object({
 export interface TMDBPerson {
     id: number;
     name: string;
+    profile_path?: string | null;
 }
 
 export type TMDBMovie = z.infer<typeof TMDBMovieSchema>;
@@ -179,10 +182,18 @@ export class TMDBService extends Service {
             : undefined;
     }
 
+    public profileUrl(person: TMDBPerson): string | undefined {
+        return person.profile_path ? `https://image.tmdb.org/t/p/w185${person.profile_path}` : undefined;
+    }
+
     public backdropUrl(media: TMDBShow, size: 'small' | 'large' = 'large'): string | undefined {
         return media.backdrop_path
             ? `https://image.tmdb.org/t/p/${this.getSizeShorthand(size)}${media.backdrop_path}`
             : undefined;
+    }
+
+    public translateGenre(id: number): string | null {
+        return (Lang.locale && this.genreTranslations[Lang.locale]?.[id]) || null;
     }
 
     public async search(query: string, options: { types?: 'movie' | 'tv' } = {}): Promise<TMDBSearchResult[]> {
@@ -222,11 +233,11 @@ export class TMDBService extends Service {
                     .slice()
                     .sort((a, b) => a.order - b.order)
                     .slice(0, 6)
-                    .map(({ id, name }) => ({ id, name })) ?? [],
+                    .map(({ id, name, profile_path }) => ({ id, name, profile_path })) ?? [],
             directors:
                 credits?.crew
                     .filter((crewMember) => crewMember.job === 'Director')
-                    .map(({ id, name }) => ({ id, name })) ?? [],
+                    .map(({ id, name, profile_path }) => ({ id, name, profile_path })) ?? [],
         };
     }
 

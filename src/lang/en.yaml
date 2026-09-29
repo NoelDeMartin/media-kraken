@@ -79,6 +79,13 @@ movies:
         allStatuses: 'All'
         apply: 'Apply'
         clear: 'Clear filters'
+    details:
+        title: 'Movie details'
+        directedBy: 'Directed by'
+        genres: 'Genres'
+        topCast: 'Top Cast'
+        countries: 'Countries'
+        languages: 'Languages'
     table:
         title: 'Title'
         year: 'Year'

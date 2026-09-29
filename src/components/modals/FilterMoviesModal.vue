@@ -75,7 +75,7 @@
 </template>
 
 <script setup lang="ts">
-import { Lang, numberRange, translate, useForm, useModal } from '@aerogel/core';
+import { numberRange, translate, useForm, useModal } from '@aerogel/core';
 import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
 import { computed } from 'vue';
 import { z } from 'zod';
@@ -167,7 +167,7 @@ function sortByLocale<T>(items: T[], render: (item: T) => string): T[] {
 }
 
 function renderGenre(genre: number): string {
-    return (Lang.locale && TMDB.genreTranslations[Lang.locale]?.[genre]) || String(genre);
+    return TMDB.translateGenre(genre) ?? String(genre);
 }
 
 function renderStatus(status: (typeof statusOptions)[number]): string {

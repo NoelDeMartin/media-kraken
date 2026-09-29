@@ -31,47 +31,110 @@
                             },
                         ]"
                     >
-                        <Button size="icon" variant="ghost" :title="$t('movies.openActionsMenu')">
+                        <Button size="icon" variant="ghost" :title="$t('movies.openActionsMenu')" class="-mr-4">
                             <i-mdi-dots-vertical class="size-5" />
                             <span class="sr-only">{{ $t('movies.openActionsMenu') }}</span>
                         </Button>
                     </DropdownMenu>
                 </div>
-                <div
-                    class="flex items-center gap-1 text-sm lowercase"
-                    :class="{
-                        'text-green-700': movie.watched,
-                        'text-blue-700': !movie.watched,
-                    }"
-                >
-                    <i-material-symbols-check v-if="movie.watched" class="size-4" />
-                    <i-mdi-clock-outline v-else class="size-4" />
-                    <span>{{ movie.watched ? $t('movies.watched') : $t('movies.watchLater') }}</span>
+                <div class="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-gray-600">
+                    <span
+                        class="flex items-center gap-1 lowercase"
+                        :class="{
+                            'text-green-700': movie.watched,
+                            'text-blue-700': !movie.watched,
+                        }"
+                    >
+                        <i-material-symbols-check v-if="movie.watched" class="size-4" />
+                        <i-mdi-clock-outline v-else class="size-4" />
+                        {{ movie.watched ? $t('movies.watched') : $t('movies.watchLater') }}
+                    </span>
+                    <template v-if="movie.runtimeMinutes">
+                        <span aria-hidden="true">·</span>
+                        <span>{{ formatDuration({ minutes: movie.runtimeMinutes }) }}</span>
+                    </template>
                 </div>
-                <p v-if="movie.description" class="mt-2 leading-relaxed text-gray-700">
+                <p v-if="movie.description" class="mt-4 leading-relaxed text-gray-700">
                     {{ movie.description }}
                 </p>
+                <div class="min-h-6 flex-1" />
 
-                <div class="flex-1" />
-
-                <ul :aria-label="$t('movies.externalSites')" class="flex items-center justify-end gap-2">
-                    <li v-for="(url, index) in movie.externalUrls" :key="index">
-                        <ExternalSiteLink :url />
-                    </li>
-                </ul>
+                <div class="flex items-end gap-6">
+                    <dl
+                        v-if="movie.directors?.length || details.length > 0"
+                        class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm"
+                        :aria-label="$t('movies.details.title')"
+                    >
+                        <template v-if="movie.directors?.length">
+                            <dt class="font-medium text-gray-900">
+                                {{ $t('movies.details.directedBy') }}
+                            </dt>
+                            <dd class="text-gray-700">
+                                <template v-for="(director, index) in movie.directors" :key="director.url">
+                                    <a
+                                        :href="director.tmdbUrl ?? undefined"
+                                        target="_blank"
+                                        rel="noopener"
+                                        :title="$t('app.openIn', { domain: 'themoviedb.org' })"
+                                        class="focus-visible:ring-primary-500 rounded hover:underline focus-visible:ring-2 focus-visible:outline-none"
+                                    >
+                                        {{ director.name }}</a
+                                    ><template v-if="index < movie.directors.length - 1">, </template>
+                                </template>
+                            </dd>
+                        </template>
+                        <template v-for="detail in details" :key="detail.label">
+                            <dt class="font-medium text-gray-900">{{ detail.label }}</dt>
+                            <dd class="text-gray-700">{{ detail.value }}</dd>
+                        </template>
+                    </dl>
+                    <ul :aria-label="$t('movies.externalSites')" class="ml-auto flex items-center gap-2">
+                        <li v-for="(url, index) in movie.externalUrls" :key="index">
+                            <ExternalSiteLink :url />
+                        </li>
+                    </ul>
+                </div>
             </div>
         </article>
+        <section v-if="movie.actors?.length" class="mt-10" aria-labelledby="cast">
+            <h2 id="cast" class="text-xl font-semibold text-gray-900">{{ $t('movies.details.topCast') }}</h2>
+            <ul class="mt-4 flex flex-wrap gap-4">
+                <li v-for="actor in movie.actors" :key="actor.url">
+                    <PersonCard :person="actor" />
+                </li>
+            </ul>
+        </section>
     </Page>
 </template>
 
 <script setup lang="ts">
-import { useLoading } from '@aerogel/core';
+import { translate, useLoading } from '@aerogel/core';
+import { isTruthy } from '@noeldemartin/utils';
+import { computed } from 'vue';
 import IconCheck from '~icons/material-symbols/check';
 import IconClock from '~icons/mdi/clock-outline';
 import IconSync from '~icons/mdi/sync';
 
+import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
 import Movie from '@/models/Movie';
+import TMDB from '@/services/TMDB';
 
 const { movie } = defineProps<{ movie: Movie }>();
 const { loading: syncing, run: runSync } = useLoading();
+const details = computed(() => {
+    return [
+        {
+            label: translate('movies.details.genres'),
+            value: movie.genreIds.map((id) => TMDB.translateGenre(id)).filter(isTruthy).join(', '),
+        },
+        {
+            label: translate('movies.details.countries'),
+            value: movie.countryCodes.map((code) => formatCountry(code)).join(', '),
+        },
+        {
+            label: translate('movies.details.languages'),
+            value: movie.languages.map((language) => formatLanguage(language)).join(', '),
+        },
+    ].filter((detail) => detail.value);
+});
 </script>

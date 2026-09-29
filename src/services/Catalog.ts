@@ -340,11 +340,10 @@ export class CatalogService extends Service {
                 continue;
             }
 
-            if (existingPerson.name === newPerson.name) {
-                continue;
-            }
-
-            existingPerson.setAttribute('name', newPerson.name);
+            existingPerson.setAttributes({
+                name: newPerson.name,
+                imageUrl: TMDB.profileUrl(newPerson),
+            });
         }
     }
 

@@ -7,6 +7,7 @@ export default defineSchema({
     history: true,
     fields: {
         name: string(),
+        imageUrl: url().rdfProperty('image').optional(),
         externalUrls: array(url()).rdfProperty('sameAs').default([]),
     },
 });

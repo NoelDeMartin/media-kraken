@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-import { Lang, useDataTable } from '@aerogel/core';
+import { useDataTable } from '@aerogel/core';
 import { isTruthy } from '@noeldemartin/utils';
 import { computed } from 'vue';
 
@@ -50,7 +50,7 @@ const renderedMovies = computed(() =>
         ...movie.getAttributes(),
         slug: movie.slug,
         genres: movie.genreIds
-            .map((id) => Lang.locale && TMDB.genreTranslations[Lang.locale]?.[id])
+            .map((id) => TMDB.translateGenre(id))
             .filter(isTruthy)
             .join(', '),
         countries: movie.countryCodes.map((code) => formatCountry(code)).join(', '),
