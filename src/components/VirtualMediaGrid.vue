@@ -1,212 +1,276 @@
 <template>
-    <div>
+    <div class="relative">
         <div
-            v-for="(chunk, index) in chunks"
-            :key="index"
-            :ref="(el) => (chunkRefs[index] = el as HTMLElement | null)"
-            :data-chunk-index="index"
-            :style="chunkStyles[index]"
+            ref="ruler"
+            aria-hidden="true"
+            class="invisible absolute inset-x-0 top-0"
+            :class="MEDIA_GRID_CLASSES"
+            :style="mediaGridStyle(itemWidth)"
+        />
+        <TransitionGroup
+            ref="grid"
+            tag="div"
+            class="relative"
+            :css="false"
+            :style="gridStyle"
+            @enter="fadeIn"
+            @leave="fadeOut"
         >
-            <MediaGrid v-if="isChunkVisible(index)" :item-width v-bind="chunkAttrs">
-                <template v-for="item of chunk" :key="getItemKey(item)">
-                    <slot :item="item" />
-                </template>
-            </MediaGrid>
-        </div>
-        <slot v-if="chunks.length === 0" name="empty" />
+            <div v-for="entry of renderedItems" :key="entry.key" class="pointer-events-none absolute top-0 left-0">
+                <div
+                    data-virtual-grid-item
+                    class="pointer-events-auto"
+                    :class="{ 'transition-transform duration-300 ease-out': animatesMoves }"
+                    :style="getItemStyle(entry.index)"
+                >
+                    <slot :item="entry.item" />
+                </div>
+            </div>
+        </TransitionGroup>
+        <slot v-if="items.length === 0" name="empty" />
     </div>
 </template>
 
 <script setup lang="ts" generic="T">
-import { arrayChunk } from '@noeldemartin/utils';
-import { ref, computed, watch, onMounted, onUnmounted, type StyleValue } from 'vue';
+import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch, type StyleValue } from 'vue';
 
-const CHUNK_ROWS = 4;
+import { fadeInGridItem, fadeOutGridItem, MEDIA_GRID_CLASSES, mediaGridStyle } from '@/lib/media-grid';
+
+const RENDERED_VIEWPORTS_BEYOND_EDGES = 1;
 
 const { items, by } = defineProps<{
     items: T[];
     by: keyof T | ((item: T) => string);
     itemWidth?: string;
-    chunkAttrs?: Record<string, unknown>;
 }>();
 
-let resizeObserver: ResizeObserver | null = null;
-let intersectionObserver: IntersectionObserver | null = null;
-const gap = ref<null | number>(null);
+const rulerRef = useTemplateRef('ruler');
+const gridRef = useTemplateRef<{ $el: HTMLElement }>('grid');
 const columns = ref<null | number>(null);
+const columnWidth = ref(0);
+const columnGap = ref(0);
+const rowGap = ref(0);
 const rowHeight = ref<null | number>(null);
-const chunkRefs = ref<(HTMLElement | null)[]>([]);
-const chunkVisibility = ref<boolean[]>([]);
-const firstChunkEl = computed(() => chunkRefs.value[0]?.querySelector<HTMLDivElement>('.grid') ?? null);
+const viewportTop = ref(0);
+const viewportHeight = ref(0);
+const animatesMoves = ref(true);
 const getItemKey = computed(() => (typeof by === 'function' ? by : (item: T) => String(item[by])));
-
-const chunks = computed(() => {
-    const chunkSize = getChunkSize(columns.value);
-
-    if (chunkSize === null) {
-        return [items.slice(0, 100)];
+const rowStride = computed(() => (rowHeight.value === null ? null : rowHeight.value + rowGap.value));
+const totalRows = computed(() => (columns.value ? Math.ceil(items.length / columns.value) : 0));
+const firstRenderedRow = computed(() => {
+    if (rowStride.value === null) {
+        return 0;
     }
 
-    return arrayChunk(items, chunkSize);
+    const top = viewportTop.value - viewportHeight.value * RENDERED_VIEWPORTS_BEYOND_EDGES;
+
+    return Math.max(0, Math.floor(top / rowStride.value));
 });
+const lastRenderedRow = computed(() => {
+    if (rowStride.value === null) {
+        return 0;
+    }
 
-const chunkStyles = computed(() => {
-    const gapValue = gap.value;
-    const columnsValue = columns.value;
-    const rowHeightValue = rowHeight.value;
+    const bottom = viewportTop.value + viewportHeight.value * (1 + RENDERED_VIEWPORTS_BEYOND_EDGES);
 
-    if (gapValue === null || columnsValue === null || rowHeightValue === null) {
+    return Math.min(totalRows.value - 1, Math.floor(bottom / rowStride.value));
+});
+const renderedItems = computed(() => {
+    if (columns.value === null || firstRenderedRow.value > lastRenderedRow.value) {
         return [];
     }
 
-    return chunks.value.map((chunk, index) => {
-        const style: StyleValue = {};
-        const isLast = index === chunks.value.length - 1;
+    const start = firstRenderedRow.value * columns.value;
+    const end = (lastRenderedRow.value + 1) * columns.value;
 
-        if (!isLast) {
-            style.marginBottom = `${gapValue}px`;
-        }
-
-        if (isChunkVisible(index)) {
-            return style;
-        }
-
-        const rows = isLast ? Math.ceil(chunk.length / columnsValue) : CHUNK_ROWS;
-
-        style.height = `${rows * rowHeightValue + (rows - 1) * gapValue}px`;
-
-        return style;
-    });
+    return items.slice(start, end).map((item, offset) => ({
+        item,
+        key: getItemKey.value(item),
+        index: start + offset,
+    }));
 });
-
-function isChunkVisible(index: number) {
-    if (index === 0) {
-        return true;
+const gridStyle = computed<StyleValue>(() => {
+    if (rowHeight.value === null || totalRows.value === 0) {
+        return {};
     }
 
-    return chunkVisibility.value[index] ?? false;
-}
+    return { height: `${totalRows.value * rowHeight.value + (totalRows.value - 1) * rowGap.value}px` };
+});
 
-function getChunkSize(columnsValue: null | number) {
-    return typeof columnsValue === 'number' ? columnsValue * CHUNK_ROWS : null;
-}
+let animatesItemsChange = false;
+let moveAnimationsFrame: number | null = null;
+let viewportUpdateFrame: number | null = null;
+let measuredItem: Element | null = null;
+const rulerObserver = new ResizeObserver(() => measureColumns());
+const itemObserver = new ResizeObserver(([entry]) => entry && measureRowHeight(entry));
 
 function getGridTracks(gridTemplate: string): string[] {
     return gridTemplate.trim().split(/\s+/).filter(Boolean);
 }
 
-function measureGrid(el: HTMLElement) {
-    const computedStyle = window.getComputedStyle(el);
-    const gapValue = parseFloat(computedStyle.rowGap);
-    const columnTracks = getGridTracks(computedStyle.gridTemplateColumns);
-    const firstRowHeight = parseFloat(getGridTracks(computedStyle.gridTemplateRows)[0] ?? '');
+function getItemStyle(index: number): StyleValue {
+    const columnsCount = columns.value ?? 1;
+    const column = index % columnsCount;
+    const row = Math.floor(index / columnsCount);
+    const x = column * (columnWidth.value + columnGap.value);
+    const y = row * (rowStride.value ?? 0);
 
-    if (isNaN(gapValue) || isNaN(firstRowHeight) || firstRowHeight <= 0 || columnTracks.length === 0) {
+    return {
+        width: `${columnWidth.value}px`,
+        transform: `translate(${x}px, ${y}px)`,
+    };
+}
+
+function measureColumns() {
+    if (!rulerRef.value) {
         return;
     }
 
-    gap.value = gapValue;
-    rowHeight.value = firstRowHeight;
-    columns.value = columnTracks.length;
-}
+    const computedStyle = window.getComputedStyle(rulerRef.value);
+    const columnTracks = getGridTracks(computedStyle.gridTemplateColumns);
+    const firstColumnWidth = parseFloat(columnTracks[0] ?? '');
 
-function startObserving(el: HTMLElement) {
-    if (resizeObserver) {
-        resizeObserver.disconnect();
+    if (columnTracks.length === 0 || isNaN(firstColumnWidth)) {
+        return;
     }
 
-    resizeObserver = new ResizeObserver((entries) => {
-        requestAnimationFrame(() => entries.forEach((entry) => measureGrid(entry.target as HTMLElement)));
-    });
+    if (columnTracks.length === columns.value && firstColumnWidth === columnWidth.value) {
+        return;
+    }
 
-    resizeObserver.observe(el);
+    pauseMoveAnimations();
+
+    columns.value = columnTracks.length;
+    columnWidth.value = firstColumnWidth;
+    columnGap.value = parseFloat(computedStyle.columnGap) || 0;
+    rowGap.value = parseFloat(computedStyle.rowGap) || 0;
+
+    updateViewport();
 }
 
-function initIntersectionObserver() {
-    intersectionObserver = new IntersectionObserver(
-        (entries) => {
-            entries.forEach((entry) => {
-                const indexAttr = entry.target.getAttribute('data-chunk-index');
+function measureRowHeight(itemEntry: ResizeObserverEntry) {
+    const height = itemEntry.borderBoxSize[0]?.blockSize ?? 0;
 
-                if (indexAttr === null) {
-                    return;
-                }
+    if (height === 0 || height === rowHeight.value) {
+        return;
+    }
 
-                const index = parseInt(indexAttr, 10);
+    pauseMoveAnimations();
 
-                chunkVisibility.value[index] = entry.isIntersecting;
-            });
-        },
-        {
-            rootMargin: '150% 0px',
-        },
-    );
+    rowHeight.value = height;
+}
 
-    chunkRefs.value.forEach((el) => {
-        if (!el) {
-            return;
-        }
+function pauseMoveAnimations() {
+    animatesMoves.value = false;
 
-        intersectionObserver?.observe(el);
+    if (moveAnimationsFrame !== null) {
+        cancelAnimationFrame(moveAnimationsFrame);
+    }
+
+    moveAnimationsFrame = requestAnimationFrame(() => {
+        moveAnimationsFrame = null;
+        animatesMoves.value = true;
     });
+}
+
+function observeFirstRenderedItem() {
+    const firstItem = gridRef.value?.$el.querySelector(':not([inert]) > [data-virtual-grid-item]') ?? null;
+
+    if (firstItem === measuredItem) {
+        return;
+    }
+
+    if (measuredItem) {
+        itemObserver.unobserve(measuredItem);
+    }
+
+    measuredItem = firstItem;
+
+    if (firstItem) {
+        itemObserver.observe(firstItem);
+    }
+}
+
+function updateViewport() {
+    const gridElement = gridRef.value?.$el;
+
+    if (!gridElement) {
+        return;
+    }
+
+    viewportTop.value = -gridElement.getBoundingClientRect().top;
+    viewportHeight.value = window.innerHeight;
+}
+
+function scheduleViewportUpdate() {
+    if (viewportUpdateFrame !== null) {
+        return;
+    }
+
+    viewportUpdateFrame = requestAnimationFrame(() => {
+        viewportUpdateFrame = null;
+
+        updateViewport();
+    });
+}
+
+function fadeIn(element: Element, done: () => void) {
+    if (!animatesItemsChange) {
+        done();
+
+        return;
+    }
+
+    fadeInGridItem(element, done);
+}
+
+function fadeOut(element: Element, done: () => void) {
+    if (!animatesItemsChange) {
+        done();
+
+        return;
+    }
+
+    fadeOutGridItem(element, done);
 }
 
 watch(
-    firstChunkEl,
-    (newEl) => {
-        if (newEl) {
-            startObserving(newEl);
+    () => items,
+    async () => {
+        animatesItemsChange = true;
 
-            return;
-        }
+        await nextTick();
 
-        if (resizeObserver) {
-            resizeObserver.disconnect();
-            resizeObserver = null;
-        }
+        animatesItemsChange = false;
+
+        updateViewport();
     },
-    { immediate: true },
 );
 
-watch(
-    () => [...chunkRefs.value],
-    (newRefs, oldRefs) => {
-        if (!intersectionObserver) {
-            return;
-        }
+watch(() => renderedItems.value[0]?.key, observeFirstRenderedItem, { flush: 'post' });
 
-        if (oldRefs) {
-            oldRefs.forEach((el) => {
-                if (!el || newRefs.includes(el)) {
-                    return;
-                }
+onMounted(() => {
+    if (rulerRef.value) {
+        rulerObserver.observe(rulerRef.value);
+    }
 
-                intersectionObserver?.unobserve(el);
-            });
-        }
-
-        newRefs.forEach((el) => {
-            if (!el) {
-                return;
-            }
-
-            intersectionObserver?.observe(el);
-        });
-    },
-    { flush: 'post' },
-);
-
-onMounted(() => initIntersectionObserver());
+    window.addEventListener('scroll', scheduleViewportUpdate, { passive: true });
+    window.addEventListener('resize', scheduleViewportUpdate, { passive: true });
+});
 
 onUnmounted(() => {
-    if (intersectionObserver) {
-        intersectionObserver.disconnect();
-        intersectionObserver = null;
+    rulerObserver.disconnect();
+    itemObserver.disconnect();
+
+    window.removeEventListener('scroll', scheduleViewportUpdate);
+    window.removeEventListener('resize', scheduleViewportUpdate);
+
+    if (viewportUpdateFrame !== null) {
+        cancelAnimationFrame(viewportUpdateFrame);
     }
 
-    if (resizeObserver) {
-        resizeObserver.disconnect();
-        resizeObserver = null;
+    if (moveAnimationsFrame !== null) {
+        cancelAnimationFrame(moveAnimationsFrame);
     }
 });
 </script>

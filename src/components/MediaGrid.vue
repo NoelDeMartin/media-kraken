@@ -1,24 +1,59 @@
 <template>
-    <component :class="renderedClasses" :is="as" :style="{ '--media-grid-item-width': itemWidth }">
+    <TransitionGroup
+        tag="div"
+        move-class="transition-transform duration-300 ease-out"
+        :css="false"
+        :class="renderedClasses"
+        :style="mediaGridStyle(itemWidth)"
+        @enter="fadeInGridItem"
+        @before-leave="takeOutOfGridFlow"
+        @leave="flyOut"
+    >
         <slot />
-    </component>
+    </TransitionGroup>
 </template>
 
 <script setup lang="ts">
 import { classes } from '@aerogel/core';
-import { computed, type Component, type HTMLAttributes } from 'vue';
+import { isInstanceOf } from '@noeldemartin/utils';
+import { computed, type HTMLAttributes } from 'vue';
+
+import { fadeInGridItem, fadeOutGridItem, flyOutGridItem, MEDIA_GRID_CLASSES, mediaGridStyle } from '@/lib/media-grid';
 
 const {
-    as = 'div',
     class: rootClass = '',
-    itemWidth = '9rem',
+    itemWidth,
+    leaveTarget,
 } = defineProps<{
-    as?: string | Component;
     class?: HTMLAttributes['class'];
     itemWidth?: string;
+    leaveTarget?: string;
 }>();
 
-const renderedClasses = computed(() =>
-    classes('grid grid-cols-[repeat(auto-fill,minmax(var(--media-grid-item-width),1fr))] gap-6', rootClass),
-);
+const renderedClasses = computed(() => classes('relative', MEDIA_GRID_CLASSES, rootClass));
+
+function takeOutOfGridFlow(element: Element) {
+    if (!isInstanceOf(element, HTMLElement)) {
+        return;
+    }
+
+    const { clientWidth, offsetTop, offsetLeft } = element;
+
+    element.style.position = 'absolute';
+    element.style.width = `${clientWidth}px`;
+    element.style.top = `${offsetTop}px`;
+    element.style.left = `${offsetLeft}px`;
+}
+
+function flyOut(element: Element, done: () => void) {
+    const target = leaveTarget ? document.querySelector(leaveTarget) : null;
+
+    if (target) {
+        flyOutGridItem(element, target, done);
+
+        return;
+    }
+
+    fadeOutGridItem(element, done);
+}
 </script>

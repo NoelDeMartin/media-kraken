@@ -67,22 +67,7 @@
                 />
             </div>
         </div>
-        <VirtualMediaGrid
-            v-if="display === 'grid'"
-            by="url"
-            :chunk-attrs="{
-                as: TransitionGroup,
-                tag: 'div',
-                class: 'relative mt-2',
-                enterActiveClass: 'transition-all ease-out duration-300',
-                enterFromClass: 'opacity-0',
-                leaveActiveClass: 'transition-all ease-in duration-300',
-                leaveToClass: 'opacity-0',
-                moveClass: 'transition-all ease-out duration-300',
-                onBeforeLeave: freeze,
-            }"
-            :items="filteredMovies"
-        >
+        <VirtualMediaGrid v-if="display === 'grid'" by="url" class="mt-2" :items="filteredMovies">
             <template #default="{ item: movie }">
                 <MovieCard :movie />
             </template>
@@ -102,7 +87,7 @@
 <script setup lang="ts">
 import { UI, useLoading } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-solid';
-import { computed, ref, TransitionGroup } from 'vue';
+import { computed, ref } from 'vue';
 import IconSync from '~icons/mdi/sync';
 import IconUpload from '~icons/mdi/upload';
 
@@ -156,17 +141,6 @@ async function updateAdvancedFilters() {
     if (filters) {
         advancedFilters.value = filters;
     }
-}
-
-function freeze(movie: HTMLElement) {
-    const { clientWidth, offsetTop, offsetLeft } = movie;
-
-    movie.style.position = 'absolute';
-    movie.style.width = `${clientWidth}px`;
-    movie.style.top = `${offsetTop}px`;
-    movie.style.left = `${offsetLeft}px`;
-    movie.style.transformOrigin = 'top left';
-    movie.style.pointerEvents = 'none';
 }
 
 function clearAllFilters() {

@@ -29,18 +29,7 @@
                         <i-ph-arrow-right class="size-4" />
                     </Link>
                 </div>
-                <MediaGrid
-                    :as="TransitionGroup"
-                    tag="div"
-                    class="relative mt-4"
-                    ref="moviesGrid"
-                    enter-active-class="transition-all ease-out duration-300"
-                    enter-from-class="opacity-0"
-                    leave-active-class="transition-all ease-in duration-300"
-                    leave-to-class="opacity-10"
-                    move-class="transition-all ease-out duration-300"
-                    @before-leave="sendMovieToCollection"
-                >
+                <MediaGrid class="mt-4" :leave-target="$ui.mobile ? undefined : '#my-collection-menu'">
                     <MovieCard v-for="movie of pendingMovies" :key="movie.url" :movie />
                 </MediaGrid>
                 <div
@@ -57,10 +46,9 @@
 </template>
 
 <script setup lang="ts">
-import { translate, UI } from '@aerogel/core';
+import { translate } from '@aerogel/core';
 import { computedModels, useModelCollection } from '@aerogel/plugin-solid';
 import { arrayReversed } from '@noeldemartin/utils';
-import { TransitionGroup, useTemplateRef } from 'vue';
 
 import Episode from '@/models/Episode';
 import Movie from '@/models/Movie';
@@ -70,7 +58,6 @@ const SAMPLE_MOVIES_LENGTH = 10;
 
 const shows = useModelCollection(Show);
 const movies = useModelCollection(Movie);
-const $moviesGrid = useTemplateRef('moviesGrid');
 const activeShows = computedModels(Show, () => shows.value.filter((show) => show.watchingStatus === 'watching'));
 const pendingMovies = computedModels(Movie, () => {
     const sample: Movie[] = [];
@@ -102,41 +89,4 @@ const moreMoviesParts = {
     start: moreMovies.split('%LINK_PLACEHOLDER%')[0] ?? '',
     end: moreMovies.split('%LINK_PLACEHOLDER%')[1] ?? '',
 };
-
-function positionAtMyCollection(el: HTMLElement) {
-    const collectionMenu = document.getElementById('my-collection-menu');
-
-    if (!collectionMenu || !$moviesGrid.value) {
-        return;
-    }
-
-    const myCollectionRect = collectionMenu.getBoundingClientRect();
-    const gridRect = $moviesGrid.value.$el.getBoundingClientRect();
-    const top = myCollectionRect.top - gridRect.top + collectionMenu.clientHeight / 2;
-    const left = myCollectionRect.left - gridRect.left + collectionMenu.clientWidth / 2;
-
-    el.style.top = `${top}px`;
-    el.style.left = `${left}px`;
-}
-
-function sendMovieToCollection(movie: HTMLElement) {
-    const { clientWidth, offsetTop, offsetLeft } = movie;
-
-    movie.style.position = 'absolute';
-    movie.style.width = `${clientWidth}px`;
-    movie.style.top = `${offsetTop}px`;
-    movie.style.left = `${offsetLeft}px`;
-    movie.style.transformOrigin = 'top left';
-    movie.style.pointerEvents = 'none';
-
-    if (UI.mobile) {
-        return;
-    }
-
-    requestAnimationFrame(() => {
-        positionAtMyCollection(movie);
-
-        movie.style.transform = 'scale(0.1) translate(-50%, -50%)';
-    });
-}
 </script>
