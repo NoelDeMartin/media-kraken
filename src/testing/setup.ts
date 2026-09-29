@@ -1,6 +1,6 @@
 import 'soukai-bis/patch-zod';
 import { bootCoreModels, bootModelsFromViteGlob } from 'soukai-bis';
-import { beforeAll } from 'vitest';
+import { beforeAll } from 'vite-plus/test';
 
 import models from '@/models';
 

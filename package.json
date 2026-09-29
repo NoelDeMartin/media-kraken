@@ -62,7 +62,6 @@
         "vite": "catalog:",
         "vite-plugin-multi-root-workspace": "next",
         "vite-plus": "catalog:",
-        "vitest": "^4.1.9",
         "vue-tsc": "^3.2.7"
     },
     "packageManager": "pnpm@12.4.1"

@@ -10,8 +10,8 @@ jobs:
     ci:
         runs-on: ubuntu-latest
         steps:
-            - uses: actions/checkout@v6
-            - uses: voidzero-dev/setup-vp@v1.20.0
+            - uses: actions/checkout@v7
+            - uses: voidzero-dev/setup-vp@v1.21.1
               with:
                   node-version-file: '.node-version'
                   cache: true
@@ -28,15 +28,15 @@ jobs:
             matrix:
                 browser: [chromium, firefox, webkit]
         steps:
-            - uses: actions/checkout@v6
-            - uses: voidzero-dev/setup-vp@v1.20.0
+            - uses: actions/checkout@v7
+            - uses: voidzero-dev/setup-vp@v1.21.1
               with:
                   node-version-file: '.node-version'
                   cache: true
             - run: vpx playwright install --with-deps ${{ matrix.browser }}
             - run: vp run e2e:test:${{ matrix.browser }}
             - name: Upload Playwright artifacts
-              uses: actions/upload-artifact@v4
+              uses: actions/upload-artifact@v7
               if: failure()
               with:
                   name: playwright-${{ matrix.browser }}
@@ -52,8 +52,8 @@ jobs:
         permissions:
             contents: write
         steps:
-            - uses: actions/checkout@v6
-            - uses: voidzero-dev/setup-vp@v1.20.0
+            - uses: actions/checkout@v7
+            - uses: voidzero-dev/setup-vp@v1.21.1
               with:
                   node-version-file: '.node-version'
                   cache: true
