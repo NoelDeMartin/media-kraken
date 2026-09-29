@@ -125,7 +125,10 @@ const details = computed(() => {
     return [
         {
             label: translate('movies.details.genres'),
-            value: movie.genreIds.map((id) => TMDB.translateGenre(id)).filter(isTruthy).join(', '),
+            value: movie.genreIds
+                .map((id) => TMDB.translateGenre(id))
+                .filter(isTruthy)
+                .join(', '),
         },
         {
             label: translate('movies.details.countries'),
