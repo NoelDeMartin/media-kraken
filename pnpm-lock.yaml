@@ -164,18 +164,6 @@ settings:
 
 catalogs:
   default:
-    '@noeldemartin/solid-utils':
-      specifier: next
-      version: 0.6.1-next.578b41be4a53c59db770a55bf505f58574afd7e0
-    '@noeldemartin/utils':
-      specifier: next
-      version: 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
-    soukai-bis:
-      specifier: next
-      version: 0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275
-    vite:
-      specifier: npm:@voidzero-dev/vite-plus-core@^1.0.0
-      version: 1.0.0
     vite-plus:
       specifier: ^1.0.0
       version: 1.0.0
@@ -192,24 +180,24 @@ importers:
     dependencies:
       '@aerogel/core':
         specifier: next
-        version: 0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
+        version: 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
       '@aerogel/plugin-i18n':
         specifier: next
-        version: 0.1.2-next.81f8519155f204f6cb74ec6de2cda8276f218ac4(@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))
+        version: 0.1.2-next.81f8519155f204f6cb74ec6de2cda8276f218ac4(@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))
       '@aerogel/plugin-local-first':
         specifier: next
-        version: 0.1.2-next.1c20a643b629046b3e3a9dd1e2b95cd48f1cd40b(1e33e9285e985283081440470931b410)
+        version: 0.1.2-next.1c20a643b629046b3e3a9dd1e2b95cd48f1cd40b(212cc79abdf82c0e2ba0d808d490e9b5)
       '@aerogel/plugin-routing':
         specifier: next
-        version: 0.1.2-next.aef0d682e604b6576d5b8a88228a5ab5a933d4e3(d88d0b6795fd1f77b55f257bd9ad3a3c)
+        version: 0.1.2-next.aef0d682e604b6576d5b8a88228a5ab5a933d4e3(aa60d38a0dd349d1dec4175d9cf92404)
       '@aerogel/plugin-solid':
         specifier: next
-        version: 0.1.2-next.9dab1744392e926ae61306cc62afa7b84eed3c9c(@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@aerogel/vite@0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))(web-streams-polyfill@3.3.3)(zod@4.6.5)
+        version: 0.1.2-next.9dab1744392e926ae61306cc62afa7b84eed3c9c(@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@aerogel/vite@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))(web-streams-polyfill@3.3.3)(zod@4.6.5)
       '@noeldemartin/solid-utils':
-        specifier: 'catalog:'
+        specifier: next
         version: 0.6.1-next.578b41be4a53c59db770a55bf505f58574afd7e0(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils':
-        specifier: 'catalog:'
+        specifier: next
         version: 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
       '@tailwindcss/forms':
         specifier: ^0.5.10
@@ -221,7 +209,7 @@ importers:
         specifier: ^5.7.0
         version: 5.7.0
       soukai-bis:
-        specifier: 'catalog:'
+        specifier: next
         version: 0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5)
       tailwindcss:
         specifier: ^4.1.1
@@ -241,16 +229,16 @@ importers:
     devDependencies:
       '@aerogel/cli':
         specifier: next
-        version: 0.1.2-next.6261674db6aa13adc66c9f3aa5959a3d440126aa(@types/node@24.19.0)(supports-color@10.2.2)
+        version: 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@types/node@24.19.0)(supports-color@10.2.2)
       '@aerogel/playwright':
         specifier: next
         version: 0.1.2-next.f2b91490c4e1f1e0bd1e4e8cabebbf54f41a3cdc(@playwright/test@1.63.0)(web-streams-polyfill@3.3.3)
       '@aerogel/storybook':
         specifier: next
-        version: 0.1.2-next.aef0d682e604b6576d5b8a88228a5ab5a933d4e3(@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@storybook/vue3-vite@10.6.0(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(storybook@10.6.0(@types/react@19.3.0)(react@19.3.0)(vite-plus@1.0.0(@types/node@24.19.0)(@vitest/ui@5.0.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)))(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3)))(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))
+        version: 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@storybook/vue3-vite@10.6.0(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(storybook@10.6.0(@types/react@19.3.0)(react@19.3.0)(vite-plus@1.0.0(@types/node@24.19.0)(@vitest/ui@5.0.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)))(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3)))(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))
       '@aerogel/vite':
         specifier: next
-        version: 0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1)
+        version: 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1)
       '@iconify/json':
         specifier: 2.2.522
         version: 2.2.522
@@ -306,7 +294,7 @@ importers:
         specifier: ^28.4.1
         version: 28.8.0(@babel/parser@7.29.9)(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))
       vite:
-        specifier: 'catalog:'
+        specifier: npm:@voidzero-dev/vite-plus-core@^1.0.0
         version: '@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)'
       vite-plugin-multi-root-workspace:
         specifier: next
@@ -323,12 +311,12 @@ packages:
   '@adobe/css-tools@4.5.0':
     resolution: {integrity: sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q==}
 
-  '@aerogel/cli@0.1.2-next.6261674db6aa13adc66c9f3aa5959a3d440126aa':
-    resolution: {integrity: sha512-pTyyZhnX8n23woyC4iZRn5h4jkSt8Hln3igic/NyNU2LzuEZOkGFGKZW9mDrLGnynZubzmhCccOTQ9p/tB4vlw==}
+  '@aerogel/cli@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c':
+    resolution: {integrity: sha512-Hji0jt0GvquTzES85LOjO6jmC7B+R3IZ1it6vjaPJrK2qy9hoe0QnHFUj2YLiXhOPb0lfrIx03WxKOwRu7vQvQ==}
     hasBin: true
 
-  '@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5':
-    resolution: {integrity: sha512-4DpFx/04KnViImXD+rdaVSh0gAs6+M7fisAvtx+bRbrV9eW1K7STQ04EiEjcuUgjNctcfugbsZuLgDlO68LbBA==}
+  '@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c':
+    resolution: {integrity: sha512-JJ+DJ+2T3hUozQj6HSS+Qhuc+2f0lB8MP8WDt7KyGTxCF8zVWHoTuyX/A6y2rqiN+zUeVWtZDrh/lLi69dEK9w==}
     peerDependencies:
       '@tailwindcss/forms': ^0.5.10
       '@tailwindcss/typography': ^0.5.16
@@ -370,15 +358,15 @@ packages:
       soukai-bis: '*'
       zod: ^4.3.4
 
-  '@aerogel/storybook@0.1.2-next.aef0d682e604b6576d5b8a88228a5ab5a933d4e3':
-    resolution: {integrity: sha512-fu76/85xiYvlPHTa1Ji84XpLASlNKEMDevgNTAqGkKrdwqL75b4FujAr6H6GSvy75MZ674VEIpA9w51EPQi+Yw==}
+  '@aerogel/storybook@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c':
+    resolution: {integrity: sha512-Zaud/jjChfSiDGhsGBSGzEnq0ZbtYdPYiBfG6rOQB0K+crc7hGfwYDnQqphG+BJoxYSBrcoqgIaJ7vU3wgKYtw==}
     peerDependencies:
       '@aerogel/core': '*'
       '@storybook/vue3-vite': ^10.0.0
       soukai-bis: next
 
-  '@aerogel/vite@0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2':
-    resolution: {integrity: sha512-gCh9wIkbdziPViV+CF6FXml/4IqDlsOEOaj3GWD3BCUWGLhCWFsmWOMDAgyX5mc32rRcYy5sHHoLAv2jPXNmQw==}
+  '@aerogel/vite@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c':
+    resolution: {integrity: sha512-X5N/ZssEfluQLP5rECih0jIJBgmpbJNw09Ack/pVVqMKbcc7zIfBQ/wqEr4zOeeNapp19pdmLWTPp6g4iGxQ1g==}
 
   '@antfu/install-pkg@1.1.0':
     resolution: {integrity: sha512-MGQsmw10ZyI+EJo45CdSER4zEb+p31LpDAFp2Z3gkSd1yqVZGi0Ebx++YTEMonJy4oChEMLsxZ64j8FH6sSqtQ==}
@@ -6937,7 +6925,7 @@ snapshots:
 
   '@adobe/css-tools@4.5.0': {}
 
-  '@aerogel/cli@0.1.2-next.6261674db6aa13adc66c9f3aa5959a3d440126aa(@types/node@24.19.0)(supports-color@10.2.2)':
+  '@aerogel/cli@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@types/node@24.19.0)(supports-color@10.2.2)':
     dependencies:
       '@noeldemartin/utils': 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
       chalk: 5.6.2
@@ -6950,7 +6938,7 @@ snapshots:
       - '@types/node'
       - supports-color
 
-  '@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)':
+  '@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)':
     dependencies:
       '@noeldemartin/utils': 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
       '@noeldemartin/vue-modals': 0.1.1(vue@3.5.43(typescript@6.0.3))
@@ -6984,15 +6972,15 @@ snapshots:
     transitivePeerDependencies:
       - web-streams-polyfill
 
-  '@aerogel/plugin-i18n@0.1.2-next.81f8519155f204f6cb74ec6de2cda8276f218ac4(@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))':
+  '@aerogel/plugin-i18n@0.1.2-next.81f8519155f204f6cb74ec6de2cda8276f218ac4(@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))':
     dependencies:
-      '@aerogel/core': 0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
+      '@aerogel/core': 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
       '@noeldemartin/utils': 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
 
-  '@aerogel/plugin-local-first@0.1.2-next.1c20a643b629046b3e3a9dd1e2b95cd48f1cd40b(1e33e9285e985283081440470931b410)':
+  '@aerogel/plugin-local-first@0.1.2-next.1c20a643b629046b3e3a9dd1e2b95cd48f1cd40b(212cc79abdf82c0e2ba0d808d490e9b5)':
     dependencies:
-      '@aerogel/core': 0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
-      '@aerogel/plugin-solid': 0.1.2-next.9dab1744392e926ae61306cc62afa7b84eed3c9c(@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@aerogel/vite@0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))(web-streams-polyfill@3.3.3)(zod@4.6.5)
+      '@aerogel/core': 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
+      '@aerogel/plugin-solid': 0.1.2-next.9dab1744392e926ae61306cc62afa7b84eed3c9c(@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@aerogel/vite@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))(web-streams-polyfill@3.3.3)(zod@4.6.5)
       '@noeldemartin/solid-utils': 0.6.1-next.578b41be4a53c59db770a55bf505f58574afd7e0(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils': 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
       idb: 8.0.3
@@ -7000,19 +6988,19 @@ snapshots:
     transitivePeerDependencies:
       - web-streams-polyfill
 
-  '@aerogel/plugin-routing@0.1.2-next.aef0d682e604b6576d5b8a88228a5ab5a933d4e3(d88d0b6795fd1f77b55f257bd9ad3a3c)':
+  '@aerogel/plugin-routing@0.1.2-next.aef0d682e604b6576d5b8a88228a5ab5a933d4e3(aa60d38a0dd349d1dec4175d9cf92404)':
     dependencies:
-      '@aerogel/core': 0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
-      '@aerogel/plugin-solid': 0.1.2-next.9dab1744392e926ae61306cc62afa7b84eed3c9c(@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@aerogel/vite@0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))(web-streams-polyfill@3.3.3)(zod@4.6.5)
-      '@aerogel/vite': 0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1)
+      '@aerogel/core': 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
+      '@aerogel/plugin-solid': 0.1.2-next.9dab1744392e926ae61306cc62afa7b84eed3c9c(@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@aerogel/vite@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))(web-streams-polyfill@3.3.3)(zod@4.6.5)
+      '@aerogel/vite': 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1)
       '@noeldemartin/utils': 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
       soukai-bis: 0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5)
       vue-router: 4.6.4(vue@3.5.43(typescript@6.0.3))
 
-  '@aerogel/plugin-solid@0.1.2-next.9dab1744392e926ae61306cc62afa7b84eed3c9c(@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@aerogel/vite@0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))(web-streams-polyfill@3.3.3)(zod@4.6.5)':
+  '@aerogel/plugin-solid@0.1.2-next.9dab1744392e926ae61306cc62afa7b84eed3c9c(@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@aerogel/vite@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1))(encoding@0.1.13)(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))(web-streams-polyfill@3.3.3)(zod@4.6.5)':
     dependencies:
-      '@aerogel/core': 0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
-      '@aerogel/vite': 0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1)
+      '@aerogel/core': 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
+      '@aerogel/vite': 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1)
       '@inrupt/solid-client-authn-browser': 3.1.1
       '@noeldemartin/solid-utils': 0.6.1-next.578b41be4a53c59db770a55bf505f58574afd7e0(web-streams-polyfill@3.3.3)
       '@noeldemartin/utils': 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
@@ -7023,13 +7011,13 @@ snapshots:
       - encoding
       - web-streams-polyfill
 
-  '@aerogel/storybook@0.1.2-next.aef0d682e604b6576d5b8a88228a5ab5a933d4e3(@aerogel/core@0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@storybook/vue3-vite@10.6.0(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(storybook@10.6.0(@types/react@19.3.0)(react@19.3.0)(vite-plus@1.0.0(@types/node@24.19.0)(@vitest/ui@5.0.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)))(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3)))(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))':
+  '@aerogel/storybook@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@aerogel/core@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5))(@storybook/vue3-vite@10.6.0(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(storybook@10.6.0(@types/react@19.3.0)(react@19.3.0)(vite-plus@1.0.0(@types/node@24.19.0)(@vitest/ui@5.0.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)))(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3)))(soukai-bis@0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5))':
     dependencies:
-      '@aerogel/core': 0.1.2-next.a6df219a3d618a4e3d55a953fc3cd47107a702b5(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
+      '@aerogel/core': 0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@tailwindcss/forms@0.5.11(tailwindcss@4.3.3))(@tailwindcss/typography@0.5.20(tailwindcss@4.3.3))(tailwindcss@4.3.3)(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))(web-streams-polyfill@3.3.3)(zod@4.6.5)
       '@storybook/vue3-vite': 10.6.0(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(storybook@10.6.0(@types/react@19.3.0)(react@19.3.0)(vite-plus@1.0.0(@types/node@24.19.0)(@vitest/ui@5.0.1)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1)))(typescript@6.0.3)(vue@3.5.43(typescript@6.0.3))
       soukai-bis: 0.0.0-next.8084c9222458428ddf89e67d7ba9298b2908f275(web-streams-polyfill@3.3.3)(zod@4.6.5)
 
-  '@aerogel/vite@0.1.2-next.ab63d951865c45e54baa23b3bd397de4f4c694a2(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1)':
+  '@aerogel/vite@0.1.2-next.1d1b3cdc38f4b5a12f7a2d0e631ed1229a25c34c(@babel/parser@7.29.9)(@types/node@24.19.0)(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))(supports-color@10.2.2)(vue@3.5.43(typescript@6.0.3))(workbox-window@7.4.1)':
     dependencies:
       '@noeldemartin/utils': 0.7.3-next.9b27cd7a7cb7b19a570093ac5a656ad6cf197066
       '@tailwindcss/vite': 4.3.3(@voidzero-dev/vite-plus-core@1.0.0(@types/node@24.19.0)(esbuild@0.28.2)(jiti@2.7.0)(terser@5.51.2)(typescript@6.0.3)(yaml@2.9.1))
@@ -7792,7 +7780,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -7894,7 +7882,7 @@ snapshots:
       '@comunica/logger-pretty': 2.10.0
       '@comunica/runner': 2.10.0(encoding@0.1.13)
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/yargs': 17.0.35
       asynciterator: 3.10.0
       negotiate: 1.0.1
@@ -7949,7 +7937,7 @@ snapshots:
       '@comunica/bus-query-operation': 2.10.1(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-terms: 1.11.0
@@ -8006,7 +7994,7 @@ snapshots:
       '@comunica/bus-query-operation': 2.10.1(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
       - encoding
@@ -8019,7 +8007,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/expression-evaluator': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
@@ -8169,7 +8157,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/data-factory': 2.7.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -8183,7 +8171,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -8238,7 +8226,7 @@ snapshots:
       '@comunica/mediatortype-httprequests': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       fetch-sparql-endpoint: 4.2.1(encoding@0.1.13)
       rdf-data-factory: 1.1.3
@@ -8252,7 +8240,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-terms: 1.11.0
       sparqlalgebrajs: 4.3.8
@@ -8275,7 +8263,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -8317,7 +8305,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -8329,7 +8317,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -8404,7 +8392,7 @@ snapshots:
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-string: 1.6.3
       readable-stream: 4.7.0
 
@@ -8412,7 +8400,7 @@ snapshots:
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
 
   '@comunica/actor-query-result-serialize-sparql-json@2.10.2':
@@ -8422,14 +8410,14 @@ snapshots:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
 
   '@comunica/actor-query-result-serialize-sparql-tsv@2.10.0':
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-string-ttl: 1.3.2
       readable-stream: 4.7.0
 
@@ -8437,7 +8425,7 @@ snapshots:
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
 
   '@comunica/actor-query-result-serialize-stats@2.10.2':
@@ -8454,7 +8442,7 @@ snapshots:
     dependencies:
       '@comunica/bus-query-result-serialize': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
@@ -8560,7 +8548,7 @@ snapshots:
       '@comunica/bus-rdf-join': 2.10.1(encoding@0.1.13)
       '@comunica/mediatortype-join-coefficients': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-string: 1.6.3
     transitivePeerDependencies:
       - encoding
@@ -8571,7 +8559,7 @@ snapshots:
       '@comunica/bus-rdf-join': 2.10.1(encoding@0.1.13)
       '@comunica/mediatortype-join-coefficients': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
     transitivePeerDependencies:
       - encoding
 
@@ -8639,7 +8627,7 @@ snapshots:
     dependencies:
       '@comunica/bus-rdf-metadata-extract': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/uritemplate': 0.3.6
       uritemplate: 0.3.4
 
@@ -8678,7 +8666,7 @@ snapshots:
     dependencies:
       '@comunica/bus-rdf-metadata': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
 
   '@comunica/actor-rdf-parse-html-microdata@2.10.0':
@@ -8700,7 +8688,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
       relative-to-absolute-iri: 1.0.8
     transitivePeerDependencies:
@@ -8712,7 +8700,7 @@ snapshots:
       '@comunica/bus-rdf-parse-html': 2.10.0
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       htmlparser2: 9.1.0
       readable-stream: 4.7.0
 
@@ -8745,7 +8733,7 @@ snapshots:
     dependencies:
       '@comunica/bus-rdf-parse': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       readable-stream: 4.7.0
       shaclc-parse: 1.4.3
@@ -8785,7 +8773,7 @@ snapshots:
       '@comunica/bus-rdf-resolve-hypermedia': 2.10.0(encoding@0.1.13)
       '@comunica/bus-rdf-resolve-quad-pattern': 2.10.0(encoding@0.1.13)
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -8800,7 +8788,7 @@ snapshots:
       '@comunica/bus-rdf-resolve-hypermedia': 2.10.0(encoding@0.1.13)
       '@comunica/bus-rdf-resolve-quad-pattern': 2.10.0(encoding@0.1.13)
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       fetch-sparql-endpoint: 4.2.1(encoding@0.1.13)
       lru-cache: 10.4.3
@@ -8820,7 +8808,7 @@ snapshots:
       '@comunica/data-factory': 2.7.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-terms: 1.11.0
@@ -8844,7 +8832,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       lru-cache: 10.4.3
       rdf-data-factory: 1.1.3
@@ -8860,7 +8848,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-terms: 1.11.0
@@ -8874,7 +8862,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       lru-cache: 10.4.3
       rdf-store-stream: 2.0.1
       readable-stream: 4.7.0
@@ -8912,7 +8900,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       cross-fetch: 4.1.0(encoding@0.1.13)
       rdf-string-ttl: 1.3.2
@@ -8928,7 +8916,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       cross-fetch: 4.1.0(encoding@0.1.13)
     transitivePeerDependencies:
@@ -8941,7 +8929,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       fetch-sparql-endpoint: 4.2.1(encoding@0.1.13)
       rdf-string-ttl: 1.3.2
@@ -8968,7 +8956,7 @@ snapshots:
       '@comunica/bus-rdf-update-quads': 2.10.2(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -8977,7 +8965,7 @@ snapshots:
 
   '@comunica/bindings-factory@2.10.1':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       immutable: 4.3.9
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -8992,7 +8980,7 @@ snapshots:
       '@comunica/bus-dereference': 2.10.0(encoding@0.1.13)
       '@comunica/bus-rdf-parse': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
     transitivePeerDependencies:
       - encoding
 
@@ -9042,7 +9030,7 @@ snapshots:
       '@comunica/core': 2.10.0
       '@comunica/data-factory': 2.7.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
@@ -9053,7 +9041,7 @@ snapshots:
   '@comunica/bus-query-parse@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       sparqlalgebrajs: 4.3.8
 
   '@comunica/bus-query-result-serialize@2.10.0':
@@ -9082,7 +9070,7 @@ snapshots:
       '@comunica/mediatortype-join-coefficients': 2.10.0
       '@comunica/metadata': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
     transitivePeerDependencies:
@@ -9096,24 +9084,24 @@ snapshots:
   '@comunica/bus-rdf-metadata-extract@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-metadata@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-parse-html@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-parse@2.10.0':
     dependencies:
       '@comunica/actor-abstract-mediatyped': 2.10.0
       '@comunica/actor-abstract-parse': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-resolve-hypermedia-links-queue@2.10.0':
     dependencies:
@@ -9124,13 +9112,13 @@ snapshots:
     dependencies:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-resolve-hypermedia@2.10.0(encoding@0.1.13)':
     dependencies:
       '@comunica/bus-rdf-resolve-quad-pattern': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
     transitivePeerDependencies:
       - encoding
 
@@ -9139,7 +9127,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -9149,7 +9137,7 @@ snapshots:
     dependencies:
       '@comunica/actor-abstract-mediatyped': 2.10.0
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/bus-rdf-update-hypermedia@2.10.2(encoding@0.1.13)':
     dependencies:
@@ -9165,7 +9153,7 @@ snapshots:
       '@comunica/context-entries': 2.10.0(encoding@0.1.13)
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       stream-to-string: 1.2.1
     transitivePeerDependencies:
@@ -9177,7 +9165,7 @@ snapshots:
     dependencies:
       '@comunica/core': 2.10.0
       '@comunica/types': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       jsonld-context-parser: 2.4.0(encoding@0.1.13)
       sparqlalgebrajs: 4.3.8
     transitivePeerDependencies:
@@ -9190,11 +9178,11 @@ snapshots:
 
   '@comunica/data-factory@2.7.0':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/expression-evaluator@2.10.0':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/spark-md5': 3.0.5
       '@types/uuid': 9.0.8
       bignumber.js: 9.3.1
@@ -9259,7 +9247,7 @@ snapshots:
   '@comunica/mediatortype-join-coefficients@2.10.0':
     dependencies:
       '@comunica/core': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@comunica/mediatortype-time@2.10.0':
     dependencies:
@@ -9426,7 +9414,7 @@ snapshots:
 
   '@comunica/types@2.10.0':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/yargs': 17.0.35
       asynciterator: 3.10.0
       sparqlalgebrajs: 4.3.8
@@ -10262,7 +10250,7 @@ snapshots:
 
   '@rdfjs/data-model@1.3.4':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@rdfjs/dataset@1.1.1':
     dependencies:
@@ -10777,7 +10765,7 @@ snapshots:
 
   '@types/clownface@2.0.10':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/rdfjs__environment': 1.0.0
 
   '@types/connect@3.4.38':
@@ -10876,7 +10864,7 @@ snapshots:
 
   '@types/n3@1.26.4':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/node': 24.19.0
 
   '@types/node@18.19.130':
@@ -10917,13 +10905,13 @@ snapshots:
 
   '@types/rdf-validate-shacl@0.4.9':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/clownface': 2.0.10
       '@types/node': 24.19.0
 
   '@types/rdfjs__environment@1.0.0':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/node': 24.19.0
 
   '@types/react@19.3.0':
@@ -10958,7 +10946,7 @@ snapshots:
 
   '@types/sparqljs@3.1.12':
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
 
   '@types/triple-beam@1.3.5': {}
 
@@ -11746,7 +11734,7 @@ snapshots:
 
   componentsjs@5.5.1(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/minimist': 1.2.5
       '@types/node': 18.19.130
       '@types/semver': 7.8.0
@@ -12274,7 +12262,7 @@ snapshots:
 
   fetch-sparql-endpoint@4.2.1(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@smessie/readable-web-to-node-stream': 3.0.3
       '@types/readable-stream': 2.3.15
       '@types/sparqljs': 3.1.12
@@ -12459,7 +12447,7 @@ snapshots:
 
   graphql-to-sparql@3.0.1(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       graphql: 15.10.3
       jsonld-context-parser: 2.4.0(encoding@0.1.13)
       minimist: 1.2.8
@@ -12851,7 +12839,7 @@ snapshots:
   jsonld-streaming-parser@3.4.0(encoding@0.1.13):
     dependencies:
       '@bergos/jsonparse': 1.4.2
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/http-link-header': 1.0.7
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
@@ -12865,7 +12853,7 @@ snapshots:
 
   jsonld-streaming-serializer@2.1.0(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
       jsonld-context-parser: 2.4.0(encoding@0.1.13)
@@ -13136,7 +13124,7 @@ snapshots:
 
   microdata-rdf-streaming-parser@2.0.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       htmlparser2: 8.0.2
       rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
@@ -13713,7 +13701,7 @@ snapshots:
       '@comunica/mediator-combine-union': 2.10.0
       '@comunica/mediator-number': 2.10.0
       '@comunica/mediator-race': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       process: 0.11.10
       rdf-string: 1.6.3
       stream-to-string: 1.2.1
@@ -13722,19 +13710,19 @@ snapshots:
 
   rdf-isomorphic@1.3.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       hash.js: 1.1.7
       rdf-string: 1.6.3
       rdf-terms: 1.11.0
 
   rdf-literal@1.3.2:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
 
   rdf-object@1.14.0(encoding@0.1.13):
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       jsonld-context-parser: 2.4.0(encoding@0.1.13)
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -13765,7 +13753,7 @@ snapshots:
       '@comunica/mediator-combine-union': 2.10.0
       '@comunica/mediator-number': 2.10.0
       '@comunica/mediator-race': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
       stream-to-string: 1.2.1
     transitivePeerDependencies:
@@ -13789,7 +13777,7 @@ snapshots:
       '@comunica/mediator-combine-pipeline': 2.10.0
       '@comunica/mediator-combine-union': 2.10.0
       '@comunica/mediator-race': 2.10.0
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       readable-stream: 4.7.0
       stream-to-string: 1.2.1
     transitivePeerDependencies:
@@ -13797,12 +13785,12 @@ snapshots:
 
   rdf-store-stream@2.0.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-stores: 1.0.0
 
   rdf-stores@1.0.0:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       asynciterator: 3.10.0
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
@@ -13810,7 +13798,7 @@ snapshots:
 
   rdf-streaming-store@1.1.5:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/n3': 1.26.4
       '@types/readable-stream': 4.0.24
       n3: 1.26.0
@@ -13820,7 +13808,7 @@ snapshots:
 
   rdf-string-ttl@1.3.2:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
 
   rdf-string-ttl@2.0.1:
@@ -13829,12 +13817,12 @@ snapshots:
 
   rdf-string@1.6.3:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
 
   rdf-terms@1.11.0:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-data-factory: 1.1.3
       rdf-string: 1.6.3
 
@@ -13857,7 +13845,7 @@ snapshots:
 
   rdfa-streaming-parser@2.0.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       htmlparser2: 8.0.2
       rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
@@ -13865,7 +13853,7 @@ snapshots:
 
   rdfxml-streaming-parser@2.4.0:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@rubensworks/saxes': 6.0.1
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
@@ -14249,7 +14237,7 @@ snapshots:
 
   sparqlalgebrajs@4.3.8:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/sparqljs': 3.1.12
       fast-deep-equal: 3.1.3
       minimist: 1.2.8
@@ -14266,20 +14254,20 @@ snapshots:
   sparqljson-parse@2.2.0:
     dependencies:
       '@bergos/jsonparse': 1.4.2
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@types/readable-stream': 2.3.15
       rdf-data-factory: 1.1.3
       readable-stream: 4.7.0
 
   sparqljson-to-tree@3.0.2:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       rdf-literal: 1.3.2
       sparqljson-parse: 2.2.0
 
   sparqlxml-parse@2.1.1:
     dependencies:
-      '@rdfjs/types': 1.1.2
+      '@rdfjs/types': 2.0.1
       '@rubensworks/saxes': 6.0.1
       '@types/readable-stream': 2.3.15
       buffer: 6.0.3
