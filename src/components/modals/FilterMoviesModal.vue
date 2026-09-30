@@ -131,7 +131,10 @@ const directorOptions = computed(() => {
 });
 
 const castOptions = computed(() => {
-    return sortByLocale(uniqueNames(movies.flatMap((movie) => movie.actors ?? [])), (name) => name);
+    return sortByLocale(
+        uniqueNames(movies.flatMap((movie) => movie.cast?.map((role) => role.actor).filter(isTruthy) ?? [])),
+        (name) => name,
+    );
 });
 
 const countryOptions = computed(() => {

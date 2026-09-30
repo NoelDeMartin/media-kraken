@@ -125,13 +125,7 @@ const display = ref<'grid' | 'table'>('grid');
 const { loading: syncing, run: runSync } = useLoading();
 
 async function updateAdvancedFilters() {
-    await Promise.all(
-        allMovies.value.map(async (movie) => {
-            await movie.loadRelationIfUnloaded('actors');
-            await movie.loadRelationIfUnloaded('directors');
-            await movie.loadRelationIfUnloaded('watchActions');
-        }),
-    );
+    await Promise.all(allMovies.value.map((movie) => movie.loadAllRelationsIfUnloaded()));
 
     const { filters } = await UI.modal(FilterMoviesModal, {
         filters: advancedFilters.value,

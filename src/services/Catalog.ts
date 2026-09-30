@@ -1,5 +1,14 @@
 import { Service } from '@aerogel/core';
-import { arrayChunk, arrayFrom, arrayUnique, facade, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
+import {
+    arrayChunk,
+    arrayFrom,
+    arrayUnique,
+    facade,
+    isTruthy,
+    parseDate,
+    stringToSlug,
+    uuid,
+} from '@noeldemartin/utils';
 import type { Nullable } from '@noeldemartin/utils';
 import { ComputedAttribute } from 'soukai-bis';
 import type { BelongsToManyRelation, GetModelInput } from 'soukai-bis';
@@ -11,11 +20,13 @@ import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import type Episode from '@/models/Episode';
 import Movie from '@/models/Movie';
+import PerformanceRole from '@/models/PerformanceRole';
 import Person from '@/models/Person';
 import type Season from '@/models/Season';
 import Show from '@/models/Show';
 import type { ShowWatchingStatus } from '@/models/ShowWatching';
 import TMDB, {
+    type TMDBCastCredit,
     type TMDBEpisode,
     type TMDBMovie,
     type TMDBMovieWithStaff,
@@ -306,22 +317,57 @@ export class CatalogService extends Service {
             externalUrls: mergeExternalUrls(movie.externalUrls, attributes.externalUrls ?? []),
         });
 
-        await movie.loadRelationIfUnloaded('actors');
-        await movie.loadRelationIfUnloaded('directors');
+        await movie.loadAllRelationsIfUnloaded();
 
-        this.reconcilePersons(movie.relatedActors, details.cast);
+        this.reconcileCast(movie, details.cast);
         this.reconcilePersons(movie.relatedDirectors, details.directors);
 
         await movie.save();
     }
 
     private attachStaff(movie: Movie, details: TMDBMovieWithStaff): void {
-        for (const actor of details.cast) {
-            movie.relatedActors.attach(Person.fromTMDB(actor), { mintUrl: true });
+        for (const credit of details.cast) {
+            this.attachCastMember(movie, credit);
         }
 
         for (const director of details.directors) {
             movie.relatedDirectors.attach(Person.fromTMDB(director), { mintUrl: true });
+        }
+    }
+
+    private attachCastMember(movie: Movie, credit: TMDBCastCredit): void {
+        const person = Person.fromTMDB(credit);
+
+        person.mintUrl({ documentUrl: movie.getDocumentUrl(), resourceHash: uuid() });
+
+        const role = movie.relatedCast.attach(
+            new PerformanceRole({
+                actorUrl: person.requireUrl(),
+                characterNames: credit.characters,
+            }),
+            { mintUrl: true },
+        );
+
+        role.relatedActor.attach(person);
+    }
+
+    private reconcileCast(movie: Movie, credits: TMDBCastCredit[]): void {
+        const existingRoles = movie.relatedCast.related ?? [];
+
+        for (const credit of credits) {
+            const existingRole = existingRoles.find((role) => role.actor?.tmdbId === credit.id);
+
+            if (!existingRole?.actor) {
+                this.attachCastMember(movie, credit);
+
+                continue;
+            }
+
+            existingRole.setAttribute('characterNames', credit.characters);
+            existingRole.actor.setAttributes({
+                name: credit.name,
+                imageUrl: TMDB.profileUrl(credit),
+            });
         }
     }
 

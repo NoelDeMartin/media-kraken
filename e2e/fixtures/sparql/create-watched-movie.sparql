@@ -15,7 +15,7 @@ INSERT DATA {
         schema:inLanguage "en" ;
         schema:duration "PT2H16M" ;
         schema:director <#[[director-1][%uuid%]]>, <#[[director-2][%uuid%]]> ;
-        schema:actor <#[[actor-1][%uuid%]]>, <#[[actor-2][%uuid%]]>, <#[[actor-3][%uuid%]]>, <#[[actor-4][%uuid%]]>, <#[[actor-5][%uuid%]]>, <#[[actor-6][%uuid%]]> .
+        schema:actor <#[[role-1][%uuid%]]>, <#[[role-2][%uuid%]]>, <#[[role-3][%uuid%]]>, <#[[role-4][%uuid%]]>, <#[[role-5][%uuid%]]>, <#[[role-6][%uuid%]]> .
 
     <#it-metadata>
         a crdt:Metadata ;
@@ -45,6 +45,17 @@ INSERT DATA {
         crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
 
+    <#[[role-1][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "Neo" ;
+        schema:actor <#[[actor-1][%uuid%]]> .
+
+    <#[[role-1][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-1][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
     <#[[actor-1][%uuid%]]>
         a schema:Person ;
         schema:name "Keanu Reeves" ;
@@ -53,6 +64,17 @@ INSERT DATA {
     <#[[actor-1][%uuid%]]-metadata>
         a crdt:Metadata ;
         crdt:resource <#[[actor-1][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[role-2][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "Morpheus" ;
+        schema:actor <#[[actor-2][%uuid%]]> .
+
+    <#[[role-2][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-2][%uuid%]]> ;
         crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
 
@@ -67,6 +89,17 @@ INSERT DATA {
         crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
 
+    <#[[role-3][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "Trinity" ;
+        schema:actor <#[[actor-3][%uuid%]]> .
+
+    <#[[role-3][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-3][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
     <#[[actor-3][%uuid%]]>
         a schema:Person ;
         schema:name "Carrie-Anne Moss" ;
@@ -75,6 +108,17 @@ INSERT DATA {
     <#[[actor-3][%uuid%]]-metadata>
         a crdt:Metadata ;
         crdt:resource <#[[actor-3][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[role-4][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "Agent Smith" ;
+        schema:actor <#[[actor-4][%uuid%]]> .
+
+    <#[[role-4][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-4][%uuid%]]> ;
         crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
 
@@ -89,6 +133,17 @@ INSERT DATA {
         crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
 
+    <#[[role-5][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "Oracle" ;
+        schema:actor <#[[actor-5][%uuid%]]> .
+
+    <#[[role-5][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-5][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
     <#[[actor-5][%uuid%]]>
         a schema:Person ;
         schema:name "Gloria Foster" ;
@@ -97,6 +152,17 @@ INSERT DATA {
     <#[[actor-5][%uuid%]]-metadata>
         a crdt:Metadata ;
         crdt:resource <#[[actor-5][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[role-6][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "Cypher" ;
+        schema:actor <#[[actor-6][%uuid%]]> .
+
+    <#[[role-6][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-6][%uuid%]]> ;
         crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
 

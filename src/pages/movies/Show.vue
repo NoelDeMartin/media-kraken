@@ -97,11 +97,11 @@
                 </div>
             </div>
         </article>
-        <section v-if="movie.actors?.length" class="mt-10" aria-labelledby="cast">
+        <section v-if="cast.length" class="mt-10" aria-labelledby="cast">
             <h2 id="cast" class="text-xl font-semibold text-gray-900">{{ $t('movies.details.topCast') }}</h2>
-            <ul class="mt-4 flex flex-wrap gap-4">
-                <li v-for="actor in movie.actors" :key="actor.url">
-                    <PersonCard :person="actor" />
+            <ul class="mt-4 grid grid-cols-6 gap-4 sm:grid-cols-3 md:grid-cols-6">
+                <li v-for="role in cast" :key="role.url">
+                    <PersonCard :person="role.actor" :characters="role.characterNames" />
                 </li>
             </ul>
         </section>
@@ -111,17 +111,22 @@
 <script setup lang="ts">
 import { translate, useLoading } from '@aerogel/core';
 import { isTruthy } from '@noeldemartin/utils';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import IconCheck from '~icons/material-symbols/check';
 import IconClock from '~icons/mdi/clock-outline';
 import IconSync from '~icons/mdi/sync';
 
 import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
 import Movie from '@/models/Movie';
+import type PerformanceRole from '@/models/PerformanceRole';
+import type Person from '@/models/Person';
 import TMDB from '@/services/TMDB';
 
 const { movie } = defineProps<{ movie: Movie }>();
 const { loading: syncing, run: runSync } = useLoading();
+const cast = computed(() =>
+    (movie.cast ?? []).filter((role): role is PerformanceRole & { actor: Person } => !!role.actor),
+);
 const details = computed(() => {
     return [
         {
@@ -141,4 +146,6 @@ const details = computed(() => {
         },
     ].filter((detail) => detail.value);
 });
+
+onMounted(() => movie.loadAllRelationsIfUnloaded());
 </script>

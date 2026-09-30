@@ -1,6 +1,7 @@
 import { belongsToMany, defineSchema, hasMany, requireBootedModel } from 'soukai-bis';
 import { array, date, string, url } from 'zod';
 
+import PerformanceRole from '@/models/PerformanceRole';
 import Person from '@/models/Person';
 
 export default defineSchema({
@@ -22,7 +23,7 @@ export default defineSchema({
     },
     relations: {
         watchActions: hasMany(() => requireBootedModel('WatchAction'), 'object').usingSameDocument(),
-        actors: belongsToMany(Person, 'actorUrls').usingSameDocument(),
+        cast: belongsToMany(PerformanceRole, 'actorUrls').usingSameDocument(),
         directors: belongsToMany(Person, 'directorUrls').usingSameDocument(),
     },
 });

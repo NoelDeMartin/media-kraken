@@ -1,5 +1,5 @@
 <template>
-    <div class="flex w-24 flex-col items-center gap-2 text-center">
+    <div class="flex w-full flex-col items-center gap-2 text-center">
         <MaybeLink
             :href="person.tmdbUrl"
             target="_blank"
@@ -40,6 +40,9 @@
         >
             {{ person.name }}
         </MaybeLink>
+        <p v-if="characters?.length" class="-mt-1 text-xs leading-tight text-gray-600">
+            {{ characters.join(' / ') }}
+        </p>
     </div>
 </template>
 
@@ -48,7 +51,7 @@ import { ref, watch } from 'vue';
 
 import type Person from '@/models/Person';
 
-const { person } = defineProps<{ person: Person }>();
+const { person } = defineProps<{ person: Person; characters?: string[] }>();
 const loadFailed = ref(false);
 
 watch(

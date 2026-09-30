@@ -57,15 +57,15 @@
     "credits": {
         "id": 603,
         "cast": [
-            { "id": 6384, "name": "Keanu Reeves", "order": 0 },
-            { "id": 2975, "name": "Laurence Fishburne", "order": 1 },
-            { "id": 530, "name": "Carrie-Anne Moss", "order": 2 },
-            { "id": 1331, "name": "Hugo Weaving", "order": 3 },
-            { "id": 9364, "name": "Gloria Foster", "order": 4 },
-            { "id": 532, "name": "Joe Pantoliano", "order": 5 },
-            { "id": 2977, "name": "Marcus Chong", "order": 6 },
-            { "id": 2978, "name": "Julian Arahanga", "order": 7 },
-            { "id": 2979, "name": "Matt Doran", "order": 8 }
+            { "id": 6384, "name": "Keanu Reeves", "character": "Neo", "order": 0 },
+            { "id": 2975, "name": "Laurence Fishburne", "character": "Morpheus", "order": 1 },
+            { "id": 530, "name": "Carrie-Anne Moss", "character": "Trinity", "order": 2 },
+            { "id": 1331, "name": "Hugo Weaving", "character": "Agent Smith", "order": 3 },
+            { "id": 9364, "name": "Gloria Foster", "character": "Oracle", "order": 4 },
+            { "id": 532, "name": "Joe Pantoliano", "character": "Cypher", "order": 5 },
+            { "id": 2977, "name": "Marcus Chong", "character": "Tank", "order": 6 },
+            { "id": 2978, "name": "Julian Arahanga", "character": "Apoc", "order": 7 },
+            { "id": 2979, "name": "Matt Doran", "character": "Mouse", "order": 8 }
         ],
         "crew": [
             { "id": 9340, "name": "Lana Wachowski", "job": "Director" },

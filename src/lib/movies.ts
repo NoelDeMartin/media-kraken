@@ -1,5 +1,5 @@
 import type { RangeSliderValue } from '@aerogel/core';
-import { isNullable, stringToSlug, type Nullable } from '@noeldemartin/utils';
+import { isNullable, isTruthy, stringToSlug, type Nullable } from '@noeldemartin/utils';
 
 import type Movie from '@/models/Movie';
 
@@ -67,7 +67,7 @@ export function createMovieSearchEntry(movie: Movie) {
             return movie.directors?.map((director) => director.name) ?? [];
         },
         get cast() {
-            return movie.actors?.map((actor) => actor.name) ?? [];
+            return movie.cast?.map((role) => role.actor?.name).filter(isTruthy) ?? [];
         },
     };
 }

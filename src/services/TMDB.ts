@@ -25,6 +25,7 @@ const TMDBGenreListSchema = z.object({
 const TMDBCastMemberSchema = z.object({
     id: z.number(),
     name: z.string(),
+    character: z.string().nullish(),
     order: z.number(),
     profile_path: z.string().nullish(),
 });
@@ -142,6 +143,10 @@ export interface TMDBPerson {
     profile_path?: string | null;
 }
 
+export interface TMDBCastCredit extends TMDBPerson {
+    characters: string[];
+}
+
 export type TMDBMovie = z.infer<typeof TMDBMovieSchema>;
 export type TMDBMovieDetails = z.infer<typeof TMDBMovieDetailsSchema>;
 export type TMDBGenre = z.infer<typeof TMDBGenreSchema>;
@@ -157,7 +162,10 @@ export type TMDBMovieSearchResult = z.infer<typeof SearchMovieResultSchema>;
 export type TMDBShowSearchResult = z.infer<typeof SearchShowResultSchema>;
 export type TMDBSearchResult = TMDBMovieSearchResult | TMDBShowSearchResult;
 export type TMDBSeasonDetails = z.infer<typeof TMDBSeasonDetailsSchema>;
-export type TMDBMovieWithStaff = Omit<TMDBMovieDetails, 'credits'> & { cast: TMDBPerson[]; directors: TMDBPerson[] };
+export type TMDBMovieWithStaff = Omit<TMDBMovieDetails, 'credits'> & {
+    cast: TMDBCastCredit[];
+    directors: TMDBPerson[];
+};
 
 export class TMDBService extends Service {
     public movieUrl(movie: TMDBMovie): string {
@@ -233,7 +241,16 @@ export class TMDBService extends Service {
                     .slice()
                     .sort((a, b) => a.order - b.order)
                     .slice(0, 6)
-                    .map(({ id, name, profile_path }) => ({ id, name, profile_path })) ?? [],
+                    .map(({ id, name, profile_path, character }) => ({
+                        id,
+                        name,
+                        profile_path,
+                        characters:
+                            character
+                                ?.split(' / ')
+                                .map((name) => name.trim())
+                                .filter((name) => name.length > 0) ?? [],
+                    })) ?? [],
             directors:
                 credits?.crew
                     .filter((crewMember) => crewMember.job === 'Director')

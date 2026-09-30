@@ -8,6 +8,7 @@ import type { TMDBMovie } from '@/services/TMDB';
 import TMDB from '@/services/TMDB';
 
 import Model from './Movie.schema';
+import type PerformanceRole from './PerformanceRole';
 import type Person from './Person';
 import type WatchAction from './WatchAction';
 
@@ -16,8 +17,8 @@ export default class Movie extends Model {
 
     declare public readonly watchActions?: WatchAction[];
     declare public readonly relatedWatchActions: HasManyRelation<this, WatchAction, typeof WatchAction>;
-    declare public readonly actors?: Person[];
-    declare public readonly relatedActors: BelongsToManyRelation<this, Person, typeof Person>;
+    declare public readonly cast?: PerformanceRole[];
+    declare public readonly relatedCast: BelongsToManyRelation<this, PerformanceRole, typeof PerformanceRole>;
     declare public readonly directors?: Person[];
     declare public readonly relatedDirectors: BelongsToManyRelation<this, Person, typeof Person>;
 
@@ -111,7 +112,7 @@ export default class Movie extends Model {
 
     public async loadAllRelationsIfUnloaded(): Promise<void> {
         await this.loadRelationIfUnloaded('watchActions');
-        await this.loadRelationIfUnloaded('actors');
+        await this.loadRelationIfUnloaded('cast');
         await this.loadRelationIfUnloaded('directors');
     }
 }
