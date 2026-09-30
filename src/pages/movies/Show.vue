@@ -71,15 +71,16 @@
                             </dt>
                             <dd class="text-gray-700">
                                 <template v-for="(director, index) in movie.directors" :key="director.url">
-                                    <a
-                                        :href="director.tmdbUrl ?? undefined"
+                                    <MaybeLink
+                                        :href="director.tmdbUrl"
                                         target="_blank"
                                         rel="noopener"
-                                        :title="$t('app.openIn', { domain: 'themoviedb.org' })"
-                                        class="focus-visible:ring-primary-500 rounded hover:underline focus-visible:ring-2 focus-visible:outline-none"
+                                        class="focus-visible:ring-primary-500 rounded focus-visible:ring-2 focus-visible:outline-none"
+                                        :class="director.tmdbUrl ? 'hover:underline' : ''"
                                     >
-                                        {{ director.name }}</a
-                                    ><template v-if="index < movie.directors.length - 1">, </template>
+                                        {{ director.name }}
+                                    </MaybeLink>
+                                    <template v-if="index < movie.directors.length - 1">, </template>
                                 </template>
                             </dd>
                         </template>
