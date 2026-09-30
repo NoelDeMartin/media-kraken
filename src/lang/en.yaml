@@ -46,8 +46,6 @@ movies:
     watched: 'Watched'
     pending: 'Pending'
     watchLater: 'Watch later'
-    synchronize: 'Synchronize metadata'
-    synchronizeAll: 'Synchronize all metadata'
     externalSites: 'External sites'
     openActionsMenu: 'Open actions menu'
     added: '**{movie}** has been added to your collection!'
@@ -112,7 +110,6 @@ shows:
     upcomingEpisodes: '({count} new episodes)'
     upcomingEpisodeIn: 'in {days} days'
     noUpcomingEpisodes: 'No new episodes'
-    synchronize: 'Synchronize metadata'
     externalSites: 'External sites'
     openActionsMenu: 'Open actions menu'
     markAsWatching: 'Mark as watching'
@@ -124,6 +121,12 @@ shows:
         completed: 'Completed'
         dropped: 'Dropped'
         pending: 'Pending'
+
+media:
+    synchronize: 'Synchronize metadata'
+    synchronized: 'Metadata synchronized'
+    synchronizeAll: 'Synchronize all metadata'
+    synchronizing: 'Synchronizing metadata...'
 
 lists:
     title: 'Lists'

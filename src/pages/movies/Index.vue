@@ -4,9 +4,7 @@
             class="max-w-screen-content mx-auto flex w-full items-center justify-start"
             :class="{ 'px-edge': display === 'table' }"
         >
-            <IconSync v-if="syncing" class="m-2.5 size-5 animate-spin" />
             <DropdownMenu
-                v-else
                 align="start"
                 :options="[
                     {
@@ -16,8 +14,11 @@
                     },
                     {
                         icon: IconSync,
-                        label: $t('movies.synchronizeAll'),
-                        click: () => runSync($catalog.syncIfNeeded(allMovies)),
+                        label: $t('media.synchronizeAll'),
+                        click: () =>
+                            $ui.runJob(new SynchronizeMedia(allMovies), {
+                                message: $t('media.synchronizing'),
+                            }),
                     },
                 ]"
             >
@@ -26,7 +27,7 @@
                     <span class="sr-only">{{ $t('movies.openActionsMenu') }}</span>
                 </Button>
             </DropdownMenu>
-            <PageTitle>{{ $t('movies.title') }} ({{ filteredMovies.length }})</PageTitle>
+            <PageTitle>{{ $t('movies.title') }} ({{ sortedMovies.length }})</PageTitle>
             <div class="flex-1" />
             <div v-if="!hasEmptyCollection" class="-mr-3 flex items-center gap-1">
                 <Button
@@ -67,7 +68,7 @@
                 />
             </div>
         </div>
-        <VirtualMediaGrid v-if="display === 'grid'" by="url" class="mt-2" :items="filteredMovies">
+        <VirtualMediaGrid v-if="display === 'grid'" by="url" class="mt-2" :items="sortedMovies">
             <template #default="{ item: movie }">
                 <MovieCard :movie />
             </template>
@@ -76,7 +77,7 @@
                 <MoviesEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
         </VirtualMediaGrid>
-        <MoviesTable v-else :movies="filteredMovies" class="mt-2">
+        <MoviesTable v-else :movies="sortedMovies" class="mt-2">
             <template #empty>
                 <MoviesEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
@@ -85,14 +86,16 @@
 </template>
 
 <script setup lang="ts">
-import { UI, useLoading } from '@aerogel/core';
+import { UI } from '@aerogel/core';
 import { useModelCollection } from '@aerogel/plugin-solid';
+import { arraySorted } from '@noeldemartin/utils';
 import { computed, ref } from 'vue';
 import IconSync from '~icons/mdi/sync';
 import IconUpload from '~icons/mdi/upload';
 
 import FilterMoviesModal from '@/components/modals/FilterMoviesModal.vue';
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
+import SynchronizeMedia from '@/jobs/SynchronizeMedia';
 import {
     createMovieSearchEntry,
     hasActiveMovieFilters,
@@ -121,8 +124,8 @@ const filteredMovies = computed(() => {
         .filter((entry) => movieMatchesQuery(entry, searchQuery) && movieMatchesFilters(entry, advancedFilters.value))
         .map((entry) => entry.movie);
 });
+const sortedMovies = computed(() => arraySorted(filteredMovies.value, 'createdAt', 'desc'));
 const display = ref<'grid' | 'table'>('grid');
-const { loading: syncing, run: runSync } = useLoading();
 
 async function updateAdvancedFilters() {
     await Promise.all(allMovies.value.map((movie) => movie.loadAllRelationsIfUnloaded()));

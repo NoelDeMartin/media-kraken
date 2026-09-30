@@ -25,7 +25,7 @@
                                       click: () => movie.watch(),
                                   },
                             {
-                                label: $t('movies.synchronize'),
+                                label: $t('media.synchronize'),
                                 icon: IconSync,
                                 click: () => runSync($catalog.sync(movie)),
                             },

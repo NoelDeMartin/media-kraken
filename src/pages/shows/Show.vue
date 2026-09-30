@@ -15,7 +15,7 @@
                         :options="[
                             ...watchingStatusOptions,
                             {
-                                label: $t('shows.synchronize'),
+                                label: $t('media.synchronize'),
                                 icon: IconSync,
                                 click: sync,
                             },
