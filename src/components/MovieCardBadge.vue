@@ -36,7 +36,7 @@ const { loading, run } = useLoading({ min: 0 });
 const renderedSpanClass = computed(() => classes('relative drop-shadow-sm pointer-events-none', className));
 const renderedButtonClass = computed(() =>
     classes(
-        'group relative drop-shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-500',
+        'group relative drop-shadow-sm cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-focus',
         className,
     ),
 );

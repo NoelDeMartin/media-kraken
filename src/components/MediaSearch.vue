@@ -13,7 +13,7 @@
             <HeadlessComboboxInput
                 id="global-search"
                 type="search"
-                class="focus:ring-primary-600 block w-full rounded-md border-0 py-1.5 pr-2.5 pl-9 text-gray-900 ring-1 ring-gray-900/10 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
+                class="focus:ring-focus block w-full rounded-md border-0 py-1.5 pr-2.5 pl-9 text-gray-900 ring-1 ring-gray-900/10 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
                 :model-value="query"
                 :placeholder="$t('app.search.placeholder')"
                 :display-value="() => ''"

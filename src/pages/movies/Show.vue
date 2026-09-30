@@ -75,7 +75,7 @@
                                         :href="director.tmdbUrl"
                                         target="_blank"
                                         rel="noopener"
-                                        class="focus-visible:ring-primary-500 rounded focus-visible:ring-2 focus-visible:outline-none"
+                                        class="focus-visible:ring-focus rounded focus-visible:ring-2 focus-visible:outline-none"
                                         :class="director.tmdbUrl ? 'hover:underline' : ''"
                                     >
                                         {{ director.name }}

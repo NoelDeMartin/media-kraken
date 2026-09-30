@@ -4,7 +4,7 @@
             <input
                 ref="$inputRef"
                 type="text"
-                class="focus:border-b-primary absolute inset-0 border-x-0 border-t-0 border-b-2 border-b-gray-300 bg-transparent p-0 focus:ring-0"
+                class="focus:border-b-focus absolute inset-0 border-x-0 border-t-0 border-b-2 border-b-gray-300 bg-transparent p-0 focus:ring-0"
                 v-model="query"
                 :aria-label="renderedSearchingLabel"
                 :placeholder="renderedPlaceholder"

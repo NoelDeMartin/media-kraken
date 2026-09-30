@@ -37,7 +37,7 @@
                             params: { show: show.slug },
                             query: $solid.hasLoggedIn() ? { url: show.url } : undefined,
                         }"
-                        class="focus:ring-primary-500 hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white/70 focus-visible:outline-none"
+                        class="focus-visible:ring-focus hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white/70 focus-visible:outline-none"
                     >
                         <span class="truncate text-sm leading-tight font-semibold tracking-tight text-gray-900">
                             {{ show.name }}

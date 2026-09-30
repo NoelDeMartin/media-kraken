@@ -10,7 +10,7 @@
                     query: $solid.hasLoggedIn() ? { url: show.url } : undefined,
                 }"
                 :title="show.name"
-                class="focus:ring-primary-500 focus-visible:ring-offset-background absolute inset-0 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
+                class="focus-visible:ring-focus focus-visible:ring-offset-background absolute inset-0 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >
                 <div
                     class="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
