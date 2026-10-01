@@ -35,7 +35,7 @@ export default class App extends Service<State> {
     public static readonly HALLOWEEN_RECOMMENDATIONS_STORAGE_KEY = 'media-kraken-halloween-recommendations';
     public static readonly VERSION_STORAGE_KEY = 'media-kraken-version';
 
-    public isHalloween = false;
+    public isHalloween = true;
     public environment!: string;
     public sourceUrl!: string;
     public releaseNotesUrl!: string;
