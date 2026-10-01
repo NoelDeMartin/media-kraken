@@ -2,6 +2,7 @@ import type { RangeSliderValue } from '@aerogel/core';
 import { isNullable, isTruthy, stringToSlug, type Nullable } from '@noeldemartin/utils';
 
 import type Movie from '@/models/Movie';
+import type Person from '@/models/Person';
 
 export type MoviesFilter = {
     watched?: Nullable<boolean>;
@@ -47,6 +48,14 @@ export function hasActiveMovieFilters(filters: Nullable<MoviesFilter>): boolean 
     );
 }
 
+export function personFilterKey(person: Person): string | null {
+    if (person.tmdbId) {
+        return `tmdb-${person.tmdbId}`;
+    }
+
+    return stringToSlug(person.name) || null;
+}
+
 export function toMovieSearchText(text: string): string {
     return stringToSlug(text).replaceAll('-', '');
 }
@@ -64,10 +73,10 @@ export function createMovieSearchEntry(movie: Movie) {
             return movie.watched;
         },
         get directors() {
-            return movie.directors?.map((director) => director.name) ?? [];
+            return movie.directors?.map(personFilterKey).filter(isTruthy) ?? [];
         },
         get cast() {
-            return movie.cast?.map((role) => role.actor?.name).filter(isTruthy) ?? [];
+            return movie.cast?.map((role) => role.actor && personFilterKey(role.actor)).filter(isTruthy) ?? [];
         },
     };
 }

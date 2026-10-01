@@ -20,12 +20,14 @@
                     :label="$t('movies.advancedFilters.director')"
                     :placeholder="$t('movies.advancedFilters.allDirectors')"
                     :options="directorOptions"
+                    :render-option="renderPerson"
                 />
                 <Combobox
                     name="cast"
                     :label="$t('movies.advancedFilters.cast')"
                     :placeholder="$t('movies.advancedFilters.allCast')"
                     :options="castOptions"
+                    :render-option="renderPerson"
                 />
                 <Combobox
                     name="countries"
@@ -81,8 +83,9 @@ import { computed } from 'vue';
 import { z } from 'zod';
 
 import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
-import type { MoviesFilter } from '@/lib/movies';
+import { personFilterKey, type MoviesFilter } from '@/lib/movies';
 import type Movie from '@/models/Movie';
+import type Person from '@/models/Person';
 import TMDB from '@/services/TMDB';
 
 type Result = { filters: MoviesFilter };
@@ -120,21 +123,15 @@ if (filters) {
     form.duration = filters.duration ?? [null, null];
 }
 
+const directors = computed(() => movies.flatMap((movie) => movie.directors ?? []));
+const actors = computed(() => movies.flatMap((movie) => movie.cast?.map((role) => role.actor).filter(isTruthy) ?? []));
+const directorOptions = computed(() => sortByLocale(uniquePersonKeys(directors.value), renderPerson));
+const castOptions = computed(() => sortByLocale(uniquePersonKeys(actors.value), renderPerson));
+
 const genreOptions = computed(() => {
     const movieGenreIds = new Set(movies.flatMap((movie) => movie.genreIds));
 
     return sortByLocale(Array.from(movieGenreIds), renderGenre);
-});
-
-const directorOptions = computed(() => {
-    return sortByLocale(uniqueNames(movies.flatMap((movie) => movie.directors ?? [])), (name) => name);
-});
-
-const castOptions = computed(() => {
-    return sortByLocale(
-        uniqueNames(movies.flatMap((movie) => movie.cast?.map((role) => role.actor).filter(isTruthy) ?? [])),
-        (name) => name,
-    );
 });
 
 const countryOptions = computed(() => {
@@ -143,6 +140,20 @@ const countryOptions = computed(() => {
 
 const languageOptions = computed(() => {
     return sortByLocale(Array.from(new Set(movies.flatMap((movie) => movie.languages))), formatLanguage);
+});
+
+const personNames = computed(() => {
+    const names = new Map<string, string>();
+
+    for (const person of [...directors.value, ...actors.value]) {
+        const key = personFilterKey(person);
+
+        if (key && !names.has(key)) {
+            names.set(key, person.name);
+        }
+    }
+
+    return names;
 });
 
 const yearBounds = computed(() => {
@@ -161,12 +172,16 @@ const durationBounds = computed(() => {
     return [0, Math.max(Math.ceil(max / DURATION_STEP) * DURATION_STEP, DURATION_STEP)] as const;
 });
 
-function uniqueNames(people: { name?: string | null }[]): string[] {
-    return Array.from(new Set(people.map((person) => person.name).filter(isTruthy)));
+function uniquePersonKeys(people: Person[]): string[] {
+    return Array.from(new Set(people.map(personFilterKey).filter(isTruthy)));
 }
 
 function sortByLocale<T>(items: T[], render: (item: T) => string): T[] {
     return items.slice(0).sort((a, b) => render(a).localeCompare(render(b)));
+}
+
+function renderPerson(key: string): string {
+    return personNames.value.get(key) ?? key;
 }
 
 function renderGenre(genre: number): string {
