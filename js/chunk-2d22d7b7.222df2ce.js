@@ -1,0 +1,2 @@
+(window["webpackJsonp"]=window["webpackJsonp"]||[]).push([["chunk-2d22d7b7"],{f84c:function(i,n,t){"use strict";t.r(n),n["default"]="# Import from Netflix\n\nYou can import the movies you've watched in Netflix by [exporting your viewing history](https://help.netflix.com/en/node/101917). Essentially, you'll have to open your [viewing activity](http://www.netflix.com/settings/viewing-history), and download a CSV file.\n"}}]);
+//# sourceMappingURL=chunk-2d22d7b7.222df2ce.js.map
