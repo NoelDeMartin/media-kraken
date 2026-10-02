@@ -1,5 +1,6 @@
 {
     "private": true,
+    "repository": "github:noeldemartin/media-kraken",
     "type": "module",
     "scripts": {
         "build": "vp build",
