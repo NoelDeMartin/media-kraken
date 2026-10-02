@@ -1,3 +1,4 @@
+import { translate } from '@aerogel/core';
 import { defineRouteBindings, defineRoutes } from '@aerogel/plugin-routing';
 
 import Movie from '@/models/Movie.ts';
@@ -18,20 +19,40 @@ export const bindings = defineRouteBindings({
 
 export default defineRoutes([
     { name: 'home', path: '/', component: Home },
-    { name: 'movies.index', path: '/movies', component: MoviesIndex },
+    {
+        name: 'movies.index',
+        path: '/movies',
+        component: MoviesIndex,
+        title: () => translate('movies.title'),
+    },
     {
         name: 'movies.show',
         path: '/movies/:movie',
         component: MoviesShow,
         title: ({ movie }) => (movie as Movie).title,
     },
-    { name: 'shows.index', path: '/shows', component: ShowsIndex },
+    {
+        name: 'shows.index',
+        path: '/shows',
+        component: ShowsIndex,
+        title: () => translate('shows.title'),
+    },
     {
         name: 'shows.show',
         path: '/shows/:show',
         component: ShowsShow,
         title: ({ show }) => (show as Show).name,
     },
-    { name: 'lists.index', path: '/lists', component: ListsIndex },
-    { name: 'discover', path: '/discover', component: Discover },
+    {
+        name: 'lists.index',
+        path: '/lists',
+        component: ListsIndex,
+        title: () => translate('lists.title'),
+    },
+    {
+        name: 'discover',
+        path: '/discover',
+        component: Discover,
+        title: () => translate('discover.title'),
+    },
 ]);

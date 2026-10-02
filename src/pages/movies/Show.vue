@@ -9,33 +9,7 @@
                         <span v-if="movie.releaseYear" class="text-lg font-medium"> ({{ movie.releaseYear }}) </span>
                     </h1>
                     <IconSync v-if="syncing" class="m-2.5 size-5 animate-spin" />
-                    <DropdownMenu
-                        v-else
-                        align="end"
-                        :options="[
-                            movie.watched
-                                ? {
-                                      label: $t('movies.watchLater'),
-                                      icon: IconClock,
-                                      click: () => movie.unwatch(),
-                                  }
-                                : {
-                                      label: $t('movies.watch'),
-                                      icon: IconCheck,
-                                      click: () => movie.watch(),
-                                  },
-                            {
-                                label: $t('media.synchronize'),
-                                icon: IconSync,
-                                click: () => runSync($catalog.sync(movie)),
-                            },
-                            {
-                                label: $t('media.identify.title'),
-                                icon: IconIdentify,
-                                click: identify,
-                            },
-                        ]"
-                    >
+                    <DropdownMenu v-else align="end" :options="menuOptions">
                         <Button size="icon" variant="ghost" :title="$t('movies.openActionsMenu')" class="-mr-4">
                             <i-mdi-dots-vertical class="size-5" />
                             <span class="sr-only">{{ $t('movies.openActionsMenu') }}</span>
@@ -116,12 +90,14 @@
 <script setup lang="ts">
 import { translate, UI, useLoading } from '@aerogel/core';
 import { Router } from '@aerogel/plugin-routing';
-import { isTruthy } from '@noeldemartin/utils';
+import { arrayFilter, isTruthy } from '@noeldemartin/utils';
 import { computed, onMounted } from 'vue';
 import IconCheck from '~icons/material-symbols/check';
 import IconClock from '~icons/mdi/clock-outline';
 import IconSync from '~icons/mdi/sync';
+import IconDetach from '~icons/ph/link-break-bold';
 import IconIdentify from '~icons/ph/list-magnifying-glass';
+import IconDelete from '~icons/ph/trash';
 
 import IdentifyMediaModal from '@/components/modals/IdentifyMediaModal.vue';
 import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
@@ -133,6 +109,41 @@ import TMDB, { type TMDBMovie, type TMDBShow } from '@/services/TMDB';
 
 const { movie } = defineProps<{ movie: Movie }>();
 const { loading: syncing, run: runSync } = useLoading();
+const menuOptions = computed(() =>
+    arrayFilter([
+        movie.watched
+            ? {
+                  label: translate('movies.watchLater'),
+                  icon: IconClock,
+                  click: () => movie.unwatch(),
+              }
+            : {
+                  label: translate('movies.watch'),
+                  icon: IconCheck,
+                  click: () => movie.watch(),
+              },
+        {
+            label: translate('media.synchronize'),
+            icon: IconSync,
+            click: () => runSync(Catalog.sync(movie)),
+        },
+        {
+            label: translate('media.identify.title'),
+            icon: IconIdentify,
+            click: identify,
+        },
+        movie.tmdbId && {
+            label: translate('media.detach.action'),
+            icon: IconDetach,
+            click: detach,
+        },
+        {
+            label: translate('movies.delete.action'),
+            icon: IconDelete,
+            click: deleteMovie,
+        },
+    ]),
+);
 
 async function identify() {
     const { media } = await UI.modal(IdentifyMediaModal, { initialQuery: movie.title });
@@ -142,18 +153,51 @@ async function identify() {
     }
 
     if ('name' in media) {
-        await runSync(identifyAsShow(media));
+        await identifyAsShow(media);
 
         return;
     }
 
-    await runSync(identifyAsMovie(media));
+    await identifyAsMovie(media);
+}
+
+async function detach() {
+    if (
+        !(await UI.confirm(translate('media.detach.title'), translate('media.detach.message'), {
+            acceptVariant: 'danger',
+            acceptText: translate('media.detach.accept'),
+        }))
+    ) {
+        return;
+    }
+
+    await runSync(
+        movie.update({
+            externalUrls: movie.externalUrls.filter((url) => !url.includes('themoviedb.org')),
+        }),
+    );
+}
+
+async function deleteMovie() {
+    if (
+        !(await UI.confirm(translate('movies.delete.title'), translate('movies.delete.message'), {
+            acceptVariant: 'danger',
+            acceptText: translate('movies.delete.accept'),
+        }))
+    ) {
+        return;
+    }
+
+    await runSync(movie.delete());
+    await Router.push('/movies');
+
+    UI.toast(translate('movies.delete.success', { movie: movie.title }));
 }
 
 async function identifyAsMovie(tmdbMovie: TMDBMovie) {
     const originalSlug = movie.slug;
 
-    await Catalog.identify(movie, tmdbMovie);
+    await runSync(Catalog.identify(movie, tmdbMovie));
 
     if (originalSlug === movie.slug) {
         return;
@@ -163,12 +207,23 @@ async function identifyAsMovie(tmdbMovie: TMDBMovie) {
 }
 
 async function identifyAsShow(tmdbShow: TMDBShow) {
-    const show = await Catalog.importShowFromTMDB(tmdbShow, {
-        watchingStatus: movie.watched ? 'completed' : 'pending',
-    });
+    if (
+        !(await UI.confirm(translate('movies.identifyAsShow.title'), translate('movies.identifyAsShow.message'), {
+            acceptVariant: 'danger',
+            acceptText: translate('movies.identifyAsShow.accept'),
+        }))
+    ) {
+        return;
+    }
 
-    await Router.push(show.route);
-    await movie.delete();
+    await runSync(async () => {
+        const show = await Catalog.importShowFromTMDB(tmdbShow, {
+            watchingStatus: movie.watched ? 'completed' : 'pending',
+        });
+
+        await Router.push(show.route);
+        await movie.delete();
+    });
 }
 
 const cast = computed(() =>

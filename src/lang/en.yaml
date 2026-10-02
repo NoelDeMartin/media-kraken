@@ -58,6 +58,10 @@ movies:
     viewGrid: 'View as grid'
     viewList: 'View as list'
     clearFilters: 'Clear filters'
+    identifyAsShow:
+        title: 'Convert to show'
+        message: "Are you sure that you want to convert this movie into a show? In order to do that, I'll need to **delete the movie** and create a new show."
+        accept: 'Convert'
     advancedFilters:
         button: 'Advanced movie filters'
         title: 'Filter movies'
@@ -77,6 +81,12 @@ movies:
         allStatuses: 'All'
         apply: 'Apply'
         clear: 'Clear filters'
+    delete:
+        action: 'Delete'
+        title: 'Delete movie'
+        message: 'Are you sure that you want to delete this movie? This action cannot be undone.'
+        accept: 'Delete'
+        success: '**{movie}** has been deleted.'
     details:
         title: 'Movie details'
         directedBy: 'Directed by'
@@ -133,6 +143,11 @@ media:
         noResults: 'No movies or TV shows found.'
         update: 'Update'
         updateA11y: 'Identify with {name}'
+    detach:
+        action: 'Detach from source'
+        title: 'Detach media'
+        message: "Are you sure that you want to detach this from TMDB? Provenance will be removed and metadata won't be updated any more."
+        accept: 'Detach'
 
 lists:
     title: 'Lists'

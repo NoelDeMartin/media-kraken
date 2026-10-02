@@ -49,6 +49,7 @@
 import { translate } from '@aerogel/core';
 import { computedModels, useModelCollection } from '@aerogel/plugin-solid';
 import { arrayReversed } from '@noeldemartin/utils';
+import { arraySorted } from '@noeldemartin/utils';
 
 import Episode from '@/models/Episode';
 import Movie from '@/models/Movie';
@@ -61,8 +62,9 @@ const movies = useModelCollection(Movie);
 const activeShows = computedModels(Show, () => shows.value.filter((show) => show.watchingStatus === 'watching'));
 const pendingMovies = computedModels(Movie, () => {
     const sample: Movie[] = [];
+    const sortedMovies = arraySorted(movies.value, 'createdAt', 'desc');
 
-    for (const movie of arrayReversed(movies.value)) {
+    for (const movie of sortedMovies) {
         if (movie.watched) {
             continue;
         }

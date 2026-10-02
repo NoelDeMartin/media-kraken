@@ -1,4 +1,5 @@
 import { Errors, translate, UI } from '@aerogel/core';
+import { routeUrl } from '@aerogel/plugin-routing';
 import { after, arrayChunk } from '@noeldemartin/utils';
 
 import type Movie from '@/models/Movie';
@@ -29,7 +30,9 @@ export default class SynchronizeMedia extends ProcessingJob<Movie | Show, void> 
             await Promise.all(
                 media.map(async (item, itemIndex) => {
                     await Catalog.syncIfNeeded(item).catch((error) =>
-                        Errors.report(new Error(`Failed to synchronize media (${item.url})`, { cause: error })),
+                        Errors.report(
+                            new Error(`Failed to synchronize media (${routeUrl(item.route)})`, { cause: error }),
+                        ),
                     );
                     await this.markItemCompleted(index * CHUNK_SIZE + itemIndex);
                 }),
