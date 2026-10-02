@@ -7,14 +7,14 @@
         "dev": "vp dev",
         "dev:serve-pod": "community-solid-server -c @css:config/file.json -f ./solid",
         "deploy": "noeldemartin-deploy-app",
-        "e2e:dev": "concurrently --kill-others \"pnpm e2e:serve-app\" \"pnpm e2e:serve-pod\" \"pnpm e2e:open\"",
+        "e2e:dev": "concurrently --kill-others \"vp run e2e:serve-app\" \"vp run e2e:serve-pod\" \"vp run e2e:open\"",
         "e2e:open": "UI=true playwright test --ui",
         "e2e:run": "playwright test",
         "e2e:serve-app": "vp dev --port 5001 --mode testing",
         "e2e:serve-pod": "community-solid-server -l warn",
-        "e2e:test:chromium": "start-server-and-test e2e:serve-app http-get://localhost:5001 e2e:serve-pod http-get://localhost:3000 'pnpm run e2e:run --project=chromium'",
-        "e2e:test:firefox": "start-server-and-test e2e:serve-app http-get://localhost:5001 e2e:serve-pod http-get://localhost:3000 'pnpm run e2e:run --project=firefox'",
-        "e2e:test:webkit": "start-server-and-test e2e:serve-app http-get://localhost:5001 e2e:serve-pod http-get://localhost:3000 'pnpm run e2e:run --project=webkit'",
+        "e2e:test:chromium": "start-server-and-test e2e:serve-app http-get://localhost:5001 e2e:serve-pod http-get://localhost:3000 'vp run e2e:run --project=chromium'",
+        "e2e:test:firefox": "start-server-and-test e2e:serve-app http-get://localhost:5001 e2e:serve-pod http-get://localhost:3000 'vp run e2e:run --project=firefox'",
+        "e2e:test:webkit": "start-server-and-test e2e:serve-app http-get://localhost:5001 e2e:serve-pod http-get://localhost:3000 'vp run e2e:run --project=webkit'",
         "type-check": "vue-tsc --build --force",
         "storybook": "storybook dev -p 6006"
     },
@@ -44,13 +44,14 @@
         "@iconify/json": "2.2.522",
         "@intlify/unplugin-vue-i18n": "^6.0.5",
         "@noeldemartin/scripts": "next",
+        "@noeldemartin/vite-plus-config": "next",
         "@playwright/test": "^1.60.0",
         "@solid/community-server": "7.1.6",
         "@storybook/addon-docs": "^10.5.7",
         "@storybook/vue3-vite": "^10.5.4",
         "@total-typescript/ts-reset": "^0.4.2",
-        "@tsconfig/node24": "^24.0.3",
-        "@types/node": "^24.10.4",
+        "@tsconfig/node26": "^26.0.1",
+        "@types/node": "^26.6.3",
         "@types/papaparse": "^5.5.2",
         "@vue/tsconfig": "^0.9.1",
         "concurrently": "^10.0.3",
@@ -64,5 +65,5 @@
         "vite-plus": "catalog:",
         "vue-tsc": "^3.2.7"
     },
-    "packageManager": "pnpm@12.4.1"
+    "packageManager": "pnpm@12.8.1"
 }

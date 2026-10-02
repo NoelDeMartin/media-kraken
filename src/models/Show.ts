@@ -8,7 +8,8 @@ import type { TMDBShow } from '@/services/TMDB';
 import TMDB from '@/services/TMDB';
 
 import Model from './Show.schema';
-import ShowWatching, { SHOW_WATCHING_STATUSES } from './ShowWatching';
+import type ShowWatching from './ShowWatching';
+import { SHOW_WATCHING_STATUSES } from './ShowWatching';
 import type { ShowWatchingStatus } from './ShowWatching';
 
 export type PendingEpisode = {
@@ -24,6 +25,7 @@ export default class Show extends Model {
     public static computed = {
         pendingEpisodes: {
             invalidationStrategy: InvalidationStrategies.CONTAINER,
+            // oxlint-disable-next-line typescript/explicit-module-boundary-types -- The computed type is inferred from it
             compute(show: Show) {
                 return loaded(show, 'seasons')
                     .filter((season) => season.number !== 0)

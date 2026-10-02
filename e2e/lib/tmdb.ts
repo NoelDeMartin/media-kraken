@@ -52,7 +52,7 @@ function handleSearch(query: string) {
     );
 }
 
-export async function interceptTMDBRequests(page: Page) {
+export async function interceptTMDBRequests(page: Page): Promise<void> {
     await page.route('https://api.themoviedb.org/**', (route) => {
         const url = new URL(route.request().url());
         const response = handleRequest(url);

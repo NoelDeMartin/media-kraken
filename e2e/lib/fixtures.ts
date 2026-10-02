@@ -4,11 +4,11 @@ import { resolve } from 'node:path';
 import { applyReplacements, required } from '@noeldemartin/utils';
 import type { Replacements } from '@noeldemartin/utils';
 
-export function requiredFixture(path: string, replacements?: Replacements) {
+export function requiredFixture(path: string, replacements?: Replacements): string {
     return required(fixture(path, replacements), `Fixture '${path}' not found`);
 }
 
-export function fixture(path: string, replacements?: Replacements) {
+export function fixture(path: string, replacements?: Replacements): string | null {
     path = path.startsWith('/') ? path.slice(1) : path;
 
     const fixturePath = resolve(import.meta.dirname, '../fixtures', path);

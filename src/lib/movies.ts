@@ -60,6 +60,7 @@ export function toMovieSearchText(text: string): string {
     return stringToSlug(text).replaceAll('-', '');
 }
 
+// oxlint-disable-next-line typescript/explicit-module-boundary-types
 export function createMovieSearchEntry(movie: Movie) {
     return {
         movie,
@@ -69,13 +70,13 @@ export function createMovieSearchEntry(movie: Movie) {
         languages: movie.languages,
         releaseYear: movie.releaseYear,
         runtimeMinutes: movie.runtimeMinutes,
-        get watched() {
+        get watched(): boolean | null {
             return movie.watched;
         },
-        get directors() {
+        get directors(): string[] {
             return movie.directors?.map(personFilterKey).filter(isTruthy) ?? [];
         },
-        get cast() {
+        get cast(): string[] {
             return movie.cast?.map((role) => role.actor && personFilterKey(role.actor)).filter(isTruthy) ?? [];
         },
     };

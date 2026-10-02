@@ -10,11 +10,11 @@ import Model from './Episode.schema';
 const UPCOMING_THRESHOLD = NOW + 7 * DAY_MILLISECONDS;
 
 export default class Episode extends Model {
-    public static isUpcoming(date: Date) {
+    public static isUpcoming(date: Date): boolean {
         return date.getTime() < UPCOMING_THRESHOLD;
     }
 
-    public static isReleased(date: Date) {
+    public static isReleased(date: Date): boolean {
         return date.getTime() < NOW;
     }
 

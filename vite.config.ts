@@ -2,6 +2,7 @@ import { URL, fileURLToPath } from 'node:url';
 
 import Aerogel, { AerogelResolver } from '@aerogel/vite';
 import I18n from '@intlify/unplugin-vue-i18n/vite';
+import { fmt, lint } from '@noeldemartin/vite-plus-config';
 import { FileSystemIconLoader } from 'unplugin-icons/loaders';
 import IconsResolver from 'unplugin-icons/resolver';
 import Icons from 'unplugin-icons/vite';
@@ -32,20 +33,8 @@ export default defineConfig({
         }),
         Workspace(),
     ],
-    fmt: {
-        semi: true,
-        singleQuote: true,
-        tabWidth: 4,
-        printWidth: 120,
-        sortImports: true,
-        sortTailwindcss: true,
-    },
-    lint: {
-        options: {
-            typeAware: true,
-            typeCheck: true,
-        },
-    },
+    fmt,
+    lint: { extends: [lint] },
     resolve: {
         alias: {
             '@': fileURLToPath(new URL('./src', import.meta.url)),

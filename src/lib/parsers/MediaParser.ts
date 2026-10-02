@@ -7,7 +7,7 @@ export interface ExternalMedia {
     watchedAt?: Nullable<Date>;
     validationError?: string;
     skippedMessage?: string;
-    raw: any;
+    raw: unknown;
 }
 
 export default abstract class MediaParser {

@@ -39,6 +39,7 @@ export default class SeedCollection extends ProcessingJob<GetModelInput<typeof M
             return imported;
         } catch (error) {
             if (isDevelopment()) {
+                // oxlint-disable-next-line no-console
                 console.warn(`Failed to import movie ${movie.imdbId}:`, error);
             }
 

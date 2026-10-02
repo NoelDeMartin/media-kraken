@@ -6,5 +6,10 @@
     "editor.formatOnSaveMode": "file",
     "editor.codeActionsOnSave": {
         "source.fixAll.oxc": "explicit"
+    },
+    "explorer.fileNesting.enabled": true,
+    "explorer.fileNesting.patterns": {
+        "package.json": "vite.config.*, vitest.config.*, tsconfig*.json, playwright.config.*, pnpm-*.yaml, .node-version, .editorconfig, .gitignore, .env*, LICENSE",
+        "README.md": "AGENTS.md, CHANGELOG.md, CONVENTIONS.md, CONTRIBUTING.md"
     }
 }

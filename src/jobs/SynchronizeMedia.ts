@@ -1,8 +1,8 @@
 import { Errors, translate, UI } from '@aerogel/core';
 import { after, arrayChunk } from '@noeldemartin/utils';
 
-import Movie from '@/models/Movie';
-import Show from '@/models/Show';
+import type Movie from '@/models/Movie';
+import type Show from '@/models/Show';
 import Catalog from '@/services/Catalog';
 
 import ProcessingJob from './ProcessingJob';

@@ -11,16 +11,16 @@ export interface ImportMediaJobResult {
     added: Movie[];
     ignored: {
         reason: string;
-        data: any;
+        data: unknown;
     }[];
     invalid: {
         reason: string;
-        data: any;
+        data: unknown;
     }[];
     failed: {
         notFound: boolean;
         error: Error;
-        data: any;
+        data: unknown;
     }[];
     unprocessed: ExternalMedia[];
 }

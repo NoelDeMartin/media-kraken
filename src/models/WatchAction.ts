@@ -1,6 +1,6 @@
 import type { BelongsToOneRelation } from 'soukai-bis';
 
-import Movie from '@/models/Movie';
+import type Movie from '@/models/Movie';
 
 import Model from './WatchAction.schema';
 
