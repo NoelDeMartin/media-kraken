@@ -12,6 +12,14 @@
             <p v-if="model.description" class="text-sm leading-relaxed text-gray-700">
                 {{ model.description }}
             </p>
+            <ul :aria-label="$t('movies.externalSites')" class="ml-auto flex items-center gap-2">
+                <li>
+                    <ExternalSiteLink :url="TMDB.movieUrl(movie)" />
+                </li>
+                <li v-if="details?.imdb_id">
+                    <ExternalSiteLink :url="imdbUrl(details.imdb_id)" />
+                </li>
+            </ul>
             <div class="mt-auto flex justify-end gap-2">
                 <Button class="bg-blue-600 text-white hover:bg-blue-700" @click="saveToCollection({ watched: false })">
                     <i-mdi-clock-outline class="size-4" />
@@ -28,15 +36,18 @@
 
 <script setup lang="ts">
 import { translate, UI, useModal } from '@aerogel/core';
-import { computed } from 'vue';
+import { computed, onMounted, shallowRef } from 'vue';
 
+import { imdbUrl } from '@/lib/imdb';
 import Movie from '@/models/Movie';
 import Catalog from '@/services/Catalog';
-import type { TMDBMovie } from '@/services/TMDB';
+import type { TMDBMovie, TMDBMovieWithStaff } from '@/services/TMDB';
+import TMDB from '@/services/TMDB';
 
 const { movie } = defineProps<{ movie: TMDBMovie }>();
 const { close } = useModal();
 const model = computed(() => Movie.fromTMDB(movie, { posterSize: 'large' }));
+const details = shallowRef<TMDBMovieWithStaff | null>(null);
 
 async function saveToCollection(options: { watched: boolean }) {
     close();
@@ -45,4 +56,8 @@ async function saveToCollection(options: { watched: boolean }) {
 
     UI.toast(translate('movies.added', { movie: model.value.title }));
 }
+
+onMounted(async () => {
+    details.value = await TMDB.getMovie(movie.id, { includeStaff: false });
+});
 </script>

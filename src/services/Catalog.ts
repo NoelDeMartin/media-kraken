@@ -17,6 +17,7 @@ import { countryUrlFromCode } from '@/lib/countries';
 import { mergeExternalUrls } from '@/lib/domains';
 import { minutesToISODuration } from '@/lib/durations';
 import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
+import { imdbUrl } from '@/lib/imdb';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import type Episode from '@/models/Episode';
 import Movie from '@/models/Movie';
@@ -137,7 +138,7 @@ export class CatalogService extends Service {
     }
 
     public async importMovieFromTMDB(tmdbMovie: TMDBMovie, options: { watched?: boolean } = {}): Promise<void> {
-        const details = await TMDB.getMovie(tmdbMovie.id);
+        const details = await TMDB.getMovie(tmdbMovie.id, { includeStaff: true });
         const movie = new Movie(this.getMovieAttributes(details));
 
         movie.mintUrl();
@@ -193,7 +194,7 @@ export class CatalogService extends Service {
         const externalUrls = [TMDB.movieUrl(details)];
 
         if (details.imdb_id) {
-            externalUrls.push(`https://www.imdb.com/title/${details.imdb_id}/`);
+            externalUrls.push(imdbUrl(details.imdb_id));
         }
 
         const countryCodes =
@@ -223,7 +224,7 @@ export class CatalogService extends Service {
         const externalUrls = [TMDB.showUrl(details)];
 
         if (externalIds.imdb_id) {
-            externalUrls.push(`https://www.imdb.com/title/${externalIds.imdb_id}/`);
+            externalUrls.push(imdbUrl(externalIds.imdb_id));
         }
 
         return {
@@ -309,7 +310,7 @@ export class CatalogService extends Service {
             return;
         }
 
-        const details = await TMDB.getMovie(movie.tmdbId);
+        const details = await TMDB.getMovie(movie.tmdbId, { includeStaff: true });
         const attributes = this.getMovieAttributes(details);
 
         movie.setAttributes({
@@ -319,18 +320,18 @@ export class CatalogService extends Service {
 
         await movie.loadAllRelationsIfUnloaded();
 
-        this.reconcileCast(movie, details.cast);
-        this.reconcilePersons(movie.relatedDirectors, details.directors);
+        details.cast && this.reconcileCast(movie, details.cast);
+        details.directors && this.reconcilePersons(movie.relatedDirectors, details.directors);
 
         await movie.save();
     }
 
     private attachStaff(movie: Movie, details: TMDBMovieWithStaff): void {
-        for (const credit of details.cast) {
+        for (const credit of details.cast ?? []) {
             this.attachCastMember(movie, credit);
         }
 
-        for (const director of details.directors) {
+        for (const director of details.directors ?? []) {
             movie.relatedDirectors.attach(Person.fromTMDB(director), { mintUrl: true });
         }
     }
@@ -413,7 +414,7 @@ export class CatalogService extends Service {
     }
 
     private async newMovieFromTMDB(tmdbId: number, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
-        const details = await TMDB.getMovie(tmdbId);
+        const details = await TMDB.getMovie(tmdbId, { includeStaff: true });
         const movie = new Movie(this.getMovieAttributes(details));
 
         movie.mintUrl();

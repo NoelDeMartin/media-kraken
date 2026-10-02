@@ -163,8 +163,8 @@ export type TMDBShowSearchResult = z.infer<typeof SearchShowResultSchema>;
 export type TMDBSearchResult = TMDBMovieSearchResult | TMDBShowSearchResult;
 export type TMDBSeasonDetails = z.infer<typeof TMDBSeasonDetailsSchema>;
 export type TMDBMovieWithStaff = Omit<TMDBMovieDetails, 'credits'> & {
-    cast: TMDBCastCredit[];
-    directors: TMDBPerson[];
+    cast?: TMDBCastCredit[];
+    directors?: TMDBPerson[];
 };
 
 export class TMDBService extends Service {
@@ -229,10 +229,16 @@ export class TMDBService extends Service {
         };
     }
 
-    public async getMovie(id: number): Promise<TMDBMovieWithStaff> {
-        const { credits, ...details } = await this.request(TMDBMovieDetailsSchema, `movie/${id}`, {
-            append_to_response: 'credits',
-        });
+    public async getMovie(id: number, options: { includeStaff: boolean }): Promise<TMDBMovieWithStaff> {
+        const { credits, ...details } = await this.request(
+            TMDBMovieDetailsSchema,
+            `movie/${id}`,
+            options.includeStaff ? { append_to_response: 'credits' } : {},
+        );
+
+        if (!options.includeStaff) {
+            return details;
+        }
 
         return {
             ...details,
@@ -279,16 +285,16 @@ export class TMDBService extends Service {
         return { details, externalIds, seasons };
     }
 
+    public async getShowExternalIds(id: number): Promise<TMDBShowExternalIds> {
+        return this.request(TMDBShowExternalIdsSchema, `tv/${id}/external_ids`);
+    }
+
     protected override async boot(): Promise<void> {
         await this.watchGenres();
     }
 
     private async getShowDetails(id: number): Promise<TMDBShowDetails> {
         return this.request(TMDBShowDetailsSchema, `tv/${id}`);
-    }
-
-    private async getShowExternalIds(id: number): Promise<TMDBShowExternalIds> {
-        return this.request(TMDBShowExternalIdsSchema, `tv/${id}/external_ids`);
     }
 
     private async getSeasonDetails(showId: number, seasonNumber: number): Promise<TMDBSeasonDetails> {

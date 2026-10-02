@@ -12,6 +12,14 @@
             <p v-if="model.description" class="text-sm leading-relaxed text-gray-700">
                 {{ model.description }}
             </p>
+            <ul :aria-label="$t('movies.externalSites')" class="ml-auto flex items-center gap-2">
+                <li>
+                    <ExternalSiteLink :url="TMDB.showUrl(show)" />
+                </li>
+                <li v-if="externalIds?.imdb_id">
+                    <ExternalSiteLink :url="imdbUrl(externalIds.imdb_id)" />
+                </li>
+            </ul>
             <div class="mt-auto flex items-end justify-end gap-2">
                 <Select
                     v-model="status"
@@ -31,18 +39,21 @@
 
 <script setup lang="ts">
 import { translate, UI, useModal } from '@aerogel/core';
-import { computed, ref } from 'vue';
+import { computed, onMounted, ref, shallowRef } from 'vue';
 
+import { imdbUrl } from '@/lib/imdb';
 import Show from '@/models/Show';
 import { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@/models/ShowWatching';
 import Catalog from '@/services/Catalog';
-import type { TMDBShow } from '@/services/TMDB';
+import type { TMDBShow, TMDBShowExternalIds } from '@/services/TMDB';
+import TMDB from '@/services/TMDB';
 
 const { show } = defineProps<{ show: TMDBShow }>();
 const { close } = useModal();
 const model = computed(() => Show.fromTMDB(show, { posterSize: 'large' }));
 const statusOptions = Object.keys(SHOW_WATCHING_STATUSES) as ShowWatchingStatus[];
 const status = ref<ShowWatchingStatus>('pending');
+const externalIds = shallowRef<TMDBShowExternalIds | null>(null);
 
 function renderStatus(option: ShowWatchingStatus): string {
     return translate(`shows.statuses.${option}`);
@@ -55,4 +66,8 @@ async function saveToCollection() {
 
     UI.toast(translate('shows.added', { show: model.value.name }));
 }
+
+onMounted(async () => {
+    externalIds.value = await TMDB.getShowExternalIds(show.id);
+});
 </script>
