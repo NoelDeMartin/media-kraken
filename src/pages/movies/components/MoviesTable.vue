@@ -2,12 +2,7 @@
     <Table item-key="url" :items-label="$t('movies.itemsName')">
         <TableColumn :header="$t('movies.table.title')" field="title">
             <template #default="{ item: movie }">
-                <Link
-                    class="text-normal"
-                    route="movies.show"
-                    :route-params="{ movie: movie.slug }"
-                    :route-query="$solid.hasLoggedIn() ? { url: movie.url } : undefined"
-                >
+                <Link class="text-normal" :to="movie.route">
                     {{ movie.title }}
                 </Link>
             </template>
@@ -48,7 +43,7 @@ const { movies } = defineProps<{ movies: Movie[] }>();
 const renderedMovies = computed(() =>
     movies.map((movie) => ({
         ...movie.getAttributes(),
-        slug: movie.slug,
+        route: movie.route,
         genres: movie.genreIds
             .map((id) => TMDB.translateGenre(id))
             .filter(isTruthy)

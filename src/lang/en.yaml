@@ -127,6 +127,12 @@ media:
     synchronized: 'Metadata synchronized'
     synchronizeAll: 'Synchronize all metadata'
     synchronizing: 'Synchronizing metadata...'
+    identify:
+        title: 'Identify source'
+        searchPlaceholder: 'Search movies or TV shows...'
+        noResults: 'No movies or TV shows found.'
+        update: 'Update'
+        updateA11y: 'Identify with {name}'
 
 lists:
     title: 'Lists'

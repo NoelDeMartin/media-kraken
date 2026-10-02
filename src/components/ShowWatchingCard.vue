@@ -1,16 +1,7 @@
 <template>
     <article class="rounded-card relative isolate aspect-4/3 overflow-hidden shadow-sm">
         <MediaImage :url="show.backdropUrl || show.posterUrl" class="size-full" />
-        <RouterLink
-            :to="{
-                name: 'shows.show',
-                params: { show: show.slug },
-                query: $solid.hasLoggedIn() ? { url: show.url } : undefined,
-            }"
-            tabindex="-1"
-            aria-hidden="true"
-            class="group"
-        >
+        <RouterLink :to="show.route" tabindex="-1" aria-hidden="true" class="group">
             <div
                 class="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
             />
@@ -32,11 +23,7 @@
             <div class="flex min-w-0 flex-col gap-0.5">
                 <h2>
                     <RouterLink
-                        :to="{
-                            name: 'shows.show',
-                            params: { show: show.slug },
-                            query: $solid.hasLoggedIn() ? { url: show.url } : undefined,
-                        }"
+                        :to="show.route"
                         class="focus-visible:ring-focus hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white/70 focus-visible:outline-none"
                     >
                         <span class="truncate text-sm leading-tight font-semibold tracking-tight text-gray-900">

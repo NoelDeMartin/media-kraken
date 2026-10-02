@@ -29,6 +29,11 @@
                                 icon: IconSync,
                                 click: () => runSync($catalog.sync(movie)),
                             },
+                            {
+                                label: $t('media.identify.title'),
+                                icon: IconIdentify,
+                                click: identify,
+                            },
                         ]"
                     >
                         <Button size="icon" variant="ghost" :title="$t('movies.openActionsMenu')" class="-mr-4">
@@ -109,21 +114,63 @@
 </template>
 
 <script setup lang="ts">
-import { translate, useLoading } from '@aerogel/core';
+import { translate, UI, useLoading } from '@aerogel/core';
+import { Router } from '@aerogel/plugin-routing';
 import { isTruthy } from '@noeldemartin/utils';
 import { computed, onMounted } from 'vue';
 import IconCheck from '~icons/material-symbols/check';
 import IconClock from '~icons/mdi/clock-outline';
 import IconSync from '~icons/mdi/sync';
+import IconIdentify from '~icons/ph/list-magnifying-glass';
 
+import IdentifyMediaModal from '@/components/modals/IdentifyMediaModal.vue';
 import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
 import Movie from '@/models/Movie';
 import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';
-import TMDB from '@/services/TMDB';
+import Catalog from '@/services/Catalog';
+import TMDB, { type TMDBMovie, type TMDBShow } from '@/services/TMDB';
 
 const { movie } = defineProps<{ movie: Movie }>();
 const { loading: syncing, run: runSync } = useLoading();
+
+async function identify() {
+    const { media } = await UI.modal(IdentifyMediaModal, { initialQuery: movie.title });
+
+    if (!media) {
+        return;
+    }
+
+    if ('name' in media) {
+        await runSync(identifyAsShow(media));
+
+        return;
+    }
+
+    await runSync(identifyAsMovie(media));
+}
+
+async function identifyAsMovie(tmdbMovie: TMDBMovie) {
+    const originalSlug = movie.slug;
+
+    await Catalog.identify(movie, tmdbMovie);
+
+    if (originalSlug === movie.slug) {
+        return;
+    }
+
+    await Router.replace(movie.route);
+}
+
+async function identifyAsShow(tmdbShow: TMDBShow) {
+    const show = await Catalog.importShowFromTMDB(tmdbShow, {
+        watchingStatus: movie.watched ? 'completed' : 'pending',
+    });
+
+    await Router.push(show.route);
+    await movie.delete();
+}
+
 const cast = computed(() =>
     (movie.cast ?? []).filter((role): role is PerformanceRole & { actor: Person } => !!role.actor),
 );

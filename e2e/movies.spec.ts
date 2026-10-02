@@ -62,3 +62,12 @@ test('Filters movies with advanced filters', async ({ page }) => {
     await see(page, 'The Matrix (Watched)');
     await dontSee(page, 'Inception');
 });
+
+test('Identifies a movie', async ({ page }) => {
+    await createModel(page, 'Movie', { title: 'The Matrix' });
+    await press(page, 'The Matrix');
+    await press(page, 'Open actions menu');
+    await press(page, 'Identify');
+    await press(page, 'Identify with The Matrix');
+    await see(page, 'The Matrix (1999)');
+});

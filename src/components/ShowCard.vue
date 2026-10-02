@@ -4,11 +4,7 @@
         <ShowCardBadge class="absolute -top-1 -right-3.5 z-10" :show />
         <h2>
             <RouterLink
-                :to="{
-                    name: 'shows.show',
-                    params: { show: show.slug },
-                    query: $solid.hasLoggedIn() ? { url: show.url } : undefined,
-                }"
+                :to="show.route"
                 :title="show.name"
                 class="focus-visible:ring-focus focus-visible:ring-offset-background absolute inset-0 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >

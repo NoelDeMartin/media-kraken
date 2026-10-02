@@ -49,10 +49,10 @@
                         <MediaImage :url="result.posterUrl" class="size-12 rounded" />
                         <div class="min-w-0 flex-auto">
                             <p class="truncate text-sm font-medium">
-                                {{ isMovie(result) ? result.title : result.name }}
+                                {{ 'title' in result ? result.title : result.name }}
                             </p>
                             <p class="flex items-center gap-1 text-xs text-gray-500">
-                                <template v-if="isMovie(result)">
+                                <template v-if="'title' in result">
                                     <i-ph-film-slate class="size-4" />
                                     <span class="sr-only">{{ $t('app.search.movie') }} — </span>
                                 </template>
@@ -73,10 +73,7 @@
 <script setup lang="ts">
 import { useTemplateRef } from 'vue';
 
-import Movie from '@/models/Movie';
-import Show from '@/models/Show';
-
-type SearchResult = Movie | Show;
+import type { SearchResult } from '@/lib/composition/search';
 
 defineProps<{
     open: boolean;
@@ -94,10 +91,6 @@ defineEmits<{
 }>();
 
 const $comboboxRef = useTemplateRef('$comboboxRef');
-
-function isMovie(result: SearchResult): result is Movie {
-    return result instanceof Movie;
-}
 
 defineExpose({
     focus: () => $comboboxRef.value?.focus(),

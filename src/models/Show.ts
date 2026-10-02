@@ -1,6 +1,8 @@
+import { Solid } from '@aerogel/plugin-solid';
 import { parseDate, stringToSlug, tap, urlResolve, uuid } from '@noeldemartin/utils';
 import { emitModelEvent, InvalidationStrategies, loaded } from 'soukai-bis';
 import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, MintUrlOptions } from 'soukai-bis';
+import type { RouteLocationRaw } from 'vue-router';
 
 import { findExternalId, parseImdbId, parseTmdbId } from '@/lib/domains';
 import type Season from '@/models/Season';
@@ -84,6 +86,14 @@ export default class Show extends Model {
 
     public get imdbId(): string | null {
         return findExternalId('https://www.imdb.com/title/', this.externalUrls, parseImdbId);
+    }
+
+    public get route(): RouteLocationRaw {
+        return {
+            name: 'shows.show',
+            params: { show: this.slug },
+            query: Solid.hasLoggedIn() ? { url: this.url } : undefined,
+        };
     }
 
     public getSlug(): string | null {

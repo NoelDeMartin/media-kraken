@@ -1,5 +1,7 @@
+import { Solid } from '@aerogel/plugin-solid';
 import { arraySorted, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
 import type { BelongsToManyRelation, HasManyRelation } from 'soukai-bis';
+import type { RouteLocationRaw } from 'vue-router';
 
 import { countryCodeFromUrl } from '@/lib/countries';
 import { findExternalId, parseImdbId, parseTmdbId } from '@/lib/domains';
@@ -77,6 +79,14 @@ export default class Movie extends Model {
         const [firstWatch] = arraySorted(watchActions, 'endTime', 'asc');
 
         return firstWatch?.endTime ?? null;
+    }
+
+    public get route(): RouteLocationRaw {
+        return {
+            name: 'movies.show',
+            params: { movie: this.slug },
+            query: Solid.hasLoggedIn() ? { url: this.url } : undefined,
+        };
     }
 
     public getSlug(): string | null {

@@ -3,11 +3,7 @@
         <MediaImage :url="movie.posterUrl" class="rounded-card size-full" />
         <h2 class="peer">
             <RouterLink
-                :to="{
-                    name: 'movies.show',
-                    params: { movie: movie.slug },
-                    query: $solid.hasLoggedIn() ? { url: movie.url } : undefined,
-                }"
+                :to="movie.route"
                 :title="movie.title"
                 class="group focus-visible:ring-focus focus-visible:ring-offset-background absolute inset-0 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none"
             >

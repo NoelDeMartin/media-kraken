@@ -45,6 +45,7 @@
         "@iconify/json": "2.2.522",
         "@intlify/unplugin-vue-i18n": "^6.0.5",
         "@noeldemartin/scripts": "next",
+        "@noeldemartin/testing": "next",
         "@noeldemartin/vite-plus-config": "next",
         "@playwright/test": "^1.60.0",
         "@solid/community-server": "7.1.6",

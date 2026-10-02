@@ -28,7 +28,9 @@ export default class SynchronizeMedia extends ProcessingJob<Movie | Show, void> 
 
             await Promise.all(
                 media.map(async (item, itemIndex) => {
-                    await Catalog.syncIfNeeded(item).catch((error) => Errors.report(error));
+                    await Catalog.syncIfNeeded(item).catch((error) =>
+                        Errors.report(new Error(`Failed to synchronize media (${item.url})`, { cause: error })),
+                    );
                     await this.markItemCompleted(index * CHUNK_SIZE + itemIndex);
                 }),
             );

@@ -107,6 +107,14 @@ export class CatalogService extends Service {
         }
     }
 
+    public identify(model: Movie, tmdb: TMDBMovie): Promise<void>;
+    public identify(model: Show, tmdb: TMDBShow): Promise<void>;
+    public async identify(model: Movie | Show, tmdb: TMDBMovie | TMDBShow): Promise<void> {
+        model.setAttributes({ externalUrls: ['title' in tmdb ? TMDB.movieUrl(tmdb) : TMDB.showUrl(tmdb)] });
+
+        await this.sync(model);
+    }
+
     public async newFromExternal(media: ExternalMedia): Promise<Movie> {
         if (media.imdbId) {
             return this.newMovieFromImdb(media.imdbId, { watchedAt: media.watchedAt });
@@ -155,7 +163,7 @@ export class CatalogService extends Service {
     public async importShowFromTMDB(
         tmdbShow: TMDBShow,
         options: { watchingStatus?: Nullable<ShowWatchingStatus> } = {},
-    ): Promise<void> {
+    ): Promise<Show> {
         const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id, {
             includeSeasons: !!options.watchingStatus && !this.ignoresSeasons(options.watchingStatus),
         });
@@ -188,6 +196,8 @@ export class CatalogService extends Service {
         }
 
         await show.pendingEpisodes.updateValue({ refresh: true, loadRelations: true });
+
+        return show;
     }
 
     private getMovieAttributes(details: TMDBMovieWithStaff): GetModelInput<typeof Movie> {

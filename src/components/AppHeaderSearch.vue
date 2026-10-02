@@ -40,57 +40,26 @@
 </template>
 
 <script setup lang="ts">
-import { Errors, UI } from '@aerogel/core';
-import { debounce, fail } from '@noeldemartin/utils';
-import { ref, watch, useTemplateRef, shallowRef, nextTick, computed, toRaw } from 'vue';
+import { UI } from '@aerogel/core';
+import { nextTick, ref, useTemplateRef, watch } from 'vue';
 
 import MoviePreviewModal from '@/components/modals/MoviePreviewModal.vue';
 import ShowPreviewModal from '@/components/modals/ShowPreviewModal.vue';
-import Movie from '@/models/Movie';
-import Show from '@/models/Show';
-import TMDB, { type TMDBSearchResult } from '@/services/TMDB';
-
-type SearchResult = Movie | Show;
+import { useMediaSearch, type SearchResult } from '@/lib/composition/search';
 
 let refocusButton = false;
 const $triggerRef = useTemplateRef('$triggerRef');
 const $mediaSearchRef = useTemplateRef('$mediaSearchRef');
-const query = ref('');
-const trimmedQuery = computed(() => query.value.trim());
 const searching = ref(false);
-const loading = ref(false);
 const open = ref(false);
-const results = shallowRef<SearchResult[]>([]);
-const tmdbResults = new WeakMap<SearchResult, TMDBSearchResult>();
-const updateSearch = debounce(async () => {
-    try {
-        const queriedResults = await TMDB.search(trimmedQuery.value);
-
-        results.value = queriedResults.map((tmdb) => {
-            const model =
-                tmdb.media_type === 'movie'
-                    ? Movie.fromTMDB(tmdb, { posterSize: 'small', mintUrl: true })
-                    : Show.fromTMDB(tmdb, { posterSize: 'small', mintUrl: true });
-
-            tmdbResults.set(model, tmdb);
-
-            return model;
-        });
-    } catch (error) {
-        results.value = [];
-
-        Errors.report(error);
-    } finally {
-        loading.value = false;
-    }
-}, 350);
+const { query, trimmedQuery, loading, results, getTMDBResult } = useMediaSearch();
 
 async function selectResult(value: SearchResult) {
     query.value = '';
 
     closeSearch({ refocusButton: true });
 
-    const tmdb = tmdbResults.get(toRaw(value)) ?? fail<TMDBSearchResult>('Result not found');
+    const tmdb = getTMDBResult(value);
 
     switch (tmdb.media_type) {
         case 'movie':
@@ -123,17 +92,11 @@ watch(searching, async () => {
     }
 });
 
-watch(trimmedQuery, () => {
-    if (trimmedQuery.value.length === 0) {
-        results.value = [];
-        loading.value = false;
-        open.value = false;
-
+watch(trimmedQuery, (newQuery) => {
+    if (newQuery.length > 0) {
         return;
     }
 
-    loading.value = true;
-
-    updateSearch();
+    open.value = false;
 });
 </script>
