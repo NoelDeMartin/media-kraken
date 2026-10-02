@@ -9,9 +9,11 @@
                 {{ model.title }}
                 <span v-if="model.releaseYear" class="text-base font-medium"> ({{ model.releaseYear }}) </span>
             </HeadlessModalTitle>
-            <p v-if="model.description" class="text-sm leading-relaxed text-gray-700">
-                {{ model.description }}
-            </p>
+            <div v-if="model.description" class="relative flex-1">
+                <p class="absolute inset-0 overflow-auto text-sm leading-relaxed text-gray-700">
+                    {{ model.description }}
+                </p>
+            </div>
             <ul :aria-label="$t('movies.externalSites')" class="ml-auto flex items-center gap-2">
                 <li>
                     <ExternalSiteLink :url="TMDB.movieUrl(movie)" />

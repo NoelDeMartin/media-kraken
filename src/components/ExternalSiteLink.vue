@@ -17,11 +17,11 @@ import IconExternalLink from '~icons/mdi/open-in-new';
 const ICONS = {
     'themoviedb.org': {
         component: IconTmdb,
-        class: 'size-10',
+        class: 'w-10 h-6',
     },
     'imdb.com': {
         component: IconImdb,
-        class: 'size-10',
+        class: 'w-10 h-6',
     },
     default: {
         component: IconExternalLink,
