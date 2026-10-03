@@ -9,8 +9,8 @@
             <span>{{ $t('app.nav.discover') }}</span>
         </Link>
 
-        <div class="flex items-center gap-1">
-            <i-bi-collection class="size-4" />
+        <div class="isolate flex items-center gap-1">
+            <i-bi-collection class="z-10 size-4" />
             <NavMenu id="my-collection-menu" :label="$t('app.nav.collection')" :sections />
         </div>
     </nav>

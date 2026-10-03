@@ -1,6 +1,6 @@
 <template>
     <header
-        class="max-w-screen-content px-edge relative isolate mx-auto flex w-full items-center justify-between gap-2 pt-8"
+        class="max-w-screen-content px-edge relative isolate z-10 mx-auto flex w-full items-center justify-between gap-2 pt-8"
     >
         <Link route="home" class="text-2xl font-semibold tracking-tight">
             <span class="sr-only">{{ $t('app.title') }}</span>

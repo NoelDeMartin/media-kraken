@@ -1,7 +1,7 @@
 <template>
     <div
         ref="wrapper"
-        class="group relative"
+        class="group relative isolate"
         :style="{
             '--item-height': sizes ? `${sizes.itemHeight}px` : '0px',
             '--wrapper-width': sizes ? `${sizes.wrapperWidth}px` : '0px',
@@ -15,46 +15,61 @@
         <div class="h-(--item-height) min-w-[calc(var(--wrapper-width)+(--spacing(1)))]" />
         <div
             :class="[
-                'absolute top-0 left-0 h-(--item-height) overflow-hidden',
+                'absolute top-0 left-0 h-(--item-height)',
                 open && 'h-(--menu-height) -translate-y-(--item-height)',
                 animate && 'transition-all duration-300 ease-in-out',
             ]"
         >
             <div
                 :class="[
-                    '-translate-y-(--drift) pl-1 whitespace-nowrap',
-                    open && 'pt-(--drift)',
+                    'bg-background pointer-events-none absolute inset-x-0 bottom-0 rounded-md shadow-[0_0_15px_15px_var(--color-background)]',
+                    open ? 'top-[calc(var(--item-height)+(--spacing(2)))]' : 'top-full',
                     animate && 'transition-all duration-300 ease-in-out',
                 ]"
-                :style="{
-                    '--drift':
-                        sizes && activeSectionIndex !== -1 ? `${(activeSectionIndex + 1) * sizes.itemHeight}px` : '0px',
-                }"
-            >
-                <h2
-                    :id="labelId"
+            />
+            <div class="relative z-10 h-full overflow-hidden">
+                <div
                     :class="[
-                        'flex h-(--item-height) items-center text-sm',
-                        open && 'translate-y-2 text-xs opacity-50',
+                        '-translate-y-(--drift) pl-1 whitespace-nowrap',
+                        open && 'pt-(--drift)',
                         animate && 'transition-all duration-300 ease-in-out',
                     ]"
+                    :style="{
+                        '--drift':
+                            sizes && activeSectionIndex !== -1
+                                ? `${(activeSectionIndex + 1) * sizes.itemHeight}px`
+                                : '0px',
+                    }"
                 >
-                    {{ label }}
-                </h2>
-                <span ref="labelMeasurement" aria-hidden="true" class="pointer-events-none absolute text-sm opacity-0">
-                    {{ label }}
-                </span>
-                <ul :aria-labelledby="labelId">
-                    <li
-                        v-for="(section, index) in sections"
-                        :key="section.route"
-                        :class="{ 'font-bold': activeSectionIndex === index }"
+                    <h2
+                        :id="labelId"
+                        :class="[
+                            'flex h-(--item-height) items-center text-sm',
+                            open && 'translate-y-2 text-xs opacity-50',
+                            animate && 'transition-all duration-300 ease-in-out',
+                        ]"
                     >
-                        <Link :route="section.route" @click="open = false" class="text-primary-text">
-                            {{ section.label }}
-                        </Link>
-                    </li>
-                </ul>
+                        {{ label }}
+                    </h2>
+                    <span
+                        ref="labelMeasurement"
+                        aria-hidden="true"
+                        class="pointer-events-none absolute text-sm opacity-0"
+                    >
+                        {{ label }}
+                    </span>
+                    <ul :aria-labelledby="labelId">
+                        <li
+                            v-for="(section, index) in sections"
+                            :key="section.route"
+                            :class="{ 'font-bold': activeSectionIndex === index }"
+                        >
+                            <Link :route="section.route" @click="open = false" class="text-primary-text">
+                                {{ section.label }}
+                            </Link>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
