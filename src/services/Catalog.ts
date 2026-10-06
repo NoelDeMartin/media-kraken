@@ -19,6 +19,7 @@ import { minutesToISODuration } from '@/lib/durations';
 import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
 import { imdbUrl } from '@/lib/imdb';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
+import { tmdbBackdropUrl, tmdbGenreUrl, tmdbMovieUrl, tmdbPosterUrl, tmdbProfileUrl, tmdbShowUrl } from '@/lib/tmdb';
 import type Episode from '@/models/Episode';
 import Movie from '@/models/Movie';
 import PerformanceRole from '@/models/PerformanceRole';
@@ -110,7 +111,7 @@ export class CatalogService extends Service {
     public identify(model: Movie, tmdb: TMDBMovie): Promise<void>;
     public identify(model: Show, tmdb: TMDBShow): Promise<void>;
     public async identify(model: Movie | Show, tmdb: TMDBMovie | TMDBShow): Promise<void> {
-        model.setAttributes({ externalUrls: ['title' in tmdb ? TMDB.movieUrl(tmdb) : TMDB.showUrl(tmdb)] });
+        model.setAttributes({ externalUrls: ['title' in tmdb ? tmdbMovieUrl(tmdb.id) : tmdbShowUrl(tmdb.id)] });
 
         await this.sync(model);
     }
@@ -201,7 +202,7 @@ export class CatalogService extends Service {
     }
 
     private getMovieAttributes(details: TMDBMovieWithStaff): GetModelInput<typeof Movie> {
-        const externalUrls = [TMDB.movieUrl(details)];
+        const externalUrls = [tmdbMovieUrl(details.id)];
 
         if (details.imdb_id) {
             externalUrls.push(imdbUrl(details.imdb_id));
@@ -213,14 +214,14 @@ export class CatalogService extends Service {
                 : (details.production_countries ?? []).map((country) => country.iso_3166_1);
 
         const countryUrls = arrayUnique(countryCodes.map(countryUrlFromCode).filter(isTruthy));
-        const genreUrls = (details.genres ?? []).map((genre) => TMDB.genreUrl(genre));
+        const genreUrls = (details.genres ?? []).map((genre) => tmdbGenreUrl(genre.id));
         const languages = arrayUnique((details.spoken_languages ?? []).map((language) => language.iso_639_1));
         const duration = details.runtime && details.runtime > 0 ? minutesToISODuration(details.runtime) : undefined;
 
         return {
             title: details.title,
             description: details.overview,
-            posterUrl: TMDB.posterUrl(details),
+            posterUrl: tmdbPosterUrl(details.poster_path),
             releaseDate: parseDate(details.release_date) ?? undefined,
             externalUrls,
             countryUrls,
@@ -231,7 +232,7 @@ export class CatalogService extends Service {
     }
 
     private getShowAttributes(details: TMDBShowDetails, externalIds: TMDBShowExternalIds): GetModelInput<typeof Show> {
-        const externalUrls = [TMDB.showUrl(details)];
+        const externalUrls = [tmdbShowUrl(details.id)];
 
         if (externalIds.imdb_id) {
             externalUrls.push(imdbUrl(externalIds.imdb_id));
@@ -240,8 +241,8 @@ export class CatalogService extends Service {
         return {
             name: details.name,
             description: details.overview,
-            posterUrl: TMDB.posterUrl(details),
-            backdropUrl: TMDB.backdropUrl(details),
+            posterUrl: tmdbPosterUrl(details.poster_path),
+            backdropUrl: tmdbBackdropUrl(details.backdrop_path),
             startDate: parseDate(details.first_air_date) ?? undefined,
             externalUrls,
         };
@@ -377,7 +378,7 @@ export class CatalogService extends Service {
             existingRole.setAttribute('characterNames', credit.characters);
             existingRole.actor.setAttributes({
                 name: credit.name,
-                imageUrl: TMDB.profileUrl(credit),
+                imageUrl: tmdbProfileUrl(credit.profile_path),
             });
         }
     }
@@ -399,7 +400,7 @@ export class CatalogService extends Service {
 
             existingPerson.setAttributes({
                 name: newPerson.name,
-                imageUrl: TMDB.profileUrl(newPerson),
+                imageUrl: tmdbProfileUrl(newPerson.profile_path),
             });
         }
     }

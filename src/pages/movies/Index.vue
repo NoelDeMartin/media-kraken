@@ -4,7 +4,9 @@
             class="max-w-screen-content mx-auto flex w-full items-center justify-start"
             :class="{ 'px-edge': display === 'table' }"
         >
+            <i-mdi-sync v-if="loading" class="mr-1 size-5 animate-spin" />
             <DropdownMenu
+                v-else
                 align="start"
                 :options="[
                     {
@@ -68,7 +70,10 @@
                 />
             </div>
         </div>
-        <VirtualMediaGrid v-if="display === 'grid'" by="url" class="mt-2" :items="sortedMovies">
+        <div v-if="loading && allMovies.length === 0" class="flex items-center justify-center py-16">
+            <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-8 w-full" />
+        </div>
+        <VirtualMediaGrid v-else-if="display === 'grid'" by="url" class="mt-2" :items="sortedMovies">
             <template #default="{ item: movie }">
                 <MovieCard :movie />
             </template>
@@ -87,7 +92,7 @@
 
 <script setup lang="ts">
 import { UI } from '@aerogel/core';
-import { useModelCollection } from '@aerogel/plugin-solid';
+import { useModels } from '@aerogel/plugin-solid';
 import { arraySorted } from '@noeldemartin/utils';
 import { computed, ref } from 'vue';
 import IconSync from '~icons/mdi/sync';
@@ -108,8 +113,8 @@ import Movie from '@/models/Movie';
 
 const quickFilter = ref<string | null>(null);
 const advancedFilters = ref<MoviesFilter | null>(null);
-const allMovies = useModelCollection(Movie);
-const hasEmptyCollection = computed(() => allMovies.value.length === 0);
+const { models: allMovies, loading } = useModels(Movie);
+const hasEmptyCollection = computed(() => !loading.value && allMovies.value.length === 0);
 const hasAdvancedFilters = computed(() => hasActiveMovieFilters(advancedFilters.value));
 
 const moviesSearchIndex = computed(() => allMovies.value.map(createMovieSearchEntry));

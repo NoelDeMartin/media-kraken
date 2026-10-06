@@ -1,13 +1,15 @@
-import { Solid } from '@aerogel/plugin-solid';
 import { arraySorted, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
+import { isLocalUrl } from 'soukai-bis';
 import type { BelongsToManyRelation, HasManyRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
 import { countryCodeFromUrl } from '@/lib/countries';
-import { findExternalId, parseImdbId, parseTmdbId } from '@/lib/domains';
+import { findExternalId } from '@/lib/domains';
 import { isoDurationToMinutes } from '@/lib/durations';
+import { parseImdbId } from '@/lib/imdb';
+import { parseTmdbId, tmdbMovieUrl, tmdbPosterUrl } from '@/lib/tmdb';
+import type { TMDBImageSize } from '@/lib/tmdb';
 import type { TMDBMovie } from '@/services/TMDB';
-import TMDB from '@/services/TMDB';
 
 import Model from './Movie.schema';
 import type PerformanceRole from './PerformanceRole';
@@ -24,13 +26,13 @@ export default class Movie extends Model {
     declare public readonly directors?: Person[];
     declare public readonly relatedDirectors: BelongsToManyRelation<this, Person, typeof Person>;
 
-    static fromTMDB(movie: TMDBMovie, options: { posterSize?: 'small' | 'large'; mintUrl?: boolean } = {}): Movie {
+    static fromTMDB(movie: TMDBMovie, options: { posterSize?: TMDBImageSize; mintUrl?: boolean } = {}): Movie {
         const instance = new Movie({
             title: movie.title,
             description: movie.overview,
             releaseDate: parseDate(movie.release_date) ?? undefined,
-            posterUrl: TMDB.posterUrl(movie, options.posterSize),
-            externalUrls: [TMDB.movieUrl(movie)],
+            posterUrl: tmdbPosterUrl(movie.poster_path, options.posterSize),
+            externalUrls: [tmdbMovieUrl(movie.id)],
         });
 
         if (options.mintUrl) {
@@ -85,7 +87,7 @@ export default class Movie extends Model {
         return {
             name: 'movies.show',
             params: { movie: this.slug },
-            query: Solid.hasLoggedIn() ? { url: this.url } : undefined,
+            query: this.url && !isLocalUrl(this.url) ? { url: this.url } : undefined,
         };
     }
 

@@ -1,6 +1,9 @@
 <template>
     <Page>
-        <Welcome v-if="upcomingShows.length === 0 && pendingMovies.length === 0" />
+        <div v-if="loading" class="flex items-center justify-center py-16">
+            <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-8 w-full" />
+        </div>
+        <Welcome v-else-if="upcomingShows.length === 0 && pendingMovies.length === 0" />
         <template v-else>
             <h1 class="sr-only">{{ $t('home.title') }}</h1>
             <template v-if="upcomingShows.length > 0">
@@ -47,9 +50,9 @@
 
 <script setup lang="ts">
 import { translate } from '@aerogel/core';
-import { computedModels, useModelCollection } from '@aerogel/plugin-solid';
-import { arrayReversed } from '@noeldemartin/utils';
+import { computedModels, useModels } from '@aerogel/plugin-solid';
 import { arraySorted } from '@noeldemartin/utils';
+import { computed } from 'vue';
 
 import Episode from '@/models/Episode';
 import Movie from '@/models/Movie';
@@ -57,8 +60,9 @@ import Show from '@/models/Show';
 
 const SAMPLE_MOVIES_LENGTH = 10;
 
-const shows = useModelCollection(Show);
-const movies = useModelCollection(Movie);
+const { models: shows, loading: loadingShows } = useModels(Show);
+const { models: movies, loading: loadingMovies } = useModels(Movie);
+const loading = computed(() => loadingShows.value || loadingMovies.value);
 const activeShows = computedModels(Show, () => shows.value.filter((show) => show.watchingStatus === 'watching'));
 const pendingMovies = computedModels(Movie, () => {
     const sample: Movie[] = [];

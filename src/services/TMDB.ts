@@ -168,38 +168,6 @@ export type TMDBMovieWithStaff = Omit<TMDBMovieDetails, 'credits'> & {
 };
 
 export class TMDBService extends Service {
-    public movieUrl(movie: TMDBMovie): string {
-        return `https://www.themoviedb.org/movie/${movie.id}`;
-    }
-
-    public showUrl(show: TMDBShow): string {
-        return `https://www.themoviedb.org/tv/${show.id}`;
-    }
-
-    public personUrl(person: TMDBPerson): string {
-        return `https://www.themoviedb.org/person/${person.id}`;
-    }
-
-    public genreUrl(genre: TMDBGenre): string {
-        return `https://www.themoviedb.org/genre/${genre.id}`;
-    }
-
-    public posterUrl(media: TMDBMovie | TMDBShow, size: 'small' | 'large' = 'large'): string | undefined {
-        return media.poster_path
-            ? `https://image.tmdb.org/t/p/${this.getSizeShorthand(size)}${media.poster_path}`
-            : undefined;
-    }
-
-    public profileUrl(person: TMDBPerson): string | undefined {
-        return person.profile_path ? `https://image.tmdb.org/t/p/w185${person.profile_path}` : undefined;
-    }
-
-    public backdropUrl(media: TMDBShow, size: 'small' | 'large' = 'large'): string | undefined {
-        return media.backdrop_path
-            ? `https://image.tmdb.org/t/p/${this.getSizeShorthand(size)}${media.backdrop_path}`
-            : undefined;
-    }
-
     public translateGenre(id: number): string | null {
         return (Lang.locale && this.genreTranslations[Lang.locale]?.[id]) || null;
     }
@@ -299,10 +267,6 @@ export class TMDBService extends Service {
 
     private async getSeasonDetails(showId: number, seasonNumber: number): Promise<TMDBSeasonDetails> {
         return this.request(TMDBSeasonDetailsSchema, `tv/${showId}/season/${seasonNumber}`);
-    }
-
-    private getSizeShorthand(size: 'small' | 'large'): string {
-        return size === 'small' ? 'w92' : 'w500';
     }
 
     private async getMovieGenres(language: string): Promise<TMDBGenre[]> {

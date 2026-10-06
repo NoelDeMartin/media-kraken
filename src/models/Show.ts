@@ -1,13 +1,14 @@
-import { Solid } from '@aerogel/plugin-solid';
-import { parseDate, stringToSlug, tap, urlResolve, uuid } from '@noeldemartin/utils';
-import { emitModelEvent, InvalidationStrategies, loaded } from 'soukai-bis';
-import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, MintUrlOptions } from 'soukai-bis';
+import { parseDate, stringToSlug, tap } from '@noeldemartin/utils';
+import { emitModelEvent, InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
+import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, UrlFromSlugOptions } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
-import { findExternalId, parseImdbId, parseTmdbId } from '@/lib/domains';
+import { findExternalId } from '@/lib/domains';
+import { parseImdbId } from '@/lib/imdb';
+import { parseTmdbId, tmdbPosterUrl, tmdbShowUrl } from '@/lib/tmdb';
+import type { TMDBImageSize } from '@/lib/tmdb';
 import type Season from '@/models/Season';
 import type { TMDBShow } from '@/services/TMDB';
-import TMDB from '@/services/TMDB';
 
 import Model from './Show.schema';
 import type ShowWatching from './ShowWatching';
@@ -24,6 +25,11 @@ export type PendingEpisode = {
 
 export default class Show extends Model {
     public static cloud = { depth: 1 };
+
+    public static documentUrlFromSlug(slug: string, options: UrlFromSlugOptions = {}): string {
+        return super.documentUrlFromSlug(`${slug}/info`, options);
+    }
+
     public static computed = {
         pendingEpisodes: {
             invalidationStrategy: InvalidationStrategies.CONTAINER,
@@ -52,13 +58,13 @@ export default class Show extends Model {
     declare public readonly seasons?: Season[];
     declare public readonly relatedSeasons: BelongsToManyRelation<this, Season, typeof Season>;
 
-    static fromTMDB(show: TMDBShow, options: { posterSize?: 'small' | 'large'; mintUrl?: boolean } = {}): Show {
+    static fromTMDB(show: TMDBShow, options: { posterSize?: TMDBImageSize; mintUrl?: boolean } = {}): Show {
         const instance = new Show({
             name: show.name,
             description: show.overview,
             startDate: parseDate(show.first_air_date) ?? undefined,
-            posterUrl: TMDB.posterUrl(show, options.posterSize),
-            externalUrls: [TMDB.showUrl(show)],
+            posterUrl: tmdbPosterUrl(show.poster_path, options.posterSize),
+            externalUrls: [tmdbShowUrl(show.id)],
         });
 
         if (options.mintUrl) {
@@ -92,7 +98,7 @@ export default class Show extends Model {
         return {
             name: 'shows.show',
             params: { show: this.slug },
-            query: Solid.hasLoggedIn() ? { url: this.url } : undefined,
+            query: this.url && !isLocalUrl(this.url) ? { url: this.url } : undefined,
         };
     }
 
@@ -136,11 +142,5 @@ export default class Show extends Model {
         );
 
         await this.relatedWatching.save(watching);
-    }
-
-    protected newUrlDocumentUrl(options: MintUrlOptions = {}): string {
-        const slug = this.getSlug() ?? uuid();
-
-        return urlResolve(options.containerUrl ?? this.static('defaultContainerUrl'), `${slug}/info`);
     }
 }

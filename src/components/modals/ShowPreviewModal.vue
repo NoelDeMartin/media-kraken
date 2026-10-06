@@ -16,7 +16,7 @@
             </div>
             <ul :aria-label="$t('movies.externalSites')" class="ml-auto flex items-center gap-2">
                 <li>
-                    <ExternalSiteLink :url="TMDB.showUrl(show)" />
+                    <ExternalSiteLink :url="tmdbShowUrl(show.id)" />
                 </li>
                 <li v-if="externalIds?.imdb_id">
                     <ExternalSiteLink :url="imdbUrl(externalIds.imdb_id)" />
@@ -44,6 +44,7 @@ import { translate, UI, useModal } from '@aerogel/core';
 import { computed, onMounted, ref, shallowRef } from 'vue';
 
 import { imdbUrl } from '@/lib/imdb';
+import { tmdbShowUrl } from '@/lib/tmdb';
 import Show from '@/models/Show';
 import { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@/models/ShowWatching';
 import Catalog from '@/services/Catalog';

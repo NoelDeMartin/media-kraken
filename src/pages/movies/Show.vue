@@ -8,7 +8,7 @@
                         {{ movie.title }}
                         <span v-if="movie.releaseYear" class="text-lg font-medium"> ({{ movie.releaseYear }}) </span>
                     </h1>
-                    <IconSync v-if="syncing" class="m-2.5 size-5 animate-spin" />
+                    <i-mdi-sync v-if="syncing" class="m-2.5 size-5 animate-spin" />
                     <DropdownMenu v-else align="end" :options="menuOptions">
                         <Button size="icon" variant="ghost" :title="$t('movies.openActionsMenu')" class="-mr-4">
                             <i-mdi-dots-vertical class="size-5" />

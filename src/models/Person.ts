@@ -1,5 +1,6 @@
-import { findExternalId, parseTmdbId } from '@/lib/domains';
-import TMDB, { type TMDBPerson } from '@/services/TMDB';
+import { findExternalId } from '@/lib/domains';
+import { parseTmdbId, tmdbPersonUrl, tmdbProfileUrl } from '@/lib/tmdb';
+import type { TMDBPerson } from '@/services/TMDB';
 
 import Model from './Person.schema';
 
@@ -9,8 +10,8 @@ export default class Person extends Model {
     static fromTMDB(person: TMDBPerson, options: { mintUrl?: boolean } = {}): Person {
         const instance = new Person({
             name: person.name,
-            imageUrl: TMDB.profileUrl(person),
-            externalUrls: [TMDB.personUrl(person)],
+            imageUrl: tmdbProfileUrl(person.profile_path),
+            externalUrls: [tmdbPersonUrl(person.id)],
         });
 
         if (options.mintUrl) {

@@ -18,18 +18,6 @@ export function findExternalId<T>(prefix: string, urls: string[], parser: (url: 
     return null;
 }
 
-export function parseTmdbId(url: string): number | null {
-    const id = url.split('/').filter(Boolean).pop()?.replace(/\D/g, '').trim();
-
-    return id ? Number(id) : null;
-}
-
-export function parseImdbId(url: string): string | null {
-    const id = url.split('/').filter(Boolean).pop();
-
-    return id?.split(/[?#]/)[0] ?? null;
-}
-
 export function mergeExternalUrls(existingUrls: string[], newUrls: string[]): string[] {
     return arrayUnique([...existingUrls, ...newUrls], (url) => url.replace(/\/+$/, ''));
 }

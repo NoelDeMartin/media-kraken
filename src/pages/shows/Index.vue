@@ -1,15 +1,18 @@
 <template>
     <Page :title="`${$t('shows.title')} (${shows.length})`">
-        <VirtualMediaGrid v-slot="{ item: show }" class="mt-2" by="url" :items="shows">
+        <div v-if="loading && shows.length === 0" class="flex items-center justify-center py-16">
+            <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-8 w-full" />
+        </div>
+        <VirtualMediaGrid v-else v-slot="{ item: show }" class="mt-2" by="url" :items="shows">
             <ShowCard :show />
         </VirtualMediaGrid>
     </Page>
 </template>
 
 <script setup lang="ts">
-import { useModelCollection } from '@aerogel/plugin-solid';
+import { useModels } from '@aerogel/plugin-solid';
 
 import Show from '@/models/Show';
 
-const shows = useModelCollection(Show);
+const { models: shows, loading } = useModels(Show);
 </script>
