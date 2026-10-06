@@ -133,8 +133,6 @@ const sortedMovies = computed(() => arraySorted(filteredMovies.value, 'createdAt
 const display = ref<'grid' | 'table'>('grid');
 
 async function updateAdvancedFilters() {
-    await Promise.all(allMovies.value.map((movie) => movie.loadAllRelationsIfUnloaded()));
-
     const { filters } = await UI.modal(FilterMoviesModal, {
         filters: advancedFilters.value,
         movies: allMovies.value,

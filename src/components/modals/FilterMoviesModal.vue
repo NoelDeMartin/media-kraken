@@ -1,6 +1,9 @@
 <template>
     <Modal :title="$t('movies.advancedFilters.title')">
-        <Form :form @submit="submit">
+        <div v-if="relationsLoading" class="py-12">
+            <i-svg-spinners-3-dots-scale-middle class="text-primary h-8 w-full" />
+        </div>
+        <Form v-else :form @submit="submit">
             <div class="space-y-4">
                 <Select
                     name="watchStatus"
@@ -77,14 +80,15 @@
 </template>
 
 <script setup lang="ts">
-import { numberRange, translate, useForm, useModal } from '@aerogel/core';
+import { numberRange, translate, useForm, useModal, useLoading } from '@aerogel/core';
+import { loadRelations } from '@aerogel/plugin-solid';
 import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
-import { computed } from 'vue';
+import { computed, onMounted } from 'vue';
 import { z } from 'zod';
 
 import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
 import { personFilterKey, type MoviesFilter } from '@/lib/movies';
-import type Movie from '@/models/Movie';
+import Movie from '@/models/Movie';
 import type Person from '@/models/Person';
 import TMDB from '@/services/TMDB';
 
@@ -100,6 +104,7 @@ const { filters, movies } = defineProps<{
 defineEmits<{ close: [Result] }>();
 
 const { close } = useModal<Result>();
+const { loading: relationsLoading, run: runRelationsLoading } = useLoading({ min: 0 });
 const statusOptions = ['all', 'watched', 'unwatched'] as const;
 const form = useForm({
     watchStatus: z.enum(statusOptions).default('all'),
@@ -214,4 +219,6 @@ function submit() {
         },
     });
 }
+
+onMounted(() => runRelationsLoading(loadRelations(Movie, movies, ['cast', 'directors'])));
 </script>

@@ -23,7 +23,7 @@ export default defineSchema({
     },
     relations: {
         watchActions: hasMany(() => requireBootedModel('WatchAction'), 'object').usingSameDocument(),
-        cast: belongsToMany(PerformanceRole, 'actorUrls').usingSameDocument(),
-        directors: belongsToMany(Person, 'directorUrls').usingSameDocument(),
+        cast: belongsToMany(PerformanceRole, 'actorUrls').usingSameDocument().autoload(false),
+        directors: belongsToMany(Person, 'directorUrls').usingSameDocument().autoload(false),
     },
 });
