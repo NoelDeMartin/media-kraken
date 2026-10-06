@@ -1,6 +1,6 @@
 <template>
     <Modal :title="$t('movies.advancedFilters.title')">
-        <div v-if="relationsLoading" class="py-12">
+        <div v-if="!creditsReady" class="py-12">
             <i-svg-spinners-3-dots-scale-middle class="text-primary h-8 w-full" />
         </div>
         <Form v-else :form @submit="submit">
@@ -80,16 +80,15 @@
 </template>
 
 <script setup lang="ts">
-import { numberRange, translate, useForm, useModal, useLoading } from '@aerogel/core';
-import { loadRelations } from '@aerogel/plugin-solid';
+import { numberRange, translate, useForm, useModal } from '@aerogel/core';
 import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
-import { computed, onMounted } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 import { z } from 'zod';
 
 import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
 import { personFilterKey, type MoviesFilter } from '@/lib/movies';
-import Movie from '@/models/Movie';
-import type Person from '@/models/Person';
+import type Movie from '@/models/Movie';
+import type { MovieCredit } from '@/models/Movie';
 import TMDB from '@/services/TMDB';
 
 type Result = { filters: MoviesFilter };
@@ -104,7 +103,8 @@ const { filters, movies } = defineProps<{
 defineEmits<{ close: [Result] }>();
 
 const { close } = useModal<Result>();
-const { loading: relationsLoading, run: runRelationsLoading } = useLoading({ min: 0 });
+const initialMoviesWithoutCredits = movies.filter((movie) => !movie.credits.value);
+const creditsReady = ref(initialMoviesWithoutCredits.length === 0);
 const statusOptions = ['all', 'watched', 'unwatched'] as const;
 const form = useForm({
     watchStatus: z.enum(statusOptions).default('all'),
@@ -128,8 +128,8 @@ if (filters) {
     form.duration = filters.duration ?? [null, null];
 }
 
-const directors = computed(() => movies.flatMap((movie) => movie.directors ?? []));
-const actors = computed(() => movies.flatMap((movie) => movie.cast?.map((role) => role.actor).filter(isTruthy) ?? []));
+const directors = computed(() => movies.flatMap((movie) => movie.credits.value?.directors ?? []));
+const actors = computed(() => movies.flatMap((movie) => movie.credits.value?.cast ?? []));
 const directorOptions = computed(() => sortByLocale(uniquePersonKeys(directors.value), renderPerson));
 const castOptions = computed(() => sortByLocale(uniquePersonKeys(actors.value), renderPerson));
 
@@ -177,7 +177,7 @@ const durationBounds = computed(() => {
     return [0, Math.max(Math.ceil(max / DURATION_STEP) * DURATION_STEP, DURATION_STEP)] as const;
 });
 
-function uniquePersonKeys(people: Person[]): string[] {
+function uniquePersonKeys(people: MovieCredit[]): string[] {
     return Array.from(new Set(people.map(personFilterKey).filter(isTruthy)));
 }
 
@@ -220,5 +220,15 @@ function submit() {
     });
 }
 
-onMounted(() => runRelationsLoading(loadRelations(Movie, movies, ['cast', 'directors'])));
+onMounted(async () => {
+    if (creditsReady.value) {
+        return;
+    }
+
+    try {
+        await Promise.all(initialMoviesWithoutCredits.map((movie) => movie.credits.updateValue()));
+    } finally {
+        creditsReady.value = true;
+    }
+});
 </script>

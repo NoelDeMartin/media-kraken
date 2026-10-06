@@ -3,7 +3,7 @@
     "include": ["src/**/*", "src/**/*.vue", ".storybook/**/*", "e2e/**/*.ts"],
     "compilerOptions": {
         "noUncheckedIndexedAccess": true,
-        "types": ["@aerogel/vite/shims", "unplugin-icons/types/vue3"],
+        "types": ["@aerogel/vite/shims", "@aerogel/vite/virtual"],
         "paths": {
             "@/*": ["./src/*"],
             "@e2e/*": ["./e2e/*"]

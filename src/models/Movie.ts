@@ -1,6 +1,6 @@
 import { arraySorted, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
-import { isLocalUrl } from 'soukai-bis';
-import type { BelongsToManyRelation, HasManyRelation } from 'soukai-bis';
+import { InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
+import type { BelongsToManyRelation, ComputedAttribute, HasManyRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
 import { countryCodeFromUrl } from '@/lib/countries';
@@ -16,9 +16,36 @@ import type PerformanceRole from './PerformanceRole';
 import type Person from './Person';
 import type WatchAction from './WatchAction';
 
+export type MovieCredit = Pick<Person, 'tmdbId' | 'name'>;
+
+export type MovieCredits = {
+    directors: MovieCredit[];
+    cast: MovieCredit[];
+};
+
+function movieCredit(person: Person): MovieCredit {
+    return { tmdbId: person.tmdbId, name: person.name };
+}
+
 export default class Movie extends Model {
     public static cloud = true;
 
+    public static computed = {
+        credits: {
+            invalidationStrategy: InvalidationStrategies.DOCUMENT,
+            compute(movie: Movie): MovieCredits {
+                return {
+                    directors: loaded(movie, 'directors').map(movieCredit),
+                    cast: loaded(movie, 'cast')
+                        .map((role) => loaded(role, 'actor'))
+                        .filter(isTruthy)
+                        .map(movieCredit),
+                };
+            },
+        },
+    };
+
+    declare public readonly credits: ComputedAttribute<MovieCredits>;
     declare public readonly watchActions?: WatchAction[];
     declare public readonly relatedWatchActions: HasManyRelation<this, WatchAction, typeof WatchAction>;
     declare public readonly cast?: PerformanceRole[];

@@ -26,10 +26,6 @@ export type PendingEpisode = {
 export default class Show extends Model {
     public static cloud = { depth: 1 };
 
-    public static documentUrlFromSlug(slug: string, options: UrlFromSlugOptions = {}): string {
-        return super.documentUrlFromSlug(`${slug}/info`, options);
-    }
-
     public static computed = {
         pendingEpisodes: {
             invalidationStrategy: InvalidationStrategies.CONTAINER,
@@ -51,6 +47,10 @@ export default class Show extends Model {
             },
         },
     };
+
+    public static documentUrlFromSlug(slug: string, options: UrlFromSlugOptions = {}): string {
+        return super.documentUrlFromSlug(`${slug}/info`, options);
+    }
 
     declare public readonly pendingEpisodes: ComputedAttribute<PendingEpisode[]>;
     declare public readonly watching?: ShowWatching;

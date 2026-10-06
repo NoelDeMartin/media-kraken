@@ -1,6 +1,8 @@
 import { describe, expect, it } from 'vite-plus/test';
 
 import Movie from '@/models/Movie';
+import PerformanceRole from '@/models/PerformanceRole';
+import Person from '@/models/Person';
 
 describe('Movie model', () => {
     function movie(externalUrls: string[]): Movie {
@@ -57,5 +59,19 @@ describe('Movie model', () => {
         });
 
         expect(instance.countryCodes).toEqual(['US', 'GB']);
+    });
+
+    it('Computes credits from cast and directors', () => {
+        const instance = new Movie({ title: 'Test Movie' });
+        const keanu = Person.fromTMDB({ id: 6384, name: 'Keanu Reeves', profile_path: null }, { mintUrl: true });
+        const role = instance.relatedCast.attach(new PerformanceRole({ actorUrl: keanu.requireUrl() }));
+
+        role.relatedActor.attach(keanu);
+        instance.relatedDirectors.attach(new Person({ name: 'Lana Wachowski' }));
+
+        expect(Movie.computed.credits.compute(instance)).toEqual({
+            directors: [{ tmdbId: null, name: 'Lana Wachowski' }],
+            cast: [{ tmdbId: 6384, name: 'Keanu Reeves' }],
+        });
     });
 });
