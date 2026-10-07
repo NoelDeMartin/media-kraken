@@ -34,6 +34,7 @@
 <script setup lang="ts" generic="T">
 import { computed, nextTick, onMounted, onUnmounted, ref, useTemplateRef, watch, type StyleValue } from 'vue';
 
+import { useGridAnimations } from '@/lib/composition/grids';
 import { fadeInGridItem, fadeOutGridItem, MEDIA_GRID_CLASSES, mediaGridStyle } from '@/lib/media-grid';
 
 const RENDERED_VIEWPORTS_BEYOND_EDGES = 1;
@@ -58,8 +59,7 @@ const rowGap = ref(0);
 const rowHeight = ref<null | number>(null);
 const viewportTop = ref(0);
 const viewportHeight = ref(0);
-const animatesMoves = ref(true);
-const animationsEnabled = computed(() => animatesMoves.value && animate);
+const { animationsEnabled, pauseAnimations } = useGridAnimations(() => animate);
 const getItemKey = computed(() => (typeof by === 'function' ? by : (item: T) => String(item[by])));
 const rowStride = computed(() => (rowHeight.value === null ? null : rowHeight.value + rowGap.value));
 const totalRows = computed(() => (columns.value ? Math.ceil(items.length / columns.value) : 0));
@@ -104,7 +104,6 @@ const gridStyle = computed<StyleValue>(() => {
 });
 
 let animatesItemsChange = false;
-let moveAnimationsFrame: number | null = null;
 let viewportUpdateFrame: number | null = null;
 let measuredItem: Element | null = null;
 const rulerObserver = new ResizeObserver(() => measureColumns());
@@ -144,7 +143,7 @@ function measureColumns() {
         return;
     }
 
-    pauseMoveAnimations();
+    pauseAnimations();
 
     columns.value = columnTracks.length;
     columnWidth.value = firstColumnWidth;
@@ -161,22 +160,9 @@ function measureRowHeight(itemEntry: ResizeObserverEntry) {
         return;
     }
 
-    pauseMoveAnimations();
+    pauseAnimations();
 
     rowHeight.value = height;
-}
-
-function pauseMoveAnimations() {
-    animatesMoves.value = false;
-
-    if (moveAnimationsFrame !== null) {
-        cancelAnimationFrame(moveAnimationsFrame);
-    }
-
-    moveAnimationsFrame = requestAnimationFrame(() => {
-        moveAnimationsFrame = null;
-        animatesMoves.value = true;
-    });
 }
 
 function observeFirstRenderedItem() {
@@ -254,10 +240,6 @@ watch(
 );
 
 watch(() => renderedItems.value[0]?.key, observeFirstRenderedItem, { flush: 'post' });
-watch(
-    () => animate,
-    () => pauseMoveAnimations(),
-);
 
 onMounted(() => {
     if (rulerRef.value) {
@@ -277,10 +259,6 @@ onUnmounted(() => {
 
     if (viewportUpdateFrame !== null) {
         cancelAnimationFrame(viewportUpdateFrame);
-    }
-
-    if (moveAnimationsFrame !== null) {
-        cancelAnimationFrame(moveAnimationsFrame);
     }
 });
 </script>

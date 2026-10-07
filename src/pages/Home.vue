@@ -17,7 +17,7 @@
                         <i-ph-arrow-right class="size-4" />
                     </Link>
                 </div>
-                <MediaGrid class="mt-4" item-width="14rem">
+                <MediaGrid class="mt-4" item-width="14rem" :animate="!loadingShows">
                     <ShowWatchingCard v-for="show of upcomingShows" :key="show.url" :show />
                 </MediaGrid>
             </template>
@@ -32,7 +32,11 @@
                         <i-ph-arrow-right class="size-4" />
                     </Link>
                 </div>
-                <MediaGrid class="mt-4" :leave-target="$ui.mobile ? undefined : '#my-collection-menu'">
+                <MediaGrid
+                    class="mt-4"
+                    :leave-target="$ui.mobile ? undefined : '#my-collection-menu'"
+                    :animate="!loadingMovies"
+                >
                     <MovieCard v-for="movie of pendingMovies" :key="movie.url" :movie />
                 </MediaGrid>
                 <div
@@ -84,7 +88,7 @@ const pendingMovies = computedModels(
 
         return sample;
     },
-    { persist: 'pendingMovies' },
+    { cache: 'pendingMovies' },
 );
 const upcomingShows = computedModels(
     Show,
@@ -92,7 +96,7 @@ const upcomingShows = computedModels(
         activeShows.value.filter((show) =>
             show.pendingEpisodes.value?.some(({ publishedAt }) => Episode.isUpcoming(publishedAt)),
         ),
-    { watch: ['pendingEpisodes'], persist: 'upcomingShows' },
+    { watch: ['pendingEpisodes'], cache: 'upcomingShows' },
 );
 const isEmpty = computed(() => upcomingShows.value.length === 0 && pendingMovies.value.length === 0);
 const moreMovies = translate('home.moreMovies', { link: `%LINK_PLACEHOLDER%` });
