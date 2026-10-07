@@ -20,7 +20,7 @@
                 <div
                     data-virtual-grid-item
                     class="pointer-events-auto"
-                    :class="{ 'transition-transform duration-300 ease-out': animatesMoves }"
+                    :class="{ 'transition-transform duration-300 ease-out': animationsEnabled }"
                     :style="getItemStyle(entry.index)"
                 >
                     <slot :item="entry.item" />
@@ -38,10 +38,15 @@ import { fadeInGridItem, fadeOutGridItem, MEDIA_GRID_CLASSES, mediaGridStyle } f
 
 const RENDERED_VIEWPORTS_BEYOND_EDGES = 1;
 
-const { items, by } = defineProps<{
+const {
+    items,
+    by,
+    animate = true,
+} = defineProps<{
     items: T[];
     by: keyof T | ((item: T) => string);
     itemWidth?: string;
+    animate?: boolean;
 }>();
 
 const rulerRef = useTemplateRef('ruler');
@@ -54,6 +59,7 @@ const rowHeight = ref<null | number>(null);
 const viewportTop = ref(0);
 const viewportHeight = ref(0);
 const animatesMoves = ref(true);
+const animationsEnabled = computed(() => animatesMoves.value && animate);
 const getItemKey = computed(() => (typeof by === 'function' ? by : (item: T) => String(item[by])));
 const rowStride = computed(() => (rowHeight.value === null ? null : rowHeight.value + rowGap.value));
 const totalRows = computed(() => (columns.value ? Math.ceil(items.length / columns.value) : 0));
@@ -215,7 +221,7 @@ function scheduleViewportUpdate() {
 }
 
 function fadeIn(element: Element, done: () => void) {
-    if (!animatesItemsChange) {
+    if (!animatesItemsChange || !animate) {
         done();
 
         return;
@@ -225,7 +231,7 @@ function fadeIn(element: Element, done: () => void) {
 }
 
 function fadeOut(element: Element, done: () => void) {
-    if (!animatesItemsChange) {
+    if (!animatesItemsChange || !animate) {
         done();
 
         return;
@@ -248,6 +254,10 @@ watch(
 );
 
 watch(() => renderedItems.value[0]?.key, observeFirstRenderedItem, { flush: 'post' });
+watch(
+    () => animate,
+    () => pauseMoveAnimations(),
+);
 
 onMounted(() => {
     if (rulerRef.value) {

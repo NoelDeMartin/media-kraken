@@ -73,7 +73,13 @@
         <div v-if="loading && allMovies.length === 0" class="flex items-center justify-center py-16">
             <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-8 w-full" />
         </div>
-        <VirtualMediaGrid v-else-if="display === 'grid'" by="url" class="mt-2" :items="sortedMovies">
+        <VirtualMediaGrid
+            v-else-if="display === 'grid'"
+            by="url"
+            class="mt-2"
+            :items="sortedMovies"
+            :animate="!loading"
+        >
             <template #default="{ item: movie }">
                 <MovieCard :movie />
             </template>
