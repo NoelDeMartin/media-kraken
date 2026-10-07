@@ -8,6 +8,7 @@ app:
         movies: 'My Movies'
         shows: 'My Shows'
         lists: 'My Lists'
+        stats: 'My Stats'
     search:
         label: 'Search movies and shows'
         placeholder: 'Search movies and shows...'
@@ -151,6 +152,43 @@ media:
 
 lists:
     title: 'Lists'
+
+stats:
+    title: 'Stats'
+    loading: 'Loading...'
+    empty: 'Nothing to show yet'
+    tiles:
+        watched: 'Movies watched'
+        watchTime: 'Time watching movies'
+        averageRuntime: 'Average runtime'
+        episodes: 'Episodes watched'
+    movies: 'Movies'
+    moviesTotal: 'Movies'
+    watched: 'Watched'
+    pending: 'Pending'
+    shows: 'Shows'
+    showsTotal: 'Shows'
+    showStatuses:
+        watching: 'Watching'
+        completed: 'Completed'
+        dropped: 'Dropped'
+        pending: 'Pending'
+    watchedByYear: 'Movies watched by year'
+    episodesWatchedByYear: 'Episodes watched by year'
+    loadingEpisodes: 'Loading episodes ({loaded} of {total} shows)...'
+    episodesWithoutDate: '{count} watched episodes without a date are not included.'
+    releaseDecades: 'Watched movies by release decade'
+    topGenres: 'Top genres'
+    topCountries: 'Top countries'
+    topDirectors: 'Top directors'
+    topActors: 'Top actors'
+    topLanguages: 'Top languages'
+    records:
+        title: 'Records'
+        oldest: 'Oldest movie watched'
+        newest: 'Newest movie watched'
+        longest: 'Longest movie watched'
+        shortest: 'Shortest movie watched'
 
 discover:
     title: 'Discover'

@@ -11,6 +11,7 @@ import MoviesIndex from './movies/Index.vue';
 import MoviesShow from './movies/Show.vue';
 import ShowsIndex from './shows/Index.vue';
 import ShowsShow from './shows/Show.vue';
+import StatsIndex from './stats/Index.vue';
 
 export const bindings = defineRouteBindings({
     movie: Movie,
@@ -48,6 +49,12 @@ export default defineRoutes([
         path: '/lists',
         component: ListsIndex,
         title: () => translate('lists.title'),
+    },
+    {
+        name: 'stats.index',
+        path: '/stats',
+        component: StatsIndex,
+        title: () => translate('stats.title'),
     },
     {
         name: 'discover',

@@ -1,11 +1,12 @@
 import { computedModelAttribute } from '@aerogel/plugin-solid';
 import { arraySorted } from '@noeldemartin/utils';
-import type { ComputedRef } from 'vue';
-import { computed } from 'vue';
+import type { ComputedAttribute } from 'soukai-bis';
+import type { ComputedRef, Ref } from 'vue';
+import { computed, onScopeDispose, shallowRef, watch } from 'vue';
 
 import Episode from '@/models/Episode';
 import type Show from '@/models/Show';
-import type { PendingEpisode } from '@/models/Show';
+import type { PendingEpisode, WatchedEpisodesByMonth } from '@/models/Show';
 
 export function useUpcomingEpisodes(
     show: Show,
@@ -21,4 +22,58 @@ export function useUpcomingEpisodes(
     }
 
     return upcomingEpisodes;
+}
+
+export function useWatchedEpisodesByMonth(shows: Ref<Show[]>): Readonly<Ref<Map<string, WatchedEpisodesByMonth>>> {
+    const values = shallowRef(new Map<string, WatchedEpisodesByMonth>());
+    const subscriptions = new Map<ComputedAttribute<WatchedEpisodesByMonth>, () => void>();
+
+    watch(
+        shows,
+        (currentShows) => {
+            const attributes = new Map(
+                currentShows.map((show) => [
+                    show.getComputedAttribute('watchedEpisodesByMonth') as ComputedAttribute<WatchedEpisodesByMonth>,
+                    show.requireUrl(),
+                ]),
+            );
+
+            for (const [attribute, unsubscribe] of subscriptions) {
+                if (attributes.has(attribute)) {
+                    continue;
+                }
+
+                unsubscribe();
+                subscriptions.delete(attribute);
+            }
+
+            for (const [attribute, url] of attributes) {
+                if (subscriptions.has(attribute)) {
+                    continue;
+                }
+
+                subscriptions.set(
+                    attribute,
+                    attribute.subscribe((value) => {
+                        if (!value) {
+                            return;
+                        }
+
+                        values.value = new Map(values.value).set(url, value);
+                    }),
+                );
+            }
+
+            const urls = new Set(attributes.values());
+
+            if (Array.from(values.value.keys()).some((url) => !urls.has(url))) {
+                values.value = new Map(Array.from(values.value).filter(([url]) => urls.has(url)));
+            }
+        },
+        { immediate: true },
+    );
+
+    onScopeDispose(() => subscriptions.forEach((unsubscribe) => unsubscribe()));
+
+    return values;
 }

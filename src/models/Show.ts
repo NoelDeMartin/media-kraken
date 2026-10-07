@@ -23,6 +23,13 @@ export type PendingEpisode = {
     publishedAt: Date;
 };
 
+// Watched episode counts indexed by "YYYY-MM", or "unknown" for episodes without a watch date.
+export type WatchedEpisodesByMonth = Record<string, number>;
+
+function watchedMonth(date: Date): string {
+    return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}`;
+}
+
 export default class Show extends Model {
     public static cloud = { depth: 1 };
 
@@ -46,6 +53,31 @@ export default class Show extends Model {
                     );
             },
         },
+        watchedEpisodesByMonth: {
+            invalidationStrategy: InvalidationStrategies.CONTAINER,
+            // oxlint-disable-next-line typescript/explicit-module-boundary-types -- The computed type is inferred from it
+            compute(show: Show) {
+                const counts: WatchedEpisodesByMonth = {};
+
+                for (const season of loaded(show, 'seasons')) {
+                    for (const episode of loaded(season, 'episodes')) {
+                        const watched = loaded(episode, 'watched');
+
+                        if (!watched) {
+                            continue;
+                        }
+
+                        // Relations are discovered running this function with proxies, so we can't stringify
+                        // anything until we know that it's a real date.
+                        const month = watched.date instanceof Date ? watchedMonth(watched.date) : 'unknown';
+
+                        counts[month] = (counts[month] ?? 0) + 1;
+                    }
+                }
+
+                return counts;
+            },
+        },
     };
 
     public static documentUrlFromSlug(slug: string, options: UrlFromSlugOptions = {}): string {
@@ -53,6 +85,7 @@ export default class Show extends Model {
     }
 
     declare public readonly pendingEpisodes: ComputedAttribute<PendingEpisode[]>;
+    declare public readonly watchedEpisodesByMonth: ComputedAttribute<WatchedEpisodesByMonth>;
     declare public readonly watching?: ShowWatching;
     declare public readonly relatedWatching: HasOneRelation<this, ShowWatching, typeof ShowWatching>;
     declare public readonly seasons?: Season[];
