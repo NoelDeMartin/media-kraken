@@ -90,7 +90,7 @@
 <script setup lang="ts">
 import { translate, UI, useLoading } from '@aerogel/core';
 import { Router } from '@aerogel/plugin-routing';
-import { arrayFilter, isTruthy } from '@noeldemartin/utils';
+import { arrayFilter } from '@noeldemartin/utils';
 import { computed, onMounted } from 'vue';
 import IconCheck from '~icons/material-symbols/check';
 import IconClock from '~icons/mdi/clock-outline';
@@ -100,12 +100,13 @@ import IconIdentify from '~icons/ph/list-magnifying-glass';
 import IconDelete from '~icons/ph/trash';
 
 import IdentifyMediaModal from '@/components/modals/IdentifyMediaModal.vue';
-import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
+import { formatDuration } from '@/lib/formatting';
+import { formatCountries, formatGenres, formatLanguages } from '@/lib/media';
 import Movie from '@/models/Movie';
 import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';
 import Catalog from '@/services/Catalog';
-import TMDB, { type TMDBMovie, type TMDBShow } from '@/services/TMDB';
+import type { TMDBMovie, TMDBShow } from '@/services/TMDB';
 
 const { movie } = defineProps<{ movie: Movie }>();
 const { loading: syncing, run: runSync } = useLoading();
@@ -144,6 +145,27 @@ const menuOptions = computed(() =>
         },
     ]),
 );
+
+const cast = computed(() =>
+    (movie.cast ?? []).filter((role): role is PerformanceRole & { actor: Person } => !!role.actor),
+);
+
+const details = computed(() => {
+    return [
+        {
+            label: translate('movies.details.genres'),
+            value: formatGenres(movie.genreIds),
+        },
+        {
+            label: translate('movies.details.countries'),
+            value: formatCountries(movie.countryCodes),
+        },
+        {
+            label: translate('movies.details.languages'),
+            value: formatLanguages(movie.languages),
+        },
+    ].filter((detail) => detail.value);
+});
 
 async function identify() {
     const { media } = await UI.modal(IdentifyMediaModal, { initialQuery: movie.title });
@@ -188,7 +210,7 @@ async function deleteMovie() {
         return;
     }
 
-    await runSync(movie.delete());
+    await runSync(movie.deleteWithRelations());
     await Router.push('/movies');
 
     UI.toast(translate('movies.delete.success', { movie: movie.title }));
@@ -222,32 +244,9 @@ async function identifyAsShow(tmdbShow: TMDBShow) {
         });
 
         await Router.push(show.route);
-        await movie.delete();
+        await movie.deleteWithRelations();
     });
 }
-
-const cast = computed(() =>
-    (movie.cast ?? []).filter((role): role is PerformanceRole & { actor: Person } => !!role.actor),
-);
-const details = computed(() => {
-    return [
-        {
-            label: translate('movies.details.genres'),
-            value: movie.genreIds
-                .map((id) => TMDB.translateGenre(id))
-                .filter(isTruthy)
-                .join(', '),
-        },
-        {
-            label: translate('movies.details.countries'),
-            value: movie.countryCodes.map((code) => formatCountry(code)).join(', '),
-        },
-        {
-            label: translate('movies.details.languages'),
-            value: movie.languages.map((language) => formatLanguage(language)).join(', '),
-        },
-    ].filter((detail) => detail.value);
-});
 
 onMounted(() => movie.loadAllRelationsIfUnloaded());
 </script>

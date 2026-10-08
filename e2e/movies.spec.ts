@@ -71,3 +71,13 @@ test('Identifies a movie', async ({ page }) => {
     await press(page, 'Identify with The Matrix');
     await see(page, 'The Matrix (1999)');
 });
+
+test('Deletes movies', async ({ page }) => {
+    await createModel(page, 'Movie', { title: 'Inception' });
+    await press(page, 'Inception');
+    await press(page, 'Open actions menu');
+    await press(page, 'Delete');
+    await press(page, 'Delete', { role: 'button' });
+    await see(page, 'Inception has been deleted.');
+    await see(page, 'Movies (0)');
+});

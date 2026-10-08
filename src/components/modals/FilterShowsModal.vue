@@ -1,77 +1,75 @@
 <template>
-    <Modal :title="$t('movies.advancedFilters.title')">
+    <Modal :title="$t('shows.advancedFilters.title')">
         <div v-if="!creditsReady" class="py-12">
             <i-svg-spinners-3-dots-scale-middle class="text-primary h-8 w-full" />
         </div>
         <Form v-else :form @submit="submit">
             <div class="space-y-4">
                 <Select
-                    name="watchStatus"
-                    :label="$t('movies.advancedFilters.watchStatus')"
+                    name="watchingStatus"
+                    :label="$t('shows.advancedFilters.watchingStatus')"
                     :options="statusOptions"
                     :render-option="renderStatus"
                 />
                 <Combobox
                     name="genres"
-                    :label="$t('movies.advancedFilters.genre')"
-                    :placeholder="$t('movies.advancedFilters.allGenres')"
+                    :label="$t('shows.advancedFilters.genre')"
+                    :placeholder="$t('shows.advancedFilters.allGenres')"
                     :options="genreOptions"
                     :render-option="renderGenre"
                 />
                 <Combobox
-                    name="directors"
-                    :label="$t('movies.advancedFilters.director')"
-                    :placeholder="$t('movies.advancedFilters.allDirectors')"
-                    :options="directorOptions"
+                    name="creators"
+                    :label="$t('shows.advancedFilters.creator')"
+                    :placeholder="$t('shows.advancedFilters.allCreators')"
+                    :options="creatorOptions"
                     :render-option="renderPerson"
                 />
                 <Combobox
                     name="cast"
-                    :label="$t('movies.advancedFilters.cast')"
-                    :placeholder="$t('movies.advancedFilters.allCast')"
+                    :label="$t('shows.advancedFilters.cast')"
+                    :placeholder="$t('shows.advancedFilters.allCast')"
                     :options="castOptions"
                     :render-option="renderPerson"
                 />
                 <Combobox
                     name="countries"
-                    :label="$t('movies.advancedFilters.country')"
-                    :placeholder="$t('movies.advancedFilters.allCountries')"
+                    :label="$t('shows.advancedFilters.country')"
+                    :placeholder="$t('shows.advancedFilters.allCountries')"
                     :options="countryOptions"
                     :render-option="formatCountry"
                 />
                 <Combobox
                     name="languages"
-                    :label="$t('movies.advancedFilters.language')"
-                    :placeholder="$t('movies.advancedFilters.allLanguages')"
+                    :label="$t('shows.advancedFilters.language')"
+                    :placeholder="$t('shows.advancedFilters.allLanguages')"
                     :options="languageOptions"
                     :render-option="formatLanguage"
                 />
                 <RangeSlider
                     name="releaseYear"
-                    :label="$t('movies.advancedFilters.releaseYear')"
+                    :label="$t('shows.advancedFilters.releaseYear')"
                     :min="yearBounds[0]"
                     :max="yearBounds[1]"
                 />
                 <RangeSlider
-                    name="duration"
-                    :label="$t('movies.advancedFilters.duration')"
-                    :min="durationBounds[0]"
-                    :max="durationBounds[1]"
-                    :step="DURATION_STEP"
-                    :format-value="(minutes) => formatDuration({ minutes })"
+                    name="seasons"
+                    :label="$t('shows.advancedFilters.seasons')"
+                    :min="seasonsBounds[0]"
+                    :max="seasonsBounds[1]"
                 />
             </div>
 
             <div class="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 pt-4">
                 <Button type="button" variant="ghost" class="text-gray-600" @click="form.reset()">
-                    {{ $t('movies.advancedFilters.clear') }}
+                    {{ $t('shows.advancedFilters.clear') }}
                 </Button>
                 <div class="flex items-center gap-2">
                     <Button type="button" variant="secondary" @click="close()">
                         {{ $t('ui.cancel') }}
                     </Button>
                     <Button submit>
-                        {{ $t('movies.advancedFilters.apply') }}
+                        {{ $t('shows.advancedFilters.apply') }}
                     </Button>
                 </div>
             </div>
@@ -81,76 +79,78 @@
 
 <script setup lang="ts">
 import { numberRange, translate, useForm, useModal } from '@aerogel/core';
-import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
+import { isTruthy, type Nullable } from '@noeldemartin/utils';
 import { computed, onMounted, ref } from 'vue';
 import { z } from 'zod';
 
-import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
+import { formatCountry, formatLanguage } from '@/lib/formatting';
 import { personFilterKey, sortByLocale, uniquePersonKeys } from '@/lib/media';
-import type { MoviesFilter } from '@/lib/movies';
-import type Movie from '@/models/Movie';
+import type { ShowsFilter } from '@/lib/shows';
+import type Show from '@/models/Show';
+import type { ShowWatchingStatus } from '@/models/ShowWatching';
 import TMDB from '@/services/TMDB';
 
-type Result = { filters: MoviesFilter };
+type Result = { filters: ShowsFilter };
 
-const DURATION_STEP = 5;
-
-const { filters, movies } = defineProps<{
-    movies: Movie[];
-    filters: Nullable<MoviesFilter>;
+const { filters, shows } = defineProps<{
+    shows: Show[];
+    filters: Nullable<ShowsFilter>;
 }>();
 
 defineEmits<{ close: [Result] }>();
 
 const { close } = useModal<Result>();
-const initialMoviesWithoutCredits = movies.filter((movie) => !movie.credits.value);
-const creditsReady = ref(initialMoviesWithoutCredits.length === 0);
-const statusOptions = ['all', 'watched', 'unwatched'] as const;
+const initialShowsWithoutCredits = shows.filter((show) => !show.credits.value);
+const creditsReady = ref(initialShowsWithoutCredits.length === 0);
+const statusOptions = ['all', 'watching', 'completed', 'dropped', 'pending'] as const satisfies (
+    | 'all'
+    | ShowWatchingStatus
+)[];
 const form = useForm({
-    watchStatus: z.enum(statusOptions).default('all'),
+    watchingStatus: z.enum(statusOptions).default('all'),
     genres: z.array(z.number()).default([]),
-    directors: z.array(z.string()).default([]),
+    creators: z.array(z.string()).default([]),
     cast: z.array(z.string()).default([]),
     countries: z.array(z.string()).default([]),
     languages: z.array(z.string()).default([]),
     releaseYear: numberRange(),
-    duration: numberRange(),
+    seasons: numberRange(),
 });
 
 if (filters) {
-    form.watchStatus = isNullable(filters.watched) ? 'all' : filters.watched ? 'watched' : 'unwatched';
+    form.watchingStatus = filters.watchingStatus ?? 'all';
     form.genres = filters.genres ?? [];
-    form.directors = filters.directors ?? [];
+    form.creators = filters.creators ?? [];
     form.cast = filters.cast ?? [];
     form.countries = filters.countries ?? [];
     form.languages = filters.languages ?? [];
     form.releaseYear = filters.releaseYear ?? [null, null];
-    form.duration = filters.duration ?? [null, null];
+    form.seasons = filters.seasons ?? [null, null];
 }
 
-const directors = computed(() => movies.flatMap((movie) => movie.credits.value?.directors ?? []));
-const actors = computed(() => movies.flatMap((movie) => movie.credits.value?.cast ?? []));
-const directorOptions = computed(() => sortByLocale(uniquePersonKeys(directors.value), renderPerson));
+const creators = computed(() => shows.flatMap((show) => show.credits.value?.creators ?? []));
+const actors = computed(() => shows.flatMap((show) => show.credits.value?.cast ?? []));
+const creatorOptions = computed(() => sortByLocale(uniquePersonKeys(creators.value), renderPerson));
 const castOptions = computed(() => sortByLocale(uniquePersonKeys(actors.value), renderPerson));
 
 const genreOptions = computed(() => {
-    const movieGenreIds = new Set(movies.flatMap((movie) => movie.genreIds));
+    const showGenreIds = new Set(shows.flatMap((show) => show.genreIds));
 
-    return sortByLocale(Array.from(movieGenreIds), renderGenre);
+    return sortByLocale(Array.from(showGenreIds), renderGenre);
 });
 
 const countryOptions = computed(() => {
-    return sortByLocale(Array.from(new Set(movies.flatMap((movie) => movie.countryCodes))), formatCountry);
+    return sortByLocale(Array.from(new Set(shows.flatMap((show) => show.countryCodes))), formatCountry);
 });
 
 const languageOptions = computed(() => {
-    return sortByLocale(Array.from(new Set(movies.flatMap((movie) => movie.languages))), formatLanguage);
+    return sortByLocale(Array.from(new Set(shows.flatMap((show) => show.languages))), formatLanguage);
 });
 
 const personNames = computed(() => {
     const names = new Map<string, string>();
 
-    for (const person of [...directors.value, ...actors.value]) {
+    for (const person of [...creators.value, ...actors.value]) {
         const key = personFilterKey(person);
 
         if (key && !names.has(key)) {
@@ -162,7 +162,7 @@ const personNames = computed(() => {
 });
 
 const yearBounds = computed(() => {
-    const years = movies.map((movie) => movie.releaseYear).filter(isTruthy);
+    const years = shows.map((show) => show.releaseYear).filter(isTruthy);
     const currentYear = new Date().getFullYear();
     const min = years.length > 0 ? Math.min(...years) : 1900;
     const max = years.length > 0 ? Math.max(...years) : currentYear;
@@ -170,11 +170,11 @@ const yearBounds = computed(() => {
     return [min, Math.max(max, min + 1)] as const;
 });
 
-const durationBounds = computed(() => {
-    const durations = movies.map((movie) => movie.runtimeMinutes).filter(isTruthy);
-    const max = durations.length > 0 ? Math.max(...durations) : 300;
+const seasonsBounds = computed(() => {
+    const seasons = shows.map((show) => show.numberOfSeasons).filter(isTruthy);
+    const max = seasons.length > 0 ? Math.max(...seasons) : 10;
 
-    return [0, Math.max(Math.ceil(max / DURATION_STEP) * DURATION_STEP, DURATION_STEP)] as const;
+    return [1, Math.max(max, 2)] as const;
 });
 
 function renderPerson(key: string): string {
@@ -186,28 +186,24 @@ function renderGenre(genre: number): string {
 }
 
 function renderStatus(status: (typeof statusOptions)[number]): string {
-    if (status === 'watched') {
-        return translate('movies.watched');
+    if (status === 'all') {
+        return translate('shows.advancedFilters.allStatuses');
     }
 
-    if (status === 'unwatched') {
-        return translate('movies.watchLater');
-    }
-
-    return translate('movies.advancedFilters.allStatuses');
+    return translate(`shows.statuses.${status}`);
 }
 
 function submit() {
     close({
         filters: {
-            watched: form.watchStatus === 'all' ? null : form.watchStatus === 'watched',
+            watchingStatus: form.watchingStatus === 'all' ? null : form.watchingStatus,
             genres: form.genres.length > 0 ? form.genres : null,
-            directors: form.directors.length > 0 ? form.directors : null,
+            creators: form.creators.length > 0 ? form.creators : null,
             cast: form.cast.length > 0 ? form.cast : null,
             countries: form.countries.length > 0 ? form.countries : null,
             languages: form.languages.length > 0 ? form.languages : null,
             releaseYear: form.releaseYear[0] === null && form.releaseYear[1] === null ? null : form.releaseYear,
-            duration: form.duration[0] === null && form.duration[1] === null ? null : form.duration,
+            seasons: form.seasons[0] === null && form.seasons[1] === null ? null : form.seasons,
         },
     });
 }
@@ -218,7 +214,7 @@ onMounted(async () => {
     }
 
     try {
-        await Promise.all(initialMoviesWithoutCredits.map((movie) => movie.credits.updateValue()));
+        await Promise.all(initialShowsWithoutCredits.map((show) => show.credits.updateValue()));
     } finally {
         creditsReady.value = true;
     }

@@ -11,6 +11,10 @@ function handleRequest(url: URL) {
         return fixture('/genre/movie/list.json');
     }
 
+    if (url.pathname === '/3/genre/tv/list') {
+        return fixture('/genre/tv/list.json');
+    }
+
     const findMatch = url.pathname.match(/^\/3\/find\/([^/]+)$/);
 
     if (findMatch) {

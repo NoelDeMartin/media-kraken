@@ -1,7 +1,7 @@
 import type { RangeSliderValue } from '@aerogel/core';
-import { isNullable, isTruthy, stringToSlug, type Nullable } from '@noeldemartin/utils';
+import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
 
-import type { MovieCredit } from '@/models/Movie';
+import { matchesAny, matchesRange, personFilterKey, toSearchText } from '@/lib/media';
 import type Movie from '@/models/Movie';
 
 export type MoviesFilter = {
@@ -16,20 +16,6 @@ export type MoviesFilter = {
 };
 
 export type MovieSearchEntry = ReturnType<typeof createMovieSearchEntry>;
-
-function matchesAny<T>(selected: T[], values: T[]): boolean {
-    return values.some((value) => !isNullable(value) && selected.includes(value));
-}
-
-function matchesRange(range: RangeSliderValue, value: number | null): boolean {
-    const [min, max] = range;
-
-    if (value === null) {
-        return false;
-    }
-
-    return (isNullable(min) || value >= min) && (isNullable(max) || value <= max);
-}
 
 export function hasActiveMovieFilters(filters: Nullable<MoviesFilter>): boolean {
     if (!filters) {
@@ -48,23 +34,11 @@ export function hasActiveMovieFilters(filters: Nullable<MoviesFilter>): boolean 
     );
 }
 
-export function personFilterKey(person: MovieCredit): string | null {
-    if (person.tmdbId) {
-        return `tmdb-${person.tmdbId}`;
-    }
-
-    return stringToSlug(person.name) || null;
-}
-
-export function toMovieSearchText(text: string): string {
-    return stringToSlug(text).replaceAll('-', '');
-}
-
 // oxlint-disable-next-line typescript/explicit-module-boundary-types
 export function createMovieSearchEntry(movie: Movie) {
     return {
         movie,
-        searchText: toMovieSearchText(movie.getSlug() ?? ''),
+        searchText: toSearchText(movie.getSlug() ?? ''),
         genreIds: movie.genreIds,
         countryCodes: movie.countryCodes,
         languages: movie.languages,

@@ -1,4 +1,4 @@
-import { arraySorted, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
+import { arrayFilter, arraySorted, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
 import { InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
 import type { BelongsToManyRelation, ComputedAttribute, HasManyRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
@@ -7,25 +7,20 @@ import { countryCodeFromUrl } from '@/lib/countries';
 import { findExternalId } from '@/lib/domains';
 import { isoDurationToMinutes } from '@/lib/durations';
 import { parseImdbId } from '@/lib/imdb';
-import { parseTmdbId, tmdbMovieUrl, tmdbPosterUrl } from '@/lib/tmdb';
+import { parseTmdbId, TMDB_GENRE_URL_PREFIX, tmdbMovieUrl, tmdbPosterUrl } from '@/lib/tmdb';
 import type { TMDBImageSize } from '@/lib/tmdb';
 import type { TMDBMovie } from '@/services/TMDB';
 
 import Model from './Movie.schema';
 import type PerformanceRole from './PerformanceRole';
 import type Person from './Person';
+import type { PersonCredit } from './Person';
 import type WatchAction from './WatchAction';
 
-export type MovieCredit = Pick<Person, 'tmdbId' | 'name'>;
-
 export type MovieCredits = {
-    directors: MovieCredit[];
-    cast: MovieCredit[];
+    directors: PersonCredit[];
+    cast: PersonCredit[];
 };
-
-function movieCredit(person: Person): MovieCredit {
-    return { tmdbId: person.tmdbId, name: person.name };
-}
 
 export default class Movie extends Model {
     public static cloud = true;
@@ -35,11 +30,11 @@ export default class Movie extends Model {
             invalidationStrategy: InvalidationStrategies.DOCUMENT,
             compute(movie: Movie): MovieCredits {
                 return {
-                    directors: loaded(movie, 'directors').map(movieCredit),
+                    directors: loaded(movie, 'directors').map((director) => director.credit),
                     cast: loaded(movie, 'cast')
                         .map((role) => loaded(role, 'actor'))
                         .filter(isTruthy)
-                        .map(movieCredit),
+                        .map((actor) => actor.credit),
                 };
             },
         },
@@ -86,9 +81,7 @@ export default class Movie extends Model {
     }
 
     public get genreIds(): number[] {
-        return this.genreUrls
-            .map((url) => findExternalId('https://www.themoviedb.org/genre/', [url], parseTmdbId))
-            .filter(isTruthy);
+        return this.genreUrls.map((url) => findExternalId(TMDB_GENRE_URL_PREFIX, [url], parseTmdbId)).filter(isTruthy);
     }
 
     public get runtimeMinutes(): number | null {
@@ -153,5 +146,21 @@ export default class Movie extends Model {
         await this.loadRelationIfUnloaded('watchActions');
         await this.loadRelationIfUnloaded('cast');
         await this.loadRelationIfUnloaded('directors');
+    }
+
+    public async deleteWithRelations(): Promise<void> {
+        await this.loadAllRelationsIfUnloaded();
+
+        const documentModels = arrayFilter([
+            ...(this.cast ?? []).flatMap((role) => [role.actor, role]),
+            ...(this.directors ?? []),
+            ...(this.watchActions ?? []),
+        ]);
+
+        for (const model of documentModels) {
+            await model.delete();
+        }
+
+        await this.delete();
     }
 }

@@ -32,24 +32,20 @@
 
 <script setup lang="ts">
 import { useDataTable } from '@aerogel/core';
-import { isTruthy } from '@noeldemartin/utils';
 import { computed } from 'vue';
 
-import { formatCountry, formatDate, formatDuration, formatLanguage } from '@/lib/formatting';
+import { formatDate, formatDuration } from '@/lib/formatting';
+import { formatCountries, formatGenres, formatLanguages } from '@/lib/media';
 import Movie from '@/models/Movie';
-import TMDB from '@/services/TMDB';
 
 const { movies } = defineProps<{ movies: Movie[] }>();
 const renderedMovies = computed(() =>
     movies.map((movie) => ({
         ...movie.getAttributes(),
         route: movie.route,
-        genres: movie.genreIds
-            .map((id) => TMDB.translateGenre(id))
-            .filter(isTruthy)
-            .join(', '),
-        countries: movie.countryCodes.map((code) => formatCountry(code)).join(', '),
-        languages: movie.languages.map((language) => formatLanguage(language)).join(', '),
+        genres: formatGenres(movie.genreIds),
+        countries: formatCountries(movie.countryCodes),
+        languages: formatLanguages(movie.languages),
         runtimeMinutes: movie.runtimeMinutes,
         releaseYear: movie.releaseYear,
         watchedAt: movie.watchedAt,

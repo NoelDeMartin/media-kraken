@@ -4,6 +4,8 @@ import type { TMDBPerson } from '@/services/TMDB';
 
 import Model from './Person.schema';
 
+export type PersonCredit = Pick<Person, 'tmdbId' | 'name'>;
+
 const TMDB_PERSON_URL_PREFIX = 'https://www.themoviedb.org/person/';
 
 export default class Person extends Model {
@@ -27,5 +29,9 @@ export default class Person extends Model {
 
     public get tmdbId(): number | null {
         return findExternalId(TMDB_PERSON_URL_PREFIX, this.externalUrls, parseTmdbId);
+    }
+
+    public get credit(): PersonCredit {
+        return { tmdbId: this.tmdbId, name: this.name };
     }
 }

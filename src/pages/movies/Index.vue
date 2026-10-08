@@ -107,12 +107,12 @@ import IconUpload from '~icons/mdi/upload';
 import FilterMoviesModal from '@/components/modals/FilterMoviesModal.vue';
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 import SynchronizeMedia from '@/jobs/SynchronizeMedia';
+import { toSearchText } from '@/lib/media';
 import {
     createMovieSearchEntry,
     hasActiveMovieFilters,
     movieMatchesFilters,
     movieMatchesQuery,
-    toMovieSearchText,
     type MoviesFilter,
 } from '@/lib/movies';
 import Movie from '@/models/Movie';
@@ -129,7 +129,7 @@ const filteredMovies = computed(() => {
         return allMovies.value;
     }
 
-    const searchQuery = quickFilter.value && toMovieSearchText(quickFilter.value);
+    const searchQuery = quickFilter.value && toSearchText(quickFilter.value);
 
     return moviesSearchIndex.value
         .filter((entry) => movieMatchesQuery(entry, searchQuery) && movieMatchesFilters(entry, advancedFilters.value))

@@ -1,3 +1,5 @@
+export const TMDB_GENRE_URL_PREFIX = 'https://www.themoviedb.org/genre/';
+
 export const TMDB_IMAGE_SIZE_SHORTHANDS = {
     small: 'w92',
     medium: 'w185',
@@ -23,7 +25,7 @@ export function tmdbPersonUrl(id: number | string): string {
 }
 
 export function tmdbGenreUrl(id: number | string): string {
-    return `https://www.themoviedb.org/genre/${id}`;
+    return `${TMDB_GENRE_URL_PREFIX}${id}`;
 }
 
 export function tmdbPosterUrl(posterPath?: string | null, size: TMDBImageSize = 'large'): string | undefined {

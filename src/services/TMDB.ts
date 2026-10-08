@@ -1,5 +1,5 @@
-import { Lang, env } from '@aerogel/core';
-import { facade, objectFromEntries } from '@noeldemartin/utils';
+import { Cache, Events, Lang, env } from '@aerogel/core';
+import { facade, objectFromEntries, tap } from '@noeldemartin/utils';
 import { watch } from 'vue';
 import { z } from 'zod';
 
@@ -50,11 +50,9 @@ const TMDBCreditsSchema = z
     })
     .nullish();
 
-const TMDBMovieDetailsSchema = TMDBMovieSchema.extend({
-    imdb_id: z.string().nullable().optional(),
+const TMDBMediaDetailsSchema = z.object({
     genres: z.array(TMDBGenreSchema).default([]),
     credits: TMDBCreditsSchema,
-    runtime: z.number().nullable().optional(),
     origin_country: z.array(z.string()).default([]),
     production_countries: z
         .array(
@@ -70,6 +68,11 @@ const TMDBMovieDetailsSchema = TMDBMovieSchema.extend({
             }),
         )
         .default([]),
+});
+
+const TMDBMovieDetailsSchema = TMDBMovieSchema.extend(TMDBMediaDetailsSchema.shape).extend({
+    imdb_id: z.string().nullable().optional(),
+    runtime: z.number().nullable().optional(),
 });
 
 const TMDBShowSchema = z.object({
@@ -104,8 +107,20 @@ const TMDBEpisodeSchema = z.object({
     runtime: z.number().nullable(),
 });
 
-const TMDBShowDetailsSchema = TMDBShowSchema.extend({
+const TMDBShowDetailsSchema = TMDBShowSchema.extend(TMDBMediaDetailsSchema.shape).extend({
     seasons: z.array(TMDBSeasonSchema),
+    created_by: z
+        .array(
+            z.object({
+                id: z.number(),
+                name: z.string(),
+                profile_path: z.string().nullish(),
+            }),
+        )
+        .nullish()
+        .transform((val) => val ?? []),
+    number_of_seasons: z.number().nullish(),
+    number_of_episodes: z.number().nullish(),
 });
 
 const TMDBSeasonDetailsSchema = TMDBSeasonSchema.extend({ episodes: z.array(TMDBEpisodeSchema) });
@@ -148,6 +163,7 @@ export interface TMDBCastCredit extends TMDBPerson {
 }
 
 export type TMDBMovie = z.infer<typeof TMDBMovieSchema>;
+export type TMDBMediaDetails = z.infer<typeof TMDBMediaDetailsSchema>;
 export type TMDBMovieDetails = z.infer<typeof TMDBMovieDetailsSchema>;
 export type TMDBGenre = z.infer<typeof TMDBGenreSchema>;
 export type TMDBGenreList = z.infer<typeof TMDBGenreListSchema>;
@@ -162,10 +178,16 @@ export type TMDBMovieSearchResult = z.infer<typeof SearchMovieResultSchema>;
 export type TMDBShowSearchResult = z.infer<typeof SearchShowResultSchema>;
 export type TMDBSearchResult = TMDBMovieSearchResult | TMDBShowSearchResult;
 export type TMDBSeasonDetails = z.infer<typeof TMDBSeasonDetailsSchema>;
-export type TMDBMovieWithStaff = Omit<TMDBMovieDetails, 'credits'> & {
+export type TMDBMediaWithStaff<T extends TMDBMediaDetails = TMDBMediaDetails> = Omit<T, 'credits'> & {
     cast?: TMDBCastCredit[];
+};
+export type TMDBMovieWithStaff = TMDBMediaWithStaff<TMDBMovieDetails> & {
     directors?: TMDBPerson[];
 };
+export type TMDBShowWithStaff = Omit<TMDBMediaWithStaff<TMDBShowDetails>, 'created_by'> & {
+    creators?: TMDBPerson[];
+};
+export type TMDBCredits = z.infer<typeof TMDBCreditsSchema>;
 
 export class TMDBService extends Service {
     public translateGenre(id: number): string | null {
@@ -210,21 +232,7 @@ export class TMDBService extends Service {
 
         return {
             ...details,
-            cast:
-                credits?.cast
-                    .slice()
-                    .sort((a, b) => a.order - b.order)
-                    .slice(0, 6)
-                    .map(({ id, name, profile_path, character }) => ({
-                        id,
-                        name,
-                        profile_path,
-                        characters:
-                            character
-                                ?.split(' / ')
-                                .map((name) => name.trim())
-                                .filter((name) => name.length > 0) ?? [],
-                    })) ?? [],
+            cast: this.parseCast(credits),
             directors:
                 credits?.crew
                     .filter((crewMember) => crewMember.job === 'Director')
@@ -234,13 +242,16 @@ export class TMDBService extends Service {
 
     public async getShow(
         id: number,
-        options: { includeSeasons: boolean },
+        options: { includeSeasons: boolean; includeStaff?: boolean },
     ): Promise<{
-        details: TMDBShowDetails;
+        details: TMDBShowWithStaff;
         externalIds: TMDBShowExternalIds;
         seasons: { season: TMDBShowDetails['seasons'][number]; details: TMDBSeasonDetails }[];
     }> {
-        const [details, externalIds] = await Promise.all([this.getShowDetails(id), this.getShowExternalIds(id)]);
+        const [details, externalIds] = await Promise.all([
+            this.getShowDetails(id, { includeStaff: !!options.includeStaff }),
+            this.getShowExternalIds(id),
+        ]);
         const seasons = options.includeSeasons
             ? await Promise.all(
                   details.seasons.map(async (season) => ({
@@ -261,37 +272,99 @@ export class TMDBService extends Service {
         await this.watchGenres();
     }
 
-    private async getShowDetails(id: number): Promise<TMDBShowDetails> {
-        return this.request(TMDBShowDetailsSchema, `tv/${id}`);
+    private async getShowDetails(id: number, options: { includeStaff: boolean }): Promise<TMDBShowWithStaff> {
+        const {
+            credits,
+            created_by: creators,
+            ...details
+        } = await this.request(
+            TMDBShowDetailsSchema,
+            `tv/${id}`,
+            options.includeStaff ? { append_to_response: 'credits' } : {},
+        );
+
+        if (!options.includeStaff) {
+            return details;
+        }
+
+        return {
+            ...details,
+            cast: this.parseCast(credits),
+            creators: creators.map(({ id, name, profile_path }) => ({ id, name, profile_path })),
+        };
     }
 
     private async getSeasonDetails(showId: number, seasonNumber: number): Promise<TMDBSeasonDetails> {
         return this.request(TMDBSeasonDetailsSchema, `tv/${showId}/season/${seasonNumber}`);
     }
 
-    private async getMovieGenres(language: string): Promise<TMDBGenre[]> {
-        const { genres } = await this.request(TMDBGenreListSchema, 'genre/movie/list', { language });
+    private async getGenres(language: string): Promise<TMDBGenre[]> {
+        const [movieGenres, showGenres] = await Promise.all([
+            this.request(TMDBGenreListSchema, 'genre/movie/list', { language }),
+            this.request(TMDBGenreListSchema, 'genre/tv/list', { language }),
+        ]);
 
-        return genres;
+        return [...movieGenres.genres, ...showGenres.genres];
     }
 
     private async watchGenres(): Promise<void> {
         await Lang.booted;
+
+        Events.on('clear-cache', async () => {
+            this.genreTranslations = {};
+
+            await this.loadGenreTranslations(Lang.locale);
+        });
+
         watch(
             () => Lang.locale,
-            async () => {
-                if (!Lang.locale || Lang.locale in this.genreTranslations) {
-                    return;
-                }
-
-                const genres = await this.getMovieGenres(Lang.locale);
-
-                this.genreTranslations = {
-                    ...this.genreTranslations,
-                    [Lang.locale]: objectFromEntries(genres.map((genre) => [genre.id, genre.name])),
-                };
-            },
+            (value) => this.loadGenreTranslations(value),
             { immediate: true },
+        );
+    }
+
+    private async loadGenreTranslations(locale: string): Promise<void> {
+        if (!locale || locale in this.genreTranslations) {
+            return;
+        }
+
+        this.genreTranslations = {
+            ...this.genreTranslations,
+            [locale]: await this.getLocaleGenreTranslations(locale),
+        };
+    }
+
+    private async getLocaleGenreTranslations(locale: string): Promise<Record<number, string>> {
+        const cacheKey = `tmdb-genres-${locale}`;
+        const translations = await Cache.get<Record<number, string>>(cacheKey);
+
+        if (translations) {
+            return translations;
+        }
+
+        const genres = await this.getGenres(locale);
+
+        return tap(objectFromEntries(genres.map((genre) => [genre.id, genre.name])), async (value) => {
+            await Cache.set(cacheKey, value);
+        });
+    }
+
+    private parseCast(credits: TMDBCredits): TMDBCastCredit[] {
+        return (
+            credits?.cast
+                .slice()
+                .sort((a, b) => a.order - b.order)
+                .slice(0, 6)
+                .map(({ id, name, profile_path, character }) => ({
+                    id,
+                    name,
+                    profile_path,
+                    characters:
+                        character
+                            ?.split(' / ')
+                            .map((name) => name.trim())
+                            .filter((name) => name.length > 0) ?? [],
+                })) ?? []
         );
     }
 

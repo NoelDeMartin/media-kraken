@@ -13,5 +13,52 @@
             "episode_count": 7,
             "air_date": "2008-01-20"
         }
-    ]
+    ],
+    "genres": [
+        {
+            "id": 18,
+            "name": "Drama"
+        },
+        {
+            "id": 80,
+            "name": "Crime"
+        }
+    ],
+    "created_by": [
+        {
+            "id": 66633,
+            "name": "Vince Gilligan",
+            "profile_path": null
+        }
+    ],
+    "number_of_seasons": 1,
+    "number_of_episodes": 7,
+    "origin_country": ["US"],
+    "spoken_languages": [
+        {
+            "iso_639_1": "en"
+        },
+        {
+            "iso_639_1": "es"
+        }
+    ],
+    "credits": {
+        "cast": [
+            {
+                "id": 17419,
+                "name": "Bryan Cranston",
+                "character": "Walter White",
+                "order": 0,
+                "profile_path": null
+            },
+            {
+                "id": 84497,
+                "name": "Aaron Paul",
+                "character": "Jesse Pinkman",
+                "order": 1,
+                "profile_path": null
+            }
+        ],
+        "crew": []
+    }
 }

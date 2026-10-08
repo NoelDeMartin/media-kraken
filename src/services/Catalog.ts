@@ -6,12 +6,13 @@ import {
     facade,
     isTruthy,
     parseDate,
+    required,
     stringToSlug,
     uuid,
 } from '@noeldemartin/utils';
 import type { Nullable } from '@noeldemartin/utils';
 import { ComputedAttribute } from 'soukai-bis';
-import type { BelongsToManyRelation, GetModelInput } from 'soukai-bis';
+import type { BelongsToManyRelation, GetModelInput, Model, MultiModelRelation } from 'soukai-bis';
 
 import { countryUrlFromCode } from '@/lib/countries';
 import { mergeExternalUrls } from '@/lib/domains';
@@ -30,14 +31,15 @@ import type { ShowWatchingStatus } from '@/models/ShowWatching';
 import TMDB, {
     type TMDBCastCredit,
     type TMDBEpisode,
+    type TMDBMediaWithStaff,
     type TMDBMovie,
     type TMDBMovieWithStaff,
     type TMDBMovieSearchResult,
     type TMDBPerson,
     type TMDBSeason,
     type TMDBShow,
-    type TMDBShowDetails,
     type TMDBShowExternalIds,
+    type TMDBShowWithStaff,
 } from '@/services/TMDB';
 
 const WATCHING_STATUSES_WITHOUT_SEASONS = ['dropped', 'pending'] satisfies ShowWatchingStatus[];
@@ -59,6 +61,20 @@ export class CatalogService extends Service {
                 media.languages.length > 0 &&
                 media.externalUrls.length >= 2
             );
+        }
+
+        const hasMetadata =
+            media.startDate &&
+            typeof media._numberOfSeasons === 'number' &&
+            typeof media._numberOfEpisodes === 'number' &&
+            media.actorUrls.length > 0 &&
+            media.genreUrls.length > 0 &&
+            media.countryUrls.length > 0 &&
+            media.languages.length > 0 &&
+            media.externalUrls.length >= 2;
+
+        if (!hasMetadata) {
+            return true;
         }
 
         if (WATCHING_STATUSES_WITHOUT_SEASONS.includes(media.watchingStatus)) {
@@ -146,7 +162,7 @@ export class CatalogService extends Service {
         return this.newMovieFromTMDB(movie.id, { watchedAt: options.watchedAt });
     }
 
-    public async importMovieFromTMDB(tmdbMovie: TMDBMovie, options: { watched?: boolean } = {}): Promise<void> {
+    public async importMovieFromTMDB(tmdbMovie: TMDBMovie, options: { watched?: boolean } = {}): Promise<Movie> {
         const details = await TMDB.getMovie(tmdbMovie.id, { includeStaff: true });
         const movie = new Movie(this.getMovieAttributes(details));
 
@@ -159,6 +175,8 @@ export class CatalogService extends Service {
         }
 
         await movie.save();
+
+        return movie;
     }
 
     public async importShowFromTMDB(
@@ -167,10 +185,17 @@ export class CatalogService extends Service {
     ): Promise<Show> {
         const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id, {
             includeSeasons: !!options.watchingStatus && !this.ignoresSeasons(options.watchingStatus),
+            includeStaff: true,
         });
 
         const showAttributes = this.getShowAttributes(details, externalIds);
-        const show = await Show.create(showAttributes);
+        const show = new Show(showAttributes);
+
+        show.mintUrl();
+
+        this.attachStaff(show, details);
+
+        await show.save();
 
         ComputedAttribute.disableRefreshes();
         ComputedAttribute.disableLoadingRelations();
@@ -208,14 +233,6 @@ export class CatalogService extends Service {
             externalUrls.push(imdbUrl(details.imdb_id));
         }
 
-        const countryCodes =
-            details.origin_country && details.origin_country.length > 0
-                ? details.origin_country
-                : (details.production_countries ?? []).map((country) => country.iso_3166_1);
-
-        const countryUrls = arrayUnique(countryCodes.map(countryUrlFromCode).filter(isTruthy));
-        const genreUrls = (details.genres ?? []).map((genre) => tmdbGenreUrl(genre.id));
-        const languages = arrayUnique((details.spoken_languages ?? []).map((language) => language.iso_639_1));
         const duration = details.runtime && details.runtime > 0 ? minutesToISODuration(details.runtime) : undefined;
 
         return {
@@ -224,14 +241,15 @@ export class CatalogService extends Service {
             posterUrl: tmdbPosterUrl(details.poster_path),
             releaseDate: parseDate(details.release_date) ?? undefined,
             externalUrls,
-            countryUrls,
-            genreUrls,
-            languages,
             duration,
+            ...this.getMediaAttributes(details),
         };
     }
 
-    private getShowAttributes(details: TMDBShowDetails, externalIds: TMDBShowExternalIds): GetModelInput<typeof Show> {
+    private getShowAttributes(
+        details: TMDBShowWithStaff,
+        externalIds: TMDBShowExternalIds,
+    ): GetModelInput<typeof Show> {
         const externalUrls = [tmdbShowUrl(details.id)];
 
         if (externalIds.imdb_id) {
@@ -245,6 +263,26 @@ export class CatalogService extends Service {
             backdropUrl: tmdbBackdropUrl(details.backdrop_path),
             startDate: parseDate(details.first_air_date) ?? undefined,
             externalUrls,
+            _numberOfSeasons: details.number_of_seasons ?? undefined,
+            _numberOfEpisodes: details.number_of_episodes ?? undefined,
+            ...this.getMediaAttributes(details),
+        };
+    }
+
+    private getMediaAttributes(details: TMDBMediaWithStaff): {
+        countryUrls: string[];
+        genreUrls: string[];
+        languages: string[];
+    } {
+        const countryCodes =
+            details.origin_country.length > 0
+                ? details.origin_country
+                : details.production_countries.map((country) => country.iso_3166_1);
+
+        return {
+            countryUrls: arrayUnique(countryCodes.map(countryUrlFromCode).filter(isTruthy)),
+            genreUrls: details.genres.map((genre) => tmdbGenreUrl(genre.id)),
+            languages: arrayUnique(details.spoken_languages.map((language) => language.iso_639_1)),
         };
     }
 
@@ -271,6 +309,7 @@ export class CatalogService extends Service {
 
         const { details, externalIds, seasons } = await TMDB.getShow(show.tmdbId, {
             includeSeasons: !WATCHING_STATUSES_WITHOUT_SEASONS.includes(show.watchingStatus),
+            includeStaff: true,
         });
 
         const attributes = this.getShowAttributes(details, externalIds);
@@ -279,6 +318,9 @@ export class CatalogService extends Service {
             ...attributes,
             externalUrls: mergeExternalUrls(show.externalUrls, attributes.externalUrls ?? []),
         });
+
+        details.cast && (await this.reconcileCast(show, details.cast));
+        details.creators && (await this.reconcilePersons(show.relatedCreators, details.creators));
 
         ComputedAttribute.disableRefreshes();
         ComputedAttribute.disableLoadingRelations();
@@ -331,28 +373,38 @@ export class CatalogService extends Service {
 
         await movie.loadAllRelationsIfUnloaded();
 
-        details.cast && this.reconcileCast(movie, details.cast);
-        details.directors && this.reconcilePersons(movie.relatedDirectors, details.directors);
+        details.cast && (await this.reconcileCast(movie, details.cast));
+        details.directors && (await this.reconcilePersons(movie.relatedDirectors, details.directors));
 
         await movie.save();
     }
 
-    private attachStaff(movie: Movie, details: TMDBMovieWithStaff): void {
+    private attachStaff(movie: Movie, details: TMDBMovieWithStaff): void;
+    private attachStaff(show: Show, details: TMDBShowWithStaff): void;
+    private attachStaff(media: Movie | Show, details: TMDBMovieWithStaff | TMDBShowWithStaff): void {
         for (const credit of details.cast ?? []) {
-            this.attachCastMember(movie, credit);
+            this.attachCastMember(media, credit);
         }
 
-        for (const director of details.directors ?? []) {
-            movie.relatedDirectors.attach(Person.fromTMDB(director), { mintUrl: true });
+        if (media instanceof Movie) {
+            for (const director of ('directors' in details && details.directors) || []) {
+                media.relatedDirectors.attach(Person.fromTMDB(director), { mintUrl: true });
+            }
+
+            return;
+        }
+
+        for (const creator of ('creators' in details && details.creators) || []) {
+            media.relatedCreators.attach(Person.fromTMDB(creator), { mintUrl: true });
         }
     }
 
-    private attachCastMember(movie: Movie, credit: TMDBCastCredit): void {
+    private attachCastMember(media: Movie | Show, credit: TMDBCastCredit): void {
         const person = Person.fromTMDB(credit);
 
-        person.mintUrl({ documentUrl: movie.getDocumentUrl(), resourceHash: uuid() });
+        person.mintUrl({ documentUrl: media.getDocumentUrl(), resourceHash: uuid() });
 
-        const role = movie.relatedCast.attach(
+        const role = media.relatedCast.attach(
             new PerformanceRole({
                 actorUrl: person.requireUrl(),
                 characterNames: credit.characters,
@@ -363,14 +415,15 @@ export class CatalogService extends Service {
         role.relatedActor.attach(person);
     }
 
-    private reconcileCast(movie: Movie, credits: TMDBCastCredit[]): void {
-        const existingRoles = movie.relatedCast.related ?? [];
+    private async reconcileCast(media: Movie | Show, credits: TMDBCastCredit[]): Promise<void> {
+        const existingRoles = media.relatedCast.related ?? [];
+        const staleRoles = existingRoles.filter((role) => !credits.some((credit) => credit.id === role.actor?.tmdbId));
 
         for (const credit of credits) {
             const existingRole = existingRoles.find((role) => role.actor?.tmdbId === credit.id);
 
             if (!existingRole?.actor) {
-                this.attachCastMember(movie, credit);
+                this.attachCastMember(media, credit);
 
                 continue;
             }
@@ -381,13 +434,24 @@ export class CatalogService extends Service {
                 imageUrl: tmdbProfileUrl(credit.profile_path),
             });
         }
+
+        for (const role of staleRoles) {
+            await role.relatedActor.delete();
+        }
+
+        await this.deleteRelatedModels(media.relatedCast, staleRoles);
     }
 
-    private reconcilePersons(
-        relation: BelongsToManyRelation<Movie, Person, typeof Person>,
+    private async reconcilePersons(
+        relation:
+            | BelongsToManyRelation<Movie, Person, typeof Person>
+            | BelongsToManyRelation<Show, Person, typeof Person>,
         newPersons: TMDBPerson[],
-    ): void {
+    ): Promise<void> {
         const existingPersons = relation.related ?? [];
+        const stalePersons = existingPersons.filter(
+            (person) => !newPersons.some((newPerson) => newPerson.id === person.tmdbId),
+        );
 
         for (const newPerson of newPersons) {
             const existingPerson = existingPersons.find((person) => person.tmdbId === newPerson.id);
@@ -402,6 +466,27 @@ export class CatalogService extends Service {
                 name: newPerson.name,
                 imageUrl: tmdbProfileUrl(newPerson.profile_path),
             });
+        }
+
+        await this.deleteRelatedModels(relation, stalePersons);
+    }
+
+    private async deleteRelatedModels(relation: MultiModelRelation, models: Model[]): Promise<void> {
+        if (models.length === 0) {
+            return;
+        }
+
+        const foreignKeyName = required(relation.foreignKeyName);
+        const deletedUrls = models.map((model) => model.url);
+        const foreignKeys = arrayFrom(relation.parent.getAttribute(foreignKeyName) as string[]);
+
+        relation.parent.setAttribute(
+            foreignKeyName,
+            foreignKeys.filter((url) => !deletedUrls.includes(url)),
+        );
+
+        for (const model of models) {
+            await relation.delete(model);
         }
     }
 
