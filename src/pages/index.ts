@@ -6,6 +6,7 @@ import Show from '@/models/Show.ts';
 
 import Discover from './Discover.vue';
 import Home from './Home.vue';
+import InsightsIndex from './insights/Index.vue';
 import ListsIndex from './lists/Index.vue';
 import MoviesIndex from './movies/Index.vue';
 import MoviesShow from './movies/Show.vue';
@@ -48,6 +49,12 @@ export default defineRoutes([
         path: '/lists',
         component: ListsIndex,
         title: () => translate('lists.title'),
+    },
+    {
+        name: 'insights.index',
+        path: '/insights',
+        component: InsightsIndex,
+        title: () => translate('insights.title'),
     },
     {
         name: 'discover',

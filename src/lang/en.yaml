@@ -8,6 +8,7 @@ app:
         movies: 'My Movies'
         shows: 'My Shows'
         lists: 'My Lists'
+        insights: 'Insights'
     search:
         label: 'Search movies and shows'
         placeholder: 'Search movies and shows...'
@@ -35,8 +36,6 @@ home:
     showsAll: 'View all shows'
     movies: 'Prepare the popcorn'
     moviesAll: 'View all movies'
-    moreMovies: 'Find more movies {link}.'
-    moreMoviesLink: 'in your collection'
 
 movies:
     title: 'Movies'
@@ -207,6 +206,120 @@ media:
 
 lists:
     title: 'Lists'
+
+insights:
+    title: 'Watching insights'
+    ranks:
+        starter:
+            title: "You're just Getting Started"
+            description: "It seems like you just started tracking your movies and shows. Keep going, and I'll be able to give you better insights!"
+        casual:
+            title: "You're a **Casual**"
+            description: "You've got a nice collection going, and now I can give you some insights into your watching habits."
+        fan:
+            title: "You're a **Fan**"
+            description: "Now you're getting into it! I'm glad you're enjoying the app, there's plenty more to discover."
+        enthusiast:
+            title: "You're an **Enthusiast**"
+            description: "Things just got out of hand, you've watched more than most people! I wonder what you're going to watch next."
+        cinephile:
+            title: "You're a **Cinephile**!"
+            description: "Congratulations, you've officially made it to the highest rank of obsession. But you aren't done yet, there's more movies and shows than you'll ever be able to watch. Enjoy!"
+    traits:
+        title: 'Traits'
+        sciFiGeek: 'Sci-Fi Geek'
+        cartoonist: 'Cartoonist'
+        crimeJunkie: 'Crime Junkie'
+        documentarian: 'Documentarian'
+        dreamer: 'Dreamer'
+        horrorHound: 'Horror Hound'
+        detective: 'Detective'
+        romanceJunkie: 'Romance Junkie'
+        gunslinger: 'Gunslinger'
+        genreTitle: 'You love {genre}!'
+        omnivore: 'Omnivore'
+        omnivoreTitle: 'You watch a bit of everything.'
+        specialist: 'Specialist'
+        specialistTitle: 'Most of what you watch is from your top 3 genres.'
+        completionist: 'Completionist'
+        completionistTitle: "You've watched most of your collection."
+        hoarder: 'Hoarder'
+        hoarderTitle: 'Most of your collection is still pending.'
+        movieBuff: 'Movie Buff'
+        movieBuffTitle: 'You watch more movies than series.'
+        seriesJunkie: 'Series Junkie'
+        seriesJunkieTitle: 'You watch more series than movies.'
+    overview:
+        movies: 'Movies watched'
+        moviesWatchTime: 'Movies watch time'
+        shows: 'Shows completed'
+        episodes: 'Episodes watched'
+        moviesChartLabel: 'Movies'
+        showsChartLabel: 'Shows'
+    loading: 'Loading...'
+    empty: 'Nothing to show yet'
+    mostWatched:
+        title: 'Most Watched'
+        filter: 'Media type'
+        filters:
+            all: 'All'
+            movies: 'Movies'
+            shows: 'Shows'
+        genres: 'Top genres'
+        countries: 'Top countries'
+        languages: 'Top languages'
+        actors: 'Top actors'
+        makers:
+            all: 'Top directors & creators'
+            movies: 'Top directors'
+            shows: 'Top creators'
+        decades: 'Top release decades'
+    achievements:
+        title: 'Achievements'
+        unlocked: '{unlocked} of {total} unlocked'
+        locked: 'Locked'
+        globetrotter:
+            title: 'Globetrotter'
+            description: 'Watch titles from {target} different countries.'
+        polyglot:
+            title: 'Polyglot'
+            description: 'Watch titles in {target} different languages.'
+        genreHopper:
+            title: 'Genre Hopper'
+            description: 'Watch titles from {target} different genres.'
+        timeTraveler:
+            title: 'Time Traveler'
+            description: 'Watch titles released in {target} different decades.'
+        classics:
+            title: 'Classic Connoisseur'
+            description: 'Watch {target} movies released before 1960.'
+        firstInLine:
+            title: 'First in Line'
+            description: 'Watch {target} movies in the same year they were released.'
+        marathon:
+            title: 'Marathon Runner'
+            description: 'Watch a movie that lasts 3 hours or more.'
+        auteur:
+            title: 'Auteur Follower'
+            description: 'Watch {target} movies from the same director.'
+        superfan:
+            title: 'Superfan'
+            description: 'Watch {target} titles with the same actor.'
+        completionist:
+            title: 'Completionist'
+            description: 'Complete {target} shows.'
+        bingeMonth:
+            title: 'Binge Month'
+            description: 'Watch {target} episodes in a single month.'
+        seasoned:
+            title: 'Seasoned Viewer'
+            description: 'Watch {target} episodes.'
+        tough:
+            title: 'Tough Crowd'
+            description: 'Drop {target} shows.'
+        anniversary:
+            title: 'A Year of Cinema'
+            description: 'Watch {target} movies, one for every day of the year.'
 
 discover:
     title: 'Discover'

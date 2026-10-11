@@ -8,6 +8,35 @@ export const TMDB_IMAGE_SIZE_SHORTHANDS = {
 
 export type TMDBImageSize = keyof typeof TMDB_IMAGE_SIZE_SHORTHANDS;
 
+export const TMDB_GENRES = {
+    'Action & Adventure': 10765,
+    'Science Fiction': 878,
+    'TV Movie': 10770,
+    Action: 28,
+    Adventure: 12,
+    Animation: 16,
+    Comedy: 35,
+    Crime: 80,
+    Documentary: 99,
+    Drama: 18,
+    Fantasy: 14,
+    Horror: 27,
+    Mystery: 9648,
+    Romance: 10749,
+    Thriller: 53,
+    Western: 37,
+} as const;
+
+export const TMDB_NOISE_GENRES = [
+    'Action & Adventure',
+    'TV Movie',
+    'Action',
+    'Adventure',
+    'Comedy',
+    'Drama',
+    'Thriller',
+] satisfies (keyof typeof TMDB_GENRES)[];
+
 function tmdbImageUrl(path: string | null | undefined, size: TMDBImageSize): string | undefined {
     return path ? `https://image.tmdb.org/t/p/${TMDB_IMAGE_SIZE_SHORTHANDS[size]}${path}` : undefined;
 }

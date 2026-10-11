@@ -39,14 +39,6 @@
                 >
                     <MovieCard v-for="movie of pendingMovies" :key="movie.url" :movie />
                 </MediaGrid>
-                <div
-                    v-if="pendingMovies.length === SAMPLE_MOVIES_LENGTH"
-                    class="mt-4 flex items-center justify-center text-sm"
-                >
-                    <span>{{ moreMoviesParts.start.replace(/ $/, '\u00A0') }}</span>
-                    <Link route="movies.index">{{ $t('home.moreMoviesLink') }}</Link>
-                    <span>{{ moreMoviesParts.end.replace(/^ /, '\u00A0') }}</span>
-                </div>
             </template>
         </template>
     </Page>
@@ -99,9 +91,4 @@ const upcomingShows = computedModels(
     { watch: ['pendingEpisodes'], cache: 'upcomingShows' },
 );
 const isEmpty = computed(() => upcomingShows.value.length === 0 && pendingMovies.value.length === 0);
-const moreMovies = translate('home.moreMovies', { link: `%LINK_PLACEHOLDER%` });
-const moreMoviesParts = {
-    start: moreMovies.split('%LINK_PLACEHOLDER%')[0] ?? '',
-    end: moreMovies.split('%LINK_PLACEHOLDER%')[1] ?? '',
-};
 </script>
