@@ -23,5 +23,6 @@ const sections = [
     { label: translate('app.nav.movies'), route: 'movies.index' },
     { label: translate('app.nav.shows'), route: 'shows.index' },
     { label: translate('app.nav.lists'), route: 'lists.index' },
+    { label: translate('app.nav.stats'), route: 'stats.index' },
 ];
 </script>

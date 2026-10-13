@@ -11,7 +11,10 @@
         leave-from-class="opacity-100"
         leave-to-class="opacity-0"
     >
-        <div v-if="searching" class="bg-background absolute top-8 right-0 bottom-0 left-16 z-10 flex items-center pl-2">
+        <div
+            v-if="searching"
+            class="bg-background right-edge absolute top-8 bottom-0 left-16 z-10 flex items-center pl-2"
+        >
             <MediaSearch
                 ref="$mediaSearchRef"
                 :loading

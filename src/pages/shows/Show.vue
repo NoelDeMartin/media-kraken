@@ -4,10 +4,10 @@
             <MediaImage :url="show.posterUrl" class="aspect-2/3 w-64 shrink-0 rounded shadow" />
             <div class="flex flex-1 flex-col">
                 <div class="flex items-center justify-between gap-2">
-                    <h1 class="text-2xl font-semibold text-gray-900">
+                    <PageTitle>
                         {{ show.name }}
                         <span v-if="show.releaseYear" class="text-lg font-medium"> ({{ show.releaseYear }}) </span>
-                    </h1>
+                    </PageTitle>
                     <i-mdi-sync v-if="syncing" class="m-2.5 size-5 animate-spin" />
                     <DropdownMenu v-else align="end" :options="menuOptions">
                         <Button size="icon" variant="ghost" :title="$t('shows.openActionsMenu')" class="-mr-4">
@@ -77,7 +77,7 @@
             </div>
         </article>
         <section v-if="cast.length" class="mt-10" aria-labelledby="cast">
-            <h2 id="cast" class="text-xl font-semibold text-gray-900">{{ $t('shows.details.topCast') }}</h2>
+            <SectionTitle id="cast">{{ $t('shows.details.topCast') }}</SectionTitle>
             <ul class="mt-4 grid grid-cols-6 gap-4 sm:grid-cols-3 md:grid-cols-6">
                 <li v-for="role in cast" :key="role.url">
                     <PersonCard :person="role.actor" :characters="role.characterNames" />
@@ -89,7 +89,7 @@
             class="mt-10"
             aria-labelledby="seasons"
         >
-            <h2 id="seasons" class="text-xl font-semibold text-gray-900">{{ $t('shows.seasons') }}</h2>
+            <SectionTitle id="seasons">{{ $t('shows.seasons') }}</SectionTitle>
             <p v-if="seasons.length === 0" class="mt-4 text-sm text-gray-500">{{ $t('shows.noSeasons') }}</p>
             <div v-else class="mt-6 flex flex-col gap-8">
                 <ShowSeason

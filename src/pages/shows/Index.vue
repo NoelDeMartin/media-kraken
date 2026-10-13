@@ -24,7 +24,7 @@
                     <span class="sr-only">{{ $t('shows.openActionsMenu') }}</span>
                 </Button>
             </DropdownMenu>
-            <PageTitle>{{ $t('shows.title') }} ({{ sortedShows.length }})</PageTitle>
+            <PageTitle class="text-xl font-medium">{{ $t('shows.title') }} ({{ sortedShows.length }})</PageTitle>
             <div class="flex-1" />
             <div v-if="!hasEmptyCollection" class="-mr-3 flex items-center gap-1">
                 <Button

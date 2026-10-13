@@ -5,8 +5,12 @@ const durationFormatter =
               format: ({ minutes, hours }: { minutes: number; hours: number }) =>
                   hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`,
           };
+const hoursFormatter = new Intl.NumberFormat(undefined, { style: 'unit', unit: 'hour', unitDisplay: 'long' });
+const numberFormatter = new Intl.NumberFormat(undefined);
+const percentageFormatter = new Intl.NumberFormat(undefined, { style: 'percent', maximumFractionDigits: 0 });
 const countryFormatter = new Intl.DisplayNames(undefined, { type: 'region' });
 const languageFormatter = new Intl.DisplayNames(undefined, { type: 'language' });
+const listFormatter = new Intl.ListFormat(undefined, { style: 'long', type: 'conjunction' });
 
 export function formatDate(date: Date): string {
     return date.toLocaleDateString(undefined, {
@@ -14,6 +18,22 @@ export function formatDate(date: Date): string {
         day: 'numeric',
         year: 'numeric',
     });
+}
+
+export function formatPercentage(value: number): string {
+    return percentageFormatter.format(value);
+}
+
+export function formatNumber(value: number): string {
+    return numberFormatter.format(value);
+}
+
+export function formatHours(value: number): string {
+    return hoursFormatter.format(value);
+}
+
+export function formatList(items: string[]): string {
+    return listFormatter.format(items);
 }
 
 export function formatDuration(duration: { minutes: number }): string {

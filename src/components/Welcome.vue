@@ -1,6 +1,6 @@
 <template>
     <div class="mx-auto flex max-w-prose flex-col gap-8">
-        <h1 class="text-2xl font-bold">{{ $t('welcome.title') }}</h1>
+        <PageTitle>{{ $t('welcome.title') }}</PageTitle>
         <Markdown lang-key="welcome.message" />
         <div class="flex flex-col gap-4">
             <Button variant="outline" class="w-full" @click="$ui.modal(ImportMediaModal)">

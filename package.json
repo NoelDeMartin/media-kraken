@@ -30,6 +30,7 @@
         "@tailwindcss/forms": "^0.5.10",
         "@tailwindcss/typography": "^0.5.16",
         "papaparse": "^5.7.0",
+        "reka-ui": "^2.11.0",
         "soukai-bis": "catalog:",
         "tailwindcss": "^4.1.1",
         "vue": "^3.5.13",

@@ -8,7 +8,7 @@
 @theme {
     --font-*: initial;
     --font-montserrat: 'Montserrat', sans-serif;
-    --text-page-title--font-weight: var(--font-weight-medium);
+    --text-page-title: var(--text-2xl);
 
     --breakpoint-content: 900px;
 

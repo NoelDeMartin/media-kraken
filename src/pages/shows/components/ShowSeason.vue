@@ -7,9 +7,9 @@
                 class="size-5 justify-self-center text-gray-400 transition-transform group-open:rotate-90"
                 aria-hidden="true"
             />
-            <h3 class="text-lg font-medium text-gray-900">
+            <SectionTitle :level="3">
                 {{ season.number === 0 ? $t('shows.specials') : $t('shows.seasonNumber', { number: season.number }) }}
-            </h3>
+            </SectionTitle>
             <span class="text-sm text-gray-500">
                 {{
                     $t('shows.episodesWatched', {
@@ -40,7 +40,11 @@
                     <span
                         v-if="episode.watched"
                         class="flex items-center gap-1 px-2.5 text-sm text-green-700"
-                        :title="$t('shows.episodeWatched')"
+                        :title="
+                            episode.watched.date
+                                ? $t('shows.episodeWatchedAt', { date: formatDate(episode.watched.date) })
+                                : $t('shows.episodeWatched')
+                        "
                     >
                         <i-material-symbols-check class="size-5" />
                         <span class="sr-only">{{ $t('shows.episodeWatched') }}</span>
