@@ -1,5 +1,5 @@
 import { comboboxSelect, createModel, dontSee, input, press, see } from '@aerogel/playwright';
-import { test } from '@e2e/lib/setup';
+import { expect, test } from '@e2e/lib/setup';
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/movies');
@@ -46,6 +46,11 @@ test('Filters movies by title', async ({ page }) => {
     await see(page, 'Movies (1)');
     await see(page, 'The Matrix (Pending)');
     await dontSee(page, 'Inception');
+    await expect(page).toHaveURL(/\/movies\?q=matr$/);
+
+    await page.reload();
+    await see(page, 'Movies (1)');
+    await dontSee(page, 'Inception');
 });
 
 test('Filters movies with advanced filters', async ({ page }) => {
@@ -61,6 +66,36 @@ test('Filters movies with advanced filters', async ({ page }) => {
     await see(page, 'Movies (1)');
     await see(page, 'The Matrix (Watched)');
     await dontSee(page, 'Inception');
+    await expect(page).toHaveURL(/\/movies\?watched=true$/);
+
+    await page.goto('/movies?watched=false');
+    await see(page, 'Movies (1)');
+    await see(page, 'Inception');
+    await dontSee(page, 'The Matrix');
+});
+
+test('Paginates movies table', async ({ page }) => {
+    for (let index = 1; index <= 11; index++) {
+        await createModel(page, 'Movie', { title: `Movie ${index}` });
+    }
+
+    await see(page, 'Movies (11)');
+    await press(page, 'View as list');
+    await see(page, 'Showing 1 to 10 of 11 movies');
+    await expect(page).toHaveURL(/\/movies\?view=table$/);
+
+    await press(page, '2', { role: 'button' });
+    await see(page, 'Showing 11 to 11 of 11 movies');
+    await expect(page).toHaveURL(/\/movies\?view=table&page=2$/);
+
+    await page.reload();
+    await see(page, 'Showing 11 to 11 of 11 movies');
+
+    await press(page, 'Filter movies by title');
+    await input(page, 'Movies filter').fill('movie 1');
+    await see(page, 'Movies (3)');
+    await see(page, 'Movie 10');
+    await expect(page).toHaveURL(/\/movies\?view=table&q=movie(\+|%20)1$/);
 });
 
 test('Identifies a movie', async ({ page }) => {

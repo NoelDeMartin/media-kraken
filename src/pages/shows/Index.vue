@@ -77,7 +77,7 @@
                 <ShowsEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
         </VirtualMediaGrid>
-        <ShowsTable v-else :shows="sortedShows" class="mt-2">
+        <ShowsTable v-else v-model:page="page" :loading :shows="sortedShows" class="mt-2">
             <template #empty>
                 <ShowsEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
@@ -89,24 +89,24 @@
 import { UI } from '@aerogel/core';
 import { useModels } from '@aerogel/plugin-solid';
 import { arraySorted } from '@noeldemartin/utils';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import IconSync from '~icons/mdi/sync';
 
 import FilterShowsModal from '@/components/modals/FilterShowsModal.vue';
 import SynchronizeMedia from '@/jobs/SynchronizeMedia';
+import { useMediaFilters } from '@/lib/composition/filters';
 import { toSearchText } from '@/lib/media';
 import {
     createShowSearchEntry,
     hasActiveShowFilters,
     showMatchesFilters,
     showMatchesQuery,
-    type ShowsFilter,
+    SHOWS_FILTER_FIELDS,
 } from '@/lib/shows';
 import Show from '@/models/Show';
 
-const quickFilter = ref<string | null>(null);
-const advancedFilters = ref<ShowsFilter | null>(null);
 const { models: allShows, loading } = useModels(Show);
+const { quickFilter, advancedFilters, display, page, clear: clearAllFilters } = useMediaFilters(SHOWS_FILTER_FIELDS);
 const hasEmptyCollection = computed(() => !loading.value && allShows.value.length === 0);
 const hasAdvancedFilters = computed(() => hasActiveShowFilters(advancedFilters.value));
 
@@ -123,7 +123,6 @@ const filteredShows = computed(() => {
         .map((entry) => entry.show);
 });
 const sortedShows = computed(() => arraySorted(filteredShows.value, 'createdAt', 'desc'));
-const display = ref<'grid' | 'table'>('grid');
 
 async function updateAdvancedFilters() {
     const { filters } = await UI.modal(FilterShowsModal, {
@@ -134,10 +133,5 @@ async function updateAdvancedFilters() {
     if (filters) {
         advancedFilters.value = filters;
     }
-}
-
-function clearAllFilters() {
-    quickFilter.value = null;
-    advancedFilters.value = null;
 }
 </script>

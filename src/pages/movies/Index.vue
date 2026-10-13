@@ -88,7 +88,7 @@
                 <MoviesEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
         </VirtualMediaGrid>
-        <MoviesTable v-else :movies="sortedMovies" class="mt-2">
+        <MoviesTable v-else v-model:page="page" :loading :movies="sortedMovies" class="mt-2">
             <template #empty>
                 <MoviesEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
@@ -100,26 +100,26 @@
 import { UI } from '@aerogel/core';
 import { useModels } from '@aerogel/plugin-solid';
 import { arraySorted } from '@noeldemartin/utils';
-import { computed, ref } from 'vue';
+import { computed } from 'vue';
 import IconSync from '~icons/mdi/sync';
 import IconUpload from '~icons/mdi/upload';
 
 import FilterMoviesModal from '@/components/modals/FilterMoviesModal.vue';
 import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
 import SynchronizeMedia from '@/jobs/SynchronizeMedia';
+import { useMediaFilters } from '@/lib/composition/filters';
 import { toSearchText } from '@/lib/media';
 import {
     createMovieSearchEntry,
     hasActiveMovieFilters,
     movieMatchesFilters,
     movieMatchesQuery,
-    type MoviesFilter,
+    MOVIES_FILTER_FIELDS,
 } from '@/lib/movies';
 import Movie from '@/models/Movie';
 
-const quickFilter = ref<string | null>(null);
-const advancedFilters = ref<MoviesFilter | null>(null);
 const { models: allMovies, loading } = useModels(Movie);
+const { quickFilter, advancedFilters, display, page, clear: clearAllFilters } = useMediaFilters(MOVIES_FILTER_FIELDS);
 const hasEmptyCollection = computed(() => !loading.value && allMovies.value.length === 0);
 const hasAdvancedFilters = computed(() => hasActiveMovieFilters(advancedFilters.value));
 
@@ -136,7 +136,6 @@ const filteredMovies = computed(() => {
         .map((entry) => entry.movie);
 });
 const sortedMovies = computed(() => arraySorted(filteredMovies.value, 'createdAt', 'desc'));
-const display = ref<'grid' | 'table'>('grid');
 
 async function updateAdvancedFilters() {
     const { filters } = await UI.modal(FilterMoviesModal, {
@@ -147,10 +146,5 @@ async function updateAdvancedFilters() {
     if (filters) {
         advancedFilters.value = filters;
     }
-}
-
-function clearAllFilters() {
-    quickFilter.value = null;
-    advancedFilters.value = null;
 }
 </script>

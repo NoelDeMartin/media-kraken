@@ -1,5 +1,5 @@
 <template>
-    <Table item-key="url" :items-label="$t('shows.itemsName')">
+    <Table v-model:page="page" item-key="url" :loading :items-label="$t('shows.itemsName')">
         <TableColumn :header="$t('shows.table.name')" field="name">
             <template #default="{ item: show }">
                 <Link class="text-normal" :to="show.route">
@@ -42,7 +42,8 @@ import { computed } from 'vue';
 import { formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import Show from '@/models/Show';
 
-const { shows } = defineProps<{ shows: Show[] }>();
+const { shows, loading } = defineProps<{ shows: Show[]; loading?: boolean }>();
+const page = defineModel<number>('page', { default: 1 });
 const renderedShows = computed(() =>
     shows.map((show) => ({
         ...show.getAttributes(),

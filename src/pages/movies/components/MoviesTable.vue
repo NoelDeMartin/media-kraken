@@ -1,5 +1,5 @@
 <template>
-    <Table item-key="url" :items-label="$t('movies.itemsName')">
+    <Table v-model:page="page" item-key="url" :loading :items-label="$t('movies.itemsName')">
         <TableColumn :header="$t('movies.table.title')" field="title">
             <template #default="{ item: movie }">
                 <Link class="text-normal" :to="movie.route">
@@ -37,7 +37,8 @@ import { computed } from 'vue';
 import { formatDate, formatDuration, formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import Movie from '@/models/Movie';
 
-const { movies } = defineProps<{ movies: Movie[] }>();
+const { movies, loading } = defineProps<{ movies: Movie[]; loading?: boolean }>();
+const page = defineModel<number>('page', { default: 1 });
 const renderedMovies = computed(() =>
     movies.map((movie) => ({
         ...movie.getAttributes(),

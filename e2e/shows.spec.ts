@@ -1,5 +1,5 @@
 import { comboboxSelect, createModel, dontSee, input, press, see } from '@aerogel/playwright';
-import { test } from '@e2e/lib/setup';
+import { expect, test } from '@e2e/lib/setup';
 import type { Page } from '@playwright/test';
 
 async function seedShow(page: Page) {
@@ -82,6 +82,12 @@ test('Filters shows with advanced filters', async ({ page }) => {
     await see(page, 'Shows (1)');
     await see(page, 'Breaking Bad');
     await dontSee(page, 'The Wire');
+    await expect(page).toHaveURL(/\/shows\?watchingStatus=watching$/);
+
+    await page.goto('/shows?q=wire');
+    await see(page, 'Shows (1)');
+    await see(page, 'The Wire');
+    await dontSee(page, 'Breaking Bad');
 });
 
 test('Identifies a show', async ({ page }) => {

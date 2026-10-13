@@ -1,6 +1,7 @@
 import type { RangeSliderValue } from '@aerogel/core';
 import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
 
+import type { QueryFilterFields } from '@/lib/composition/filters';
 import type { GenreKey } from '@/lib/genres';
 import { matchesAny, matchesRange, personFilterKey, toSearchText } from '@/lib/media';
 import type Show from '@/models/Show';
@@ -15,6 +16,17 @@ export type ShowsFilter = {
     languages?: Nullable<string[]>;
     seasons?: Nullable<RangeSliderValue>;
     releaseYear?: Nullable<RangeSliderValue>;
+};
+
+export const SHOWS_FILTER_FIELDS: QueryFilterFields<ShowsFilter> = {
+    watchingStatus: 'string',
+    genres: 'list',
+    creators: 'list',
+    cast: 'list',
+    countries: 'list',
+    languages: 'list',
+    seasons: 'range',
+    releaseYear: 'range',
 };
 
 export type ShowSearchEntry = ReturnType<typeof createShowSearchEntry>;

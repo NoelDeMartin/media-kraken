@@ -1,6 +1,7 @@
 import type { RangeSliderValue } from '@aerogel/core';
 import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
 
+import type { QueryFilterFields } from '@/lib/composition/filters';
 import type { GenreKey } from '@/lib/genres';
 import { matchesAny, matchesRange, personFilterKey, toSearchText } from '@/lib/media';
 import type Movie from '@/models/Movie';
@@ -14,6 +15,17 @@ export type MoviesFilter = {
     languages?: Nullable<string[]>;
     duration?: Nullable<RangeSliderValue>;
     releaseYear?: Nullable<RangeSliderValue>;
+};
+
+export const MOVIES_FILTER_FIELDS: QueryFilterFields<MoviesFilter> = {
+    watched: 'boolean',
+    genres: 'list',
+    directors: 'list',
+    cast: 'list',
+    countries: 'list',
+    languages: 'list',
+    duration: 'range',
+    releaseYear: 'range',
 };
 
 export type MovieSearchEntry = ReturnType<typeof createMovieSearchEntry>;
