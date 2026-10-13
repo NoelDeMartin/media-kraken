@@ -29,7 +29,7 @@
                     <span class="sr-only">{{ $t('movies.openActionsMenu') }}</span>
                 </Button>
             </DropdownMenu>
-            <PageTitle>{{ $t('movies.title') }} ({{ sortedMovies.length }})</PageTitle>
+            <PageTitle class="text-xl font-medium">{{ $t('movies.title') }} ({{ sortedMovies.length }})</PageTitle>
             <div class="flex-1" />
             <div v-if="!hasEmptyCollection" class="-mr-3 flex items-center gap-1">
                 <Button

@@ -1,3 +1,7 @@
+import { isTruthy, memo } from '@noeldemartin/utils';
+
+import TMDB from '@/services/TMDB';
+
 const durationFormatter =
     'DurationFormat' in Intl
         ? new (Intl as any).DurationFormat(undefined, { style: 'narrow' }) // oxlint-disable-line typescript/no-explicit-any
@@ -5,6 +9,9 @@ const durationFormatter =
               format: ({ minutes, hours }: { minutes: number; hours: number }) =>
                   hours > 0 ? `${hours}h ${minutes}m` : `${minutes}m`,
           };
+const hoursFormatter = new Intl.NumberFormat(undefined, { style: 'unit', unit: 'hour', unitDisplay: 'long' });
+const numberFormatter = new Intl.NumberFormat(undefined);
+const percentageFormatter = new Intl.NumberFormat(undefined, { style: 'percent', maximumFractionDigits: 0 });
 const countryFormatter = new Intl.DisplayNames(undefined, { type: 'region' });
 const languageFormatter = new Intl.DisplayNames(undefined, { type: 'language' });
 
@@ -14,6 +21,24 @@ export function formatDate(date: Date): string {
         day: 'numeric',
         year: 'numeric',
     });
+}
+
+export function formatPercentage(value: number): string {
+    return percentageFormatter.format(value);
+}
+
+export function formatNumber(value: number): string {
+    return numberFormatter.format(value);
+}
+
+export function formatHours(value: number): string {
+    return hoursFormatter.format(value);
+}
+
+export function formatList(items: string[], type: Intl.ListFormatOptions['type'] = 'unit'): string {
+    const listFormatter = memo(`list-formatter-${type}`, () => new Intl.ListFormat(undefined, { style: 'long', type }));
+
+    return listFormatter.format(items);
 }
 
 export function formatDuration(duration: { minutes: number }): string {
@@ -37,4 +62,16 @@ export function formatLanguage(language: string): string {
     } catch {
         return language;
     }
+}
+
+export function formatGenres(genreIds: number[]): string {
+    return formatList(genreIds.map((id) => TMDB.translateGenre(id)).filter(isTruthy));
+}
+
+export function formatCountries(countryCodes: string[]): string {
+    return formatList(countryCodes.map((code) => formatCountry(code)));
+}
+
+export function formatLanguages(languages: string[]): string {
+    return formatList(languages.map((language) => formatLanguage(language)));
 }

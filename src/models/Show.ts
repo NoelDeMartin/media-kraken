@@ -27,6 +27,11 @@ export type PendingEpisode = {
     publishedAt: Date;
 };
 
+export type WatchedEpisodes = {
+    episodes: number;
+    seasons: number;
+};
+
 export type ShowCredits = {
     creators: PersonCredit[];
     cast: PersonCredit[];
@@ -54,6 +59,26 @@ export default class Show extends Model {
                     );
             },
         },
+        watchedEpisodes: {
+            invalidationStrategy: InvalidationStrategies.CONTAINER,
+            compute(show: Show): WatchedEpisodes {
+                let episodes = 0;
+                let seasons = 0;
+
+                for (const season of loaded(show, 'seasons')) {
+                    const seasonEpisodes = loaded(season, 'episodes');
+                    const watchedEpisodes = seasonEpisodes.filter((episode) => loaded(episode, 'watched')).length;
+
+                    episodes += watchedEpisodes;
+
+                    if (season.number !== 0 && seasonEpisodes.length > 0 && watchedEpisodes === seasonEpisodes.length) {
+                        seasons++;
+                    }
+                }
+
+                return { episodes, seasons };
+            },
+        },
         credits: {
             invalidationStrategy: InvalidationStrategies.DOCUMENT,
             compute(show: Show): ShowCredits {
@@ -73,6 +98,7 @@ export default class Show extends Model {
     }
 
     declare public readonly pendingEpisodes: ComputedAttribute<PendingEpisode[]>;
+    declare public readonly watchedEpisodes: ComputedAttribute<WatchedEpisodes>;
     declare public readonly credits: ComputedAttribute<ShowCredits>;
     declare public readonly cast?: PerformanceRole[];
     declare public readonly relatedCast: BelongsToManyRelation<this, PerformanceRole, typeof PerformanceRole>;

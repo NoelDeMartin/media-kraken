@@ -4,10 +4,10 @@
             <MediaImage :url="movie.posterUrl" class="aspect-2/3 w-64 shrink-0 rounded shadow" />
             <div class="flex flex-1 flex-col">
                 <div class="flex items-center justify-between gap-2">
-                    <h1 class="text-2xl font-semibold text-gray-900">
+                    <PageTitle>
                         {{ movie.title }}
                         <span v-if="movie.releaseYear" class="text-lg font-medium"> ({{ movie.releaseYear }}) </span>
-                    </h1>
+                    </PageTitle>
                     <i-mdi-sync v-if="syncing" class="m-2.5 size-5 animate-spin" />
                     <DropdownMenu v-else align="end" :options="menuOptions">
                         <Button size="icon" variant="ghost" :title="$t('movies.openActionsMenu')" class="-mr-4">
@@ -23,6 +23,9 @@
                             'text-green-700': movie.watched,
                             'text-blue-700': !movie.watched,
                         }"
+                        :title="
+                            movie.watchedAt ? $t('movies.watchedAt', { date: formatDate(movie.watchedAt) }) : undefined
+                        "
                     >
                         <i-material-symbols-check v-if="movie.watched" class="size-4" />
                         <i-mdi-clock-outline v-else class="size-4" />
@@ -77,7 +80,7 @@
             </div>
         </article>
         <section v-if="cast.length" class="mt-10" aria-labelledby="cast">
-            <h2 id="cast" class="text-xl font-semibold text-gray-900">{{ $t('movies.details.topCast') }}</h2>
+            <SectionTitle id="cast">{{ $t('movies.details.topCast') }}</SectionTitle>
             <ul class="mt-4 grid grid-cols-6 gap-4 sm:grid-cols-3 md:grid-cols-6">
                 <li v-for="role in cast" :key="role.url">
                     <PersonCard :person="role.actor" :characters="role.characterNames" />
@@ -100,8 +103,7 @@ import IconIdentify from '~icons/ph/list-magnifying-glass';
 import IconDelete from '~icons/ph/trash';
 
 import IdentifyMediaModal from '@/components/modals/IdentifyMediaModal.vue';
-import { formatDuration } from '@/lib/formatting';
-import { formatCountries, formatGenres, formatLanguages } from '@/lib/media';
+import { formatDate, formatDuration, formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import Movie from '@/models/Movie';
 import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';

@@ -34,8 +34,7 @@
 import { useDataTable } from '@aerogel/core';
 import { computed } from 'vue';
 
-import { formatDate, formatDuration } from '@/lib/formatting';
-import { formatCountries, formatGenres, formatLanguages } from '@/lib/media';
+import { formatDate, formatDuration, formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import Movie from '@/models/Movie';
 
 const { movies } = defineProps<{ movies: Movie[] }>();

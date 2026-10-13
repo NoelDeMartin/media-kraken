@@ -1,24 +1,7 @@
 import type { RangeSliderValue } from '@aerogel/core';
 import { isNullable, isTruthy, stringToSlug } from '@noeldemartin/utils';
 
-import { formatCountry, formatLanguage } from '@/lib/formatting';
 import type { PersonCredit } from '@/models/Person';
-import TMDB from '@/services/TMDB';
-
-export function formatGenres(genreIds: number[]): string {
-    return genreIds
-        .map((id) => TMDB.translateGenre(id))
-        .filter(isTruthy)
-        .join(', ');
-}
-
-export function formatCountries(countryCodes: string[]): string {
-    return countryCodes.map((code) => formatCountry(code)).join(', ');
-}
-
-export function formatLanguages(languages: string[]): string {
-    return languages.map((language) => formatLanguage(language)).join(', ');
-}
 
 export function matchesAny<T>(selected: T[], values: T[]): boolean {
     return values.some((value) => !isNullable(value) && selected.includes(value));

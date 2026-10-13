@@ -39,7 +39,7 @@
 import { translate, useDataTable } from '@aerogel/core';
 import { computed } from 'vue';
 
-import { formatCountries, formatGenres, formatLanguages } from '@/lib/media';
+import { formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import Show from '@/models/Show';
 
 const { shows } = defineProps<{ shows: Show[] }>();
