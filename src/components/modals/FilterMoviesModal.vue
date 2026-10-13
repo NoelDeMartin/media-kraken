@@ -16,7 +16,7 @@
                     :label="$t('movies.advancedFilters.genre')"
                     :placeholder="$t('movies.advancedFilters.allGenres')"
                     :options="genreOptions"
-                    :render-option="renderGenre"
+                    :render-option="formatGenre"
                 />
                 <Combobox
                     name="directors"
@@ -85,11 +85,11 @@ import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
 import { computed, onMounted, ref } from 'vue';
 import { z } from 'zod';
 
-import { formatCountry, formatDuration, formatLanguage } from '@/lib/formatting';
+import { formatCountry, formatGenre, formatDuration, formatLanguage } from '@/lib/formatting';
+import type { GenreKey } from '@/lib/genres';
 import { personFilterKey, sortByLocale, uniquePersonKeys } from '@/lib/media';
 import type { MoviesFilter } from '@/lib/movies';
 import type Movie from '@/models/Movie';
-import TMDB from '@/services/TMDB';
 
 type Result = { filters: MoviesFilter };
 
@@ -108,7 +108,7 @@ const creditsReady = ref(initialMoviesWithoutCredits.length === 0);
 const statusOptions = ['all', 'watched', 'unwatched'] as const;
 const form = useForm({
     watchStatus: z.enum(statusOptions).default('all'),
-    genres: z.array(z.number()).default([]),
+    genres: z.array(z.custom<GenreKey>()).default([]),
     directors: z.array(z.string()).default([]),
     cast: z.array(z.string()).default([]),
     countries: z.array(z.string()).default([]),
@@ -134,9 +134,7 @@ const directorOptions = computed(() => sortByLocale(uniquePersonKeys(directors.v
 const castOptions = computed(() => sortByLocale(uniquePersonKeys(actors.value), renderPerson));
 
 const genreOptions = computed(() => {
-    const movieGenreIds = new Set(movies.flatMap((movie) => movie.genreIds));
-
-    return sortByLocale(Array.from(movieGenreIds), renderGenre);
+    return sortByLocale(Array.from(new Set(movies.flatMap((movie) => movie.genreKeys))), formatGenre);
 });
 
 const countryOptions = computed(() => {
@@ -179,10 +177,6 @@ const durationBounds = computed(() => {
 
 function renderPerson(key: string): string {
     return personNames.value.get(key) ?? key;
-}
-
-function renderGenre(genre: number): string {
-    return TMDB.translateGenre(genre) ?? String(genre);
 }
 
 function renderStatus(status: (typeof statusOptions)[number]): string {

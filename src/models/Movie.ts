@@ -6,8 +6,9 @@ import type { RouteLocationRaw } from 'vue-router';
 import { countryCodeFromUrl } from '@/lib/countries';
 import { findExternalId } from '@/lib/domains';
 import { isoDurationToMinutes } from '@/lib/durations';
+import { genreKeysFromUrls, type GenreKey } from '@/lib/genres';
 import { parseImdbId } from '@/lib/imdb';
-import { parseTmdbId, TMDB_GENRE_URL_PREFIX, tmdbMovieUrl, tmdbPosterUrl } from '@/lib/tmdb';
+import { parseTmdbId, tmdbMovieUrl, tmdbPosterUrl } from '@/lib/tmdb';
 import type { TMDBImageSize } from '@/lib/tmdb';
 import type { TMDBMovie } from '@/services/TMDB';
 
@@ -80,8 +81,8 @@ export default class Movie extends Model {
         return this.releaseDate ? this.releaseDate.getFullYear() : null;
     }
 
-    public get genreIds(): number[] {
-        return this.genreUrls.map((url) => findExternalId(TMDB_GENRE_URL_PREFIX, [url], parseTmdbId)).filter(isTruthy);
+    public get genreKeys(): GenreKey[] {
+        return genreKeysFromUrls(this.genreUrls);
     }
 
     public get runtimeMinutes(): number | null {

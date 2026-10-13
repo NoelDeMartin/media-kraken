@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vite-plus/test';
 
 import { countryUrlFromCode } from '@/lib/countries';
 import { minutesToISODuration } from '@/lib/durations';
-import { TMDB_GENRES, tmdbGenreUrl } from '@/lib/tmdb';
+import { genreUrl, type KnownGenreName } from '@/lib/genres';
 import Movie from '@/models/Movie';
 import type { PersonCredit } from '@/models/Person';
 import Show from '@/models/Show';
@@ -48,7 +48,7 @@ const COUNTRY_CODES = [
 function movie(
     attributes: {
         title?: string;
-        genreIds?: number[];
+        genres?: KnownGenreName[];
         countryCodes?: string[];
         releaseDate?: Date;
         watchedAt?: Date;
@@ -59,7 +59,7 @@ function movie(
     const instance = new Movie({
         title: attributes.title ?? 'Movie',
         releaseDate: attributes.releaseDate,
-        genreUrls: attributes.genreIds?.map(tmdbGenreUrl),
+        genreUrls: attributes.genres?.map(genreUrl),
         countryUrls: attributes.countryCodes?.map(countryUrlFromCode).filter((url) => url !== null),
         duration: attributes.runtimeMinutes ? minutesToISODuration(attributes.runtimeMinutes) : undefined,
     });
@@ -195,9 +195,9 @@ describe('achievements', () => {
     });
 
     it('counts horror movies watched in the same October of a single year', () => {
-        const horror = [TMDB_GENRES.Horror];
+        const horror: KnownGenreName[] = ['Horror'];
         const horrorMovies = (count: number, watchedAt: Date) =>
-            Array.from({ length: count }, () => movie({ genreIds: horror, watchedAt }));
+            Array.from({ length: count }, () => movie({ genres: horror, watchedAt }));
 
         expect(
             getProgress('spookySeason', [
@@ -208,5 +208,19 @@ describe('achievements', () => {
             ]),
         ).toMatchObject({ unlocked: false, value: 9 });
         expect(getProgress('spookySeason', horrorMovies(10, new Date(2024, 9, 31)))?.unlocked).toBe(true);
+    });
+
+    it('counts christmas movies watched in the same December of a single year', () => {
+        const christmasMovies = (count: number, watchedAt: Date) =>
+            Array.from({ length: count }, () => movie({ genres: ['Christmas'], watchedAt }));
+
+        expect(
+            getProgress('jingleBells', [
+                ...christmasMovies(9, new Date(2024, 11, 5)),
+                ...christmasMovies(1, new Date(2023, 11, 5)),
+                movie({ genres: ['Animation'], watchedAt: new Date(2024, 11, 10) }),
+            ]),
+        ).toMatchObject({ unlocked: false, value: 9 });
+        expect(getProgress('jingleBells', christmasMovies(10, new Date(2024, 11, 24)))?.unlocked).toBe(true);
     });
 });

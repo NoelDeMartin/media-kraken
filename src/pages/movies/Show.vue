@@ -156,7 +156,7 @@ const details = computed(() => {
     return [
         {
             label: translate('movies.details.genres'),
-            value: formatGenres(movie.genreIds),
+            value: formatGenres(movie.genreKeys),
         },
         {
             label: translate('movies.details.countries'),

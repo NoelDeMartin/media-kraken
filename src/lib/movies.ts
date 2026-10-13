@@ -1,12 +1,13 @@
 import type { RangeSliderValue } from '@aerogel/core';
 import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
 
+import type { GenreKey } from '@/lib/genres';
 import { matchesAny, matchesRange, personFilterKey, toSearchText } from '@/lib/media';
 import type Movie from '@/models/Movie';
 
 export type MoviesFilter = {
     watched?: Nullable<boolean>;
-    genres?: Nullable<number[]>;
+    genres?: Nullable<GenreKey[]>;
     directors?: Nullable<string[]>;
     cast?: Nullable<string[]>;
     countries?: Nullable<string[]>;
@@ -39,7 +40,7 @@ export function createMovieSearchEntry(movie: Movie) {
     return {
         movie,
         searchText: toSearchText(movie.getSlug() ?? ''),
-        genreIds: movie.genreIds,
+        genreKeys: movie.genreKeys,
         countryCodes: movie.countryCodes,
         languages: movie.languages,
         releaseYear: movie.releaseYear,
@@ -69,7 +70,7 @@ export function movieMatchesFilters(entry: MovieSearchEntry, filters: Nullable<M
         (isNullable(filters.releaseYear) || matchesRange(filters.releaseYear, entry.releaseYear)) &&
         (isNullable(filters.duration) || matchesRange(filters.duration, entry.runtimeMinutes)) &&
         (isNullable(filters.watched) || filters.watched === entry.watched) &&
-        (isNullable(filters.genres) || matchesAny(filters.genres, entry.genreIds)) &&
+        (isNullable(filters.genres) || matchesAny(filters.genres, entry.genreKeys)) &&
         (isNullable(filters.countries) || matchesAny(filters.countries, entry.countryCodes)) &&
         (isNullable(filters.languages) || matchesAny(filters.languages, entry.languages)) &&
         (isNullable(filters.directors) || matchesAny(filters.directors, entry.directors)) &&

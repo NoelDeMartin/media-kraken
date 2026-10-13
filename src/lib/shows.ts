@@ -1,13 +1,14 @@
 import type { RangeSliderValue } from '@aerogel/core';
 import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
 
+import type { GenreKey } from '@/lib/genres';
 import { matchesAny, matchesRange, personFilterKey, toSearchText } from '@/lib/media';
 import type Show from '@/models/Show';
 import type { ShowWatchingStatus } from '@/models/ShowWatching';
 
 export type ShowsFilter = {
     watchingStatus?: Nullable<ShowWatchingStatus>;
-    genres?: Nullable<number[]>;
+    genres?: Nullable<GenreKey[]>;
     creators?: Nullable<string[]>;
     cast?: Nullable<string[]>;
     countries?: Nullable<string[]>;
@@ -40,7 +41,7 @@ export function createShowSearchEntry(show: Show) {
     return {
         show,
         searchText: toSearchText(show.getSlug() ?? ''),
-        genreIds: show.genreIds,
+        genreKeys: show.genreKeys,
         countryCodes: show.countryCodes,
         languages: show.languages,
         releaseYear: show.releaseYear,
@@ -72,7 +73,7 @@ export function showMatchesFilters(entry: ShowSearchEntry, filters: Nullable<Sho
         (isNullable(filters.releaseYear) || matchesRange(filters.releaseYear, entry.releaseYear)) &&
         (isNullable(filters.seasons) || matchesRange(filters.seasons, entry.numberOfSeasons)) &&
         (isNullable(filters.watchingStatus) || filters.watchingStatus === entry.watchingStatus) &&
-        (isNullable(filters.genres) || matchesAny(filters.genres, entry.genreIds)) &&
+        (isNullable(filters.genres) || matchesAny(filters.genres, entry.genreKeys)) &&
         (isNullable(filters.countries) || matchesAny(filters.countries, entry.countryCodes)) &&
         (isNullable(filters.languages) || matchesAny(filters.languages, entry.languages)) &&
         (isNullable(filters.creators) || matchesAny(filters.creators, entry.creators)) &&

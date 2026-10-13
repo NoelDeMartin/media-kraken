@@ -35,13 +35,17 @@ describe('Show model', () => {
         expect(instance.imdbId).toBe('tt0903747');
     });
 
-    it('Parses genre ids from genre urls', () => {
+    it('Parses genre keys from genre urls', () => {
         const instance = new Show({
             name: 'Test Show',
-            genreUrls: ['https://www.themoviedb.org/genre/18', 'https://www.themoviedb.org/genre/80'],
+            genreUrls: [
+                'https://www.themoviedb.org/genre/18',
+                'https://www.themoviedb.org/genre/80',
+                'http://www.wikidata.org/entity/Q1107',
+            ],
         });
 
-        expect(instance.genreIds).toEqual([18, 80]);
+        expect(instance.genreKeys).toEqual(['tmdb:18', 'tmdb:80', 'wikidata:Q1107']);
     });
 
     it('Parses country codes from country urls', () => {

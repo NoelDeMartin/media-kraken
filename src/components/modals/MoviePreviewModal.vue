@@ -61,6 +61,6 @@ async function saveToCollection(options: { watched: boolean }) {
 }
 
 onMounted(async () => {
-    details.value = await TMDB.getMovie(movie.id, { includeStaff: false });
+    details.value = await TMDB.getMovie(movie.id, { includeCredits: false, includeKeywords: false });
 });
 </script>

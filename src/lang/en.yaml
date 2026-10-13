@@ -206,6 +206,28 @@ media:
         message: "Are you sure that you want to detach this from TMDB? Provenance will be removed and metadata won't be updated any more."
         accept: 'Detach'
 
+genres:
+    anime: 'Anime'
+    artificialIntelligence: 'Artificial Intelligence'
+    biopic: 'Biopic'
+    christmas: 'Christmas'
+    dystopia: 'Dystopia'
+    foundFootage: 'Found Footage'
+    heist: 'Heist'
+    martialArts: 'Martial Arts'
+    mecha: 'Mecha'
+    musical: 'Musical'
+    postApocalyptic: 'Post-apocalyptic'
+    prison: 'Prison'
+    slasher: 'Slasher'
+    sports: 'Sports'
+    spy: 'Spy'
+    stopMotion: 'Stop Motion'
+    superhero: 'Superhero'
+    timeTravel: 'Time Travel'
+    vampire: 'Vampire'
+    zombie: 'Zombie'
+
 lists:
     title: 'Lists'
 
@@ -231,6 +253,7 @@ stats:
         title: 'Traits'
         sciFiGeek: 'Sci-Fi Geek'
         cartoonist: 'Cartoonist'
+        animaniac: 'Animaniac'
         crimeJunkie: 'Crime Junkie'
         documentarian: 'Documentarian'
         dreamer: 'Dreamer'
@@ -238,6 +261,7 @@ stats:
         detective: 'Detective'
         romanceJunkie: 'Romance Junkie'
         gunslinger: 'Gunslinger'
+        singAlong: 'Sing-Along'
         genreTitle: 'You love {genre}!'
         omnivore: 'Omnivore'
         omnivoreTitle: 'You watch a bit of everything.'
@@ -309,37 +333,31 @@ stats:
             completedDescription: 'Watched {target} movies, one for every day of the year.'
         attentionSpan:
             title: 'Long Attention Span'
-            description: 'Watch a movie that lasts 3 hours or more.'
             completedDescription: 'Watched a movie that lasts 3 hours or more.'
             hint: 'I wonder how long a movie can get...'
             details: 'You watched {title}, which lasts {duration}!'
         committedFan:
             title: 'Committed Fan'
-            description: 'Watch more than 10 seasons of the same show.'
             completedDescription: 'Watched more than 10 seasons of the same show.'
             hint: 'Some stories take more than a decade to tell...'
             details: 'You watched {seasons} seasons of {title}!'
         marathon:
             title: 'Marathon'
-            description: 'Watch a trilogy in a single day.'
             completedDescription: 'Watched a trilogy in a single day.'
             hint: 'Popcorn for breakfast, lunch and dinner...'
             details: 'You watched {titles} on the same day!'
         premiere:
             title: 'Premiere'
-            description: 'Watch a movie on its release day.'
             completedDescription: 'Watched a movie on its release day.'
             hint: "Some people just can't wait..."
             details: 'You watched {title} on its release date!'
         spookySeason:
             title: 'Spooky Season'
-            description: 'Watch {target} horror movies in October.'
             completedDescription: 'Watched {target} horror movies in October.'
             hint: 'We all go a little mad sometimes...'
         jingleBells:
             title: 'Jingle Bells'
-            description: 'Watch {target} family movies in December.'
-            completedDescription: 'Watched {target} family movies in December.'
+            completedDescription: 'Watched {target} Christmas movies in December.'
             hint: 'Is it snowing already?'
 
 discover:

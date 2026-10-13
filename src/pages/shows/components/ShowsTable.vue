@@ -47,7 +47,7 @@ const renderedShows = computed(() =>
     shows.map((show) => ({
         ...show.getAttributes(),
         route: show.route,
-        genres: formatGenres(show.genreIds),
+        genres: formatGenres(show.genreKeys),
         countries: formatCountries(show.countryCodes),
         languages: formatLanguages(show.languages),
         releaseYear: show.releaseYear,

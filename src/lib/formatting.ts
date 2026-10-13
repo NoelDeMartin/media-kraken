@@ -1,6 +1,7 @@
 import { isTruthy, memo } from '@noeldemartin/utils';
 
-import TMDB from '@/services/TMDB';
+import type { GenreKey } from '@/lib/genres';
+import { translateGenre } from '@/lib/translations';
 
 const durationFormatter =
     'DurationFormat' in Intl
@@ -64,8 +65,12 @@ export function formatLanguage(language: string): string {
     }
 }
 
-export function formatGenres(genreIds: number[]): string {
-    return formatList(genreIds.map((id) => TMDB.translateGenre(id)).filter(isTruthy));
+export function formatGenre(genre: GenreKey): string {
+    return translateGenre(genre) ?? genre;
+}
+
+export function formatGenres(genres: GenreKey[]): string {
+    return formatList(genres.map(translateGenre).filter(isTruthy));
 }
 
 export function formatCountries(countryCodes: string[]): string {

@@ -22,10 +22,10 @@ import { translate } from '@aerogel/core';
 import { arraySorted, isTruthy, objectEntries, required } from '@noeldemartin/utils';
 import { computed } from 'vue';
 
-import { TMDB_GENRES } from '@/lib/tmdb';
+import { formatGenre } from '@/lib/formatting';
+import { genreKey, type GenreKey, type KnownGenreName } from '@/lib/genres';
 import { getAllShows, getEpisodesWatched, getStartedShows } from '@/pages/stats/utils/snapshot';
 import type { StatsSnapshot } from '@/pages/stats/utils/snapshot';
-import TMDB from '@/services/TMDB';
 
 interface Trait {
     name: string;
@@ -72,30 +72,50 @@ function getGenreTraits(): Trait[] {
         Documentary: 'documentarian',
         Fantasy: 'dreamer',
         Horror: 'horrorHound',
+        Musical: 'singAlong',
         Mystery: 'detective',
         Romance: 'romanceJunkie',
         Western: 'gunslinger',
-    } satisfies Partial<Record<keyof typeof TMDB_GENRES, string>>;
+    } satisfies Partial<Record<KnownGenreName, string>>;
 
-    const genreIdTraits = new Map<number, string>(
-        objectEntries(genreTraits).map(([genre, trait]) => [TMDB_GENRES[genre], trait]),
+    const genreKeyTraits = new Map<GenreKey, string>(
+        objectEntries(genreTraits).map(([genre, trait]) => [genreKey(genre), trait]),
     );
 
     return snapshot.mediaStats.all.genres
         .slice(0, 3)
         .map((genre) => {
-            const trait = genreIdTraits.get(genre.key);
+            const trait = genreKeyTraits.get(genre.key);
+
+            if (trait === 'cartoonist' && prefersAnime()) {
+                return {
+                    name: 'animaniac',
+                    title: translate('stats.traits.genreTitle', { genre: formatGenre(genreKey('Anime')) }),
+                };
+            }
 
             return (
                 trait && {
                     name: trait,
                     title: translate('stats.traits.genreTitle', {
-                        genre: TMDB.translateGenre(genre.key) ?? String(genre.key),
+                        genre: formatGenre(genre.key),
                     }),
                 }
             );
         })
         .filter(isTruthy);
+}
+
+function prefersAnime(): boolean {
+    const anime = genreKey('Anime');
+    const animation = genreKey('Animation');
+    const titles = [...snapshot.movies.watched, ...getStartedShows(snapshot)];
+    const animeCount = titles.filter((title) => title.genreKeys.includes(anime)).length;
+    const plainAnimationCount = titles.filter(
+        (title) => title.genreKeys.includes(animation) && !title.genreKeys.includes(anime),
+    ).length;
+
+    return animeCount > plainAnimationCount;
 }
 
 function getVarietyTraits(): Trait[] {

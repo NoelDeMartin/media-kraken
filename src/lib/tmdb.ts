@@ -20,16 +20,16 @@ export const TMDB_GENRES = {
     Crime: 80,
     Documentary: 99,
     Drama: 18,
-    Family: 10751,
     Fantasy: 14,
     Horror: 27,
+    Music: 10402,
     Mystery: 9648,
     Romance: 10749,
     Thriller: 53,
     Western: 37,
 } as const;
 
-export type TMDBGenreName = keyof typeof TMDB_GENRES;
+export type KnownTMDBGenreName = keyof typeof TMDB_GENRES;
 
 function tmdbImageUrl(path: string | null | undefined, size: TMDBImageSize): string | undefined {
     return path ? `https://image.tmdb.org/t/p/${TMDB_IMAGE_SIZE_SHORTHANDS[size]}${path}` : undefined;

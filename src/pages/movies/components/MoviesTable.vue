@@ -42,7 +42,7 @@ const renderedMovies = computed(() =>
     movies.map((movie) => ({
         ...movie.getAttributes(),
         route: movie.route,
-        genres: formatGenres(movie.genreIds),
+        genres: formatGenres(movie.genreKeys),
         countries: formatCountries(movie.countryCodes),
         languages: formatLanguages(movie.languages),
         runtimeMinutes: movie.runtimeMinutes,

@@ -29,10 +29,9 @@
 import { translate } from '@aerogel/core';
 import { computed, ref } from 'vue';
 
-import { formatCountry, formatLanguage, formatNumber } from '@/lib/formatting';
+import { formatCountry, formatGenre, formatLanguage, formatNumber } from '@/lib/formatting';
 import { MediaTypes } from '@/pages/stats/utils/snapshot';
 import type { StatsSnapshot, MediaType, MediaStatsEntry, ChartEntry } from '@/pages/stats/utils/snapshot';
-import TMDB from '@/services/TMDB';
 
 const TOP_LIMIT = 10;
 
@@ -51,7 +50,7 @@ const mediaFilterOptions = computed(() =>
 const charts = computed(() => [
     {
         title: translate('stats.mostWatched.genres'),
-        entries: labelled(stats.value.genres.slice(0, TOP_LIMIT), (id) => TMDB.translateGenre(id) ?? String(id)),
+        entries: labelled(stats.value.genres.slice(0, TOP_LIMIT), formatGenre),
     },
     {
         title: translate('stats.mostWatched.countries'),

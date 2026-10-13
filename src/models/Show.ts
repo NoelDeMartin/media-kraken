@@ -5,8 +5,9 @@ import type { RouteLocationRaw } from 'vue-router';
 
 import { countryCodeFromUrl } from '@/lib/countries';
 import { findExternalId } from '@/lib/domains';
+import { genreKeysFromUrls, type GenreKey } from '@/lib/genres';
 import { parseImdbId } from '@/lib/imdb';
-import { parseTmdbId, TMDB_GENRE_URL_PREFIX, tmdbPosterUrl, tmdbShowUrl } from '@/lib/tmdb';
+import { parseTmdbId, tmdbPosterUrl, tmdbShowUrl } from '@/lib/tmdb';
 import type { TMDBImageSize } from '@/lib/tmdb';
 import type Season from '@/models/Season';
 import type { TMDBShow } from '@/services/TMDB';
@@ -133,8 +134,8 @@ export default class Show extends Model {
         return this.startDate ? this.startDate.getFullYear() : null;
     }
 
-    public get genreIds(): number[] {
-        return this.genreUrls.map((url) => findExternalId(TMDB_GENRE_URL_PREFIX, [url], parseTmdbId)).filter(isTruthy);
+    public get genreKeys(): GenreKey[] {
+        return genreKeysFromUrls(this.genreUrls);
     }
 
     public get countryCodes(): string[] {

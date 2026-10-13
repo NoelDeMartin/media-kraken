@@ -208,7 +208,7 @@ const details = computed(() => {
     return [
         {
             label: translate('shows.details.genres'),
-            value: formatGenres(show.genreIds),
+            value: formatGenres(show.genreKeys),
         },
         {
             label: translate('shows.details.countries'),

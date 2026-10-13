@@ -1,5 +1,5 @@
 import { Cache, Events, Lang, env } from '@aerogel/core';
-import { facade, objectFromEntries, tap } from '@noeldemartin/utils';
+import { arrayFilter, facade, objectFromEntries, tap } from '@noeldemartin/utils';
 import { watch } from 'vue';
 import { z } from 'zod';
 
@@ -50,8 +50,24 @@ const TMDBCreditsSchema = z
     })
     .nullish();
 
+const TMDBKeywordSchema = z.object({
+    id: z.number(),
+    name: z.string(),
+});
+
+const TMDBKeywordsSchema = z
+    .object({
+        keywords: z.array(TMDBKeywordSchema).optional(),
+        results: z.array(TMDBKeywordSchema).optional(),
+    })
+    .nullish()
+    .transform((val) =>
+        val ? [...(val.keywords ?? []), ...(val.results ?? [])].map((keyword) => keyword.name.trim()) : undefined,
+    );
+
 const TMDBMediaDetailsSchema = z.object({
     genres: z.array(TMDBGenreSchema).default([]),
+    keywords: TMDBKeywordsSchema,
     credits: TMDBCreditsSchema,
     origin_country: z.array(z.string()).default([]),
     production_countries: z
@@ -219,14 +235,17 @@ export class TMDBService extends Service {
         };
     }
 
-    public async getMovie(id: number, options: { includeStaff: boolean }): Promise<TMDBMovieWithStaff> {
+    public async getMovie(
+        id: number,
+        options: { includeCredits: boolean; includeKeywords: boolean },
+    ): Promise<TMDBMovieWithStaff> {
         const { credits, ...details } = await this.request(
             TMDBMovieDetailsSchema,
             `movie/${id}`,
-            options.includeStaff ? { append_to_response: 'credits' } : {},
+            this.getAppendToResponseParameters(options),
         );
 
-        if (!options.includeStaff) {
+        if (!options.includeCredits) {
             return details;
         }
 
@@ -242,14 +261,17 @@ export class TMDBService extends Service {
 
     public async getShow(
         id: number,
-        options: { includeSeasons: boolean; includeStaff?: boolean },
+        options: { includeSeasons: boolean; includeCredits: boolean; includeKeywords: boolean },
     ): Promise<{
         details: TMDBShowWithStaff;
         externalIds: TMDBShowExternalIds;
         seasons: { season: TMDBShowDetails['seasons'][number]; details: TMDBSeasonDetails }[];
     }> {
         const [details, externalIds] = await Promise.all([
-            this.getShowDetails(id, { includeStaff: !!options.includeStaff }),
+            this.getShowDetails(id, {
+                includeCredits: options.includeCredits,
+                includeKeywords: options.includeKeywords,
+            }),
             this.getShowExternalIds(id),
         ]);
         const seasons = options.includeSeasons
@@ -272,18 +294,17 @@ export class TMDBService extends Service {
         await this.watchGenres();
     }
 
-    private async getShowDetails(id: number, options: { includeStaff: boolean }): Promise<TMDBShowWithStaff> {
+    private async getShowDetails(
+        id: number,
+        options: { includeCredits: boolean; includeKeywords: boolean },
+    ): Promise<TMDBShowWithStaff> {
         const {
             credits,
             created_by: creators,
             ...details
-        } = await this.request(
-            TMDBShowDetailsSchema,
-            `tv/${id}`,
-            options.includeStaff ? { append_to_response: 'credits' } : {},
-        );
+        } = await this.request(TMDBShowDetailsSchema, `tv/${id}`, this.getAppendToResponseParameters(options));
 
-        if (!options.includeStaff) {
+        if (!options.includeCredits) {
             return details;
         }
 
@@ -292,6 +313,18 @@ export class TMDBService extends Service {
             cast: this.parseCast(credits),
             creators: creators.map(({ id, name, profile_path }) => ({ id, name, profile_path })),
         };
+    }
+
+    private getAppendToResponseParameters(options: {
+        includeCredits: boolean;
+        includeKeywords: boolean;
+    }): Record<string, string> {
+        const appendToResponse = arrayFilter([
+            options.includeCredits && 'credits',
+            options.includeKeywords && 'keywords',
+        ]);
+
+        return appendToResponse.length > 0 ? { append_to_response: appendToResponse.join(',') } : {};
     }
 
     private async getSeasonDetails(showId: number, seasonNumber: number): Promise<TMDBSeasonDetails> {

@@ -1,7 +1,7 @@
-import { arrayUnique, isTruthy, objectEntries, required } from '@noeldemartin/utils';
+import { isTruthy, required } from '@noeldemartin/utils';
 
+import { genreKey, type GenreKey, type KnownGenreName } from '@/lib/genres';
 import { personFilterKey } from '@/lib/media';
-import { TMDB_GENRES, type TMDBGenreName } from '@/lib/tmdb';
 import type Movie from '@/models/Movie';
 import type { PersonCredit } from '@/models/Person';
 import type Show from '@/models/Show';
@@ -9,12 +9,18 @@ import type { ShowWatchingStatus } from '@/models/ShowWatching';
 
 import { countEntries } from './count';
 
-const TMDB_GENRE_ALIASES: Partial<Record<TMDBGenreName, TMDBGenreName>> = {
-    'Sci-Fi & Fantasy': 'Science Fiction',
-};
-const TMDB_GENRE_ID_ALIASES = Object.fromEntries(
-    objectEntries(TMDB_GENRE_ALIASES).map(([key, value]) => [TMDB_GENRES[key], TMDB_GENRES[value]]),
-);
+const SUPERFLUOUS_GENRES: KnownGenreName[] = [
+    'Action & Adventure',
+    'TV Movie',
+    'Action',
+    'Adventure',
+    'Comedy',
+    'Drama',
+    'Music',
+    'Thriller',
+];
+
+const SUPERFLUOUS_GENRE_KEYS = new Set(SUPERFLUOUS_GENRES.map(genreKey));
 
 export const MediaTypes = ['all', 'movies', 'shows'] as const;
 export type MediaType = (typeof MediaTypes)[number];
@@ -34,7 +40,7 @@ export interface StatsSnapshot {
 
 export interface MediaStats {
     titles: number;
-    genres: MediaStatsEntry<number>[];
+    genres: MediaStatsEntry<GenreKey>[];
     countries: MediaStatsEntry<string>[];
     languages: MediaStatsEntry<string>[];
     makers: MediaStatsEntry<PersonCredit>[];
@@ -54,7 +60,7 @@ export interface ChartEntry {
 }
 
 export interface MediaSnapshot {
-    genreIds: number[];
+    genreKeys: GenreKey[];
     countryCodes: string[];
     languages: string[];
     releaseYear: number | null;
@@ -86,7 +92,7 @@ function sortedEntries<T>(items: T[]): MediaStatsEntry<T>[] {
 function getMovieSnapshot(movie: Movie): MovieSnapshot {
     return {
         title: movie.title,
-        genreIds: movie.genreIds,
+        genreKeys: movie.genreKeys,
         countryCodes: movie.countryCodes,
         languages: movie.languages,
         releaseYear: movie.releaseYear,
@@ -104,7 +110,7 @@ function getShowSnapshot(show: Show): ShowSnapshot {
 
     return {
         name: show.name,
-        genreIds: arrayUnique(show.genreIds.map((id) => TMDB_GENRE_ID_ALIASES[id] ?? id)),
+        genreKeys: show.genreKeys,
         countryCodes: show.countryCodes,
         languages: show.languages,
         releaseYear: show.releaseYear,
@@ -134,22 +140,10 @@ function sortedPeople(people: PersonCredit[]): MediaStatsEntry<PersonCredit>[] {
 }
 
 function getMediaStats(titles: MediaSnapshot[]): MediaStats {
-    const noiseGenres = [
-        'Action & Adventure',
-        'TV Movie',
-        'Action',
-        'Adventure',
-        'Comedy',
-        'Drama',
-        'Thriller',
-    ] as const;
-
-    const noiseGenreIds = noiseGenres.map((genre) => TMDB_GENRES[genre]);
-
     return {
         titles: titles.length,
         genres: sortedEntries(
-            titles.flatMap((title) => title.genreIds).filter((genreId) => !noiseGenreIds.includes(genreId)),
+            titles.flatMap((title) => title.genreKeys).filter((key) => !SUPERFLUOUS_GENRE_KEYS.has(key)),
         ),
         countries: sortedEntries(titles.flatMap((title) => title.countryCodes)),
         languages: sortedEntries(titles.flatMap((title) => title.languages)),

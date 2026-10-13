@@ -18,6 +18,7 @@ import { countryUrlFromCode } from '@/lib/countries';
 import { mergeExternalUrls } from '@/lib/domains';
 import { minutesToISODuration } from '@/lib/durations';
 import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
+import { keywordGenreUrls } from '@/lib/genres';
 import { imdbUrl } from '@/lib/imdb';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import { tmdbBackdropUrl, tmdbGenreUrl, tmdbMovieUrl, tmdbPosterUrl, tmdbProfileUrl, tmdbShowUrl } from '@/lib/tmdb';
@@ -163,7 +164,7 @@ export class CatalogService extends Service {
     }
 
     public async importMovieFromTMDB(tmdbMovie: TMDBMovie, options: { watched?: boolean } = {}): Promise<Movie> {
-        const details = await TMDB.getMovie(tmdbMovie.id, { includeStaff: true });
+        const details = await TMDB.getMovie(tmdbMovie.id, { includeCredits: true, includeKeywords: true });
         const movie = new Movie(this.getMovieAttributes(details));
 
         movie.mintUrl();
@@ -185,7 +186,8 @@ export class CatalogService extends Service {
     ): Promise<Show> {
         const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id, {
             includeSeasons: !!options.watchingStatus && !this.ignoresSeasons(options.watchingStatus),
-            includeStaff: true,
+            includeCredits: true,
+            includeKeywords: true,
         });
 
         const showAttributes = this.getShowAttributes(details, externalIds);
@@ -281,7 +283,10 @@ export class CatalogService extends Service {
 
         return {
             countryUrls: arrayUnique(countryCodes.map(countryUrlFromCode).filter(isTruthy)),
-            genreUrls: details.genres.map((genre) => tmdbGenreUrl(genre.id)),
+            genreUrls: [
+                ...details.genres.map((genre) => tmdbGenreUrl(genre.id)),
+                ...keywordGenreUrls(details.keywords ?? []),
+            ],
             languages: arrayUnique(details.spoken_languages.map((language) => language.iso_639_1)),
         };
     }
@@ -309,7 +314,8 @@ export class CatalogService extends Service {
 
         const { details, externalIds, seasons } = await TMDB.getShow(show.tmdbId, {
             includeSeasons: !WATCHING_STATUSES_WITHOUT_SEASONS.includes(show.watchingStatus),
-            includeStaff: true,
+            includeCredits: true,
+            includeKeywords: true,
         });
 
         const attributes = this.getShowAttributes(details, externalIds);
@@ -363,7 +369,7 @@ export class CatalogService extends Service {
             return;
         }
 
-        const details = await TMDB.getMovie(movie.tmdbId, { includeStaff: true });
+        const details = await TMDB.getMovie(movie.tmdbId, { includeCredits: true, includeKeywords: true });
         const attributes = this.getMovieAttributes(details);
 
         movie.setAttributes({
@@ -510,7 +516,7 @@ export class CatalogService extends Service {
     }
 
     private async newMovieFromTMDB(tmdbId: number, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
-        const details = await TMDB.getMovie(tmdbId, { includeStaff: true });
+        const details = await TMDB.getMovie(tmdbId, { includeCredits: true, includeKeywords: true });
         const movie = new Movie(this.getMovieAttributes(details));
 
         movie.mintUrl();

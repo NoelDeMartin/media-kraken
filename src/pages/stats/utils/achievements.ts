@@ -15,8 +15,8 @@ import IconTranslate from '~icons/ph/translate-fill';
 import IconTree from '~icons/ph/tree-evergreen-fill';
 
 import { formatDuration, formatList, formatNumber } from '@/lib/formatting';
+import { genreKey, type GenreKey } from '@/lib/genres';
 import { personFilterKey } from '@/lib/media';
-import { TMDB_GENRES } from '@/lib/tmdb';
 import { getAllShows, getEpisodesWatched, type MovieSnapshot, type StatsSnapshot } from '@/pages/stats/utils/snapshot';
 
 import { countEntries } from './count';
@@ -45,7 +45,7 @@ export interface AchievementsStats {
     marathonMovieTitles: string[];
     premieredMovieTitle: string | null;
     mostHorrorMoviesInAnOctober: number;
-    mostFamilyMoviesInADecember: number;
+    mostChristmasMoviesInADecember: number;
 }
 
 export interface AchievementProgress {
@@ -125,7 +125,7 @@ const ACHIEVEMENTS: Achievement[] = [
         icon: IconTree,
         target: 10,
         secret: true,
-        value: (stats) => stats.mostFamilyMoviesInADecember,
+        value: (stats) => stats.mostChristmasMoviesInADecember,
     },
 ];
 
@@ -168,8 +168,8 @@ function getAchievementsStats(snapshot: StatsSnapshot): AchievementsStats {
         mostSameDirectorMoviesInADay: marathon.length,
         marathonMovieTitles: marathon.map((movie) => movie.title),
         premieredMovieTitle: getFirstPremieredMovie(watchedMovies)?.title ?? null,
-        mostHorrorMoviesInAnOctober: getMostGenreMoviesInAMonth(watchedMovies, TMDB_GENRES.Horror, 9),
-        mostFamilyMoviesInADecember: getMostGenreMoviesInAMonth(watchedMovies, TMDB_GENRES.Family, 11),
+        mostHorrorMoviesInAnOctober: getMostGenreMoviesInAMonth(watchedMovies, genreKey('Horror'), 9),
+        mostChristmasMoviesInADecember: getMostGenreMoviesInAMonth(watchedMovies, genreKey('Christmas'), 11),
     };
 }
 
@@ -205,9 +205,9 @@ function getBiggestMakerMarathon(movies: MovieSnapshot[]): MovieSnapshot[] {
     );
 }
 
-function getMostGenreMoviesInAMonth(movies: MovieSnapshot[], genreId: number, month: number): number {
+function getMostGenreMoviesInAMonth(movies: MovieSnapshot[], genre: GenreKey, month: number): number {
     const years = movies
-        .filter((movie) => movie.watchedAt?.getMonth() === month && movie.genreIds.includes(genreId))
+        .filter((movie) => movie.watchedAt?.getMonth() === month && movie.genreKeys.includes(genre))
         .map((movie) => movie.watchedAt?.getFullYear());
 
     return Math.max(0, ...countEntries(years).values());

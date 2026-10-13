@@ -16,7 +16,7 @@
                     :label="$t('shows.advancedFilters.genre')"
                     :placeholder="$t('shows.advancedFilters.allGenres')"
                     :options="genreOptions"
-                    :render-option="renderGenre"
+                    :render-option="formatGenre"
                 />
                 <Combobox
                     name="creators"
@@ -83,12 +83,12 @@ import { isTruthy, type Nullable } from '@noeldemartin/utils';
 import { computed, onMounted, ref } from 'vue';
 import { z } from 'zod';
 
-import { formatCountry, formatLanguage } from '@/lib/formatting';
+import { formatCountry, formatGenre, formatLanguage } from '@/lib/formatting';
+import type { GenreKey } from '@/lib/genres';
 import { personFilterKey, sortByLocale, uniquePersonKeys } from '@/lib/media';
 import type { ShowsFilter } from '@/lib/shows';
 import type Show from '@/models/Show';
 import type { ShowWatchingStatus } from '@/models/ShowWatching';
-import TMDB from '@/services/TMDB';
 
 type Result = { filters: ShowsFilter };
 
@@ -108,7 +108,7 @@ const statusOptions = ['all', 'watching', 'completed', 'dropped', 'pending'] as 
 )[];
 const form = useForm({
     watchingStatus: z.enum(statusOptions).default('all'),
-    genres: z.array(z.number()).default([]),
+    genres: z.array(z.custom<GenreKey>()).default([]),
     creators: z.array(z.string()).default([]),
     cast: z.array(z.string()).default([]),
     countries: z.array(z.string()).default([]),
@@ -134,9 +134,7 @@ const creatorOptions = computed(() => sortByLocale(uniquePersonKeys(creators.val
 const castOptions = computed(() => sortByLocale(uniquePersonKeys(actors.value), renderPerson));
 
 const genreOptions = computed(() => {
-    const showGenreIds = new Set(shows.flatMap((show) => show.genreIds));
-
-    return sortByLocale(Array.from(showGenreIds), renderGenre);
+    return sortByLocale(Array.from(new Set(shows.flatMap((show) => show.genreKeys))), formatGenre);
 });
 
 const countryOptions = computed(() => {
@@ -179,10 +177,6 @@ const seasonsBounds = computed(() => {
 
 function renderPerson(key: string): string {
     return personNames.value.get(key) ?? key;
-}
-
-function renderGenre(genre: number): string {
-    return TMDB.translateGenre(genre) ?? String(genre);
 }
 
 function renderStatus(status: (typeof statusOptions)[number]): string {
