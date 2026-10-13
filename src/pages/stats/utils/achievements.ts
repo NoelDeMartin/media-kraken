@@ -1,5 +1,5 @@
 import { translate } from '@aerogel/core';
-import { arraySorted, isTruthy } from '@noeldemartin/utils';
+import { arrayGroupBy, arraySorted, isTruthy } from '@noeldemartin/utils';
 import type { Component } from 'vue';
 import IconCalendar from '~icons/ph/calendar-star-fill';
 import IconEye from '~icons/ph/eye-fill';
@@ -20,42 +20,6 @@ import { personFilterKey } from '@/lib/media';
 import { getAllShows, getEpisodesWatched, type MovieSnapshot, type StatsSnapshot } from '@/pages/stats/utils/snapshot';
 
 import { countEntries } from './count';
-
-export interface Achievement {
-    id: string;
-    icon: Component;
-    target: number;
-    secret?: boolean;
-    value: (stats: AchievementsStats) => number;
-    details?: (stats: AchievementsStats) => string | null;
-}
-
-export interface AchievementsStats {
-    watchedMovies: number;
-    watchedEpisodes: number;
-    countries: number;
-    languages: number;
-    genres: number;
-    decades: number;
-    longestMovieMinutes: number;
-    longestMovieTitle: string | null;
-    mostSeasonsWatched: number;
-    mostSeasonsWatchedShowName: string | null;
-    mostSameDirectorMoviesInADay: number;
-    marathonMovieTitles: string[];
-    premieredMovieTitle: string | null;
-    mostHorrorMoviesInAnOctober: number;
-    mostChristmasMoviesInADecember: number;
-}
-
-export interface AchievementProgress {
-    achievement: Achievement;
-    value: number;
-    unlocked: boolean;
-    revealed: boolean;
-    secretNumber: number | null;
-    details: string | null;
-}
 
 const ACHIEVEMENTS: Achievement[] = [
     { id: 'globetrotter', icon: IconGlobe, target: 25, value: (stats) => stats.countries },
@@ -129,6 +93,45 @@ const ACHIEVEMENTS: Achievement[] = [
     },
 ];
 
+const MAX_MOVIES_WATCHED_IN_A_DAY = 10;
+const MAX_MINUTES_WATCHED_IN_A_DAY = 24 * 60;
+
+export interface Achievement {
+    id: string;
+    icon: Component;
+    target: number;
+    secret?: boolean;
+    value: (stats: AchievementsStats) => number;
+    details?: (stats: AchievementsStats) => string | null;
+}
+
+export interface AchievementsStats {
+    watchedMovies: number;
+    watchedEpisodes: number;
+    countries: number;
+    languages: number;
+    genres: number;
+    decades: number;
+    longestMovieMinutes: number;
+    longestMovieTitle: string | null;
+    mostSeasonsWatched: number;
+    mostSeasonsWatchedShowName: string | null;
+    mostSameDirectorMoviesInADay: number;
+    marathonMovieTitles: string[];
+    premieredMovieTitle: string | null;
+    mostHorrorMoviesInAnOctober: number;
+    mostChristmasMoviesInADecember: number;
+}
+
+export interface AchievementProgress {
+    achievement: Achievement;
+    value: number;
+    unlocked: boolean;
+    revealed: boolean;
+    secretNumber: number | null;
+    details: string | null;
+}
+
 function releaseDayKey(date: Date): string {
     return date.toISOString().slice(0, 10);
 }
@@ -149,10 +152,11 @@ function arrayMax<T>(items: T[], selector: (item: T) => number): T | null {
 
 function getAchievementsStats(snapshot: StatsSnapshot): AchievementsStats {
     const watchedMovies = snapshot.movies.watched;
+    const datedMovies = getPlausiblyDatedMovies(watchedMovies);
     const { all } = snapshot.mediaStats;
     const longestMovie = arrayMax(watchedMovies, (movie) => movie.runtimeMinutes);
     const mostWatchedShow = arrayMax(getAllShows(snapshot), (show) => show.seasonsWatched);
-    const marathon = arraySorted(getBiggestMakerMarathon(watchedMovies), 'watchedAt', 'asc');
+    const marathon = arraySorted(getBiggestMakerMarathon(datedMovies), 'watchedAt', 'asc');
 
     return {
         watchedMovies: watchedMovies.length,
@@ -167,10 +171,26 @@ function getAchievementsStats(snapshot: StatsSnapshot): AchievementsStats {
         mostSeasonsWatchedShowName: mostWatchedShow?.name ?? null,
         mostSameDirectorMoviesInADay: marathon.length,
         marathonMovieTitles: marathon.map((movie) => movie.title),
-        premieredMovieTitle: getFirstPremieredMovie(watchedMovies)?.title ?? null,
-        mostHorrorMoviesInAnOctober: getMostGenreMoviesInAMonth(watchedMovies, genreKey('Horror'), 9),
-        mostChristmasMoviesInADecember: getMostGenreMoviesInAMonth(watchedMovies, genreKey('Christmas'), 11),
+        premieredMovieTitle: getFirstPremieredMovie(datedMovies)?.title ?? null,
+        mostHorrorMoviesInAnOctober: getMostGenreMoviesInAMonth(datedMovies, genreKey('Horror'), 9),
+        mostChristmasMoviesInADecember: getMostGenreMoviesInAMonth(datedMovies, genreKey('Christmas'), 11),
     };
+}
+
+function getPlausiblyDatedMovies(movies: MovieSnapshot[]): MovieSnapshot[] {
+    const days = arrayGroupBy(
+        movies.filter((movie): movie is MovieSnapshot & { watchedAt: Date } => !!movie.watchedAt),
+        (movie) => watchedDayKey(movie.watchedAt),
+    );
+
+    return Object.values(days)
+        .filter(isTruthy)
+        .filter(
+            (dayMovies) =>
+                dayMovies.length <= MAX_MOVIES_WATCHED_IN_A_DAY &&
+                dayMovies.reduce((minutes, movie) => minutes + movie.runtimeMinutes, 0) <= MAX_MINUTES_WATCHED_IN_A_DAY,
+        )
+        .flat();
 }
 
 function getFirstPremieredMovie(movies: MovieSnapshot[]): MovieSnapshot | null {

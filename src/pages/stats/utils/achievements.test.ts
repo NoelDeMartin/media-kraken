@@ -223,4 +223,30 @@ describe('achievements', () => {
         ).toMatchObject({ unlocked: false, value: 9 });
         expect(getProgress('jingleBells', christmasMovies(10, new Date(2024, 11, 24)))?.unlocked).toBe(true);
     });
+
+    it('ignores watching dates from days with implausibly many movies', () => {
+        const director = { name: 'Peter Jackson', tmdbId: 108 };
+        const importedAt = new Date(2024, 9, 31);
+        const importedMovies = [
+            movie({ makers: [director], genres: ['Horror'], watchedAt: importedAt }),
+            movie({ makers: [director], genres: ['Horror'], watchedAt: importedAt }),
+            movie({ makers: [director], genres: ['Horror'], watchedAt: importedAt }),
+            movie({ genres: ['Horror'], releaseDate: new Date('2024-12-01'), watchedAt: importedAt }),
+            ...Array.from({ length: 6 }, () => movie({ genres: ['Horror'], watchedAt: importedAt })),
+        ];
+        const longDay = Array.from({ length: 10 }, () =>
+            movie({ genres: ['Christmas'], runtimeMinutes: 150, watchedAt: new Date(2024, 11, 24) }),
+        );
+
+        expect(getProgress('marathon', importedMovies)?.unlocked).toBe(true);
+        expect(getProgress('premiere', importedMovies)?.unlocked).toBe(true);
+        expect(getProgress('spookySeason', importedMovies)?.unlocked).toBe(true);
+
+        importedMovies.push(movie({ watchedAt: importedAt }));
+
+        expect(getProgress('marathon', importedMovies)?.unlocked).toBe(false);
+        expect(getProgress('premiere', importedMovies)?.unlocked).toBe(false);
+        expect(getProgress('spookySeason', importedMovies)).toMatchObject({ unlocked: false, value: 0 });
+        expect(getProgress('jingleBells', longDay)).toMatchObject({ unlocked: false, value: 0 });
+    });
 });
