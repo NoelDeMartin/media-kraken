@@ -1,12 +1,14 @@
 import { translate } from '@aerogel/core';
 import { defineRouteBindings, defineRoutes } from '@aerogel/plugin-routing';
 
+import List from '@/models/List.ts';
 import Movie from '@/models/Movie.ts';
 import Show from '@/models/Show.ts';
 
 import Discover from './Discover.vue';
 import Home from './Home.vue';
 import ListsIndex from './lists/Index.vue';
+import ListsShow from './lists/Show.vue';
 import MoviesIndex from './movies/Index.vue';
 import MoviesShow from './movies/Show.vue';
 import ShowsIndex from './shows/Index.vue';
@@ -14,6 +16,7 @@ import ShowsShow from './shows/Show.vue';
 import StatsIndex from './stats/Index.vue';
 
 export const bindings = defineRouteBindings({
+    list: List,
     movie: Movie,
     show: Show,
 });
@@ -49,6 +52,12 @@ export default defineRoutes([
         path: '/lists',
         component: ListsIndex,
         title: () => translate('lists.title'),
+    },
+    {
+        name: 'lists.show',
+        path: '/lists/:list',
+        component: ListsShow,
+        title: ({ list }) => (list as List).name,
     },
     {
         name: 'stats.index',

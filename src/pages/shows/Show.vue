@@ -115,10 +115,13 @@ import IconSync from '~icons/mdi/sync';
 import IconArchive from '~icons/ph/archive-fill';
 import IconDetach from '~icons/ph/link-break-bold';
 import IconIdentify from '~icons/ph/list-magnifying-glass';
+import IconManageLists from '~icons/ph/list-plus';
 import IconDelete from '~icons/ph/trash';
 
 import IdentifyMediaModal from '@/components/modals/IdentifyMediaModal.vue';
+import ManageListsModal from '@/components/modals/ManageListsModal.vue';
 import { formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
+import { removeFromLists, replaceInLists } from '@/lib/lists';
 import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';
 import Show from '@/models/Show';
@@ -169,6 +172,11 @@ const watchingStatusOptions = computed(() => {
 const menuOptions = computed(() =>
     arrayFilter([
         ...watchingStatusOptions.value,
+        {
+            label: translate('lists.manage.action'),
+            icon: IconManageLists,
+            click: () => UI.modal(ManageListsModal, { media: show }),
+        },
         {
             label: translate('media.synchronize'),
             icon: IconSync,
@@ -268,7 +276,10 @@ async function deleteShow() {
         return;
     }
 
-    await runSync(show.deleteWithRelations());
+    await runSync(async () => {
+        await removeFromLists(show);
+        await show.deleteWithRelations();
+    });
     await Router.push('/shows');
 
     UI.toast(translate('shows.delete.success', { show: show.name }));
@@ -301,6 +312,7 @@ async function identifyAsMovie(tmdbMovie: TMDBMovie) {
             watched: show.watchingStatus === 'completed',
         });
 
+        await replaceInLists(show, movie);
         await Router.push(movie.route);
         await show.deleteWithRelations();
     });

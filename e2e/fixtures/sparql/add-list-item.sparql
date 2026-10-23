@@ -1,0 +1,41 @@
+DELETE DATA {
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it-metadata> crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+} ;
+
+INSERT DATA {
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it> schema:itemListElement <#[[item][%uuid%]]> .
+
+    <#it-metadata> crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#it-operation-[[operation-1][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:name ;
+        crdt:value "{{ name }}" .
+
+    <#it-operation-[[operation-2][%uuid%]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:itemListElement ;
+        crdt:value <#[[item][%uuid%]]> .
+
+    <#[[item][%uuid%]]>
+        a schema:ListItem ;
+        schema:item <{{ mediaUrl }}> ;
+        schema:position 1 .
+
+    <#[[item][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[item][%uuid%]]> ;
+        crdt:createdAt "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+}

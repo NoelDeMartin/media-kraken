@@ -1,5 +1,7 @@
 import type Episode from '@/models/Episode';
 import type EpisodeWatched from '@/models/EpisodeWatched';
+import type List from '@/models/List';
+import type ListItem from '@/models/ListItem';
 import type Movie from '@/models/Movie';
 import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';
@@ -12,6 +14,8 @@ declare module 'soukai-bis' {
     interface ModelsRegistry {
         Episode: typeof Episode;
         EpisodeWatched: typeof EpisodeWatched;
+        List: typeof List;
+        ListItem: typeof ListItem;
         Movie: typeof Movie;
         PerformanceRole: typeof PerformanceRole;
         Person: typeof Person;

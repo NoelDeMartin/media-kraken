@@ -7,3 +7,8 @@
     a solid:TypeRegistration ;
     solid:forClass schema:Movie ;
     solid:instanceContainer <../movies/> .
+
+<#lists>
+    a solid:TypeRegistration ;
+    solid:forClass schema:ItemList ;
+    solid:instanceContainer <../lists/> .

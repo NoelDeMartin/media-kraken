@@ -1,0 +1,31 @@
+DELETE DATA {
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it> schema:name "Favorites" .
+    <#it-metadata> crdt:updatedAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime .
+} ;
+
+INSERT DATA {
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it> schema:name "All-time favorites" .
+    <#it-metadata> crdt:updatedAt "2026-08-25T09:04:23.480Z"^^xsd:dateTime .
+
+    <#it-operation-1>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "2026-08-24T09:04:23.480Z"^^xsd:dateTime ;
+        crdt:property schema:name ;
+        crdt:value "Favorites" .
+
+    <#it-operation-2>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "2026-08-25T09:04:23.480Z"^^xsd:dateTime ;
+        crdt:property schema:name ;
+        crdt:value "All-time favorites" .
+}

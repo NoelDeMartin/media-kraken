@@ -1,7 +1,9 @@
 import type { RangeSliderValue } from '@aerogel/core';
 import { isNullable, isTruthy, stringToSlug } from '@noeldemartin/utils';
 
+import type Movie from '@/models/Movie';
 import type { PersonCredit } from '@/models/Person';
+import type Show from '@/models/Show';
 
 export function matchesAny<T>(selected: T[], values: T[]): boolean {
     return values.some((value) => !isNullable(value) && selected.includes(value));
@@ -35,4 +37,8 @@ export function toSearchText(text: string): string {
 
 export function uniquePersonKeys(people: PersonCredit[]): string[] {
     return Array.from(new Set(people.map(personFilterKey).filter(isTruthy)));
+}
+
+export function mediaName(media: Movie | Show): string {
+    return 'title' in media ? media.title : media.name;
 }

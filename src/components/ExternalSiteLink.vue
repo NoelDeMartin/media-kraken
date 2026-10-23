@@ -1,5 +1,5 @@
 <template>
-    <a :href="url" target="_blank" rel="noopener" :title="$t('app.openIn', { domain: domain || url })">
+    <a :href="url" target="_blank" rel="noopener" :title="$t('ui.openIn', { domain: domain || url })">
         <component :is="icon.component" :class="icon.class" />
         <span class="sr-only">
             {{ domain || url }}

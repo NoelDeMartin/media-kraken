@@ -1,0 +1,15 @@
+INSERT DATA {
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it>
+        a schema:ItemList ;
+        schema:name "{{ name }}" .
+
+    <#it-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#it> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+}

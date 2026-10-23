@@ -1,0 +1,25 @@
+@prefix schema: <https://schema.org/> .
+@prefix crdts: <https://vocab.noeldemartin.com/crdt/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<#it>
+    a schema:ItemList ;
+    schema:name "Favorites" ;
+    schema:itemListElement <#the-substance> .
+
+<#it-metadata>
+    a crdts:Metadata ;
+    crdts:resource <#it> ;
+    crdts:createdAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime ;
+    crdts:updatedAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime .
+
+<#the-substance>
+    a schema:ListItem ;
+    schema:item <../movies/the-substance-2024#it> ;
+    schema:position 1 .
+
+<#the-substance-metadata>
+    a crdts:Metadata ;
+    crdts:resource <#the-substance> ;
+    crdts:createdAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime ;
+    crdts:updatedAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime .
