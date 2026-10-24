@@ -1,6 +1,6 @@
 <template>
     <Page>
-        <div v-if="loading && isEmpty" class="flex items-center justify-center py-16">
+        <div v-if="!upcomingShows || !pendingMovies" class="flex items-center justify-center py-16">
             <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-8 w-full" />
         </div>
         <Welcome v-else-if="isEmpty" />
@@ -57,11 +57,14 @@ const SAMPLE_MOVIES_LENGTH = 10;
 
 const { models: shows, loading: loadingShows } = useModels(Show);
 const { models: movies, loading: loadingMovies } = useModels(Movie);
-const loading = computed(() => loadingShows.value || loadingMovies.value);
 const activeShows = computedModels(Show, () => shows.value.filter((show) => show.watchingStatus === 'watching'));
 const pendingMovies = computedModels(
     Movie,
     () => {
+        if (loadingMovies.value) {
+            return null;
+        }
+
         const sample: Movie[] = [];
         const sortedMovies = arraySorted(movies.value, 'createdAt', 'desc');
 
@@ -83,11 +86,16 @@ const pendingMovies = computedModels(
 );
 const upcomingShows = computedModels(
     Show,
-    () =>
-        activeShows.value.filter((show) =>
+    () => {
+        if (loadingShows.value) {
+            return null;
+        }
+
+        return activeShows.value.filter((show) =>
             show.pendingEpisodes.value?.some(({ publishedAt }) => Episode.isUpcoming(publishedAt)),
-        ),
+        );
+    },
     { watch: ['pendingEpisodes'], cache: 'upcomingShows' },
 );
-const isEmpty = computed(() => upcomingShows.value.length === 0 && pendingMovies.value.length === 0);
+const isEmpty = computed(() => upcomingShows.value?.length === 0 && pendingMovies.value?.length === 0);
 </script>

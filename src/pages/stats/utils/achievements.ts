@@ -18,7 +18,6 @@ import { formatDuration, formatList, formatNumber } from '@/lib/formatting';
 import { genreKey, type GenreKey } from '@/lib/genres';
 import { personFilterKey } from '@/lib/media';
 
-import { countEntries } from './count';
 import { getAllShows, getEpisodesWatched, type MovieSnapshot, type StatsSnapshot } from './snapshot';
 
 const ACHIEVEMENTS: Achievement[] = [
@@ -82,14 +81,28 @@ const ACHIEVEMENTS: Achievement[] = [
         icon: IconGhost,
         target: 10,
         secret: true,
-        value: (stats) => stats.mostHorrorMoviesInAnOctober,
+        value: (stats) => stats.spookySeasonMovieTitles.length,
+        details: (stats) =>
+            stats.spookySeasonYear
+                ? translate('stats.achievements.spookySeason.details', {
+                      titles: formatList(stats.spookySeasonMovieTitles, 'conjunction'),
+                      year: stats.spookySeasonYear,
+                  })
+                : null,
     },
     {
         id: 'jingleBells',
         icon: IconTree,
         target: 10,
         secret: true,
-        value: (stats) => stats.mostChristmasMoviesInADecember,
+        value: (stats) => stats.jingleBellsMovieTitles.length,
+        details: (stats) =>
+            stats.jingleBellsYear
+                ? translate('stats.achievements.jingleBells.details', {
+                      titles: formatList(stats.jingleBellsMovieTitles, 'conjunction'),
+                      year: stats.jingleBellsYear,
+                  })
+                : null,
     },
 ];
 
@@ -119,8 +132,10 @@ export interface AchievementsStats {
     mostSameDirectorMoviesInADay: number;
     marathonMovieTitles: string[];
     premieredMovieTitle: string | null;
-    mostHorrorMoviesInAnOctober: number;
-    mostChristmasMoviesInADecember: number;
+    spookySeasonMovieTitles: string[];
+    spookySeasonYear: number | null;
+    jingleBellsMovieTitles: string[];
+    jingleBellsYear: number | null;
 }
 
 export interface AchievementProgress {
@@ -157,6 +172,8 @@ function getAchievementsStats(snapshot: StatsSnapshot): AchievementsStats {
     const longestMovie = arrayMax(watchedMovies, (movie) => movie.runtimeMinutes);
     const mostWatchedShow = arrayMax(getAllShows(snapshot), (show) => show.seasonsWatched);
     const marathon = arraySorted(getBiggestMakerMarathon(datedMovies), 'watchedAt', 'asc');
+    const spookySeason = getMostGenreMoviesInAMonth(datedMovies, genreKey('Horror'), 9);
+    const jingleBells = getMostGenreMoviesInAMonth(datedMovies, genreKey('Christmas'), 11);
 
     return {
         watchedMovies: watchedMovies.length,
@@ -172,8 +189,10 @@ function getAchievementsStats(snapshot: StatsSnapshot): AchievementsStats {
         mostSameDirectorMoviesInADay: marathon.length,
         marathonMovieTitles: marathon.map((movie) => movie.title),
         premieredMovieTitle: getFirstPremieredMovie(datedMovies)?.title ?? null,
-        mostHorrorMoviesInAnOctober: getMostGenreMoviesInAMonth(datedMovies, genreKey('Horror'), 9),
-        mostChristmasMoviesInADecember: getMostGenreMoviesInAMonth(datedMovies, genreKey('Christmas'), 11),
+        spookySeasonMovieTitles: spookySeason.map((movie) => movie.title),
+        spookySeasonYear: spookySeason[0]?.watchedAt?.getFullYear() ?? null,
+        jingleBellsMovieTitles: jingleBells.map((movie) => movie.title),
+        jingleBellsYear: jingleBells[0]?.watchedAt?.getFullYear() ?? null,
     };
 }
 
@@ -225,12 +244,14 @@ function getBiggestMakerMarathon(movies: MovieSnapshot[]): MovieSnapshot[] {
     );
 }
 
-function getMostGenreMoviesInAMonth(movies: MovieSnapshot[], genre: GenreKey, month: number): number {
-    const years = movies
-        .filter((movie) => movie.watchedAt?.getMonth() === month && movie.genreKeys.includes(genre))
-        .map((movie) => movie.watchedAt?.getFullYear());
+function getMostGenreMoviesInAMonth(movies: MovieSnapshot[], genre: GenreKey, month: number): MovieSnapshot[] {
+    const years = arrayGroupBy(
+        movies.filter((movie) => movie.watchedAt?.getMonth() === month && movie.genreKeys.includes(genre)),
+        (movie) => String(movie.watchedAt?.getFullYear()),
+    );
+    const biggestYear = arrayMax(Object.values(years).filter(isTruthy), (yearMovies) => yearMovies.length) ?? [];
 
-    return Math.max(0, ...countEntries(years).values());
+    return arraySorted(biggestYear, 'watchedAt', 'asc');
 }
 
 export function getAchievementsProgress(snapshot: StatsSnapshot): AchievementProgress[] {

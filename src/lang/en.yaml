@@ -401,10 +401,12 @@ stats:
             title: 'Spooky Season'
             completedDescription: 'Watched {target} horror movies in October.'
             hint: 'We all go a little mad sometimes...'
+            details: 'You watched {titles} in October {year}!'
         jingleBells:
             title: 'Jingle Bells'
             completedDescription: 'Watched {target} Christmas movies in December.'
             hint: 'Is it snowing already?'
+            details: 'You watched {titles} in December {year}!'
 
 discover:
     title: 'Discover'
