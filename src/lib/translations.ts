@@ -1,8 +1,9 @@
 import { translate } from '@aerogel/core';
 import { stringToCamelCase } from '@noeldemartin/utils';
 
-import { tmdbGenreId, wikidataGenreName, type GenreKey } from '@/lib/genres';
 import TMDB from '@/services/TMDB';
+
+import { tmdbGenreId, wikidataGenreName, type GenreKey } from './genres';
 
 export function translateGenre(genre: GenreKey): string | null {
     const tmdbId = tmdbGenreId(genre);

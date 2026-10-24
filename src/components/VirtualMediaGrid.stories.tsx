@@ -1,16 +1,16 @@
 import { arrayRandomItem } from '@noeldemartin/utils';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import movies from '@/lib/stubs/solid-movies';
-import Movie from '@/models/Movie';
+import MovieCard from '@movies/components/MovieCard.vue';
+import movies from '@movies/lib/stubs/solid-movies';
+import Movie from '@movies/models/Movie';
 
-import MovieCard from './MovieCard.vue';
 import VirtualMediaGrid from './VirtualMediaGrid.vue';
 
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'VirtualMediaGrid',
+    title: 'Core/VirtualMediaGrid',
     render() {
         const stubs = Array.from({ length: 3000 }, (_, index) => {
             const movie = new Movie({

@@ -3,14 +3,14 @@ import { describe, expect, it } from 'vite-plus/test';
 import { countryUrlFromCode } from '@/lib/countries';
 import { minutesToISODuration } from '@/lib/durations';
 import { genreUrl, type KnownGenreName } from '@/lib/genres';
-import Movie from '@/models/Movie';
 import type { PersonCredit } from '@/models/Person';
-import Show from '@/models/Show';
-import ShowWatching, { SHOW_WATCHING_STATUSES } from '@/models/ShowWatching';
-import WatchAction from '@/models/WatchAction';
-import { getStatsSnapshot } from '@/pages/stats/utils/snapshot';
+import Movie from '@movies/models/Movie';
+import WatchAction from '@movies/models/WatchAction';
+import Show from '@shows/models/Show';
+import ShowWatching, { SHOW_WATCHING_STATUSES } from '@shows/models/ShowWatching';
 
 import { getAchievementsProgress } from './achievements';
+import { getStatsSnapshot } from './snapshot';
 
 const COUNTRY_CODES = [
     'AR',

@@ -49,9 +49,9 @@ import { computedModels, useModels } from '@aerogel/plugin-solid';
 import { arraySorted } from '@noeldemartin/utils';
 import { computed } from 'vue';
 
-import Episode from '@/models/Episode';
-import Movie from '@/models/Movie';
-import Show from '@/models/Show';
+import Movie from '@movies/models/Movie';
+import Episode from '@shows/models/Episode';
+import Show from '@shows/models/Show';
 
 const SAMPLE_MOVIES_LENGTH = 10;
 

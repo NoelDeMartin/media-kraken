@@ -17,9 +17,9 @@ import IconTree from '~icons/ph/tree-evergreen-fill';
 import { formatDuration, formatList, formatNumber } from '@/lib/formatting';
 import { genreKey, type GenreKey } from '@/lib/genres';
 import { personFilterKey } from '@/lib/media';
-import { getAllShows, getEpisodesWatched, type MovieSnapshot, type StatsSnapshot } from '@/pages/stats/utils/snapshot';
 
 import { countEntries } from './count';
+import { getAllShows, getEpisodesWatched, type MovieSnapshot, type StatsSnapshot } from './snapshot';
 
 const ACHIEVEMENTS: Achievement[] = [
     { id: 'globetrotter', icon: IconGlobe, target: 25, value: (stats) => stats.countries },

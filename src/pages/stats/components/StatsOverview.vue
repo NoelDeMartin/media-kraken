@@ -37,10 +37,10 @@ import { translate } from '@aerogel/core';
 import { computed } from 'vue';
 
 import { formatHours, formatNumber } from '@/lib/formatting';
-import { SHOW_WATCHING_STATUSES } from '@/models/ShowWatching';
-import type { ShowWatchingStatus } from '@/models/ShowWatching';
 import { getEpisodesWatched } from '@/pages/stats/utils/snapshot';
 import type { StatsSnapshot } from '@/pages/stats/utils/snapshot';
+import { SHOW_WATCHING_STATUSES } from '@shows/models/ShowWatching';
+import type { ShowWatchingStatus } from '@shows/models/ShowWatching';
 
 const MOVIE_STATUS_COLORS = {
     watched: 'var(--color-green-500)',

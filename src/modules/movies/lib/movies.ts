@@ -1,0 +1,91 @@
+import type { RangeSliderValue } from '@aerogel/core';
+import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
+
+import type { QueryFilterFields } from '@/lib/composition/filters';
+import type { GenreKey } from '@/lib/genres';
+import { matchesAny, matchesRange, personFilterKey, toSearchText } from '@/lib/media';
+import type Movie from '@movies/models/Movie';
+
+export type MoviesFilter = {
+    watched?: Nullable<boolean>;
+    genres?: Nullable<GenreKey[]>;
+    directors?: Nullable<string[]>;
+    cast?: Nullable<string[]>;
+    countries?: Nullable<string[]>;
+    languages?: Nullable<string[]>;
+    duration?: Nullable<RangeSliderValue>;
+    releaseYear?: Nullable<RangeSliderValue>;
+};
+
+export const MOVIES_FILTER_FIELDS: QueryFilterFields<MoviesFilter> = {
+    watched: 'boolean',
+    genres: 'list',
+    directors: 'list',
+    cast: 'list',
+    countries: 'list',
+    languages: 'list',
+    duration: 'range',
+    releaseYear: 'range',
+};
+
+export type MovieSearchEntry = ReturnType<typeof createMovieSearchEntry>;
+
+export function hasActiveMovieFilters(filters: Nullable<MoviesFilter>): boolean {
+    if (!filters) {
+        return false;
+    }
+
+    return (
+        !isNullable(filters.genres) ||
+        !isNullable(filters.directors) ||
+        !isNullable(filters.cast) ||
+        !isNullable(filters.countries) ||
+        !isNullable(filters.languages) ||
+        !isNullable(filters.releaseYear) ||
+        !isNullable(filters.duration) ||
+        !isNullable(filters.watched)
+    );
+}
+
+// oxlint-disable-next-line typescript/explicit-module-boundary-types
+export function createMovieSearchEntry(movie: Movie) {
+    return {
+        movie,
+        searchText: toSearchText(movie.getSlug() ?? ''),
+        genreKeys: movie.genreKeys,
+        countryCodes: movie.countryCodes,
+        languages: movie.languages,
+        releaseYear: movie.releaseYear,
+        runtimeMinutes: movie.runtimeMinutes,
+        get watched(): boolean | null {
+            return movie.watched;
+        },
+        get directors(): string[] {
+            return movie.credits.value?.directors.map(personFilterKey).filter(isTruthy) ?? [];
+        },
+        get cast(): string[] {
+            return movie.credits.value?.cast.map(personFilterKey).filter(isTruthy) ?? [];
+        },
+    };
+}
+
+export function movieMatchesQuery(entry: MovieSearchEntry, searchQuery: Nullable<string>): boolean {
+    return !searchQuery || entry.searchText.includes(searchQuery);
+}
+
+export function movieMatchesFilters(entry: MovieSearchEntry, filters: Nullable<MoviesFilter>): boolean {
+    if (!filters) {
+        return true;
+    }
+
+    return (
+        (isNullable(filters.releaseYear) || matchesRange(filters.releaseYear, entry.releaseYear)) &&
+        (isNullable(filters.duration) || matchesRange(filters.duration, entry.runtimeMinutes)) &&
+        (isNullable(filters.watched) || filters.watched === entry.watched) &&
+        (isNullable(filters.genres) || matchesAny(filters.genres, entry.genreKeys)) &&
+        (isNullable(filters.countries) || matchesAny(filters.countries, entry.countryCodes)) &&
+        (isNullable(filters.languages) || matchesAny(filters.languages, entry.languages)) &&
+        (isNullable(filters.directors) || matchesAny(filters.directors, entry.directors)) &&
+        (isNullable(filters.cast) || matchesAny(filters.cast, entry.cast))
+    );
+}

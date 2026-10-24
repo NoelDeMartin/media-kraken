@@ -39,13 +39,14 @@ import IconImdb from '~icons/app/imdb';
 import IconCustom from '~icons/material-symbols-light/code-xml';
 import IconNetflix from '~icons/selfhst/netflix';
 
-import ImportMediaFromImdbModal from '@/components/modals/ImportMediaFromImdbModal.vue';
-import ImportMediaHelpForCustomModal from '@/components/modals/ImportMediaHelpForCustomModal.vue';
-import ImportMediaResultModal from '@/components/modals/ImportMediaResultModal.vue';
 import ImportMedia from '@/jobs/ImportMedia';
 import CustomParser from '@/lib/parsers/CustomParser';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import NetflixParser from '@/lib/parsers/NetflixParser';
+
+import ImportMediaFromImdbModal from './ImportMediaFromImdbModal.vue';
+import ImportMediaHelpForCustomModal from './ImportMediaHelpForCustomModal.vue';
+import ImportMediaResultModal from './ImportMediaResultModal.vue';
 
 type MediaSource = (typeof sources)[number];
 

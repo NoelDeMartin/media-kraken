@@ -2,10 +2,10 @@ import { isTruthy, required } from '@noeldemartin/utils';
 
 import { genreKey, type GenreKey, type KnownGenreName } from '@/lib/genres';
 import { personFilterKey } from '@/lib/media';
-import type Movie from '@/models/Movie';
 import type { PersonCredit } from '@/models/Person';
-import type Show from '@/models/Show';
-import type { ShowWatchingStatus } from '@/models/ShowWatching';
+import type Movie from '@movies/models/Movie';
+import type Show from '@shows/models/Show';
+import type { ShowWatchingStatus } from '@shows/models/ShowWatching';
 
 import { countEntries } from './count';
 

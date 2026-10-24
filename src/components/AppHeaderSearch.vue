@@ -46,9 +46,9 @@
 import { UI } from '@aerogel/core';
 import { nextTick, ref, useTemplateRef, watch } from 'vue';
 
-import MoviePreviewModal from '@/components/modals/MoviePreviewModal.vue';
-import ShowPreviewModal from '@/components/modals/ShowPreviewModal.vue';
 import { useMediaSearch, type SearchResult } from '@/lib/composition/search';
+import MoviePreviewModal from '@movies/components/modals/MoviePreviewModal.vue';
+import ShowPreviewModal from '@shows/components/modals/ShowPreviewModal.vue';
 
 let refocusButton = false;
 const $triggerRef = useTemplateRef('$triggerRef');

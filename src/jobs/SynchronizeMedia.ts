@@ -2,9 +2,9 @@ import { Errors, translate, UI } from '@aerogel/core';
 import { routeUrl } from '@aerogel/plugin-routing';
 import { after, arrayChunk } from '@noeldemartin/utils';
 
-import type Movie from '@/models/Movie';
-import type Show from '@/models/Show';
 import Catalog from '@/services/Catalog';
+import type Movie from '@movies/models/Movie';
+import type Show from '@shows/models/Show';
 
 import ProcessingJob from './ProcessingJob';
 

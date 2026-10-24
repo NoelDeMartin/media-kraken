@@ -1,64 +1,13 @@
 import { translate } from '@aerogel/core';
-import { defineRouteBindings, defineRoutes } from '@aerogel/plugin-routing';
+import { defineRoutes } from '@aerogel/plugin-routing';
 
-import List from '@/models/List.ts';
-import Movie from '@/models/Movie.ts';
-import Show from '@/models/Show.ts';
+import StatsIndex from '@/pages/stats/Index.vue';
 
 import Discover from './Discover.vue';
 import Home from './Home.vue';
-import ListsIndex from './lists/Index.vue';
-import ListsShow from './lists/Show.vue';
-import MoviesIndex from './movies/Index.vue';
-import MoviesShow from './movies/Show.vue';
-import ShowsIndex from './shows/Index.vue';
-import ShowsShow from './shows/Show.vue';
-import StatsIndex from './stats/Index.vue';
-
-export const bindings = defineRouteBindings({
-    list: List,
-    movie: Movie,
-    show: Show,
-});
 
 export default defineRoutes([
     { name: 'home', path: '/', component: Home },
-    {
-        name: 'movies.index',
-        path: '/movies',
-        component: MoviesIndex,
-        title: () => translate('movies.title'),
-    },
-    {
-        name: 'movies.show',
-        path: '/movies/:movie',
-        component: MoviesShow,
-        title: ({ movie }) => (movie as Movie).title,
-    },
-    {
-        name: 'shows.index',
-        path: '/shows',
-        component: ShowsIndex,
-        title: () => translate('shows.title'),
-    },
-    {
-        name: 'shows.show',
-        path: '/shows/:show',
-        component: ShowsShow,
-        title: ({ show }) => (show as Show).name,
-    },
-    {
-        name: 'lists.index',
-        path: '/lists',
-        component: ListsIndex,
-        title: () => translate('lists.title'),
-    },
-    {
-        name: 'lists.show',
-        path: '/lists/:list',
-        component: ListsShow,
-        title: ({ list }) => (list as List).name,
-    },
     {
         name: 'stats.index',
         path: '/stats',

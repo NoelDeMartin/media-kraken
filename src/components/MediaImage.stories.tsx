@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import movies from '@/lib/stubs/solid-movies';
+import movies from '@movies/lib/stubs/solid-movies';
 
 import MediaImage from './MediaImage.vue';
 
@@ -11,7 +11,7 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'MediaImage',
+    title: 'Core/MediaImage',
     component: MediaImage,
     argTypes: {
         movie: movies.control,

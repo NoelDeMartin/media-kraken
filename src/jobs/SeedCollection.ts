@@ -1,8 +1,8 @@
 import { isDevelopment } from '@noeldemartin/utils';
 import type { GetModelInput } from 'soukai-bis';
 
-import Movie from '@/models/Movie';
 import Catalog from '@/services/Catalog';
+import Movie from '@movies/models/Movie';
 
 import ProcessingJob from './ProcessingJob';
 

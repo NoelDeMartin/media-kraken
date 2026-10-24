@@ -19,9 +19,9 @@
 import { computedModels, useModels } from '@aerogel/plugin-solid';
 import { computed } from 'vue';
 
-import Movie from '@/models/Movie';
-import Show from '@/models/Show';
 import { getStatsSnapshot } from '@/pages/stats/utils/snapshot';
+import Movie from '@movies/models/Movie';
+import Show from '@shows/models/Show';
 
 const { models: movies, loading: loadingMovies } = useModels(Movie);
 const { models: shows, loading: loadingShows } = useModels(Show);

@@ -2,10 +2,10 @@ import { arraySorted, compare } from '@noeldemartin/utils';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { computed } from 'vue';
 
-import movies from '@/lib/stubs/solid-movies';
-import shows from '@/lib/stubs/solid-shows';
-import Movie from '@/models/Movie';
-import type Show from '@/models/Show';
+import movies from '@movies/lib/stubs/solid-movies';
+import Movie from '@movies/models/Movie';
+import shows from '@shows/lib/stubs/solid-shows';
+import type Show from '@shows/models/Show';
 
 import MediaSearch from './MediaSearch.vue';
 
@@ -17,7 +17,7 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'MediaSearch',
+    title: 'Core/MediaSearch',
     component: MediaSearch,
     argTypes: {
         loading: { control: 'boolean' },

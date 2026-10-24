@@ -1,0 +1,220 @@
+<template>
+    <Modal :title="$t('movies.advancedFilters.title')">
+        <div v-if="!creditsReady" class="py-12">
+            <i-svg-spinners-3-dots-scale-middle class="text-primary h-8 w-full" />
+        </div>
+        <Form v-else :form @submit="submit">
+            <div class="space-y-4">
+                <Select
+                    name="watchStatus"
+                    :label="$t('movies.advancedFilters.watchStatus')"
+                    :options="statusOptions"
+                    :render-option="renderStatus"
+                />
+                <Combobox
+                    name="genres"
+                    :label="$t('movies.advancedFilters.genre')"
+                    :placeholder="$t('movies.advancedFilters.allGenres')"
+                    :options="genreOptions"
+                    :render-option="formatGenre"
+                />
+                <Combobox
+                    name="directors"
+                    :label="$t('movies.advancedFilters.director')"
+                    :placeholder="$t('movies.advancedFilters.allDirectors')"
+                    :options="directorOptions"
+                    :render-option="renderPerson"
+                />
+                <Combobox
+                    name="cast"
+                    :label="$t('movies.advancedFilters.cast')"
+                    :placeholder="$t('movies.advancedFilters.allCast')"
+                    :options="castOptions"
+                    :render-option="renderPerson"
+                />
+                <Combobox
+                    name="countries"
+                    :label="$t('movies.advancedFilters.country')"
+                    :placeholder="$t('movies.advancedFilters.allCountries')"
+                    :options="countryOptions"
+                    :render-option="formatCountry"
+                />
+                <Combobox
+                    name="languages"
+                    :label="$t('movies.advancedFilters.language')"
+                    :placeholder="$t('movies.advancedFilters.allLanguages')"
+                    :options="languageOptions"
+                    :render-option="formatLanguage"
+                />
+                <RangeSlider
+                    name="releaseYear"
+                    :label="$t('movies.advancedFilters.releaseYear')"
+                    :min="yearBounds[0]"
+                    :max="yearBounds[1]"
+                />
+                <RangeSlider
+                    name="duration"
+                    :label="$t('movies.advancedFilters.duration')"
+                    :min="durationBounds[0]"
+                    :max="durationBounds[1]"
+                    :step="DURATION_STEP"
+                    :format-value="(minutes) => formatDuration({ minutes })"
+                />
+            </div>
+
+            <div class="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 pt-4">
+                <Button type="button" variant="ghost" class="text-gray-600" @click="form.reset()">
+                    {{ $t('movies.advancedFilters.clear') }}
+                </Button>
+                <div class="flex items-center gap-2">
+                    <Button type="button" variant="secondary" @click="close()">
+                        {{ $t('ui.cancel') }}
+                    </Button>
+                    <Button submit>
+                        {{ $t('movies.advancedFilters.apply') }}
+                    </Button>
+                </div>
+            </div>
+        </Form>
+    </Modal>
+</template>
+
+<script setup lang="ts">
+import { numberRange, translate, useForm, useModal } from '@aerogel/core';
+import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
+import { computed, onMounted, ref } from 'vue';
+import { z } from 'zod';
+
+import { formatCountry, formatGenre, formatDuration, formatLanguage } from '@/lib/formatting';
+import type { GenreKey } from '@/lib/genres';
+import { personFilterKey, sortByLocale, uniquePersonKeys } from '@/lib/media';
+import type { MoviesFilter } from '@movies/lib/movies';
+import type Movie from '@movies/models/Movie';
+
+type Result = { filters: MoviesFilter };
+
+const DURATION_STEP = 5;
+
+const { filters, movies } = defineProps<{
+    movies: Movie[];
+    filters: Nullable<MoviesFilter>;
+}>();
+
+defineEmits<{ close: [Result] }>();
+
+const { close } = useModal<Result>();
+const initialMoviesWithoutCredits = movies.filter((movie) => !movie.credits.value);
+const creditsReady = ref(initialMoviesWithoutCredits.length === 0);
+const statusOptions = ['all', 'watched', 'unwatched'] as const;
+const form = useForm({
+    watchStatus: z.enum(statusOptions).default('all'),
+    genres: z.array(z.custom<GenreKey>()).default([]),
+    directors: z.array(z.string()).default([]),
+    cast: z.array(z.string()).default([]),
+    countries: z.array(z.string()).default([]),
+    languages: z.array(z.string()).default([]),
+    releaseYear: numberRange(),
+    duration: numberRange(),
+});
+
+if (filters) {
+    form.watchStatus = isNullable(filters.watched) ? 'all' : filters.watched ? 'watched' : 'unwatched';
+    form.genres = filters.genres ?? [];
+    form.directors = filters.directors ?? [];
+    form.cast = filters.cast ?? [];
+    form.countries = filters.countries ?? [];
+    form.languages = filters.languages ?? [];
+    form.releaseYear = filters.releaseYear ?? [null, null];
+    form.duration = filters.duration ?? [null, null];
+}
+
+const directors = computed(() => movies.flatMap((movie) => movie.credits.value?.directors ?? []));
+const actors = computed(() => movies.flatMap((movie) => movie.credits.value?.cast ?? []));
+const directorOptions = computed(() => sortByLocale(uniquePersonKeys(directors.value), renderPerson));
+const castOptions = computed(() => sortByLocale(uniquePersonKeys(actors.value), renderPerson));
+
+const genreOptions = computed(() => {
+    return sortByLocale(Array.from(new Set(movies.flatMap((movie) => movie.genreKeys))), formatGenre);
+});
+
+const countryOptions = computed(() => {
+    return sortByLocale(Array.from(new Set(movies.flatMap((movie) => movie.countryCodes))), formatCountry);
+});
+
+const languageOptions = computed(() => {
+    return sortByLocale(Array.from(new Set(movies.flatMap((movie) => movie.languages))), formatLanguage);
+});
+
+const personNames = computed(() => {
+    const names = new Map<string, string>();
+
+    for (const person of [...directors.value, ...actors.value]) {
+        const key = personFilterKey(person);
+
+        if (key && !names.has(key)) {
+            names.set(key, person.name);
+        }
+    }
+
+    return names;
+});
+
+const yearBounds = computed(() => {
+    const years = movies.map((movie) => movie.releaseYear).filter(isTruthy);
+    const currentYear = new Date().getFullYear();
+    const min = years.length > 0 ? Math.min(...years) : 1900;
+    const max = years.length > 0 ? Math.max(...years) : currentYear;
+
+    return [min, Math.max(max, min + 1)] as const;
+});
+
+const durationBounds = computed(() => {
+    const durations = movies.map((movie) => movie.runtimeMinutes).filter(isTruthy);
+    const max = durations.length > 0 ? Math.max(...durations) : 300;
+
+    return [0, Math.max(Math.ceil(max / DURATION_STEP) * DURATION_STEP, DURATION_STEP)] as const;
+});
+
+function renderPerson(key: string): string {
+    return personNames.value.get(key) ?? key;
+}
+
+function renderStatus(status: (typeof statusOptions)[number]): string {
+    if (status === 'watched') {
+        return translate('movies.watched');
+    }
+
+    if (status === 'unwatched') {
+        return translate('movies.watchLater');
+    }
+
+    return translate('movies.advancedFilters.allStatuses');
+}
+
+function submit() {
+    close({
+        filters: {
+            watched: form.watchStatus === 'all' ? null : form.watchStatus === 'watched',
+            genres: form.genres.length > 0 ? form.genres : null,
+            directors: form.directors.length > 0 ? form.directors : null,
+            cast: form.cast.length > 0 ? form.cast : null,
+            countries: form.countries.length > 0 ? form.countries : null,
+            languages: form.languages.length > 0 ? form.languages : null,
+            releaseYear: form.releaseYear[0] === null && form.releaseYear[1] === null ? null : form.releaseYear,
+            duration: form.duration[0] === null && form.duration[1] === null ? null : form.duration,
+        },
+    });
+}
+
+onMounted(async () => {
+    if (creditsReady.value) {
+        return;
+    }
+
+    try {
+        await Promise.all(initialMoviesWithoutCredits.map((movie) => movie.credits.updateValue()));
+    } finally {
+        creditsReady.value = true;
+    }
+});
+</script>

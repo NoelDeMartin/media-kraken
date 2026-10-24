@@ -1,6 +1,6 @@
 import { arrayUnique, escapeRegexText, isTruthy, objectEntries } from '@noeldemartin/utils';
 
-import { parseTmdbId, TMDB_GENRE_URL_PREFIX, TMDB_GENRES, tmdbGenreUrl, type KnownTMDBGenreName } from '@/lib/tmdb';
+import { parseTmdbId, TMDB_GENRE_URL_PREFIX, TMDB_GENRES, tmdbGenreUrl, type KnownTMDBGenreName } from './tmdb';
 
 const WIKIDATA_ENTITY_URL_PREFIX = 'http://www.wikidata.org/entity/';
 

@@ -2,8 +2,8 @@ import { translate } from '@aerogel/core';
 
 import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
-import Movie from '@/models/Movie';
 import Catalog from '@/services/Catalog';
+import Movie from '@movies/models/Movie';
 
 import ProcessingJob from './ProcessingJob';
 

@@ -22,13 +22,8 @@ import { keywordGenreUrls } from '@/lib/genres';
 import { imdbUrl } from '@/lib/imdb';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import { tmdbBackdropUrl, tmdbGenreUrl, tmdbMovieUrl, tmdbPosterUrl, tmdbProfileUrl, tmdbShowUrl } from '@/lib/tmdb';
-import type Episode from '@/models/Episode';
-import Movie from '@/models/Movie';
 import PerformanceRole from '@/models/PerformanceRole';
 import Person from '@/models/Person';
-import type Season from '@/models/Season';
-import Show from '@/models/Show';
-import type { ShowWatchingStatus } from '@/models/ShowWatching';
 import TMDB, {
     type TMDBCastCredit,
     type TMDBEpisode,
@@ -42,6 +37,11 @@ import TMDB, {
     type TMDBShowExternalIds,
     type TMDBShowWithStaff,
 } from '@/services/TMDB';
+import Movie from '@movies/models/Movie';
+import type Episode from '@shows/models/Episode';
+import type Season from '@shows/models/Season';
+import Show from '@shows/models/Show';
+import type { ShowWatchingStatus } from '@shows/models/ShowWatching';
 
 const WATCHING_STATUSES_WITHOUT_SEASONS = ['dropped', 'pending'] satisfies ShowWatchingStatus[];
 

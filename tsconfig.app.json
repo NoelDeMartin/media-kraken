@@ -5,7 +5,10 @@
         "noUncheckedIndexedAccess": true,
         "paths": {
             "@/*": ["./src/*"],
-            "@e2e/*": ["./e2e/*"]
+            "@e2e/*": ["./e2e/*"],
+            "@lists/*": ["./src/modules/lists/*"],
+            "@movies/*": ["./src/modules/movies/*"],
+            "@shows/*": ["./src/modules/shows/*"]
         },
         "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo"
     }

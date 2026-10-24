@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vite-plus/test';
 
-import Person from '@/models/Person';
+import Person from './Person';
 
 describe('Person model', () => {
     it('Parses TMDB person urls', () => {

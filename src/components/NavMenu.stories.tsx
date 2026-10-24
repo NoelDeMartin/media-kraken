@@ -12,7 +12,7 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'NavMenu',
+    title: 'Core/NavMenu',
     component: NavMenu,
     argTypes: {
         startOpen: { control: 'boolean' },

@@ -4,14 +4,19 @@ import localFirst from '@aerogel/plugin-local-first';
 import routing from '@aerogel/plugin-routing';
 import solid from '@aerogel/plugin-solid';
 
-import './assets/css/main.css';
+import '@/assets/css/main.css';
+import env from '@/lib/env';
+import routes from '@/pages';
+import { services } from '@/services';
+
 import App from './App.vue';
-import env from './lib/env';
-import routes, { bindings } from './pages/index';
-import { services } from './services';
+import lists from './modules/lists';
+import movies from './modules/movies';
+import shows from './modules/shows';
 
 export default await bootstrap(App, {
     env,
     services,
-    plugins: [i18n(), routing({ routes, bindings }), solid(), localFirst()],
+    modules: [movies, shows, lists],
+    plugins: [i18n(), routing({ routes }), solid(), localFirst()],
 });

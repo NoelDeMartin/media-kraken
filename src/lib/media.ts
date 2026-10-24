@@ -1,9 +1,9 @@
 import type { RangeSliderValue } from '@aerogel/core';
 import { isNullable, isTruthy, stringToSlug } from '@noeldemartin/utils';
 
-import type Movie from '@/models/Movie';
 import type { PersonCredit } from '@/models/Person';
-import type Show from '@/models/Show';
+import type Movie from '@movies/models/Movie';
+import type Show from '@shows/models/Show';
 
 export function matchesAny<T>(selected: T[], values: T[]): boolean {
     return values.some((value) => !isNullable(value) && selected.includes(value));

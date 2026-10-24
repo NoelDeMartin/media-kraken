@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vite-plus/test';
 
-import { countryCodeFromUrl, countryUrlFromCode } from '@/lib/countries';
+import { countryCodeFromUrl, countryUrlFromCode } from './countries';
 
 describe('countries helpers', () => {
     it('maps country code to Wikidata IRI', () => {

@@ -1,7 +1,7 @@
 import { isTruthy, memo } from '@noeldemartin/utils';
 
-import type { GenreKey } from '@/lib/genres';
-import { translateGenre } from '@/lib/translations';
+import type { GenreKey } from './genres';
+import { translateGenre } from './translations';
 
 const durationFormatter =
     'DurationFormat' in Intl

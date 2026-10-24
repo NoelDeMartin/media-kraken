@@ -1,7 +1,7 @@
 import { belongsToOne, defineSchema } from 'soukai-bis';
 import { array, string, url } from 'zod';
 
-import Person from '@/models/Person';
+import Person from './Person';
 
 export default defineSchema({
     rdfContext: 'https://schema.org/',
