@@ -46,13 +46,11 @@ import { translate, UI, useModal } from '@aerogel/core';
 import { useModels } from '@aerogel/plugin-solid';
 import { computed, reactive, ref } from 'vue';
 
-import { sortByLocale } from '@/lib/media';
+import { sortByLocale, type Media } from '@/lib/media';
 import { promptListName } from '@lists/lib/lists';
 import List from '@lists/models/List';
-import type Movie from '@movies/models/Movie';
-import type Show from '@shows/models/Show';
 
-const { media } = defineProps<{ media: Movie | Show }>();
+const { media } = defineProps<{ media: Media }>();
 const { close } = useModal();
 const { models: lists, loading } = useModels(List);
 const sortedLists = computed(() => sortByLocale(lists.value, (list) => list.name));

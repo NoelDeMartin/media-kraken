@@ -1,0 +1,49 @@
+lists:
+    title: 'Lists'
+    empty: "You don't have any lists yet. Create one to start organizing your movies and shows!"
+    emptyList: 'This list is empty. Use the "Add items" button to add movies or shows from your collection.'
+    itemsCount: 'No items|1 item|{count} items'
+    name: 'Name'
+    namePlaceholder: 'e.g. Top 10 Movies'
+    created: '**{list}** has been created!'
+    create:
+        button: 'New list'
+        title: 'Create list'
+        message: 'Give your new list a name.'
+        accept: 'Create'
+    rename:
+        action: 'Rename'
+        title: 'Rename list'
+        message: 'Choose a new name for the list.'
+        accept: 'Rename'
+    delete:
+        action: 'Delete'
+        title: 'Delete list'
+        message: "Are you sure that you want to delete this list? The movies and shows in it won't be deleted."
+        accept: 'Delete'
+        success: '**{list}** has been deleted.'
+    itemActions: 'Open actions for {name}'
+    moveToTop: 'Move to top'
+    moveUp: 'Move up'
+    moveDown: 'Move down'
+    moveToBottom: 'Move to bottom'
+    removeItem: 'Remove from list'
+    missingMedia: 'Movie or show not found'
+    movie: 'Movie'
+    show: 'Show'
+    addItems:
+        action: 'Add items'
+        title: 'Add items'
+        searchPlaceholder: 'Search your movies and shows'
+        noResults: 'No movies or shows in your collection match this search.'
+        moreResults: '1 more result not shown, refine your search to find it.|{count} more results not shown, refine your search to find them.'
+        add: 'Add'
+        addA11y: 'Add {name}'
+        alreadyAdded: 'Already in the list'
+    manage:
+        action: 'Manage lists'
+        title: 'Manage lists'
+        empty: "You don't have any lists yet."
+        new: 'New list'
+        save: 'Save'
+        saved: 'Lists updated'

@@ -1,11 +1,10 @@
 import { translate, UI } from '@aerogel/core';
 import { getTrackedModels, loadTrackedModels } from '@aerogel/plugin-solid';
 
+import type { Media } from '@/lib/media';
 import List from '@lists/models/List';
-import type Movie from '@movies/models/Movie';
-import type Show from '@shows/models/Show';
 
-async function listsWith(media: Movie | Show): Promise<List[]> {
+async function listsWith(media: Media): Promise<List[]> {
     await loadTrackedModels(List);
 
     return getTrackedModels(List).filter((list) => list.has(media));
@@ -33,13 +32,13 @@ export async function promptListName(
     return name || null;
 }
 
-export async function removeFromLists(media: Movie | Show): Promise<void> {
+export async function removeFromLists(media: Media): Promise<void> {
     for (const list of await listsWith(media)) {
         await list.remove(media);
     }
 }
 
-export async function replaceInLists(original: Movie | Show, replacement: Movie | Show): Promise<void> {
+export async function replaceInLists(original: Media, replacement: Media): Promise<void> {
     for (const list of await listsWith(original)) {
         await list.replace(original, replacement);
     }

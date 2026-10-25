@@ -31,7 +31,7 @@
                     :to="media.route"
                     draggable="false"
                 >
-                    {{ mediaName(media) }}
+                    {{ media.name }}
                 </Link>
                 <p class="mt-1 flex items-center gap-1 text-xs text-gray-500">
                     <i-ph-film-slate v-if="isInstanceOf(media, Movie)" class="size-4 shrink-0" />
@@ -42,7 +42,11 @@
                     </span>
                 </p>
                 <MovieWatchingStatus v-if="isInstanceOf(media, Movie)" :movie="media" class="mt-1 text-xs sm:hidden" />
-                <ShowWatchingStatus v-else :status="media.watchingStatus" class="mt-1 text-xs sm:hidden" />
+                <ShowWatchingStatus
+                    v-else-if="isInstanceOf(media, Show)"
+                    :status="media.watchingStatus"
+                    class="mt-1 text-xs sm:hidden"
+                />
             </div>
             <div v-else-if="loading" class="min-w-0 flex-1 animate-pulse" aria-hidden="true">
                 <div class="h-4 w-40 max-w-full rounded bg-gray-200" />
@@ -57,7 +61,11 @@
                     :movie="media"
                     class="hidden shrink-0 text-sm sm:flex"
                 />
-                <ShowWatchingStatus v-else :status="media.watchingStatus" class="hidden shrink-0 text-sm sm:flex" />
+                <ShowWatchingStatus
+                    v-else-if="isInstanceOf(media, Show)"
+                    :status="media.watchingStatus"
+                    class="hidden shrink-0 text-sm sm:flex"
+                />
             </template>
             <DropdownMenu align="end" :options="itemOptions(item, index)">
                 <Button
@@ -86,12 +94,12 @@ import IconMoveDown from '~icons/mdi/arrow-down';
 import IconMoveUp from '~icons/mdi/arrow-up';
 import IconRemove from '~icons/ph/trash';
 
-import { mediaName } from '@/lib/media';
+import type { Media } from '@/lib/media';
 import { useListMedia } from '@lists/lib/composition/lists';
 import type List from '@lists/models/List';
 import type ListItem from '@lists/models/ListItem';
 import Movie from '@movies/models/Movie';
-import type Show from '@shows/models/Show';
+import Show from '@shows/models/Show';
 
 const { list: listProp, disabled } = defineProps<{ list: List; disabled?: boolean }>();
 const emit = defineEmits<{ move: [item: ListItem, target: ListItem]; remove: [item: ListItem] }>();
@@ -102,8 +110,8 @@ const rows = computed(() => items.value.map((item) => ({ item, media: mediaByUrl
 const draggedItem = shallowRef<ListItem | null>(null);
 const dropTarget = shallowRef<ListItem | null>(null);
 
-function itemActionsLabel(media: Movie | Show | undefined): string {
-    return translate('lists.itemActions', { name: media ? mediaName(media) : translate('lists.missingMedia') });
+function itemActionsLabel(media: Media | undefined): string {
+    return translate('lists.itemActions', { name: media ? media.name : translate('lists.missingMedia') });
 }
 
 function itemOptions(item: ListItem, index: number) {

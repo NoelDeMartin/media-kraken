@@ -26,10 +26,10 @@
                 <MediaImage :url="result.posterUrl" class="size-12 rounded" />
                 <div class="min-w-0 flex-1">
                     <h3 class="truncate text-sm font-medium">
-                        {{ 'title' in result ? result.title : result.name }}
+                        {{ result.name }}
                     </h3>
                     <p class="flex items-center gap-1 text-xs text-gray-500">
-                        <template v-if="'title' in result">
+                        <template v-if="isInstanceOf(result, Movie)">
                             <i-ph-film-slate class="size-4" />
                             <span class="sr-only">{{ $t('app.search.movie') }} — </span>
                         </template>
@@ -41,9 +41,7 @@
                     </p>
                 </div>
                 <Button
-                    :aria-label="
-                        $t('media.identify.updateA11y', { name: 'title' in result ? result.title : result.name })
-                    "
+                    :aria-label="$t('media.identify.updateA11y', { name: result.name })"
                     @click="selectResult(result)"
                 >
                     {{ $t('media.identify.update') }}
@@ -54,10 +52,12 @@
 </template>
 
 <script setup lang="ts">
+import { isInstanceOf } from '@noeldemartin/utils';
 import { nextTick, onMounted, useTemplateRef } from 'vue';
 
 import { useMediaSearch, type SearchResult } from '@/lib/composition/search';
 import type { TMDBMovie, TMDBShow } from '@/services/TMDB';
+import Movie from '@movies/models/Movie';
 
 const emit = defineEmits<{ close: [{ media: TMDBMovie | TMDBShow }] }>();
 const { initialQuery = '' } = defineProps<{ initialQuery: string }>();

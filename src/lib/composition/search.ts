@@ -2,11 +2,12 @@ import { Errors } from '@aerogel/core';
 import { debounce, fail } from '@noeldemartin/utils';
 import { computed, ref, shallowRef, toRaw, watch } from 'vue';
 
+import type { Media } from '@/lib/media';
 import TMDB, { type TMDBSearchResult } from '@/services/TMDB';
 import Movie from '@movies/models/Movie';
 import Show from '@shows/models/Show';
 
-export type SearchResult = Movie | Show;
+export type SearchResult = Media;
 
 // oxlint-disable-next-line typescript/explicit-module-boundary-types
 export function useMediaSearch(options: { initialQuery?: string } = {}) {

@@ -49,10 +49,10 @@
                         <MediaImage :url="result.posterUrl" class="size-12 rounded" />
                         <div class="min-w-0 flex-auto">
                             <p class="truncate text-sm font-medium">
-                                {{ 'title' in result ? result.title : result.name }}
+                                {{ result.name }}
                             </p>
                             <p class="flex items-center gap-1 text-xs text-gray-500">
-                                <template v-if="'title' in result">
+                                <template v-if="isInstanceOf(result, Movie)">
                                     <i-ph-film-slate class="size-4" />
                                     <span class="sr-only">{{ $t('app.search.movie') }} — </span>
                                 </template>
@@ -71,9 +71,11 @@
 </template>
 
 <script setup lang="ts">
+import { isInstanceOf } from '@noeldemartin/utils';
 import { useTemplateRef } from 'vue';
 
 import type { SearchResult } from '@/lib/composition/search';
+import Movie from '@movies/models/Movie';
 
 defineProps<{
     open: boolean;

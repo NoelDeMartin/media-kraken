@@ -7,6 +7,7 @@ import { countryCodeFromUrl } from '@/lib/countries';
 import { findExternalId } from '@/lib/domains';
 import { genreKeysFromUrls, type GenreKey } from '@/lib/genres';
 import { parseImdbId } from '@/lib/imdb';
+import type { Media } from '@/lib/media';
 import { parseTmdbId, tmdbPosterUrl, tmdbShowUrl } from '@/lib/tmdb';
 import type { TMDBImageSize } from '@/lib/tmdb';
 import type PerformanceRole from '@/models/PerformanceRole';
@@ -38,7 +39,7 @@ export type ShowCredits = {
     cast: PersonCredit[];
 };
 
-export default class Show extends Model {
+export default class Show extends Model implements Media {
     public static cloud = { depth: 1 };
 
     public static computed = {

@@ -2,16 +2,15 @@ import { Errors, translate, UI } from '@aerogel/core';
 import { routeUrl } from '@aerogel/plugin-routing';
 import { after, arrayChunk } from '@noeldemartin/utils';
 
+import type { Media } from '@/lib/media';
 import Catalog from '@/services/Catalog';
-import type Movie from '@movies/models/Movie';
-import type Show from '@shows/models/Show';
 
 import ProcessingJob from './ProcessingJob';
 
 const CHUNK_SIZE = 10;
 
-export default class SynchronizeMedia extends ProcessingJob<Movie | Show, void> {
-    constructor(media: Array<Movie | Show>) {
+export default class SynchronizeMedia extends ProcessingJob<Media, void> {
+    constructor(media: Media[]) {
         super(media);
     }
 

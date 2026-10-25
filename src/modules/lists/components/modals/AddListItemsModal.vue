@@ -23,7 +23,7 @@
             <li v-for="result of results" :key="result.url" class="flex items-center gap-3 py-2">
                 <MediaImage :url="result.posterUrl" class="aspect-2/3 w-8 shrink-0 rounded" />
                 <div class="min-w-0 flex-1">
-                    <p class="truncate text-sm font-medium text-gray-900">{{ mediaName(result) }}</p>
+                    <p class="truncate text-sm font-medium text-gray-900">{{ result.name }}</p>
                     <p class="flex items-center gap-1 text-xs text-gray-500">
                         <template v-if="isInstanceOf(result, Movie)">
                             <i-ph-film-slate class="size-4" />
@@ -43,7 +43,7 @@
                 <Button
                     v-else
                     size="small"
-                    :aria-label="$t('lists.addItems.addA11y', { name: mediaName(result) })"
+                    :aria-label="$t('lists.addItems.addA11y', { name: result.name })"
                     :disabled="!!adding"
                     :loading="adding === result"
                     @click="add(result)"
@@ -63,7 +63,7 @@ import { computedModel, useModels } from '@aerogel/plugin-solid';
 import { isInstanceOf } from '@noeldemartin/utils';
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
 
-import { mediaName, sortByLocale, toSearchText } from '@/lib/media';
+import { sortByLocale, toSearchText, type Media } from '@/lib/media';
 import type List from '@lists/models/List';
 import Movie from '@movies/models/Movie';
 import Show from '@shows/models/Show';
@@ -73,15 +73,15 @@ const MAX_RESULTS = 10;
 const { list: listProp } = defineProps<{ list: List }>();
 const list = computedModel(() => listProp);
 const query = ref('');
-const adding = ref<Movie | Show | null>(null);
+const adding = ref<Media | null>(null);
 const $input = useTemplateRef('$inputRef');
 const { models: movies, loading: loadingMovies } = useModels(Movie);
 const { models: shows, loading: loadingShows } = useModels(Show);
 const loading = computed(() => loadingMovies.value || loadingShows.value);
 const searchIndex = computed(() =>
-    sortByLocale([...movies.value, ...shows.value], mediaName).map((media) => ({
+    sortByLocale<Media>([...movies.value, ...shows.value], (media) => media.name).map((media) => ({
         media,
-        searchText: toSearchText(mediaName(media)),
+        searchText: toSearchText(media.name),
     })),
 );
 const matches = computed(() => {
@@ -92,7 +92,7 @@ const matches = computed(() => {
 const results = computed(() => matches.value.slice(0, MAX_RESULTS));
 const hiddenResultsCount = computed(() => matches.value.length - results.value.length);
 
-async function add(media: Movie | Show) {
+async function add(media: Media) {
     adding.value = media;
 
     try {

@@ -3,8 +3,7 @@ import { isLocalUrl } from 'soukai-bis';
 import type { BelongsToManyRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
-import type Movie from '@movies/models/Movie';
-import type Show from '@shows/models/Show';
+import type { Media } from '@/lib/media';
 
 import Model from './List.schema';
 import type ListItem from './ListItem';
@@ -43,11 +42,11 @@ export default class List extends Model {
         };
     }
 
-    public has(media: Movie | Show): boolean {
+    public has(media: Media): boolean {
         return !!this.items?.some((item) => item.mediaUrl === media.url);
     }
 
-    public async add(media: Movie | Show): Promise<void> {
+    public async add(media: Media): Promise<void> {
         if (this.has(media)) {
             return;
         }
@@ -72,7 +71,7 @@ export default class List extends Model {
         await this.save();
     }
 
-    public async replace(original: Movie | Show, replacement: Movie | Show): Promise<void> {
+    public async replace(original: Media, replacement: Media): Promise<void> {
         if (this.has(replacement)) {
             await this.remove(original);
 
@@ -90,7 +89,7 @@ export default class List extends Model {
         await this.save();
     }
 
-    public async remove(media: Movie | Show): Promise<void> {
+    public async remove(media: Media): Promise<void> {
         await this.removeItems(this.items?.filter((item) => item.mediaUrl === media.url) ?? []);
     }
 

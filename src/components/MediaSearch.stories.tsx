@@ -2,10 +2,9 @@ import { arraySorted, compare } from '@noeldemartin/utils';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { computed } from 'vue';
 
+import type { Media } from '@/lib/media';
 import movies from '@movies/lib/stubs/solid-movies';
-import Movie from '@movies/models/Movie';
 import shows from '@shows/lib/stubs/solid-shows';
-import type Show from '@shows/models/Show';
 
 import MediaSearch from './MediaSearch.vue';
 
@@ -30,10 +29,10 @@ const meta: Meta<StoryArgs> = {
     render(args) {
         const results = computed(() =>
             arraySorted(
-                ([] as Array<Movie | Show>)
+                ([] as Media[])
                     .concat(movies.all.filter((movie) => movie.title.toLowerCase().includes(args.query.toLowerCase())))
                     .concat(shows.all.filter((show) => show.name.toLowerCase().includes(args.query.toLowerCase()))),
-                (a, b) => compare(a instanceof Movie ? a.title : a.name, b instanceof Movie ? b.title : b.name),
+                (a, b) => compare(a.name, b.name),
             ),
         );
 

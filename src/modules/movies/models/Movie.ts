@@ -8,6 +8,7 @@ import { findExternalId } from '@/lib/domains';
 import { isoDurationToMinutes } from '@/lib/durations';
 import { genreKeysFromUrls, type GenreKey } from '@/lib/genres';
 import { parseImdbId } from '@/lib/imdb';
+import type { Media } from '@/lib/media';
 import { parseTmdbId, tmdbMovieUrl, tmdbPosterUrl } from '@/lib/tmdb';
 import type { TMDBImageSize } from '@/lib/tmdb';
 import type PerformanceRole from '@/models/PerformanceRole';
@@ -23,7 +24,7 @@ export type MovieCredits = {
     cast: PersonCredit[];
 };
 
-export default class Movie extends Model {
+export default class Movie extends Model implements Media {
     public static cloud = true;
 
     public static computed = {
@@ -63,6 +64,10 @@ export default class Movie extends Model {
         }
 
         return instance;
+    }
+
+    public get name(): string {
+        return this.title;
     }
 
     public get tmdbId(): number | null {

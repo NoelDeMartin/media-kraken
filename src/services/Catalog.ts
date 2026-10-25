@@ -4,6 +4,7 @@ import {
     arrayFrom,
     arrayUnique,
     facade,
+    isInstanceOf,
     isTruthy,
     parseDate,
     required,
@@ -20,6 +21,7 @@ import { minutesToISODuration } from '@/lib/durations';
 import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
 import { keywordGenreUrls } from '@/lib/genres';
 import { imdbUrl } from '@/lib/imdb';
+import type { Media } from '@/lib/media';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import { tmdbBackdropUrl, tmdbGenreUrl, tmdbMovieUrl, tmdbPosterUrl, tmdbProfileUrl, tmdbShowUrl } from '@/lib/tmdb';
 import PerformanceRole from '@/models/PerformanceRole';
@@ -50,7 +52,7 @@ export class CatalogService extends Service {
         return WATCHING_STATUSES_WITHOUT_SEASONS.includes(watchingStatus);
     }
 
-    public async needsSync(media: Show | Movie): Promise<boolean> {
+    public async needsSync(media: Media): Promise<boolean> {
         if (media instanceof Movie) {
             return !(
                 media.releaseDate &&
@@ -62,6 +64,10 @@ export class CatalogService extends Service {
                 media.languages.length > 0 &&
                 media.externalUrls.length >= 2
             );
+        }
+
+        if (!isInstanceOf(media, Show)) {
+            return false;
         }
 
         const hasMetadata =
@@ -87,7 +93,7 @@ export class CatalogService extends Service {
         return !media.seasons || media.seasons.length === 0;
     }
 
-    public async syncIfNeeded(media: Show | Movie | (Movie | Show)[]): Promise<void> {
+    public async syncIfNeeded(media: Media | Media[]): Promise<void> {
         const items = arrayFrom(media);
         const chunks = arrayChunk(items, 10);
 
@@ -106,7 +112,7 @@ export class CatalogService extends Service {
         }
     }
 
-    public async sync(media: Show | Movie | (Movie | Show)[]): Promise<void> {
+    public async sync(media: Media | Media[]): Promise<void> {
         const items = arrayFrom(media);
         const chunks = arrayChunk(items, 10);
 
@@ -119,7 +125,9 @@ export class CatalogService extends Service {
                         return;
                     }
 
-                    await this.syncMovie(item);
+                    if (item instanceof Movie) {
+                        await this.syncMovie(item);
+                    }
                 }),
             );
         }
@@ -127,7 +135,7 @@ export class CatalogService extends Service {
 
     public identify(model: Movie, tmdb: TMDBMovie): Promise<void>;
     public identify(model: Show, tmdb: TMDBShow): Promise<void>;
-    public async identify(model: Movie | Show, tmdb: TMDBMovie | TMDBShow): Promise<void> {
+    public async identify(model: Media, tmdb: TMDBMovie | TMDBShow): Promise<void> {
         model.setAttributes({ externalUrls: ['title' in tmdb ? tmdbMovieUrl(tmdb.id) : tmdbShowUrl(tmdb.id)] });
 
         await this.sync(model);
@@ -387,7 +395,7 @@ export class CatalogService extends Service {
 
     private attachStaff(movie: Movie, details: TMDBMovieWithStaff): void;
     private attachStaff(show: Show, details: TMDBShowWithStaff): void;
-    private attachStaff(media: Movie | Show, details: TMDBMovieWithStaff | TMDBShowWithStaff): void {
+    private attachStaff(media: Media, details: TMDBMovieWithStaff | TMDBShowWithStaff): void {
         for (const credit of details.cast ?? []) {
             this.attachCastMember(media, credit);
         }
@@ -400,12 +408,14 @@ export class CatalogService extends Service {
             return;
         }
 
-        for (const creator of ('creators' in details && details.creators) || []) {
-            media.relatedCreators.attach(Person.fromTMDB(creator), { mintUrl: true });
+        if (media instanceof Show) {
+            for (const creator of ('creators' in details && details.creators) || []) {
+                media.relatedCreators.attach(Person.fromTMDB(creator), { mintUrl: true });
+            }
         }
     }
 
-    private attachCastMember(media: Movie | Show, credit: TMDBCastCredit): void {
+    private attachCastMember(media: Media, credit: TMDBCastCredit): void {
         const person = Person.fromTMDB(credit);
 
         person.mintUrl({ documentUrl: media.getDocumentUrl(), resourceHash: uuid() });
@@ -421,7 +431,7 @@ export class CatalogService extends Service {
         role.relatedActor.attach(person);
     }
 
-    private async reconcileCast(media: Movie | Show, credits: TMDBCastCredit[]): Promise<void> {
+    private async reconcileCast(media: Media, credits: TMDBCastCredit[]): Promise<void> {
         const existingRoles = media.relatedCast.related ?? [];
         const staleRoles = existingRoles.filter((role) => !credits.some((credit) => credit.id === role.actor?.tmdbId));
 
@@ -448,10 +458,8 @@ export class CatalogService extends Service {
         await this.deleteRelatedModels(media.relatedCast, staleRoles);
     }
 
-    private async reconcilePersons(
-        relation:
-            | BelongsToManyRelation<Movie, Person, typeof Person>
-            | BelongsToManyRelation<Show, Person, typeof Person>,
+    private async reconcilePersons<T extends Media>(
+        relation: BelongsToManyRelation<T, Person, typeof Person>,
         newPersons: TMDBPerson[],
     ): Promise<void> {
         const existingPersons = relation.related ?? [];
