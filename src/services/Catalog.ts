@@ -5,6 +5,7 @@ import {
     arrayUnique,
     facade,
     isInstanceOf,
+    isNullable,
     isTruthy,
     parseDate,
     required,
@@ -46,6 +47,11 @@ import Show from '@shows/models/Show';
 import type { ShowWatchingStatus } from '@shows/models/ShowWatching';
 
 const WATCHING_STATUSES_WITHOUT_SEASONS = ['dropped', 'pending'] satisfies ShowWatchingStatus[];
+
+type NewMovieOptions = {
+    watchedAt?: Nullable<Date>;
+    rating?: Nullable<number>;
+};
 
 export class CatalogService extends Service {
     public ignoresSeasons(watchingStatus: ShowWatchingStatus): boolean {
@@ -142,8 +148,10 @@ export class CatalogService extends Service {
     }
 
     public async newFromExternal(media: ExternalMedia): Promise<Movie> {
+        const options = { watchedAt: media.watchedAt, rating: media.rating };
+
         if (media.imdbId) {
-            return this.newMovieFromImdb(media.imdbId, { watchedAt: media.watchedAt });
+            return this.newMovieFromImdb(media.imdbId, options);
         }
 
         if (media.type && media.type !== 'movie') {
@@ -154,10 +162,10 @@ export class CatalogService extends Service {
             throw new MediaNotFoundError();
         }
 
-        return this.newMovieFromName(media.name, { watchedAt: media.watchedAt });
+        return this.newMovieFromName(media.name, options);
     }
 
-    public async newMovieFromImdb(imdbId: string, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
+    public async newMovieFromImdb(imdbId: string, options: NewMovieOptions = {}): Promise<Movie> {
         const { movie, show } = await TMDB.findByImdbId(imdbId);
 
         if (show) {
@@ -168,10 +176,13 @@ export class CatalogService extends Service {
             throw new MediaNotFoundError();
         }
 
-        return this.newMovieFromTMDB(movie.id, { watchedAt: options.watchedAt });
+        return this.newMovieFromTMDB(movie.id, options);
     }
 
-    public async importMovieFromTMDB(tmdbMovie: TMDBMovie, options: { watched?: boolean } = {}): Promise<Movie> {
+    public async importMovieFromTMDB(
+        tmdbMovie: TMDBMovie,
+        options: { watched?: boolean; rating?: Nullable<number> } = {},
+    ): Promise<Movie> {
         const details = await TMDB.getMovie(tmdbMovie.id, { includeCredits: true, includeKeywords: true });
         const movie = new Movie(this.getMovieAttributes(details));
 
@@ -183,6 +194,10 @@ export class CatalogService extends Service {
             await movie.watch();
         }
 
+        if (!isNullable(options.rating)) {
+            await movie.rate(options.rating);
+        }
+
         await movie.save();
 
         return movie;
@@ -190,7 +205,7 @@ export class CatalogService extends Service {
 
     public async importShowFromTMDB(
         tmdbShow: TMDBShow,
-        options: { watchingStatus?: Nullable<ShowWatchingStatus> } = {},
+        options: { watchingStatus?: Nullable<ShowWatchingStatus>; rating?: Nullable<number> } = {},
     ): Promise<Show> {
         const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id, {
             includeSeasons: !!options.watchingStatus && !this.ignoresSeasons(options.watchingStatus),
@@ -223,6 +238,10 @@ export class CatalogService extends Service {
 
             if (options.watchingStatus) {
                 await show.updateWatchingStatus(options.watchingStatus);
+            }
+
+            if (!isNullable(options.rating)) {
+                await show.rate(options.rating);
             }
 
             await show.save();
@@ -504,7 +523,7 @@ export class CatalogService extends Service {
         }
     }
 
-    private async newMovieFromName(name: string, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
+    private async newMovieFromName(name: string, options: NewMovieOptions = {}): Promise<Movie> {
         const slug = stringToSlug(name);
         const results = await TMDB.search(name, { types: 'movie' });
         const match =
@@ -520,10 +539,10 @@ export class CatalogService extends Service {
             throw new MediaNotFoundError();
         }
 
-        return this.newMovieFromTMDB(match.id, { watchedAt: options.watchedAt });
+        return this.newMovieFromTMDB(match.id, options);
     }
 
-    private async newMovieFromTMDB(tmdbId: number, options: { watchedAt?: Nullable<Date> } = {}): Promise<Movie> {
+    private async newMovieFromTMDB(tmdbId: number, options: NewMovieOptions = {}): Promise<Movie> {
         const details = await TMDB.getMovie(tmdbId, { includeCredits: true, includeKeywords: true });
         const movie = new Movie(this.getMovieAttributes(details));
 
@@ -533,6 +552,10 @@ export class CatalogService extends Service {
 
         if (options.watchedAt) {
             await movie.watch(options.watchedAt);
+        }
+
+        if (!isNullable(options.rating)) {
+            await movie.rate(options.rating);
         }
 
         return movie;

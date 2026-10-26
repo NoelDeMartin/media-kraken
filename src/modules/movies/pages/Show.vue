@@ -35,6 +35,15 @@
                         <span aria-hidden="true">·</span>
                         <span>{{ formatDuration({ minutes: movie.runtimeMinutes }) }}</span>
                     </template>
+                    <template v-if="movie.watched || movie.rating !== null">
+                        <span aria-hidden="true">·</span>
+                        <MediaRating
+                            :model-value="movie.rating"
+                            size="sm"
+                            class="-ml-0.5"
+                            @update:model-value="(rating) => movie.updateRating(rating)"
+                        />
+                    </template>
                 </div>
                 <p v-if="movie.description" class="mt-4 leading-relaxed text-gray-700">
                     {{ movie.description }}
@@ -254,6 +263,7 @@ async function identifyAsShow(tmdbShow: TMDBShow) {
     await runSync(async () => {
         const show = await Catalog.importShowFromTMDB(tmdbShow, {
             watchingStatus: movie.watched ? 'completed' : 'pending',
+            rating: movie.rating,
         });
 
         await replaceInLists(movie, show);

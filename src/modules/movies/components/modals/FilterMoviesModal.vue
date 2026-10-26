@@ -60,6 +60,13 @@
                     :step="DURATION_STEP"
                     :format-value="(minutes) => formatDuration({ minutes })"
                 />
+                <RangeSlider
+                    name="rating"
+                    :label="$t('media.rating.label')"
+                    :min="MIN_RATING"
+                    :max="MAX_RATING"
+                    :format-value="formatRatingAsStars"
+                />
             </div>
 
             <div class="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 pt-4">
@@ -88,6 +95,8 @@ import { z } from 'zod';
 import { formatCountry, formatGenre, formatDuration, formatLanguage } from '@/lib/formatting';
 import type { GenreKey } from '@/lib/genres';
 import { personFilterKey, sortByLocale, uniquePersonKeys } from '@/lib/media';
+import { formatRatingAsStars } from '@/lib/stars';
+import { MAX_RATING, MIN_RATING } from '@/models/Rating';
 import type { MoviesFilter } from '@movies/lib/movies';
 import type Movie from '@movies/models/Movie';
 
@@ -115,6 +124,7 @@ const form = useForm({
     languages: z.array(z.string()).default([]),
     releaseYear: numberRange(),
     duration: numberRange(),
+    rating: numberRange(),
 });
 
 if (filters) {
@@ -126,6 +136,7 @@ if (filters) {
     form.languages = filters.languages ?? [];
     form.releaseYear = filters.releaseYear ?? [null, null];
     form.duration = filters.duration ?? [null, null];
+    form.rating = filters.rating ?? [null, null];
 }
 
 const directors = computed(() => movies.flatMap((movie) => movie.credits.value?.directors ?? []));
@@ -202,6 +213,7 @@ function submit() {
             languages: form.languages.length > 0 ? form.languages : null,
             releaseYear: form.releaseYear[0] === null && form.releaseYear[1] === null ? null : form.releaseYear,
             duration: form.duration[0] === null && form.duration[1] === null ? null : form.duration,
+            rating: form.rating[0] === null && form.rating[1] === null ? null : form.rating,
         },
     });
 }

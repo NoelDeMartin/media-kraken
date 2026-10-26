@@ -3,15 +3,10 @@ import { InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
 import type { BelongsToManyRelation, ComputedAttribute, HasManyRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
-import { countryCodeFromUrl } from '@/lib/countries';
 import { findExternalId } from '@/lib/domains';
 import { isoDurationToMinutes } from '@/lib/durations';
-import { genreKeysFromUrls, type GenreKey } from '@/lib/genres';
-import { parseImdbId } from '@/lib/imdb';
-import type { Media } from '@/lib/media';
 import { parseTmdbId, tmdbMovieUrl, tmdbPosterUrl } from '@/lib/tmdb';
 import type { TMDBImageSize } from '@/lib/tmdb';
-import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';
 import type { PersonCredit } from '@/models/Person';
 import type { TMDBMovie } from '@/services/TMDB';
@@ -24,7 +19,7 @@ export type MovieCredits = {
     cast: PersonCredit[];
 };
 
-export default class Movie extends Model implements Media {
+export default class Movie extends Model {
     public static cloud = true;
 
     public static computed = {
@@ -45,8 +40,6 @@ export default class Movie extends Model implements Media {
     declare public readonly credits: ComputedAttribute<MovieCredits>;
     declare public readonly watchActions?: WatchAction[];
     declare public readonly relatedWatchActions: HasManyRelation<this, WatchAction, typeof WatchAction>;
-    declare public readonly cast?: PerformanceRole[];
-    declare public readonly relatedCast: BelongsToManyRelation<this, PerformanceRole, typeof PerformanceRole>;
     declare public readonly directors?: Person[];
     declare public readonly relatedDirectors: BelongsToManyRelation<this, Person, typeof Person>;
 
@@ -66,36 +59,16 @@ export default class Movie extends Model implements Media {
         return instance;
     }
 
-    public get name(): string {
-        return this.title;
-    }
-
     public get tmdbId(): number | null {
         return findExternalId('https://www.themoviedb.org/movie/', this.externalUrls, parseTmdbId);
-    }
-
-    public get imdbId(): string | null {
-        return findExternalId('https://www.imdb.com/title/', this.externalUrls, parseImdbId);
-    }
-
-    public get slug(): string {
-        return this.requireSlug();
     }
 
     public get releaseYear(): number | null {
         return this.releaseDate ? this.releaseDate.getFullYear() : null;
     }
 
-    public get genreKeys(): GenreKey[] {
-        return genreKeysFromUrls(this.genreUrls);
-    }
-
     public get runtimeMinutes(): number | null {
         return this.duration ? isoDurationToMinutes(this.duration) : null;
-    }
-
-    public get countryCodes(): string[] {
-        return this.countryUrls.map(countryCodeFromUrl).filter(isTruthy);
     }
 
     public get watched(): boolean | null {
@@ -149,8 +122,8 @@ export default class Movie extends Model implements Media {
     }
 
     public async loadAllRelationsIfUnloaded(): Promise<void> {
+        await super.loadAllRelationsIfUnloaded();
         await this.loadRelationIfUnloaded('watchActions');
-        await this.loadRelationIfUnloaded('cast');
         await this.loadRelationIfUnloaded('directors');
     }
 
@@ -161,6 +134,8 @@ export default class Movie extends Model implements Media {
             ...(this.cast ?? []).flatMap((role) => [role.actor, role]),
             ...(this.directors ?? []),
             ...(this.watchActions ?? []),
+            this.review?.rating,
+            this.review,
         ]);
 
         for (const model of documentModels) {

@@ -32,6 +32,15 @@
                         <span aria-hidden="true">·</span>
                         <span>{{ $t('shows.episodesCount', { count: show.numberOfEpisodes }) }}</span>
                     </template>
+                    <template v-if="show.watchingStatus !== 'pending' || show.rating !== null">
+                        <span aria-hidden="true">·</span>
+                        <MediaRating
+                            :model-value="show.rating"
+                            size="sm"
+                            class="-ml-0.5"
+                            @update:model-value="(rating) => show.updateRating(rating)"
+                        />
+                    </template>
                 </div>
                 <p v-if="show.description" class="mt-4 leading-relaxed text-gray-700">
                     {{ show.description }}
@@ -310,6 +319,7 @@ async function identifyAsMovie(tmdbMovie: TMDBMovie) {
     await runSync(async () => {
         const movie = await Catalog.importMovieFromTMDB(tmdbMovie, {
             watched: show.watchingStatus === 'completed',
+            rating: show.rating,
         });
 
         await replaceInLists(show, movie);

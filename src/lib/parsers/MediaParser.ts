@@ -5,6 +5,7 @@ export interface ExternalMedia {
     type?: 'show' | 'movie';
     imdbId?: string;
     watchedAt?: Nullable<Date>;
+    rating?: Nullable<number>;
     validationError?: string;
     skippedMessage?: string;
     raw: unknown;

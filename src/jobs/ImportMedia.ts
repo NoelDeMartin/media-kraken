@@ -1,4 +1,5 @@
 import { translate } from '@aerogel/core';
+import { isNullable } from '@noeldemartin/utils';
 
 import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
@@ -71,10 +72,19 @@ export default class ImportMedia extends ProcessingJob<ExternalMedia, ImportMedi
                 const matchingInCollection = existingMovies.find((existing) => this.isSameMovie(existing, movie));
 
                 if (matchingInCollection) {
+                    const importedRating = matchingInCollection.rating === null ? media.rating : null;
+
+                    if (!isNullable(importedRating)) {
+                        await matchingInCollection.rate(importedRating);
+                    }
+
                     result.ignored.push({
-                        reason: translate('import.result.movieAlreadyInCollection', {
-                            title: matchingInCollection.title,
-                        }),
+                        reason: translate(
+                            !isNullable(importedRating)
+                                ? 'import.result.movieAlreadyInCollectionRated'
+                                : 'import.result.movieAlreadyInCollection',
+                            { title: matchingInCollection.title },
+                        ),
                         data: media.raw,
                     });
 

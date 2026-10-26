@@ -26,7 +26,7 @@
                 <MediaImage :url="result.posterUrl" class="size-12 rounded" />
                 <div class="min-w-0 flex-1">
                     <h3 class="truncate text-sm font-medium">
-                        {{ result.name }}
+                        {{ mediaDisplayName(result) }}
                     </h3>
                     <p class="flex items-center gap-1 text-xs text-gray-500">
                         <template v-if="isInstanceOf(result, Movie)">
@@ -41,7 +41,7 @@
                     </p>
                 </div>
                 <Button
-                    :aria-label="$t('media.identify.updateA11y', { name: result.name })"
+                    :aria-label="$t('media.identify.updateA11y', { name: mediaDisplayName(result) })"
                     @click="selectResult(result)"
                 >
                     {{ $t('media.identify.update') }}
@@ -56,6 +56,7 @@ import { isInstanceOf } from '@noeldemartin/utils';
 import { nextTick, onMounted, useTemplateRef } from 'vue';
 
 import { useMediaSearch, type SearchResult } from '@/lib/composition/search';
+import { mediaDisplayName } from '@/lib/media';
 import type { TMDBMovie, TMDBShow } from '@/services/TMDB';
 import Movie from '@movies/models/Movie';
 

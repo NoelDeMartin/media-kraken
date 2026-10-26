@@ -1,29 +1,19 @@
 import { belongsToMany, defineSchema, hasMany, requireBootedModel } from 'soukai-bis';
 import { array, date, string, url } from 'zod';
 
-import PerformanceRole from '@/models/PerformanceRole';
+import BaseMedia from '@/models/BaseMedia';
 import Person from '@/models/Person';
 
-export default defineSchema({
-    rdfContext: 'https://schema.org/',
+export default defineSchema(BaseMedia, {
     rdfClass: 'Movie',
-    history: true,
     fields: {
         title: string().rdfProperty('name'),
-        description: string().optional(),
         releaseDate: date().rdfProperty('datePublished').optional(),
-        posterUrl: url().rdfProperty('image').optional(),
-        externalUrls: array(url()).rdfProperty('sameAs').default([]),
-        genreUrls: array(url()).rdfProperty('genre').default([]),
-        actorUrls: array(url()).rdfProperty('actor').default([]),
         directorUrls: array(url()).rdfProperty('director').default([]),
-        countryUrls: array(url()).rdfProperty('countryOfOrigin').default([]),
-        languages: array(string()).rdfProperty('inLanguage').default([]),
         duration: string().optional(),
     },
     relations: {
         watchActions: hasMany(() => requireBootedModel('WatchAction'), 'object').usingSameDocument(),
-        cast: belongsToMany(PerformanceRole, 'actorUrls').usingSameDocument().autoload(false),
         directors: belongsToMany(Person, 'directorUrls').usingSameDocument().autoload(false),
     },
 });

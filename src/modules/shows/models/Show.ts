@@ -3,14 +3,9 @@ import { emitModelEvent, InvalidationStrategies, isLocalUrl, loaded } from 'souk
 import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, UrlFromSlugOptions } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
-import { countryCodeFromUrl } from '@/lib/countries';
 import { findExternalId } from '@/lib/domains';
-import { genreKeysFromUrls, type GenreKey } from '@/lib/genres';
-import { parseImdbId } from '@/lib/imdb';
-import type { Media } from '@/lib/media';
 import { parseTmdbId, tmdbPosterUrl, tmdbShowUrl } from '@/lib/tmdb';
 import type { TMDBImageSize } from '@/lib/tmdb';
-import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';
 import type { PersonCredit } from '@/models/Person';
 import type { TMDBShow } from '@/services/TMDB';
@@ -39,7 +34,7 @@ export type ShowCredits = {
     cast: PersonCredit[];
 };
 
-export default class Show extends Model implements Media {
+export default class Show extends Model {
     public static cloud = { depth: 1 };
 
     public static computed = {
@@ -102,8 +97,6 @@ export default class Show extends Model implements Media {
     declare public readonly pendingEpisodes: ComputedAttribute<PendingEpisode[]>;
     declare public readonly watchedEpisodes: ComputedAttribute<WatchedEpisodes>;
     declare public readonly credits: ComputedAttribute<ShowCredits>;
-    declare public readonly cast?: PerformanceRole[];
-    declare public readonly relatedCast: BelongsToManyRelation<this, PerformanceRole, typeof PerformanceRole>;
     declare public readonly creators?: Person[];
     declare public readonly relatedCreators: BelongsToManyRelation<this, Person, typeof Person>;
     declare public readonly watching?: ShowWatching;
@@ -127,20 +120,8 @@ export default class Show extends Model implements Media {
         return instance;
     }
 
-    public get slug(): string {
-        return this.requireSlug();
-    }
-
     public get releaseYear(): number | null {
         return this.startDate ? this.startDate.getFullYear() : null;
-    }
-
-    public get genreKeys(): GenreKey[] {
-        return genreKeysFromUrls(this.genreUrls);
-    }
-
-    public get countryCodes(): string[] {
-        return this.countryUrls.map(countryCodeFromUrl).filter(isTruthy);
     }
 
     public get numberOfSeasons(): number | null {
@@ -175,10 +156,6 @@ export default class Show extends Model implements Media {
         return findExternalId('https://www.themoviedb.org/tv/', this.externalUrls, parseTmdbId);
     }
 
-    public get imdbId(): string | null {
-        return findExternalId('https://www.imdb.com/title/', this.externalUrls, parseImdbId);
-    }
-
     public get route(): RouteLocationRaw {
         return {
             name: 'shows.show',
@@ -200,8 +177,8 @@ export default class Show extends Model implements Media {
     }
 
     public async loadAllRelationsIfUnloaded(): Promise<void> {
+        await super.loadAllRelationsIfUnloaded();
         await this.loadRelationIfUnloaded('watching');
-        await this.loadRelationIfUnloaded('cast');
         await this.loadRelationIfUnloaded('creators');
         await this.loadRelationIfUnloaded('seasons');
         await Promise.all(this.seasons?.map((season) => season.loadRelationIfUnloaded('episodes')) ?? []);
@@ -250,6 +227,8 @@ export default class Show extends Model implements Media {
             ...(this.creators ?? []),
             ...seasons,
             this.watching,
+            this.review?.rating,
+            this.review,
         ]);
 
         for (const model of documentModels) {

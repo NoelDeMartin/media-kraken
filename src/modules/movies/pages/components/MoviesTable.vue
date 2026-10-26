@@ -23,6 +23,12 @@
                 <span v-else>-</span>
             </template>
         </TableColumn>
+        <TableColumn :header="$t('media.rating.label')" field="rating" sortable>
+            <template #default="{ item }">
+                <MediaRating v-if="item.rating !== null" :model-value="item.rating" readonly />
+                <span v-else>-</span>
+            </template>
+        </TableColumn>
 
         <template v-if="$slots.empty" #empty>
             <slot name="empty" />
@@ -49,6 +55,7 @@ const renderedMovies = computed(() =>
         runtimeMinutes: movie.runtimeMinutes,
         releaseYear: movie.releaseYear,
         watchedAt: movie.watchedAt,
+        rating: movie.rating,
     })),
 );
 const { Table, TableColumn } = useDataTable(renderedMovies);

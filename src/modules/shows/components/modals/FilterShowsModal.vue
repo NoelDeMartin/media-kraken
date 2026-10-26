@@ -58,6 +58,13 @@
                     :min="seasonsBounds[0]"
                     :max="seasonsBounds[1]"
                 />
+                <RangeSlider
+                    name="rating"
+                    :label="$t('media.rating.label')"
+                    :min="MIN_RATING"
+                    :max="MAX_RATING"
+                    :format-value="formatRatingAsStars"
+                />
             </div>
 
             <div class="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 pt-4">
@@ -86,6 +93,8 @@ import { z } from 'zod';
 import { formatCountry, formatGenre, formatLanguage } from '@/lib/formatting';
 import type { GenreKey } from '@/lib/genres';
 import { personFilterKey, sortByLocale, uniquePersonKeys } from '@/lib/media';
+import { formatRatingAsStars } from '@/lib/stars';
+import { MAX_RATING, MIN_RATING } from '@/models/Rating';
 import type { ShowsFilter } from '@shows/lib/shows';
 import type Show from '@shows/models/Show';
 import type { ShowWatchingStatus } from '@shows/models/ShowWatching';
@@ -115,6 +124,7 @@ const form = useForm({
     languages: z.array(z.string()).default([]),
     releaseYear: numberRange(),
     seasons: numberRange(),
+    rating: numberRange(),
 });
 
 if (filters) {
@@ -126,6 +136,7 @@ if (filters) {
     form.languages = filters.languages ?? [];
     form.releaseYear = filters.releaseYear ?? [null, null];
     form.seasons = filters.seasons ?? [null, null];
+    form.rating = filters.rating ?? [null, null];
 }
 
 const creators = computed(() => shows.flatMap((show) => show.credits.value?.creators ?? []));
@@ -198,6 +209,7 @@ function submit() {
             languages: form.languages.length > 0 ? form.languages : null,
             releaseYear: form.releaseYear[0] === null && form.releaseYear[1] === null ? null : form.releaseYear,
             seasons: form.seasons[0] === null && form.seasons[1] === null ? null : form.seasons,
+            rating: form.rating[0] === null && form.rating[1] === null ? null : form.rating,
         },
     });
 }

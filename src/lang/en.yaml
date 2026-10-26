@@ -52,6 +52,11 @@ media:
         title: 'Detach media'
         message: "Are you sure that you want to detach this from TMDB? Provenance will be removed and metadata won't be updated any more."
         accept: 'Detach'
+    rating:
+        label: 'Rating'
+        rate: 'Rate {rating} out of 5'
+        value: 'Rated {rating} out of 5'
+        hint: 'Press Enter to save, Escape to cancel, or Delete to remove the rating.'
 
 genres:
     anime: 'Anime'
@@ -257,20 +262,21 @@ import:
 
             ## CSV format
 
-            Create a CSV with exactly these column headers: Name, IMDb, Date
+            Create a CSV with exactly these column headers: Name, IMDb, Date, Rating
 
             - Name — Required if IMDb is missing. The movie title. Used to search TMDB when no IMDb ID is available.
             - IMDb — Required if Name is missing. The IMDb ID (e.g. tt0137523). Prefer this when the source provides it.
             - Date — Optional. When I watched the movie, using any date format accepted by JavaScript's Date.parse(). If omitted, the movie will be added to watch later.
+            - Rating — Optional. My rating for the movie, as a whole number from 0 to 10. If the source uses a different scale, convert it proportionally (e.g. 4.5/5 stars becomes 9).
 
             Each row is one movie. At least one of Name or IMDb must be filled in per row. Only movies are supported — skip TV shows.
 
             ## Example
 
-            Name,IMDb,Date
-            Spirited Away,tt0245429,2024-03-15
-            The Matrix,tt0133093,2024-01-20
-            Inception,,2023-12-01
+            Name,IMDb,Date,Rating
+            Spirited Away,tt0245429,2024-03-15,10
+            The Matrix,tt0133093,2024-01-20,9
+            Inception,,2023-12-01,
 
             ## What to do next
 
@@ -290,6 +296,9 @@ import:
             imdb: 'IMDb'
             imdbFormat: Required if Name is missing
             imdbDescription: 'The IMDb ID of the movie.'
+            rating: 'Rating'
+            ratingFormat: Optional
+            ratingDescription: 'Your rating for the movie, as a whole number from 0 to 10.'
     result:
         title: 'Import completed'
         watchedAdded: '**1** watched movie has been added.|**{count}** watched movies have been added.'
@@ -300,6 +309,7 @@ import:
         failed: 'failed on import.'
         viewDetails: 'view details'
         movieAlreadyInCollection: 'You already have **{title}** in your collection.'
+        movieAlreadyInCollectionRated: 'You already have **{title}** in your collection, but its rating has been imported.'
         details:
             watchedTitle: 'Watched movies added'
             pendingTitle: 'Pending movies added'

@@ -36,6 +36,26 @@ test('Marks movies as watched from details page', async ({ page }) => {
     await see(page, 'Watched');
 });
 
+test('Rates movies', async ({ page }) => {
+    await createModel(page, 'Movie', { title: 'The Matrix' });
+    await press(page, 'The Matrix');
+    await dontSee(page, 'Rate 3.5 out of 5');
+
+    await press(page, 'Open actions menu');
+    await press(page, 'Mark as watched');
+    await press(page, 'Rate 3.5 out of 5');
+    await expect(page.getByRole('radio', { name: 'Rate 3.5 out of 5' })).toBeChecked();
+
+    await page.goto('/movies?view=table');
+    await see(page, 'Rated 3.5 out of 5', { srOnly: true });
+
+    await page.goto('/movies?view=table&rating=8-10');
+    await see(page, 'Movies (0)');
+
+    await page.goto('/movies?view=table&rating=6-8');
+    await see(page, 'Movies (1)');
+});
+
 test('Filters movies by title', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await createModel(page, 'Movie', { title: 'Inception' });

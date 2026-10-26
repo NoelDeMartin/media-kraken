@@ -15,6 +15,7 @@ export type MoviesFilter = {
     languages?: Nullable<string[]>;
     duration?: Nullable<RangeSliderValue>;
     releaseYear?: Nullable<RangeSliderValue>;
+    rating?: Nullable<RangeSliderValue>;
 };
 
 export const MOVIES_FILTER_FIELDS: QueryFilterFields<MoviesFilter> = {
@@ -26,6 +27,7 @@ export const MOVIES_FILTER_FIELDS: QueryFilterFields<MoviesFilter> = {
     languages: 'list',
     duration: 'range',
     releaseYear: 'range',
+    rating: 'range',
 };
 
 export type MovieSearchEntry = ReturnType<typeof createMovieSearchEntry>;
@@ -43,6 +45,7 @@ export function hasActiveMovieFilters(filters: Nullable<MoviesFilter>): boolean 
         !isNullable(filters.languages) ||
         !isNullable(filters.releaseYear) ||
         !isNullable(filters.duration) ||
+        !isNullable(filters.rating) ||
         !isNullable(filters.watched)
     );
 }
@@ -59,6 +62,9 @@ export function createMovieSearchEntry(movie: Movie) {
         runtimeMinutes: movie.runtimeMinutes,
         get watched(): boolean | null {
             return movie.watched;
+        },
+        get rating(): number | null {
+            return movie.rating;
         },
         get directors(): string[] {
             return movie.credits.value?.directors.map(personFilterKey).filter(isTruthy) ?? [];
@@ -81,6 +87,7 @@ export function movieMatchesFilters(entry: MovieSearchEntry, filters: Nullable<M
     return (
         (isNullable(filters.releaseYear) || matchesRange(filters.releaseYear, entry.releaseYear)) &&
         (isNullable(filters.duration) || matchesRange(filters.duration, entry.runtimeMinutes)) &&
+        (isNullable(filters.rating) || matchesRange(filters.rating, entry.rating)) &&
         (isNullable(filters.watched) || filters.watched === entry.watched) &&
         (isNullable(filters.genres) || matchesAny(filters.genres, entry.genreKeys)) &&
         (isNullable(filters.countries) || matchesAny(filters.countries, entry.countryCodes)) &&

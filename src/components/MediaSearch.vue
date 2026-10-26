@@ -49,7 +49,7 @@
                         <MediaImage :url="result.posterUrl" class="size-12 rounded" />
                         <div class="min-w-0 flex-auto">
                             <p class="truncate text-sm font-medium">
-                                {{ result.name }}
+                                {{ mediaDisplayName(result) }}
                             </p>
                             <p class="flex items-center gap-1 text-xs text-gray-500">
                                 <template v-if="isInstanceOf(result, Movie)">
@@ -75,6 +75,7 @@ import { isInstanceOf } from '@noeldemartin/utils';
 import { useTemplateRef } from 'vue';
 
 import type { SearchResult } from '@/lib/composition/search';
+import { mediaDisplayName } from '@/lib/media';
 import Movie from '@movies/models/Movie';
 
 defineProps<{

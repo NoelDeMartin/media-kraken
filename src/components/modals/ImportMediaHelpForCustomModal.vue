@@ -42,7 +42,7 @@
 <script setup lang="ts">
 import { translate, UI } from '@aerogel/core';
 
-const columns = ['name', 'imdb', 'date'];
+const columns = ['name', 'imdb', 'date', 'rating'];
 
 async function copyAIInstructions() {
     await navigator.clipboard.writeText(translate('import.custom.aiInstructionsContent'));

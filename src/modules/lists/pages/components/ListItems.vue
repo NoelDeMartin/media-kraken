@@ -31,7 +31,7 @@
                     :to="media.route"
                     draggable="false"
                 >
-                    {{ media.name }}
+                    {{ mediaDisplayName(media) }}
                 </Link>
                 <p class="mt-1 flex items-center gap-1 text-xs text-gray-500">
                     <i-ph-film-slate v-if="isInstanceOf(media, Movie)" class="size-4 shrink-0" />
@@ -94,7 +94,7 @@ import IconMoveDown from '~icons/mdi/arrow-down';
 import IconMoveUp from '~icons/mdi/arrow-up';
 import IconRemove from '~icons/ph/trash';
 
-import type { Media } from '@/lib/media';
+import { mediaDisplayName, type Media } from '@/lib/media';
 import { useListMedia } from '@lists/lib/composition/lists';
 import type List from '@lists/models/List';
 import type ListItem from '@lists/models/ListItem';
@@ -111,7 +111,7 @@ const draggedItem = shallowRef<ListItem | null>(null);
 const dropTarget = shallowRef<ListItem | null>(null);
 
 function itemActionsLabel(media: Media | undefined): string {
-    return translate('lists.itemActions', { name: media ? media.name : translate('lists.missingMedia') });
+    return translate('lists.itemActions', { name: media ? mediaDisplayName(media) : translate('lists.missingMedia') });
 }
 
 function itemOptions(item: ListItem, index: number) {

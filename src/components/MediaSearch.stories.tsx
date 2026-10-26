@@ -2,7 +2,7 @@ import { arraySorted, compare } from '@noeldemartin/utils';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { computed } from 'vue';
 
-import type { Media } from '@/lib/media';
+import { mediaDisplayName, type Media } from '@/lib/media';
 import movies from '@movies/lib/stubs/solid-movies';
 import shows from '@shows/lib/stubs/solid-shows';
 
@@ -32,7 +32,7 @@ const meta: Meta<StoryArgs> = {
                 ([] as Media[])
                     .concat(movies.all.filter((movie) => movie.title.toLowerCase().includes(args.query.toLowerCase())))
                     .concat(shows.all.filter((show) => show.name.toLowerCase().includes(args.query.toLowerCase()))),
-                (a, b) => compare(a.name, b.name),
+                (a, b) => compare(mediaDisplayName(a), mediaDisplayName(b)),
             ),
         );
 
