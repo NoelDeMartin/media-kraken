@@ -1,4 +1,4 @@
-import { arrayFilter, isTruthy, parseDate, required, stringToSlug, tap } from '@noeldemartin/utils';
+import { arrayFilter, isTruthy, parseDate, required, stringToSlug } from '@noeldemartin/utils';
 import { emitModelEvent, InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
 import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, UrlFromSlugOptions } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
@@ -196,17 +196,24 @@ export default class Show extends Model {
         }
     }
 
-    public async updateWatchingStatus(status: ShowWatchingStatus): Promise<void> {
+    public setWatchingStatus(status: ShowWatchingStatus): void {
+        this.assertRelationLoaded('watching');
+
         if (this.watchingStatus === status) {
             return;
         }
 
-        const watching = tap(
-            this.watching ?? this.relatedWatching.attach({}),
-            (related) => (related.statusUrl = SHOW_WATCHING_STATUSES[status]),
-        );
+        const watching = this.watching ?? this.relatedWatching.attach({});
 
-        await this.relatedWatching.save(watching);
+        watching.statusUrl = SHOW_WATCHING_STATUSES[status];
+    }
+
+    public async updateWatchingStatus(status: ShowWatchingStatus): Promise<void> {
+        await this.loadRelationIfUnloaded('watching');
+
+        this.setWatchingStatus(status);
+
+        await this.save();
     }
 
     public async deleteWithRelations(): Promise<void> {
@@ -229,6 +236,7 @@ export default class Show extends Model {
             this.watching,
             this.review?.rating,
             this.review,
+            this.note,
         ]);
 
         for (const model of documentModels) {

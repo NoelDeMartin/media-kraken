@@ -61,6 +61,7 @@
 <script setup lang="ts">
 import { computedModel, useModels } from '@aerogel/plugin-solid';
 import { isInstanceOf } from '@noeldemartin/utils';
+import type { ModelWithUrl } from 'soukai-bis';
 import { computed, onMounted, ref, useTemplateRef } from 'vue';
 
 import { mediaDisplayName, sortByLocale, toSearchText, type Media } from '@/lib/media';
@@ -73,13 +74,13 @@ const MAX_RESULTS = 10;
 const { list: listProp } = defineProps<{ list: List }>();
 const list = computedModel(() => listProp);
 const query = ref('');
-const adding = ref<Media | null>(null);
+const adding = ref<ModelWithUrl<Media> | null>(null);
 const $input = useTemplateRef('$inputRef');
 const { models: movies, loading: loadingMovies } = useModels(Movie);
 const { models: shows, loading: loadingShows } = useModels(Show);
 const loading = computed(() => loadingMovies.value || loadingShows.value);
 const searchIndex = computed(() =>
-    sortByLocale<Media>([...movies.value, ...shows.value], mediaDisplayName).map((media) => ({
+    sortByLocale<ModelWithUrl<Media>>([...movies.value, ...shows.value], mediaDisplayName).map((media) => ({
         media,
         searchText: toSearchText(mediaDisplayName(media)),
     })),
@@ -92,7 +93,7 @@ const matches = computed(() => {
 const results = computed(() => matches.value.slice(0, MAX_RESULTS));
 const hiddenResultsCount = computed(() => matches.value.length - results.value.length);
 
-async function add(media: Media) {
+async function add(media: ModelWithUrl<Media>) {
     adding.value = media;
 
     try {

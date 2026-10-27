@@ -102,23 +102,50 @@ export default class Movie extends Model {
         return `${stringToSlug(this.title)}-${this.releaseDate.getFullYear()}`;
     }
 
+    public setWatchedAt(date: Date | null): void {
+        this.assertRelationLoaded('watchActions');
+
+        const watchActions = this.watchActions ?? [];
+
+        if (!date) {
+            this.relatedWatchActions.detach(watchActions, { delete: true });
+
+            return;
+        }
+
+        const [firstWatch] = arraySorted(watchActions, 'endTime', 'asc');
+
+        if (firstWatch) {
+            firstWatch.setAttribute('endTime', date);
+
+            return;
+        }
+
+        this.relatedWatchActions.attach({ endTime: date });
+    }
+
     public async watch(date?: Date): Promise<void> {
+        await this.loadRelationIfUnloaded('watchActions');
+
         if (this.watched) {
             return;
         }
 
-        await this.loadRelationIfUnloaded('watchActions');
-        await this.relatedWatchActions.create({ endTime: date ?? new Date() });
+        this.setWatchedAt(date ?? new Date());
+
+        await this.save();
     }
 
     public async unwatch(): Promise<void> {
+        await this.loadRelationIfUnloaded('watchActions');
+
         if (!this.watched) {
             return;
         }
 
-        const watchActions = await this.loadRelationIfUnloaded<WatchAction[]>('watchActions');
+        this.setWatchedAt(null);
 
-        await this.relatedWatchActions.delete(watchActions);
+        await this.save();
     }
 
     public async loadAllRelationsIfUnloaded(): Promise<void> {
@@ -136,6 +163,7 @@ export default class Movie extends Model {
             ...(this.watchActions ?? []),
             this.review?.rating,
             this.review,
+            this.note,
         ]);
 
         for (const model of documentModels) {

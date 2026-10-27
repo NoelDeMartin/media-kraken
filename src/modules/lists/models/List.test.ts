@@ -1,5 +1,6 @@
-import { required } from '@noeldemartin/utils';
+import { fail, required } from '@noeldemartin/utils';
 import { InMemoryEngine, bootCoreModels, bootModels, setEngine } from 'soukai-bis';
+import type { ModelWithUrl } from 'soukai-bis';
 import { beforeEach, describe, expect, it } from 'vite-plus/test';
 
 import PerformanceRole from '@/models/PerformanceRole';
@@ -12,9 +13,15 @@ import List from './List';
 import ListItem from './ListItem';
 
 describe('List model', () => {
-    let alien: Movie;
-    let jaws: Movie;
-    let scream: Movie;
+    let alien: ModelWithUrl<Movie>;
+    let jaws: ModelWithUrl<Movie>;
+    let scream: ModelWithUrl<Movie>;
+
+    function newMovie(url: string, title: string): ModelWithUrl<Movie> {
+        const instance = new Movie({ url, title });
+
+        return instance.hasUrl() ? instance : fail(`Missing url for ${title}`);
+    }
 
     function titles(list: List): (string | undefined)[] {
         return list.mediaUrls.map((url) => [alien, jaws, scream].find((movie) => movie.url === url)?.title);
@@ -24,7 +31,7 @@ describe('List model', () => {
         return required(list.sortedItems.find(({ mediaUrl }) => mediaUrl === movie.url));
     }
 
-    async function createList(movies: Movie[]): Promise<List> {
+    async function createList(movies: ModelWithUrl<Movie>[]): Promise<ModelWithUrl<List>> {
         const list = await List.create({ name: 'Favorites' });
 
         for (const movie of movies) {
@@ -39,9 +46,9 @@ describe('List model', () => {
         bootModels({ List, ListItem, Movie, PerformanceRole, Person, Show, WatchAction }, { reset: true });
         setEngine(new InMemoryEngine());
 
-        alien = new Movie({ url: 'solid://movies/alien#it', title: 'Alien' });
-        jaws = new Movie({ url: 'solid://movies/jaws#it', title: 'Jaws' });
-        scream = new Movie({ url: 'solid://movies/scream#it', title: 'Scream' });
+        alien = newMovie('solid://movies/alien#it', 'Alien');
+        jaws = newMovie('solid://movies/jaws#it', 'Jaws');
+        scream = newMovie('solid://movies/scream#it', 'Scream');
     });
 
     it('Adds media once', async () => {
@@ -60,7 +67,7 @@ describe('List model', () => {
 
         await list.move(item(list, alien), item(list, jaws));
 
-        const freshList = await List.findOrFail(list.requireUrl());
+        const freshList = await List.findOrFail(list.url);
 
         expect(titles(list)).toEqual(['Alien', 'Jaws', 'Scream']);
         expect(titles(freshList)).toEqual(['Alien', 'Jaws', 'Scream']);
@@ -81,7 +88,7 @@ describe('List model', () => {
 
         await list.remove(jaws);
 
-        const freshList = await List.findOrFail(list.requireUrl());
+        const freshList = await List.findOrFail(list.url);
 
         expect(titles(list)).toEqual(['Alien', 'Scream']);
         expect(list.itemUrls).not.toContain(jawsItemUrl);
@@ -94,7 +101,7 @@ describe('List model', () => {
 
         await list.removeItem(item(list, scream));
 
-        const freshList = await List.findOrFail(list.requireUrl());
+        const freshList = await List.findOrFail(list.url);
 
         expect(titles(list)).toEqual(['Alien', 'Jaws']);
         expect(titles(freshList)).toEqual(['Alien', 'Jaws']);
@@ -105,7 +112,7 @@ describe('List model', () => {
 
         await list.replace(alien, scream);
 
-        const freshList = await List.findOrFail(list.requireUrl());
+        const freshList = await List.findOrFail(list.url);
 
         expect(titles(list)).toEqual(['Scream', 'Jaws']);
         expect(titles(freshList)).toEqual(['Scream', 'Jaws']);

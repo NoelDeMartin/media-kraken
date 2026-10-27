@@ -44,45 +44,44 @@
 <script setup lang="ts">
 import { translate, UI, useModal } from '@aerogel/core';
 import { useModels } from '@aerogel/plugin-solid';
+import type { ModelWithUrl } from 'soukai-bis';
 import { computed, reactive, ref } from 'vue';
 
 import { sortByLocale, type Media } from '@/lib/media';
-import { promptListName } from '@lists/lib/lists';
+import ListFormModal from '@lists/components/modals/ListFormModal.vue';
 import List from '@lists/models/List';
 
-const { media } = defineProps<{ media: Media }>();
+const { media } = defineProps<{ media: ModelWithUrl<Media> }>();
 const { close } = useModal();
 const { models: lists, loading } = useModels(List);
 const sortedLists = computed(() => sortByLocale(lists.value, (list) => list.name));
 const changes = reactive(new Map<string, boolean>());
 const saving = ref(false);
 
-function isSelected(list: List): boolean {
-    return changes.get(list.requireUrl()) ?? list.has(media);
+function isSelected(list: ModelWithUrl<List>): boolean {
+    return changes.get(list.url) ?? list.has(media);
 }
 
-function toggle(list: List) {
+function toggle(list: ModelWithUrl<List>) {
     const selected = !isSelected(list);
 
     if (selected === list.has(media)) {
-        changes.delete(list.requireUrl());
+        changes.delete(list.url);
 
         return;
     }
 
-    changes.set(list.requireUrl(), selected);
+    changes.set(list.url, selected);
 }
 
 async function create() {
-    const name = await promptListName();
+    const { list } = await UI.modal(ListFormModal);
 
-    if (!name) {
+    if (!list) {
         return;
     }
 
-    const list = await List.create({ name });
-
-    changes.set(list.requireUrl(), true);
+    changes.set(list.url, true);
 }
 
 async function submit() {
@@ -90,7 +89,7 @@ async function submit() {
 
     try {
         for (const list of lists.value) {
-            const selected = changes.get(list.requireUrl());
+            const selected = changes.get(list.url);
 
             if (selected === undefined) {
                 continue;

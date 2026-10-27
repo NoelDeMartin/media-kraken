@@ -17,6 +17,7 @@ export type ShowsFilter = {
     seasons?: Nullable<RangeSliderValue>;
     releaseYear?: Nullable<RangeSliderValue>;
     rating?: Nullable<RangeSliderValue>;
+    withNotes?: Nullable<boolean>;
 };
 
 export const SHOWS_FILTER_FIELDS: QueryFilterFields<ShowsFilter> = {
@@ -29,6 +30,7 @@ export const SHOWS_FILTER_FIELDS: QueryFilterFields<ShowsFilter> = {
     seasons: 'range',
     releaseYear: 'range',
     rating: 'range',
+    withNotes: 'boolean',
 };
 
 export type ShowSearchEntry = ReturnType<typeof createShowSearchEntry>;
@@ -47,7 +49,8 @@ export function hasActiveShowFilters(filters: Nullable<ShowsFilter>): boolean {
         !isNullable(filters.releaseYear) ||
         !isNullable(filters.seasons) ||
         !isNullable(filters.rating) ||
-        !isNullable(filters.watchingStatus)
+        !isNullable(filters.watchingStatus) ||
+        !!filters.withNotes
     );
 }
 
@@ -68,6 +71,9 @@ export function createShowSearchEntry(show: Show) {
         },
         get rating(): number | null {
             return show.rating;
+        },
+        get hasNotes(): boolean {
+            return !!show.notes;
         },
         get creators(): string[] {
             return show.credits.value?.creators.map(personFilterKey).filter(isTruthy) ?? [];
@@ -91,6 +97,7 @@ export function showMatchesFilters(entry: ShowSearchEntry, filters: Nullable<Sho
         (isNullable(filters.releaseYear) || matchesRange(filters.releaseYear, entry.releaseYear)) &&
         (isNullable(filters.seasons) || matchesRange(filters.seasons, entry.numberOfSeasons)) &&
         (isNullable(filters.rating) || matchesRange(filters.rating, entry.rating)) &&
+        (!filters.withNotes || entry.hasNotes) &&
         (isNullable(filters.watchingStatus) || filters.watchingStatus === entry.watchingStatus) &&
         (isNullable(filters.genres) || matchesAny(filters.genres, entry.genreKeys)) &&
         (isNullable(filters.countries) || matchesAny(filters.countries, entry.countryCodes)) &&

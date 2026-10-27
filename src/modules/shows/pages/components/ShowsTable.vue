@@ -2,9 +2,15 @@
     <Table v-model:page="page" item-key="url" :loading :items-label="$t('shows.itemsName')">
         <TableColumn :header="$t('shows.table.name')" field="name">
             <template #default="{ item: show }">
-                <Link class="text-normal" :to="show.route">
-                    {{ show.name }}
-                </Link>
+                <span class="inline-flex items-center gap-1.5">
+                    <Link class="text-normal" :to="show.route">
+                        {{ show.name }}
+                    </Link>
+                    <span v-if="show.hasNotes" :title="show.notesPreview" class="flex">
+                        <i-material-symbols-description-rounded aria-hidden="true" class="size-4 text-gray-400" />
+                        <span class="sr-only">{{ $t('media.notes.hasNotes') }}</span>
+                    </span>
+                </span>
             </template>
         </TableColumn>
         <TableColumn :header="$t('shows.table.year')" field="releaseYear" sortable />
@@ -46,6 +52,7 @@ import { translate, useDataTable } from '@aerogel/core';
 import { computed } from 'vue';
 
 import { formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
+import { notesPreview } from '@/lib/media';
 import Show from '@shows/models/Show';
 
 const { shows, loading } = defineProps<{ shows: Show[]; loading?: boolean }>();
@@ -63,6 +70,10 @@ const renderedShows = computed(() =>
         watchingStatus: show.watchingStatus,
         status: translate(`shows.statuses.${show.watchingStatus}`),
         rating: show.rating,
+        hasNotes: !!show.notes,
+        get notesPreview(): string | undefined {
+            return show.notes ? notesPreview(show.notes) : undefined;
+        },
     })),
 );
 const { Table, TableColumn } = useDataTable(renderedShows);

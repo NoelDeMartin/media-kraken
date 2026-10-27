@@ -9,18 +9,12 @@ export type PersonCredit = Pick<Person, 'tmdbId' | 'name'>;
 const TMDB_PERSON_URL_PREFIX = 'https://www.themoviedb.org/person/';
 
 export default class Person extends Model {
-    static fromTMDB(person: TMDBPerson, options: { mintUrl?: boolean } = {}): Person {
-        const instance = new Person({
+    static fromTMDB(person: TMDBPerson): Person {
+        return new Person({
             name: person.name,
             imageUrl: tmdbProfileUrl(person.profile_path),
             externalUrls: [tmdbPersonUrl(person.id)],
         });
-
-        if (options.mintUrl) {
-            instance.mintUrl();
-        }
-
-        return instance;
     }
 
     public get tmdbUrl(): string | null {

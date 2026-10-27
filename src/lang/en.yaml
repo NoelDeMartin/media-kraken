@@ -57,6 +57,13 @@ media:
         rate: 'Rate {rating} out of 5'
         value: 'Rated {rating} out of 5'
         hint: 'Press Enter to save, Escape to cancel, or Delete to remove the rating.'
+    notes:
+        title: 'Notes'
+        add: 'Add notes'
+        edit: 'Edit notes'
+        hasNotes: 'Has notes'
+        save: 'Save'
+        placeholder: 'Write some personal notes for this.'
 
 genres:
     anime: 'Anime'

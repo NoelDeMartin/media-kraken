@@ -88,6 +88,10 @@
                 </div>
             </div>
         </article>
+        <section v-if="movie.notes" class="mt-10" aria-labelledby="notes">
+            <SectionTitle id="notes">{{ $t('media.notes.title') }}</SectionTitle>
+            <Markdown :text="movie.notes" class="mt-4 max-w-none wrap-break-word text-gray-700" />
+        </section>
         <section v-if="cast.length" class="mt-10" aria-labelledby="cast">
             <SectionTitle id="cast">{{ $t('movies.details.topCast') }}</SectionTitle>
             <ul class="mt-4 grid grid-cols-6 gap-4 sm:grid-cols-3 md:grid-cols-6">
@@ -103,6 +107,7 @@
 import { translate, UI, useLoading } from '@aerogel/core';
 import { Router } from '@aerogel/plugin-routing';
 import { arrayFilter } from '@noeldemartin/utils';
+import type { ModelWithUrl } from 'soukai-bis';
 import { computed, onMounted } from 'vue';
 import IconCheck from '~icons/material-symbols/check';
 import IconClock from '~icons/mdi/clock-outline';
@@ -110,9 +115,11 @@ import IconSync from '~icons/mdi/sync';
 import IconDetach from '~icons/ph/link-break-bold';
 import IconIdentify from '~icons/ph/list-magnifying-glass';
 import IconManageLists from '~icons/ph/list-plus';
+import IconNotes from '~icons/ph/note-pencil';
 import IconDelete from '~icons/ph/trash';
 
 import IdentifyMediaModal from '@/components/modals/IdentifyMediaModal.vue';
+import MediaNotesModal from '@/components/modals/MediaNotesModal.vue';
 import { formatDate, formatDuration, formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';
@@ -122,7 +129,7 @@ import ManageListsModal from '@lists/components/modals/ManageListsModal.vue';
 import { removeFromLists, replaceInLists } from '@lists/lib/lists';
 import Movie from '@movies/models/Movie';
 
-const { movie } = defineProps<{ movie: Movie }>();
+const { movie } = defineProps<{ movie: ModelWithUrl<Movie> }>();
 const { loading: syncing, run: runSync } = useLoading();
 const menuOptions = computed(() =>
     arrayFilter([
@@ -141,6 +148,11 @@ const menuOptions = computed(() =>
             label: translate('lists.manage.action'),
             icon: IconManageLists,
             click: () => UI.modal(ManageListsModal, { media: movie }),
+        },
+        {
+            label: movie.notes ? translate('media.notes.edit') : translate('media.notes.add'),
+            icon: IconNotes,
+            click: () => UI.modal(MediaNotesModal, { media: movie }),
         },
         {
             label: translate('media.synchronize'),
@@ -264,6 +276,7 @@ async function identifyAsShow(tmdbShow: TMDBShow) {
         const show = await Catalog.importShowFromTMDB(tmdbShow, {
             watchingStatus: movie.watched ? 'completed' : 'pending',
             rating: movie.rating,
+            notes: movie.notes,
         });
 
         await replaceInLists(movie, show);

@@ -67,6 +67,7 @@
                     :max="MAX_RATING"
                     :format-value="formatRatingAsStars"
                 />
+                <Checkbox name="withNotes" :label="$t('movies.advancedFilters.withNotes')" />
             </div>
 
             <div class="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 pt-4">
@@ -125,6 +126,7 @@ const form = useForm({
     releaseYear: numberRange(),
     duration: numberRange(),
     rating: numberRange(),
+    withNotes: z.boolean().default(false),
 });
 
 if (filters) {
@@ -137,6 +139,7 @@ if (filters) {
     form.releaseYear = filters.releaseYear ?? [null, null];
     form.duration = filters.duration ?? [null, null];
     form.rating = filters.rating ?? [null, null];
+    form.withNotes = filters.withNotes ?? false;
 }
 
 const directors = computed(() => movies.flatMap((movie) => movie.credits.value?.directors ?? []));
@@ -214,6 +217,7 @@ function submit() {
             releaseYear: form.releaseYear[0] === null && form.releaseYear[1] === null ? null : form.releaseYear,
             duration: form.duration[0] === null && form.duration[1] === null ? null : form.duration,
             rating: form.rating[0] === null && form.rating[1] === null ? null : form.rating,
+            withNotes: form.withNotes || null,
         },
     });
 }

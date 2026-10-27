@@ -5,17 +5,17 @@ lists:
     itemsCount: 'No items|1 item|{count} items'
     name: 'Name'
     namePlaceholder: 'e.g. Top 10 Movies'
+    description: 'Description'
+    descriptionPlaceholder: 'What is this list about?'
     created: '**{list}** has been created!'
     create:
         button: 'New list'
         title: 'Create list'
-        message: 'Give your new list a name.'
         accept: 'Create'
-    rename:
-        action: 'Rename'
-        title: 'Rename list'
-        message: 'Choose a new name for the list.'
-        accept: 'Rename'
+    edit:
+        action: 'Edit'
+        title: 'Edit list'
+        accept: 'Save'
     delete:
         action: 'Delete'
         title: 'Delete list'

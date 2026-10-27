@@ -60,8 +60,8 @@ describe('Show model', () => {
 
     it('Computes credits from cast and creators', () => {
         const instance = new Show({ name: 'Test Show' });
-        const bryan = Person.fromTMDB({ id: 17419, name: 'Bryan Cranston', profile_path: null }, { mintUrl: true });
-        const role = instance.relatedCast.attach(new PerformanceRole({ actorUrl: bryan.requireUrl() }));
+        const bryan = Person.fromTMDB({ id: 17419, name: 'Bryan Cranston', profile_path: null });
+        const role = instance.relatedCast.attach(new PerformanceRole({ actorUrl: bryan.mintUrl() }));
 
         role.relatedActor.attach(bryan);
         instance.relatedCreators.attach(new Person({ name: 'Vince Gilligan' }));

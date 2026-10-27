@@ -8,13 +8,12 @@ import {
     isNullable,
     isTruthy,
     parseDate,
-    required,
     stringToSlug,
     uuid,
 } from '@noeldemartin/utils';
 import type { Nullable } from '@noeldemartin/utils';
 import { ComputedAttribute } from 'soukai-bis';
-import type { BelongsToManyRelation, GetModelInput, Model, MultiModelRelation } from 'soukai-bis';
+import type { BelongsToManyRelation, GetModelInput, ModelWithUrl } from 'soukai-bis';
 
 import { countryUrlFromCode } from '@/lib/countries';
 import { mergeExternalUrls } from '@/lib/domains';
@@ -181,8 +180,8 @@ export class CatalogService extends Service {
 
     public async importMovieFromTMDB(
         tmdbMovie: TMDBMovie,
-        options: { watched?: boolean; rating?: Nullable<number> } = {},
-    ): Promise<Movie> {
+        options: { watched?: boolean; rating?: Nullable<number>; notes?: Nullable<string> } = {},
+    ): Promise<ModelWithUrl<Movie>> {
         const details = await TMDB.getMovie(tmdbMovie.id, { includeCredits: true, includeKeywords: true });
         const movie = new Movie(this.getMovieAttributes(details));
 
@@ -191,22 +190,28 @@ export class CatalogService extends Service {
         this.attachStaff(movie, details);
 
         if (options.watched) {
-            await movie.watch();
+            movie.setWatchedAt(new Date());
         }
 
         if (!isNullable(options.rating)) {
-            await movie.rate(options.rating);
+            movie.setRating(options.rating);
         }
 
-        await movie.save();
+        if (options.notes) {
+            movie.setNotes(options.notes);
+        }
 
-        return movie;
+        return movie.save();
     }
 
     public async importShowFromTMDB(
         tmdbShow: TMDBShow,
-        options: { watchingStatus?: Nullable<ShowWatchingStatus>; rating?: Nullable<number> } = {},
-    ): Promise<Show> {
+        options: {
+            watchingStatus?: Nullable<ShowWatchingStatus>;
+            rating?: Nullable<number>;
+            notes?: Nullable<string>;
+        } = {},
+    ): Promise<ModelWithUrl<Show>> {
         const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id, {
             includeSeasons: !!options.watchingStatus && !this.ignoresSeasons(options.watchingStatus),
             includeCredits: true,
@@ -214,13 +219,25 @@ export class CatalogService extends Service {
         });
 
         const showAttributes = this.getShowAttributes(details, externalIds);
-        const show = new Show(showAttributes);
+        const newShow = new Show(showAttributes);
 
-        show.mintUrl();
+        newShow.mintUrl();
 
-        this.attachStaff(show, details);
+        this.attachStaff(newShow, details);
 
-        await show.save();
+        if (options.watchingStatus) {
+            newShow.setWatchingStatus(options.watchingStatus);
+        }
+
+        if (!isNullable(options.rating)) {
+            newShow.setRating(options.rating);
+        }
+
+        if (options.notes) {
+            newShow.setNotes(options.notes);
+        }
+
+        const show = await newShow.save();
 
         ComputedAttribute.disableRefreshes();
         ComputedAttribute.disableLoadingRelations();
@@ -234,14 +251,6 @@ export class CatalogService extends Service {
                 }
 
                 await Promise.all(season.relatedEpisodes.getLoadedModels().map((episode) => episode.save()));
-            }
-
-            if (options.watchingStatus) {
-                await show.updateWatchingStatus(options.watchingStatus);
-            }
-
-            if (!isNullable(options.rating)) {
-                await show.rate(options.rating);
             }
 
             await show.save();
@@ -352,8 +361,8 @@ export class CatalogService extends Service {
             externalUrls: mergeExternalUrls(show.externalUrls, attributes.externalUrls ?? []),
         });
 
-        details.cast && (await this.reconcileCast(show, details.cast));
-        details.creators && (await this.reconcilePersons(show.relatedCreators, details.creators));
+        details.cast && this.reconcileCast(show, details.cast);
+        details.creators && this.reconcilePersons(show.relatedCreators, details.creators);
 
         ComputedAttribute.disableRefreshes();
         ComputedAttribute.disableLoadingRelations();
@@ -406,8 +415,8 @@ export class CatalogService extends Service {
 
         await movie.loadAllRelationsIfUnloaded();
 
-        details.cast && (await this.reconcileCast(movie, details.cast));
-        details.directors && (await this.reconcilePersons(movie.relatedDirectors, details.directors));
+        details.cast && this.reconcileCast(movie, details.cast);
+        details.directors && this.reconcilePersons(movie.relatedDirectors, details.directors);
 
         await movie.save();
     }
@@ -437,11 +446,11 @@ export class CatalogService extends Service {
     private attachCastMember(media: Media, credit: TMDBCastCredit): void {
         const person = Person.fromTMDB(credit);
 
-        person.mintUrl({ documentUrl: media.getDocumentUrl(), resourceHash: uuid() });
+        const personUrl = person.mintUrl({ documentUrl: media.getDocumentUrl(), resourceHash: uuid() });
 
         const role = media.relatedCast.attach(
             new PerformanceRole({
-                actorUrl: person.requireUrl(),
+                actorUrl: personUrl,
                 characterNames: credit.characters,
             }),
             { mintUrl: true },
@@ -450,7 +459,7 @@ export class CatalogService extends Service {
         role.relatedActor.attach(person);
     }
 
-    private async reconcileCast(media: Media, credits: TMDBCastCredit[]): Promise<void> {
+    private reconcileCast(media: Media, credits: TMDBCastCredit[]): void {
         const existingRoles = media.relatedCast.related ?? [];
         const staleRoles = existingRoles.filter((role) => !credits.some((credit) => credit.id === role.actor?.tmdbId));
 
@@ -471,16 +480,16 @@ export class CatalogService extends Service {
         }
 
         for (const role of staleRoles) {
-            await role.relatedActor.delete();
+            role.relatedActor.detach({ delete: true });
         }
 
-        await this.deleteRelatedModels(media.relatedCast, staleRoles);
+        media.relatedCast.detach(staleRoles, { delete: true });
     }
 
-    private async reconcilePersons<T extends Media>(
+    private reconcilePersons<T extends Media>(
         relation: BelongsToManyRelation<T, Person, typeof Person>,
         newPersons: TMDBPerson[],
-    ): Promise<void> {
+    ): void {
         const existingPersons = relation.related ?? [];
         const stalePersons = existingPersons.filter(
             (person) => !newPersons.some((newPerson) => newPerson.id === person.tmdbId),
@@ -501,26 +510,7 @@ export class CatalogService extends Service {
             });
         }
 
-        await this.deleteRelatedModels(relation, stalePersons);
-    }
-
-    private async deleteRelatedModels(relation: MultiModelRelation, models: Model[]): Promise<void> {
-        if (models.length === 0) {
-            return;
-        }
-
-        const foreignKeyName = required(relation.foreignKeyName);
-        const deletedUrls = models.map((model) => model.url);
-        const foreignKeys = arrayFrom(relation.parent.getAttribute(foreignKeyName) as string[]);
-
-        relation.parent.setAttribute(
-            foreignKeyName,
-            foreignKeys.filter((url) => !deletedUrls.includes(url)),
-        );
-
-        for (const model of models) {
-            await relation.delete(model);
-        }
+        relation.detach(stalePersons, { delete: true });
     }
 
     private async newMovieFromName(name: string, options: NewMovieOptions = {}): Promise<Movie> {
@@ -551,11 +541,11 @@ export class CatalogService extends Service {
         this.attachStaff(movie, details);
 
         if (options.watchedAt) {
-            await movie.watch(options.watchedAt);
+            movie.setWatchedAt(options.watchedAt);
         }
 
         if (!isNullable(options.rating)) {
-            await movie.rate(options.rating);
+            movie.setRating(options.rating);
         }
 
         return movie;

@@ -2,9 +2,15 @@
     <Table v-model:page="page" item-key="url" :loading :items-label="$t('movies.itemsName')">
         <TableColumn :header="$t('movies.table.title')" field="title">
             <template #default="{ item: movie }">
-                <Link class="text-normal" :to="movie.route">
-                    {{ movie.title }}
-                </Link>
+                <span class="inline-flex items-center gap-1.5">
+                    <Link class="text-normal" :to="movie.route">
+                        {{ movie.title }}
+                    </Link>
+                    <span v-if="movie.hasNotes" :title="movie.notesPreview" class="flex">
+                        <i-material-symbols-description-rounded aria-hidden="true" class="size-4 text-gray-400" />
+                        <span class="sr-only">{{ $t('media.notes.hasNotes') }}</span>
+                    </span>
+                </span>
             </template>
         </TableColumn>
         <TableColumn :header="$t('movies.table.year')" field="releaseYear" sortable />
@@ -41,6 +47,7 @@ import { useDataTable } from '@aerogel/core';
 import { computed } from 'vue';
 
 import { formatDate, formatDuration, formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
+import { notesPreview } from '@/lib/media';
 import Movie from '@movies/models/Movie';
 
 const { movies, loading } = defineProps<{ movies: Movie[]; loading?: boolean }>();
@@ -56,6 +63,10 @@ const renderedMovies = computed(() =>
         releaseYear: movie.releaseYear,
         watchedAt: movie.watchedAt,
         rating: movie.rating,
+        hasNotes: !!movie.notes,
+        get notesPreview(): string | undefined {
+            return movie.notes ? notesPreview(movie.notes) : undefined;
+        },
     })),
 );
 const { Table, TableColumn } = useDataTable(renderedMovies);

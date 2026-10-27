@@ -1,6 +1,6 @@
 import { arraySorted, stringToSlug, urlRoute } from '@noeldemartin/utils';
 import { isLocalUrl } from 'soukai-bis';
-import type { BelongsToManyRelation } from 'soukai-bis';
+import type { BelongsToManyRelation, ModelWithUrl } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
 import type { Media } from '@/lib/media';
@@ -46,14 +46,14 @@ export default class List extends Model {
         return !!this.items?.some((item) => item.mediaUrl === media.url);
     }
 
-    public async add(media: Media): Promise<void> {
+    public async add(media: ModelWithUrl<Media>): Promise<void> {
         if (this.has(media)) {
             return;
         }
 
         const lastPosition = this.sortedItems.at(-1)?.position ?? 0;
 
-        await this.relatedItems.create({ mediaUrl: media.requireUrl(), position: lastPosition + 1 });
+        await this.relatedItems.create({ mediaUrl: media.url, position: lastPosition + 1 });
     }
 
     public async move(item: ListItem, target: ListItem): Promise<void> {
@@ -71,7 +71,7 @@ export default class List extends Model {
         await this.save();
     }
 
-    public async replace(original: Media, replacement: Media): Promise<void> {
+    public async replace(original: Media, replacement: ModelWithUrl<Media>): Promise<void> {
         if (this.has(replacement)) {
             await this.remove(original);
 
@@ -83,7 +83,7 @@ export default class List extends Model {
                 continue;
             }
 
-            item.setAttribute('mediaUrl', replacement.requireUrl());
+            item.setAttribute('mediaUrl', replacement.url);
         }
 
         await this.save();
@@ -112,12 +112,8 @@ export default class List extends Model {
             return;
         }
 
-        const removedUrls = items.map((item) => item.url);
+        this.relatedItems.detach(items, { delete: true });
 
-        for (const item of items) {
-            await this.relatedItems.delete(item);
-        }
-
-        await this.update({ itemUrls: this.itemUrls.filter((url) => !removedUrls.includes(url)) });
+        await this.save();
     }
 }

@@ -68,8 +68,8 @@ describe('Movie model', () => {
 
     it('Computes credits from cast and directors', () => {
         const instance = new Movie({ title: 'Test Movie' });
-        const keanu = Person.fromTMDB({ id: 6384, name: 'Keanu Reeves', profile_path: null }, { mintUrl: true });
-        const role = instance.relatedCast.attach(new PerformanceRole({ actorUrl: keanu.requireUrl() }));
+        const keanu = Person.fromTMDB({ id: 6384, name: 'Keanu Reeves', profile_path: null });
+        const role = instance.relatedCast.attach(new PerformanceRole({ actorUrl: keanu.mintUrl() }));
 
         role.relatedActor.attach(keanu);
         instance.relatedDirectors.attach(new Person({ name: 'Lana Wachowski' }));

@@ -28,8 +28,8 @@ import { useModels } from '@aerogel/plugin-solid';
 import { computed } from 'vue';
 
 import { sortByLocale } from '@/lib/media';
+import ListFormModal from '@lists/components/modals/ListFormModal.vue';
 import { useListMedia } from '@lists/lib/composition/lists';
-import { promptListName } from '@lists/lib/lists';
 import List from '@lists/models/List';
 import ListCard, { LIST_PREVIEWS } from '@lists/pages/components/ListCard.vue';
 
@@ -38,13 +38,11 @@ const { mediaByUrl } = useListMedia(() => lists.value.flatMap((list) => list.med
 const sortedLists = computed(() => sortByLocale(lists.value, (list) => list.name));
 
 async function create() {
-    const name = await promptListName();
+    const { list } = await UI.modal(ListFormModal);
 
-    if (!name) {
+    if (!list) {
         return;
     }
-
-    const list = await List.create({ name });
 
     UI.toast(translate('lists.created', { list: list.name }));
 

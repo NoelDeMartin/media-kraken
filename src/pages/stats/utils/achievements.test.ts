@@ -64,10 +64,9 @@ function movie(
         duration: attributes.runtimeMinutes ? minutesToISODuration(attributes.runtimeMinutes) : undefined,
     });
 
-    instance.mintUrl();
-    instance.relatedWatchActions.attach(
-        new WatchAction({ object: instance.requireUrl(), endTime: attributes.watchedAt }),
-    );
+    const url = instance.mintUrl();
+
+    instance.relatedWatchActions.attach(new WatchAction({ object: url, endTime: attributes.watchedAt }));
     instance.getComputedAttribute('credits').setValue({ directors: attributes.makers ?? [], cast: [] });
 
     return instance;
@@ -76,10 +75,9 @@ function movie(
 function show(attributes: { seasonsWatched?: number } = {}): Show {
     const instance = new Show({ name: 'Show' });
 
-    instance.mintUrl();
-    instance.relatedWatching.attach(
-        new ShowWatching({ showUrl: instance.requireUrl(), statusUrl: SHOW_WATCHING_STATUSES.watching }),
-    );
+    const url = instance.mintUrl();
+
+    instance.relatedWatching.attach(new ShowWatching({ showUrl: url, statusUrl: SHOW_WATCHING_STATUSES.watching }));
     instance.getComputedAttribute('credits').setValue({ creators: [], cast: [] });
     instance.getComputedAttribute('watchedEpisodes').setValue({ episodes: 0, seasons: attributes.seasonsWatched ?? 0 });
 

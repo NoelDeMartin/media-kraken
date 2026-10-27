@@ -9,6 +9,7 @@ export default defineSchema({
     history: true,
     fields: {
         name: string(),
+        description: string().optional(),
         itemUrls: array(url()).rdfProperty('itemListElement').default([]),
     },
     relations: {

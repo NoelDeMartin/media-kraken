@@ -14,7 +14,7 @@ type StoryArgs = {
     list: string;
 };
 
-const mediaByUrl: MediaByUrl = new Map([...movies.all, ...shows.all].map((media) => [media.requireUrl(), media]));
+const mediaByUrl: MediaByUrl = new Map([...movies.all, ...shows.all].map((media) => [media.url, media]));
 
 const meta: Meta<StoryArgs> = {
     title: 'modules/lists/ListCard',

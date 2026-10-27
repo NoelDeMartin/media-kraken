@@ -14,6 +14,11 @@
                 </Button>
             </template>
         </SectionTitle>
+        <Markdown
+            v-if="list.description"
+            :text="list.description"
+            class="mt-2 max-w-none wrap-break-word text-gray-700"
+        />
         <ListItems
             class="mt-4"
             :list
@@ -28,11 +33,11 @@
 import { translate, UI, useLoading } from '@aerogel/core';
 import { Router } from '@aerogel/plugin-routing';
 import { computed } from 'vue';
-import IconRename from '~icons/mdi/pencil';
+import IconEdit from '~icons/mdi/pencil';
 import IconDelete from '~icons/ph/trash';
 
 import AddListItemsModal from '@lists/components/modals/AddListItemsModal.vue';
-import { promptListName } from '@lists/lib/lists';
+import ListFormModal from '@lists/components/modals/ListFormModal.vue';
 import type List from '@lists/models/List';
 import ListItems from '@lists/pages/components/ListItems.vue';
 
@@ -40,9 +45,9 @@ const { list } = defineProps<{ list: List }>();
 const { loading: updating, run: runUpdate } = useLoading();
 const menuOptions = computed(() => [
     {
-        label: translate('lists.rename.action'),
-        icon: IconRename,
-        click: rename,
+        label: translate('lists.edit.action'),
+        icon: IconEdit,
+        click: edit,
     },
     {
         label: translate('lists.delete.action'),
@@ -55,19 +60,8 @@ async function addItems() {
     await UI.modal(AddListItemsModal, { list });
 }
 
-async function rename() {
-    const name = await promptListName({
-        title: translate('lists.rename.title'),
-        message: translate('lists.rename.message'),
-        acceptText: translate('lists.rename.accept'),
-        defaultValue: list.name,
-    });
-
-    if (!name || name === list.name) {
-        return;
-    }
-
-    await runUpdate(list.update({ name }));
+async function edit() {
+    await UI.modal(ListFormModal, { list });
 }
 
 async function deleteList() {

@@ -59,6 +59,7 @@ shows:
         seasons: 'Seasons'
         watchingStatus: 'Watching status'
         allStatuses: 'All'
+        withNotes: 'Only shows with notes'
         apply: 'Apply'
         clear: 'Clear filters'
     delete:
