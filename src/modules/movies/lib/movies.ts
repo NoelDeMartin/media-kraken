@@ -57,7 +57,7 @@ export function hasActiveMovieFilters(filters: Nullable<MoviesFilter>): boolean 
 export function createMovieSearchEntry(movie: Movie) {
     return {
         movie,
-        searchText: toSearchText(movie.getSlug() ?? ''),
+        searchText: toSearchText(`${movie.title} ${movie.releaseYear ?? ''}`),
         genreKeys: movie.genreKeys,
         countryCodes: movie.countryCodes,
         languages: movie.languages,

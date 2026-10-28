@@ -58,7 +58,7 @@ export function hasActiveShowFilters(filters: Nullable<ShowsFilter>): boolean {
 export function createShowSearchEntry(show: Show) {
     return {
         show,
-        searchText: toSearchText(show.getSlug() ?? ''),
+        searchText: toSearchText(`${show.name} ${show.releaseYear ?? ''}`),
         genreKeys: show.genreKeys,
         countryCodes: show.countryCodes,
         languages: show.languages,

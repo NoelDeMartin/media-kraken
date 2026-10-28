@@ -8,7 +8,7 @@ export default defineSchema({
     rdfClass: 'ItemList',
     history: true,
     fields: {
-        name: string(),
+        name: string().useAsSlug(),
         description: string().optional(),
         itemUrls: array(url()).rdfProperty('itemListElement').default([]),
     },

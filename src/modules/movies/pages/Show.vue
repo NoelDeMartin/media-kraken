@@ -251,15 +251,7 @@ async function deleteMovie() {
 }
 
 async function identifyAsMovie(tmdbMovie: TMDBMovie) {
-    const originalSlug = movie.slug;
-
     await runSync(Catalog.identify(movie, tmdbMovie));
-
-    if (originalSlug === movie.slug) {
-        return;
-    }
-
-    await Router.replace(movie.route);
 }
 
 async function identifyAsShow(tmdbShow: TMDBShow) {

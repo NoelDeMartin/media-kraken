@@ -307,15 +307,7 @@ async function deleteShow() {
 }
 
 async function identifyAsShow(tmdbShow: TMDBShow) {
-    const originalSlug = show.slug;
-
     await runSync(Catalog.identify(show, tmdbShow));
-
-    if (originalSlug === show.slug) {
-        return;
-    }
-
-    await Router.replace(show.route);
 }
 
 async function identifyAsMovie(tmdbMovie: TMDBMovie) {

@@ -1,4 +1,12 @@
-import { arrayFilter, isTruthy, parseDate, required, stringToSlug } from '@noeldemartin/utils';
+import {
+    arrayFilter,
+    isTruthy,
+    parseDate,
+    required,
+    stringToSlug,
+    urlParentDirectory,
+    urlRoute,
+} from '@noeldemartin/utils';
 import { emitModelEvent, InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
 import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, UrlFromSlugOptions } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
@@ -94,6 +102,10 @@ export default class Show extends Model {
         return super.documentUrlFromSlug(`${slug}/info`, options);
     }
 
+    public static slugFromUrl(url: string): string | null {
+        return super.slugFromUrl(urlParentDirectory(urlRoute(url)) ?? url);
+    }
+
     declare public readonly pendingEpisodes: ComputedAttribute<PendingEpisode[]>;
     declare public readonly watchedEpisodes: ComputedAttribute<WatchedEpisodes>;
     declare public readonly credits: ComputedAttribute<ShowCredits>;
@@ -164,18 +176,6 @@ export default class Show extends Model {
         };
     }
 
-    public getSlug(): string | null {
-        if (!this.name) {
-            return null;
-        }
-
-        if (!this.startDate) {
-            return stringToSlug(this.name);
-        }
-
-        return `${stringToSlug(this.name)}-${this.startDate.getFullYear()}`;
-    }
-
     public async loadAllRelationsIfUnloaded(): Promise<void> {
         await super.loadAllRelationsIfUnloaded();
         await this.loadRelationIfUnloaded('watching');
@@ -244,5 +244,17 @@ export default class Show extends Model {
         }
 
         await this.delete();
+    }
+
+    protected newUrlSlug(): string | null {
+        if (!this.name) {
+            return null;
+        }
+
+        if (!this.startDate) {
+            return stringToSlug(this.name);
+        }
+
+        return `${stringToSlug(this.name)}-${this.startDate.getFullYear()}`;
     }
 }

@@ -90,18 +90,6 @@ export default class Movie extends Model {
         };
     }
 
-    public getSlug(): string | null {
-        if (!this.title) {
-            return null;
-        }
-
-        if (!this.releaseDate) {
-            return stringToSlug(this.title);
-        }
-
-        return `${stringToSlug(this.title)}-${this.releaseDate.getFullYear()}`;
-    }
-
     public setWatchedAt(date: Date | null): void {
         this.assertRelationLoaded('watchActions');
 
@@ -171,5 +159,17 @@ export default class Movie extends Model {
         }
 
         await this.delete();
+    }
+
+    protected newUrlSlug(): string | null {
+        if (!this.title) {
+            return null;
+        }
+
+        if (!this.releaseDate) {
+            return stringToSlug(this.title);
+        }
+
+        return `${stringToSlug(this.title)}-${this.releaseDate.getFullYear()}`;
     }
 }

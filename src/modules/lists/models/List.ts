@@ -1,4 +1,4 @@
-import { arraySorted, stringToSlug, urlRoute } from '@noeldemartin/utils';
+import { arraySorted } from '@noeldemartin/utils';
 import { isLocalUrl } from 'soukai-bis';
 import type { BelongsToManyRelation, ModelWithUrl } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
@@ -24,14 +24,6 @@ export default class List extends Model {
 
     public get mediaUrls(): string[] {
         return this.sortedItems.map((item) => item.mediaUrl);
-    }
-
-    public getSlug(): string | null {
-        if (!this.url) {
-            return (this.name && stringToSlug(this.name)) || null;
-        }
-
-        return urlRoute(this.url).split('/').pop() || null;
     }
 
     public get route(): RouteLocationRaw {
