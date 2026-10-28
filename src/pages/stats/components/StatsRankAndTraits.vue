@@ -27,13 +27,17 @@ import { genreKey, type GenreKey, type KnownGenreName } from '@/lib/genres';
 import { getAllShows, getEpisodesWatched, getStartedShows } from '@/pages/stats/utils/snapshot';
 import type { StatsSnapshot } from '@/pages/stats/utils/snapshot';
 
+const EPISODE_WATCH_POINTS = 1 / 10;
+
 interface Trait {
     name: string;
     title: string;
 }
 
 const { snapshot } = defineProps<{ snapshot: StatsSnapshot }>();
-const watchPoints = computed(() => snapshot.movies.watched.length + getEpisodesWatched(snapshot));
+const watchPoints = computed(
+    () => snapshot.movies.watched.length + getEpisodesWatched(snapshot) * EPISODE_WATCH_POINTS,
+);
 
 const rank = computed(() => {
     const ranks = {
