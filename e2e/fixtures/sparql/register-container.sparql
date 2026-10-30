@@ -1,0 +1,6 @@
+INSERT DATA {
+    <#[[%uuid%]]>
+        a <http://www.w3.org/ns/solid/terms#TypeRegistration> ;
+        <http://www.w3.org/ns/solid/terms#forClass> <{{ forClass }}> ;
+        <http://www.w3.org/ns/solid/terms#instanceContainer> <{{ container }}> .
+}

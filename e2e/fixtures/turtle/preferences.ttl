@@ -1,0 +1,5 @@
+<> a <http://www.w3.org/ns/pim/space#ConfigurationFile> .
+
+<http://localhost:3000/alice/profile/card#me>
+    <http://www.w3.org/ns/solid/terms#privateTypeIndex>
+    <http://localhost:3000/alice/settings/privateTypeIndex> .

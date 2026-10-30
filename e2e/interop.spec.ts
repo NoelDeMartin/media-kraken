@@ -21,7 +21,8 @@ test.beforeEach(async ({ page }) => {
 
 test('Updates movies with legacy data', async ({ page }) => {
     // Populate POD & Log in
-    await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-type-index.sparql'));
+    await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));
+    await solidCreateDocument('/settings/preferences', requiredFixture('/turtle/preferences.ttl'));
     await solidCreateDocument('/settings/privateTypeIndex', requiredFixture('/turtle/type-index.ttl'));
     await solidCreateDocument('/movies/the-matrix-1999.ttl', requiredFixture('/turtle/the-matrix-1999-legacy.ttl'));
     await localFirstLogin(page);
