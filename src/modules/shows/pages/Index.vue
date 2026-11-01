@@ -70,7 +70,7 @@
                 <ShowsEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
         </VirtualMediaGrid>
-        <ShowsTable v-else v-model:page="page" :loading :shows="sortedShows" class="mt-2">
+        <ShowsTable v-else v-model:page="page" v-model:sort-by="sort" :loading :shows="sortedShows" class="mt-2">
             <template #empty>
                 <ShowsEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
@@ -95,11 +95,20 @@ import {
     showMatchesFilters,
     showMatchesQuery,
     SHOWS_FILTER_FIELDS,
+    type ShowsFilter,
+    type ShowTableItem,
 } from '@shows/lib/shows';
 import Show from '@shows/models/Show';
 
 const { models: allShows, loading } = useModels(Show);
-const { quickFilter, advancedFilters, display, page, clear: clearAllFilters } = useMediaFilters(SHOWS_FILTER_FIELDS);
+const {
+    quickFilter,
+    advancedFilters,
+    display,
+    page,
+    sort,
+    clear: clearAllFilters,
+} = useMediaFilters<ShowsFilter, ShowTableItem>(SHOWS_FILTER_FIELDS);
 const hasEmptyCollection = computed(() => !loading.value && allShows.value.length === 0);
 const hasAdvancedFilters = computed(() => hasActiveShowFilters(advancedFilters.value));
 

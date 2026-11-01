@@ -1,6 +1,6 @@
 <template>
-    <Table v-model:page="page" item-key="url" :loading :items-label="$t('shows.itemsName')">
-        <TableColumn :header="$t('shows.table.name')" field="name">
+    <Table v-model:page="page" v-model:sort-by="sortBy" item-key="url" :loading :items-label="$t('shows.itemsName')">
+        <TableColumn :header="$t('shows.table.name')" field="name" sortable>
             <template #default="{ item: show }">
                 <span class="inline-flex items-center gap-1.5">
                     <Link class="text-normal" :to="show.route">
@@ -48,33 +48,16 @@
 </template>
 
 <script setup lang="ts">
-import { translate, useDataTable } from '@aerogel/core';
+import { useDataTable } from '@aerogel/core';
+import type { SortedColumn } from '@aerogel/core';
 import { computed } from 'vue';
 
-import { formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
-import { notesPreview } from '@/lib/media';
+import { renderShowTableItem, type ShowTableItem } from '@/modules/shows/lib/shows';
 import Show from '@shows/models/Show';
 
 const { shows, loading } = defineProps<{ shows: Show[]; loading?: boolean }>();
 const page = defineModel<number>('page', { default: 1 });
-const renderedShows = computed(() =>
-    shows.map((show) => ({
-        ...show.getAttributes(),
-        route: show.route,
-        genres: formatGenres(show.genreKeys),
-        countries: formatCountries(show.countryCodes),
-        languages: formatLanguages(show.languages),
-        releaseYear: show.releaseYear,
-        numberOfSeasons: show.numberOfSeasons,
-        numberOfEpisodes: show.numberOfEpisodes,
-        watchingStatus: show.watchingStatus,
-        status: translate(`shows.statuses.${show.watchingStatus}`),
-        rating: show.rating,
-        hasNotes: !!show.notes,
-        get notesPreview(): string | undefined {
-            return show.notes ? notesPreview(show.notes) : undefined;
-        },
-    })),
-);
+const sortBy = defineModel<SortedColumn<ShowTableItem>[]>('sortBy', { default: () => [] });
+const renderedShows = computed(() => shows.map(renderShowTableItem));
 const { Table, TableColumn } = useDataTable(renderedShows);
 </script>

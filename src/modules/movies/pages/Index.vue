@@ -81,7 +81,7 @@
                 <MoviesEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
         </VirtualMediaGrid>
-        <MoviesTable v-else v-model:page="page" :loading :movies="sortedMovies" class="mt-2">
+        <MoviesTable v-else v-model:page="page" v-model:sort-by="sort" :loading :movies="sortedMovies" class="mt-2">
             <template #empty>
                 <MoviesEmptyState :empty-collection="hasEmptyCollection" @clear-filters="clearAllFilters()" />
             </template>
@@ -108,11 +108,20 @@ import {
     movieMatchesFilters,
     movieMatchesQuery,
     MOVIES_FILTER_FIELDS,
+    type MoviesFilter,
+    type MovieTableItem,
 } from '@movies/lib/movies';
 import Movie from '@movies/models/Movie';
 
 const { models: allMovies, loading } = useModels(Movie);
-const { quickFilter, advancedFilters, display, page, clear: clearAllFilters } = useMediaFilters(MOVIES_FILTER_FIELDS);
+const {
+    quickFilter,
+    advancedFilters,
+    display,
+    page,
+    sort,
+    clear: clearAllFilters,
+} = useMediaFilters<MoviesFilter, MovieTableItem>(MOVIES_FILTER_FIELDS);
 const hasEmptyCollection = computed(() => !loading.value && allMovies.value.length === 0);
 const hasAdvancedFilters = computed(() => hasActiveMovieFilters(advancedFilters.value));
 

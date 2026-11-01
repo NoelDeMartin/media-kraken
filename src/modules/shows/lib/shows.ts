@@ -1,9 +1,11 @@
 import type { RangeSliderValue } from '@aerogel/core';
+import { translate } from '@aerogel/core';
 import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
 
 import type { QueryFilterFields } from '@/lib/composition/filters';
+import { formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import type { GenreKey } from '@/lib/genres';
-import { matchesAny, matchesRange, personFilterKey, toSearchText } from '@/lib/media';
+import { matchesAny, matchesRange, notesPreview, personFilterKey, toSearchText } from '@/lib/media';
 import type Show from '@shows/models/Show';
 import type { ShowWatchingStatus } from '@shows/models/ShowWatching';
 
@@ -34,6 +36,28 @@ export const SHOWS_FILTER_FIELDS: QueryFilterFields<ShowsFilter> = {
 };
 
 export type ShowSearchEntry = ReturnType<typeof createShowSearchEntry>;
+export type ShowTableItem = ReturnType<typeof renderShowTableItem>;
+
+// oxlint-disable-next-line typescript/explicit-module-boundary-types
+export function renderShowTableItem(show: Show) {
+    return {
+        ...show.getAttributes(),
+        route: show.route,
+        genres: formatGenres(show.genreKeys),
+        countries: formatCountries(show.countryCodes),
+        languages: formatLanguages(show.languages),
+        releaseYear: show.releaseYear,
+        numberOfSeasons: show.numberOfSeasons,
+        numberOfEpisodes: show.numberOfEpisodes,
+        watchingStatus: show.watchingStatus,
+        status: translate(`shows.statuses.${show.watchingStatus}`),
+        rating: show.rating,
+        hasNotes: !!show.notes,
+        get notesPreview(): string | undefined {
+            return show.notes ? notesPreview(show.notes) : undefined;
+        },
+    };
+}
 
 export function hasActiveShowFilters(filters: Nullable<ShowsFilter>): boolean {
     if (!filters) {

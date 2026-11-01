@@ -1,6 +1,6 @@
 <template>
-    <Table v-model:page="page" item-key="url" :loading :items-label="$t('movies.itemsName')">
-        <TableColumn :header="$t('movies.table.title')" field="title">
+    <Table v-model:page="page" v-model:sort-by="sortBy" item-key="url" :loading :items-label="$t('movies.itemsName')">
+        <TableColumn :header="$t('movies.table.title')" field="title" sortable>
             <template #default="{ item: movie }">
                 <span class="inline-flex items-center gap-1.5">
                     <Link class="text-normal" :to="movie.route">
@@ -44,30 +44,16 @@
 
 <script setup lang="ts">
 import { useDataTable } from '@aerogel/core';
+import type { SortedColumn } from '@aerogel/core';
 import { computed } from 'vue';
 
-import { formatDate, formatDuration, formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
-import { notesPreview } from '@/lib/media';
+import { formatDate, formatDuration } from '@/lib/formatting';
+import { renderMovieTableItem, type MovieTableItem } from '@/modules/movies/lib/movies';
 import Movie from '@movies/models/Movie';
 
 const { movies, loading } = defineProps<{ movies: Movie[]; loading?: boolean }>();
 const page = defineModel<number>('page', { default: 1 });
-const renderedMovies = computed(() =>
-    movies.map((movie) => ({
-        ...movie.getAttributes(),
-        route: movie.route,
-        genres: formatGenres(movie.genreKeys),
-        countries: formatCountries(movie.countryCodes),
-        languages: formatLanguages(movie.languages),
-        runtimeMinutes: movie.runtimeMinutes,
-        releaseYear: movie.releaseYear,
-        watchedAt: movie.watchedAt,
-        rating: movie.rating,
-        hasNotes: !!movie.notes,
-        get notesPreview(): string | undefined {
-            return movie.notes ? notesPreview(movie.notes) : undefined;
-        },
-    })),
-);
+const sortBy = defineModel<SortedColumn<MovieTableItem>[]>('sortBy', { default: () => [] });
+const renderedMovies = computed(() => movies.map(renderMovieTableItem));
 const { Table, TableColumn } = useDataTable(renderedMovies);
 </script>
