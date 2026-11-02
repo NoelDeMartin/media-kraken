@@ -46,9 +46,9 @@ describe('List model', () => {
         bootModels({ List, ListItem, Movie, PerformanceRole, Person, Show, WatchAction }, { reset: true });
         setEngine(new InMemoryEngine());
 
-        alien = newMovie('solid://movies/alien#it', 'Alien');
-        jaws = newMovie('solid://movies/jaws#it', 'Jaws');
-        scream = newMovie('solid://movies/scream#it', 'Scream');
+        alien = newMovie('local://movies/alien#it', 'Alien');
+        jaws = newMovie('local://movies/jaws#it', 'Jaws');
+        scream = newMovie('local://movies/scream#it', 'Scream');
     });
 
     it('Adds media once', async () => {

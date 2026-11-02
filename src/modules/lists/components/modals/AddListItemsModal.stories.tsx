@@ -17,7 +17,7 @@ const meta: Meta<StoryArgs> = {
     component: AddListItemsModal,
     parameters: { layout: 'fullscreen' },
     args: {
-        mediaUrls: ['solid://movies/the-substance-2024#it', 'solid://shows/severance-2022/info#it'],
+        mediaUrls: ['local://movies/the-substance-2024#it', 'local://shows/severance-2022/info#it'],
     },
     render: (args) => ({
         setup() {

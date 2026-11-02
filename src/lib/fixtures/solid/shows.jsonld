@@ -2,13 +2,13 @@
     {
       "@graph": [
         {
-          "@id": "solid://shows/freaks-and-geeks-1999/info#0d45f23f-b50a-41ad-9772-51ac1b6be4a3",
+          "@id": "local://shows/freaks-and-geeks-1999/info#0d45f23f-b50a-41ad-9772-51ac1b6be4a3",
           "@type": [
             "https://schema.org/WatchAction"
           ],
           "https://schema.org/object": [
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/info#it"
+              "@id": "local://shows/freaks-and-geeks-1999/info#it"
             }
           ],
           "https://schema.org/actionStatus": [
@@ -18,13 +18,13 @@
           ]
         },
         {
-          "@id": "solid://shows/freaks-and-geeks-1999/info#0d45f23f-b50a-41ad-9772-51ac1b6be4a3-metadata",
+          "@id": "local://shows/freaks-and-geeks-1999/info#0d45f23f-b50a-41ad-9772-51ac1b6be4a3-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/info#0d45f23f-b50a-41ad-9772-51ac1b6be4a3"
+              "@id": "local://shows/freaks-and-geeks-1999/info#0d45f23f-b50a-41ad-9772-51ac1b6be4a3"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -41,7 +41,7 @@
           ]
         },
         {
-          "@id": "solid://shows/freaks-and-geeks-1999/info#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6",
+          "@id": "local://shows/freaks-and-geeks-1999/info#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6",
           "@type": [
             "https://schema.org/TVSeason"
           ],
@@ -53,69 +53,69 @@
           ],
           "https://schema.org/episode": [
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-1#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-1#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-2#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-2#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-3#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-3#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-4#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-4#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-5#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-5#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-6#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-6#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-7#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-7#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-8#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-8#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-9#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-9#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-10#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-10#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-11#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-11#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-12#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-12#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-13#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-13#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-14#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-14#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-15#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-15#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-16#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-16#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-17#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-17#it"
             },
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/season-1/episode-18#it"
+              "@id": "local://shows/freaks-and-geeks-1999/season-1/episode-18#it"
             }
           ]
         },
         {
-          "@id": "solid://shows/freaks-and-geeks-1999/info#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6-metadata",
+          "@id": "local://shows/freaks-and-geeks-1999/info#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/info#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6"
+              "@id": "local://shows/freaks-and-geeks-1999/info#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -132,7 +132,7 @@
           ]
         },
         {
-          "@id": "solid://shows/freaks-and-geeks-1999/info#it",
+          "@id": "local://shows/freaks-and-geeks-1999/info#it",
           "@type": [
             "https://schema.org/TVSeries"
           ],
@@ -164,7 +164,7 @@
           ],
           "https://schema.org/containsSeason": [
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/info#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6"
+              "@id": "local://shows/freaks-and-geeks-1999/info#f5fa78d0-5337-4132-a0d1-bb1891dc5bc6"
             }
           ],
           "https://schema.org/sameAs": [
@@ -177,13 +177,13 @@
           ]
         },
         {
-          "@id": "solid://shows/freaks-and-geeks-1999/info#it-metadata",
+          "@id": "local://shows/freaks-and-geeks-1999/info#it-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/freaks-and-geeks-1999/info#it"
+              "@id": "local://shows/freaks-and-geeks-1999/info#it"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -204,7 +204,7 @@
     {
       "@graph": [
         {
-          "@id": "solid://shows/lego-one-piece-2026/info#it",
+          "@id": "local://shows/lego-one-piece-2026/info#it",
           "@type": [
             "https://schema.org/TVSeries"
           ],
@@ -244,13 +244,13 @@
           ]
         },
         {
-          "@id": "solid://shows/lego-one-piece-2026/info#it-metadata",
+          "@id": "local://shows/lego-one-piece-2026/info#it-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/lego-one-piece-2026/info#it"
+              "@id": "local://shows/lego-one-piece-2026/info#it"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -271,7 +271,7 @@
     {
       "@graph": [
         {
-          "@id": "solid://shows/pluribus-2025/info#5a5e4555-c788-49d8-a1c9-28219ae25826",
+          "@id": "local://shows/pluribus-2025/info#5a5e4555-c788-49d8-a1c9-28219ae25826",
           "@type": [
             "https://schema.org/TVSeason"
           ],
@@ -283,42 +283,42 @@
           ],
           "https://schema.org/episode": [
             {
-              "@id": "solid://shows/pluribus-2025/season-1/episode-1#it"
+              "@id": "local://shows/pluribus-2025/season-1/episode-1#it"
             },
             {
-              "@id": "solid://shows/pluribus-2025/season-1/episode-2#it"
+              "@id": "local://shows/pluribus-2025/season-1/episode-2#it"
             },
             {
-              "@id": "solid://shows/pluribus-2025/season-1/episode-3#it"
+              "@id": "local://shows/pluribus-2025/season-1/episode-3#it"
             },
             {
-              "@id": "solid://shows/pluribus-2025/season-1/episode-4#it"
+              "@id": "local://shows/pluribus-2025/season-1/episode-4#it"
             },
             {
-              "@id": "solid://shows/pluribus-2025/season-1/episode-5#it"
+              "@id": "local://shows/pluribus-2025/season-1/episode-5#it"
             },
             {
-              "@id": "solid://shows/pluribus-2025/season-1/episode-6#it"
+              "@id": "local://shows/pluribus-2025/season-1/episode-6#it"
             },
             {
-              "@id": "solid://shows/pluribus-2025/season-1/episode-7#it"
+              "@id": "local://shows/pluribus-2025/season-1/episode-7#it"
             },
             {
-              "@id": "solid://shows/pluribus-2025/season-1/episode-8#it"
+              "@id": "local://shows/pluribus-2025/season-1/episode-8#it"
             },
             {
-              "@id": "solid://shows/pluribus-2025/season-1/episode-9#it"
+              "@id": "local://shows/pluribus-2025/season-1/episode-9#it"
             }
           ]
         },
         {
-          "@id": "solid://shows/pluribus-2025/info#5a5e4555-c788-49d8-a1c9-28219ae25826-metadata",
+          "@id": "local://shows/pluribus-2025/info#5a5e4555-c788-49d8-a1c9-28219ae25826-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/pluribus-2025/info#5a5e4555-c788-49d8-a1c9-28219ae25826"
+              "@id": "local://shows/pluribus-2025/info#5a5e4555-c788-49d8-a1c9-28219ae25826"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -335,13 +335,13 @@
           ]
         },
         {
-          "@id": "solid://shows/pluribus-2025/info#d61fb038-8a1c-4508-b5d0-a7d5cb2834df",
+          "@id": "local://shows/pluribus-2025/info#d61fb038-8a1c-4508-b5d0-a7d5cb2834df",
           "@type": [
             "https://schema.org/WatchAction"
           ],
           "https://schema.org/object": [
             {
-              "@id": "solid://shows/pluribus-2025/info#it"
+              "@id": "local://shows/pluribus-2025/info#it"
             }
           ],
           "https://schema.org/actionStatus": [
@@ -351,13 +351,13 @@
           ]
         },
         {
-          "@id": "solid://shows/pluribus-2025/info#d61fb038-8a1c-4508-b5d0-a7d5cb2834df-metadata",
+          "@id": "local://shows/pluribus-2025/info#d61fb038-8a1c-4508-b5d0-a7d5cb2834df-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/pluribus-2025/info#d61fb038-8a1c-4508-b5d0-a7d5cb2834df"
+              "@id": "local://shows/pluribus-2025/info#d61fb038-8a1c-4508-b5d0-a7d5cb2834df"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -374,7 +374,7 @@
           ]
         },
         {
-          "@id": "solid://shows/pluribus-2025/info#it",
+          "@id": "local://shows/pluribus-2025/info#it",
           "@type": [
             "https://schema.org/TVSeries"
           ],
@@ -406,7 +406,7 @@
           ],
           "https://schema.org/containsSeason": [
             {
-              "@id": "solid://shows/pluribus-2025/info#5a5e4555-c788-49d8-a1c9-28219ae25826"
+              "@id": "local://shows/pluribus-2025/info#5a5e4555-c788-49d8-a1c9-28219ae25826"
             }
           ],
           "https://schema.org/sameAs": [
@@ -419,13 +419,13 @@
           ]
         },
         {
-          "@id": "solid://shows/pluribus-2025/info#it-metadata",
+          "@id": "local://shows/pluribus-2025/info#it-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/pluribus-2025/info#it"
+              "@id": "local://shows/pluribus-2025/info#it"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -446,7 +446,7 @@
     {
       "@graph": [
         {
-          "@id": "solid://shows/severance-2022/info#0605bd05-24e4-4e06-8600-f3b50f99e414",
+          "@id": "local://shows/severance-2022/info#0605bd05-24e4-4e06-8600-f3b50f99e414",
           "@type": [
             "https://schema.org/TVSeason"
           ],
@@ -458,39 +458,39 @@
           ],
           "https://schema.org/episode": [
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-1#it"
+              "@id": "local://shows/severance-2022/season-2/episode-1#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-2#it"
+              "@id": "local://shows/severance-2022/season-2/episode-2#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-3#it"
+              "@id": "local://shows/severance-2022/season-2/episode-3#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-4#it"
+              "@id": "local://shows/severance-2022/season-2/episode-4#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-5#it"
+              "@id": "local://shows/severance-2022/season-2/episode-5#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-6#it"
+              "@id": "local://shows/severance-2022/season-2/episode-6#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-7#it"
+              "@id": "local://shows/severance-2022/season-2/episode-7#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-8#it"
+              "@id": "local://shows/severance-2022/season-2/episode-8#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-9#it"
+              "@id": "local://shows/severance-2022/season-2/episode-9#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-2/episode-10#it"
+              "@id": "local://shows/severance-2022/season-2/episode-10#it"
             }
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/season-1/episode-1#it",
+          "@id": "local://shows/severance-2022/season-1/episode-1#it",
           "@type": [
             "https://schema.org/TVEpisode"
           ],
@@ -513,13 +513,13 @@
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/info#0605bd05-24e4-4e06-8600-f3b50f99e414-metadata",
+          "@id": "local://shows/severance-2022/info#0605bd05-24e4-4e06-8600-f3b50f99e414-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/severance-2022/info#0605bd05-24e4-4e06-8600-f3b50f99e414"
+              "@id": "local://shows/severance-2022/info#0605bd05-24e4-4e06-8600-f3b50f99e414"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -536,7 +536,7 @@
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/info#16dd92da-beee-46b1-bc5c-9d5202fac4aa",
+          "@id": "local://shows/severance-2022/info#16dd92da-beee-46b1-bc5c-9d5202fac4aa",
           "@type": [
             "https://schema.org/TVSeason"
           ],
@@ -548,13 +548,13 @@
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/info#16dd92da-beee-46b1-bc5c-9d5202fac4aa-metadata",
+          "@id": "local://shows/severance-2022/info#16dd92da-beee-46b1-bc5c-9d5202fac4aa-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/severance-2022/info#16dd92da-beee-46b1-bc5c-9d5202fac4aa"
+              "@id": "local://shows/severance-2022/info#16dd92da-beee-46b1-bc5c-9d5202fac4aa"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -571,13 +571,13 @@
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/info#1b0cad98-3b27-46f1-bccc-b9ee26a541c6",
+          "@id": "local://shows/severance-2022/info#1b0cad98-3b27-46f1-bccc-b9ee26a541c6",
           "@type": [
             "https://schema.org/WatchAction"
           ],
           "https://schema.org/object": [
             {
-              "@id": "solid://shows/severance-2022/info#it"
+              "@id": "local://shows/severance-2022/info#it"
             }
           ],
           "https://schema.org/actionStatus": [
@@ -587,13 +587,13 @@
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/info#1b0cad98-3b27-46f1-bccc-b9ee26a541c6-metadata",
+          "@id": "local://shows/severance-2022/info#1b0cad98-3b27-46f1-bccc-b9ee26a541c6-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/severance-2022/info#1b0cad98-3b27-46f1-bccc-b9ee26a541c6"
+              "@id": "local://shows/severance-2022/info#1b0cad98-3b27-46f1-bccc-b9ee26a541c6"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -610,7 +610,7 @@
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/info#6ec1cf6e-62c1-4956-8429-91ad3443e39c",
+          "@id": "local://shows/severance-2022/info#6ec1cf6e-62c1-4956-8429-91ad3443e39c",
           "@type": [
             "https://schema.org/TVSeason"
           ],
@@ -622,42 +622,42 @@
           ],
           "https://schema.org/episode": [
             {
-              "@id": "solid://shows/severance-2022/season-1/episode-1#it"
+              "@id": "local://shows/severance-2022/season-1/episode-1#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-1/episode-2#it"
+              "@id": "local://shows/severance-2022/season-1/episode-2#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-1/episode-3#it"
+              "@id": "local://shows/severance-2022/season-1/episode-3#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-1/episode-4#it"
+              "@id": "local://shows/severance-2022/season-1/episode-4#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-1/episode-5#it"
+              "@id": "local://shows/severance-2022/season-1/episode-5#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-1/episode-6#it"
+              "@id": "local://shows/severance-2022/season-1/episode-6#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-1/episode-7#it"
+              "@id": "local://shows/severance-2022/season-1/episode-7#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-1/episode-8#it"
+              "@id": "local://shows/severance-2022/season-1/episode-8#it"
             },
             {
-              "@id": "solid://shows/severance-2022/season-1/episode-9#it"
+              "@id": "local://shows/severance-2022/season-1/episode-9#it"
             }
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/info#6ec1cf6e-62c1-4956-8429-91ad3443e39c-metadata",
+          "@id": "local://shows/severance-2022/info#6ec1cf6e-62c1-4956-8429-91ad3443e39c-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/severance-2022/info#6ec1cf6e-62c1-4956-8429-91ad3443e39c"
+              "@id": "local://shows/severance-2022/info#6ec1cf6e-62c1-4956-8429-91ad3443e39c"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -674,7 +674,7 @@
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/info#it",
+          "@id": "local://shows/severance-2022/info#it",
           "@type": [
             "https://schema.org/TVSeries"
           ],
@@ -706,13 +706,13 @@
           ],
           "https://schema.org/containsSeason": [
             {
-              "@id": "solid://shows/severance-2022/info#6ec1cf6e-62c1-4956-8429-91ad3443e39c"
+              "@id": "local://shows/severance-2022/info#6ec1cf6e-62c1-4956-8429-91ad3443e39c"
             },
             {
-              "@id": "solid://shows/severance-2022/info#0605bd05-24e4-4e06-8600-f3b50f99e414"
+              "@id": "local://shows/severance-2022/info#0605bd05-24e4-4e06-8600-f3b50f99e414"
             },
             {
-              "@id": "solid://shows/severance-2022/info#16dd92da-beee-46b1-bc5c-9d5202fac4aa"
+              "@id": "local://shows/severance-2022/info#16dd92da-beee-46b1-bc5c-9d5202fac4aa"
             }
           ],
           "https://schema.org/sameAs": [
@@ -725,13 +725,13 @@
           ]
         },
         {
-          "@id": "solid://shows/severance-2022/info#it-metadata",
+          "@id": "local://shows/severance-2022/info#it-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/severance-2022/info#it"
+              "@id": "local://shows/severance-2022/info#it"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -752,13 +752,13 @@
     {
       "@graph": [
         {
-          "@id": "solid://shows/succession-2018/info#e1a9210d-107c-4b04-a3d0-e68283a247bb",
+          "@id": "local://shows/succession-2018/info#e1a9210d-107c-4b04-a3d0-e68283a247bb",
           "@type": [
             "https://schema.org/WatchAction"
           ],
           "https://schema.org/object": [
             {
-              "@id": "solid://shows/succession-2018/info#it"
+              "@id": "local://shows/succession-2018/info#it"
             }
           ],
           "https://schema.org/actionStatus": [
@@ -768,13 +768,13 @@
           ]
         },
         {
-          "@id": "solid://shows/succession-2018/info#e1a9210d-107c-4b04-a3d0-e68283a247bb-metadata",
+          "@id": "local://shows/succession-2018/info#e1a9210d-107c-4b04-a3d0-e68283a247bb-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/succession-2018/info#e1a9210d-107c-4b04-a3d0-e68283a247bb"
+              "@id": "local://shows/succession-2018/info#e1a9210d-107c-4b04-a3d0-e68283a247bb"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [
@@ -791,7 +791,7 @@
           ]
         },
         {
-          "@id": "solid://shows/succession-2018/info#it",
+          "@id": "local://shows/succession-2018/info#it",
           "@type": [
             "https://schema.org/TVSeries"
           ],
@@ -831,13 +831,13 @@
           ]
         },
         {
-          "@id": "solid://shows/succession-2018/info#it-metadata",
+          "@id": "local://shows/succession-2018/info#it-metadata",
           "@type": [
             "https://vocab.noeldemartin.com/crdt/Metadata"
           ],
           "https://vocab.noeldemartin.com/crdt/resource": [
             {
-              "@id": "solid://shows/succession-2018/info#it"
+              "@id": "local://shows/succession-2018/info#it"
             }
           ],
           "https://vocab.noeldemartin.com/crdt/createdAt": [

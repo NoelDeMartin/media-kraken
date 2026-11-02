@@ -12,7 +12,7 @@ type StoryArgs = {
     lists: StubList[];
 };
 
-const MOVIE_URL = 'solid://movies/the-substance-2024#it';
+const MOVIE_URL = 'local://movies/the-substance-2024#it';
 
 const meta: Meta<StoryArgs> = {
     title: 'modules/lists/ManageListsModal',
@@ -20,8 +20,8 @@ const meta: Meta<StoryArgs> = {
     parameters: { layout: 'fullscreen' },
     args: {
         lists: [
-            { name: 'Favorites', mediaUrls: [MOVIE_URL, 'solid://movies/onibaba-1964#it'] },
-            { name: 'Halloween marathon', mediaUrls: ['solid://movies/onibaba-1964#it'] },
+            { name: 'Favorites', mediaUrls: [MOVIE_URL, 'local://movies/onibaba-1964#it'] },
+            { name: 'Halloween marathon', mediaUrls: ['local://movies/onibaba-1964#it'] },
             { name: 'Watch with friends', mediaUrls: [] },
             {
                 name: 'Movies to watch on a rainy Sunday afternoon with a big bowl of popcorn and no plans at all',

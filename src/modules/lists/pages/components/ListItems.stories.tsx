@@ -20,13 +20,13 @@ const meta: Meta<StoryArgs> = {
     args: {
         disabled: false,
         mediaUrls: [
-            'solid://movies/the-substance-2024#it',
-            'solid://shows/severance-2022/info#it',
-            'solid://movies/the-tale-of-the-princess-kaguya-2013#it',
-            'solid://shows/pluribus-2025/info#it',
-            'solid://movies/all-that-jazz-1979#it',
-            'solid://shows/freaks-and-geeks-1999/info#it',
-            'solid://shows/succession-2018/info#it',
+            'local://movies/the-substance-2024#it',
+            'local://shows/severance-2022/info#it',
+            'local://movies/the-tale-of-the-princess-kaguya-2013#it',
+            'local://shows/pluribus-2025/info#it',
+            'local://movies/all-that-jazz-1979#it',
+            'local://shows/freaks-and-geeks-1999/info#it',
+            'local://shows/succession-2018/info#it',
         ],
     },
     render: (args) => ({
@@ -61,10 +61,10 @@ export const Primary: Story = {};
 export const EdgeCases: Story = {
     args: {
         mediaUrls: [
-            'solid://movies/missing-poster#it',
-            'solid://movies/invalid-poster#it',
-            'solid://movies/deleted-movie#it',
-            'solid://movies/the-testament-of-dr-mabuse-1933#it',
+            'local://movies/missing-poster#it',
+            'local://movies/invalid-poster#it',
+            'local://movies/deleted-movie#it',
+            'local://movies/the-testament-of-dr-mabuse-1933#it',
         ],
     },
 };

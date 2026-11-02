@@ -2,7 +2,7 @@ import { defineStub, type StubDefinition } from '@/lib/stubs/helpers';
 import List from '@lists/models/List';
 
 function list(slug: string, name: string, mediaUrls: string[]): List {
-    const instance = new List({ url: `solid://lists/${slug}#it`, name });
+    const instance = new List({ url: `local://lists/${slug}#it`, name });
 
     for (const [index, mediaUrl] of mediaUrls.entries()) {
         instance.relatedItems.attach({ mediaUrl, position: index + 1 });
@@ -15,27 +15,27 @@ export default defineStub<StubDefinition<string, List>>([
     [
         'Favorites',
         list('favorites', 'Favorites', [
-            'solid://movies/the-substance-2024#it',
-            'solid://shows/severance-2022/info#it',
-            'solid://movies/the-tale-of-the-princess-kaguya-2013#it',
-            'solid://shows/pluribus-2025/info#it',
-            'solid://movies/onibaba-1964#it',
-            'solid://shows/succession-2018/info#it',
+            'local://movies/the-substance-2024#it',
+            'local://shows/severance-2022/info#it',
+            'local://movies/the-tale-of-the-princess-kaguya-2013#it',
+            'local://shows/pluribus-2025/info#it',
+            'local://movies/onibaba-1964#it',
+            'local://shows/succession-2018/info#it',
         ]),
     ],
     [
         'Halloween marathon',
         list('halloween-marathon', 'Halloween marathon', [
-            'solid://movies/onibaba-1964#it',
-            'solid://movies/the-testament-of-dr-mabuse-1933#it',
+            'local://movies/onibaba-1964#it',
+            'local://movies/the-testament-of-dr-mabuse-1933#it',
         ]),
     ],
     [
         'Missing posters',
         list('missing-posters', 'Missing posters', [
-            'solid://movies/missing-poster#it',
-            'solid://movies/invalid-poster#it',
-            'solid://movies/all-that-jazz-1979#it',
+            'local://movies/missing-poster#it',
+            'local://movies/invalid-poster#it',
+            'local://movies/all-that-jazz-1979#it',
         ]),
     ],
     [
@@ -43,7 +43,7 @@ export default defineStub<StubDefinition<string, List>>([
         list(
             'long-name',
             'Movies to watch on a rainy Sunday afternoon with a big bowl of popcorn and no plans at all',
-            ['solid://shows/freaks-and-geeks-1999/info#it'],
+            ['local://shows/freaks-and-geeks-1999/info#it'],
         ),
     ],
     ['Empty', list('empty', 'Empty list', [])],
