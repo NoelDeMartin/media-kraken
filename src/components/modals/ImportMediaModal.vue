@@ -170,6 +170,7 @@ async function parseRawFileContents(file: File): Promise<object[] | undefined> {
         return await parseCSV(file);
     } catch (error) {
         if (isDevelopment() || isTesting('e2e')) {
+            // oxlint-disable-next-line no-console
             console.error(error);
         }
 
