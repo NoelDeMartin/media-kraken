@@ -106,17 +106,17 @@ import type { ImportMediaJobResult } from '@/jobs/ImportMedia';
 const { result } = defineProps<{ result: ImportMediaJobResult }>();
 const { close } = useModal();
 
-const watchedCount = computed(() => result.added.filter((m) => m.watched).length);
-const pendingCount = computed(() => result.added.filter((m) => !m.watched).length);
+const watchedCount = computed(() => result.added.filter((m) => m.watchingStatus === 'watched').length);
+const pendingCount = computed(() => result.added.filter((m) => m.watchingStatus === 'pending').length);
 
 function inspectWatched() {
-    const lines = result.added.filter((m) => m.watched).map((m, i) => `${i + 1}. ${m.title}`);
+    const lines = result.added.filter((m) => m.watchingStatus === 'watched').map((m, i) => `${i + 1}. ${m.title}`);
 
     UI.alert(translate('import.result.details.watchedTitle'), lines.join('\n'));
 }
 
 function inspectPending() {
-    const lines = result.added.filter((m) => !m.watched).map((m, i) => `${i + 1}. ${m.title}`);
+    const lines = result.added.filter((m) => m.watchingStatus === 'pending').map((m, i) => `${i + 1}. ${m.title}`);
 
     UI.alert(translate('import.result.details.pendingTitle'), lines.join('\n'));
 }

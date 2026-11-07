@@ -1,8 +1,18 @@
 <template>
-    <span :class="['flex items-center gap-1', movie.watched ? 'text-green-700' : 'text-blue-700']">
-        <i-material-symbols-check v-if="movie.watched" class="size-4" />
+    <span
+        :class="[
+            'flex items-center gap-1',
+            {
+                'text-green-700': movie.watchingStatus === 'watched',
+                'text-blue-700': movie.watchingStatus === 'pending',
+                'text-gray-700': movie.watchingStatus === 'dropped',
+            },
+        ]"
+    >
+        <i-material-symbols-check v-if="movie.watchingStatus === 'watched'" class="size-4" />
+        <i-ph-archive-fill v-else-if="movie.watchingStatus === 'dropped'" class="size-4" />
         <i-mdi-clock-outline v-else class="size-4" />
-        {{ movie.watched ? $t('movies.watched') : $t('movies.pending') }}
+        {{ $t(`movies.${movie.watchingStatus}`) }}
     </span>
 </template>
 

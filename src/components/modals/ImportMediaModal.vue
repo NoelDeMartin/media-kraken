@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
 import { translate, UI, useModal } from '@aerogel/core';
-import { after, isTesting } from '@noeldemartin/utils';
+import { after, isDevelopment, isTesting } from '@noeldemartin/utils';
 import { ref, useTemplateRef, type Component } from 'vue';
 import IconImdb from '~icons/app/imdb';
 import IconCustom from '~icons/material-symbols-light/code-xml';
@@ -168,7 +168,11 @@ async function parseRawFileContents(file: File): Promise<object[] | undefined> {
         const { parseCSV } = await import('@/lib/csv');
 
         return await parseCSV(file);
-    } catch {
+    } catch (error) {
+        if (isDevelopment() || isTesting('e2e')) {
+            console.error(error);
+        }
+
         UI.alert(translate('import.invalidFileTitle'), translate('import.invalidFileDescription'));
     }
 }

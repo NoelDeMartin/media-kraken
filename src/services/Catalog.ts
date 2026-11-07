@@ -40,6 +40,7 @@ import TMDB, {
     type TMDBShowWithStaff,
 } from '@/services/TMDB';
 import Movie from '@movies/models/Movie';
+import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 import type Episode from '@shows/models/Episode';
 import type Season from '@shows/models/Season';
 import Show from '@shows/models/Show';
@@ -180,7 +181,11 @@ export class CatalogService extends Service {
 
     public async importMovieFromTMDB(
         tmdbMovie: TMDBMovie,
-        options: { watched?: boolean; rating?: Nullable<number>; notes?: Nullable<string> } = {},
+        options: {
+            watchingStatus?: Nullable<MovieWatchingStatus>;
+            rating?: Nullable<number>;
+            notes?: Nullable<string>;
+        } = {},
     ): Promise<ModelWithUrl<Movie>> {
         const details = await TMDB.getMovie(tmdbMovie.id, { includeCredits: true, includeKeywords: true });
         const movie = new Movie(this.getMovieAttributes(details));
@@ -189,8 +194,8 @@ export class CatalogService extends Service {
 
         this.attachStaff(movie, details);
 
-        if (options.watched) {
-            movie.setWatchedAt(new Date());
+        if (options.watchingStatus) {
+            movie.setWatchingStatus(options.watchingStatus);
         }
 
         if (!isNullable(options.rating)) {
@@ -541,7 +546,7 @@ export class CatalogService extends Service {
         this.attachStaff(movie, details);
 
         if (options.watchedAt) {
-            movie.setWatchedAt(options.watchedAt);
+            movie.setWatchingStatus('watched', options.watchedAt);
         }
 
         if (!isNullable(options.rating)) {

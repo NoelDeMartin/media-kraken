@@ -6,9 +6,10 @@ import { formatCountries, formatGenres, formatLanguages } from '@/lib/formatting
 import type { GenreKey } from '@/lib/genres';
 import { matchesAny, matchesRange, notesPreview, personFilterKey, toSearchText } from '@/lib/media';
 import type Movie from '@movies/models/Movie';
+import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 
 export type MoviesFilter = {
-    watched?: Nullable<boolean>;
+    watchingStatus?: Nullable<MovieWatchingStatus>;
     genres?: Nullable<GenreKey[]>;
     directors?: Nullable<string[]>;
     cast?: Nullable<string[]>;
@@ -21,7 +22,7 @@ export type MoviesFilter = {
 };
 
 export const MOVIES_FILTER_FIELDS: QueryFilterFields<MoviesFilter> = {
-    watched: 'boolean',
+    watchingStatus: 'string',
     genres: 'list',
     directors: 'list',
     cast: 'list',
@@ -69,7 +70,7 @@ export function hasActiveMovieFilters(filters: Nullable<MoviesFilter>): boolean 
         !isNullable(filters.releaseYear) ||
         !isNullable(filters.duration) ||
         !isNullable(filters.rating) ||
-        !isNullable(filters.watched) ||
+        !isNullable(filters.watchingStatus) ||
         !!filters.withNotes
     );
 }
@@ -84,8 +85,8 @@ export function createMovieSearchEntry(movie: Movie) {
         languages: movie.languages,
         releaseYear: movie.releaseYear,
         runtimeMinutes: movie.runtimeMinutes,
-        get watched(): boolean | null {
-            return movie.watched;
+        get watchingStatus(): MovieWatchingStatus {
+            return movie.watchingStatus;
         },
         get rating(): number | null {
             return movie.rating;
@@ -116,7 +117,7 @@ export function movieMatchesFilters(entry: MovieSearchEntry, filters: Nullable<M
         (isNullable(filters.duration) || matchesRange(filters.duration, entry.runtimeMinutes)) &&
         (isNullable(filters.rating) || matchesRange(filters.rating, entry.rating)) &&
         (!filters.withNotes || entry.hasNotes) &&
-        (isNullable(filters.watched) || filters.watched === entry.watched) &&
+        (isNullable(filters.watchingStatus) || filters.watchingStatus === entry.watchingStatus) &&
         (isNullable(filters.genres) || matchesAny(filters.genres, entry.genreKeys)) &&
         (isNullable(filters.countries) || matchesAny(filters.countries, entry.countryCodes)) &&
         (isNullable(filters.languages) || matchesAny(filters.languages, entry.languages)) &&

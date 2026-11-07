@@ -1,9 +1,17 @@
 INSERT DATA {
     @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
     @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-    <#watched>
+    <#{{ actionHash ?? 'watched' }}>
         a schema:WatchAction ;
-        schema:endTime "2026-08-24T11:04:23.476Z"^^xsd:dateTime ;
-        schema:object <#it> .
- }
+        schema:object <#it> ;
+        schema:actionStatus schema:CompletedActionStatus ;
+        schema:endTime "{{ endTime ?? '2026-08-24T11:04:23.476Z' }}"^^xsd:dateTime .
+
+    <#{{ actionHash ?? 'watched' }}-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#{{ actionHash ?? 'watched' }}> ;
+        crdt:createdAt "{{ createdAt ?? '2026-08-24T11:04:23.476Z' }}"^^xsd:dateTime ;
+        crdt:updatedAt "{{ createdAt ?? '2026-08-24T11:04:23.476Z' }}"^^xsd:dateTime .
+}

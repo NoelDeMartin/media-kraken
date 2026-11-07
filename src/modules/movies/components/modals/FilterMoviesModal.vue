@@ -6,7 +6,7 @@
         <Form v-else :form @submit="submit">
             <div class="space-y-4">
                 <Select
-                    name="watchStatus"
+                    name="watchingStatus"
                     :label="$t('movies.advancedFilters.watchStatus')"
                     :options="statusOptions"
                     :render-option="renderStatus"
@@ -89,7 +89,7 @@
 
 <script setup lang="ts">
 import { numberRange, translate, useForm, useModal } from '@aerogel/core';
-import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
+import { isTruthy, type Nullable } from '@noeldemartin/utils';
 import { computed, onMounted, ref } from 'vue';
 import { z } from 'zod';
 
@@ -100,6 +100,7 @@ import { formatRatingAsStars } from '@/lib/stars';
 import { MAX_RATING, MIN_RATING } from '@/models/Rating';
 import type { MoviesFilter } from '@movies/lib/movies';
 import type Movie from '@movies/models/Movie';
+import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 
 type Result = { filters: MoviesFilter };
 
@@ -115,9 +116,9 @@ defineEmits<{ close: [Result] }>();
 const { close } = useModal<Result>();
 const initialMoviesWithoutCredits = movies.filter((movie) => !movie.credits.value);
 const creditsReady = ref(initialMoviesWithoutCredits.length === 0);
-const statusOptions = ['all', 'watched', 'unwatched'] as const;
+const statusOptions = ['all', 'watched', 'dropped', 'pending'] as const satisfies ('all' | MovieWatchingStatus)[];
 const form = useForm({
-    watchStatus: z.enum(statusOptions).default('all'),
+    watchingStatus: z.enum(statusOptions).default('all'),
     genres: z.array(z.custom<GenreKey>()).default([]),
     directors: z.array(z.string()).default([]),
     cast: z.array(z.string()).default([]),
@@ -130,7 +131,7 @@ const form = useForm({
 });
 
 if (filters) {
-    form.watchStatus = isNullable(filters.watched) ? 'all' : filters.watched ? 'watched' : 'unwatched';
+    form.watchingStatus = filters.watchingStatus ?? 'all';
     form.genres = filters.genres ?? [];
     form.directors = filters.directors ?? [];
     form.cast = filters.cast ?? [];
@@ -194,21 +195,17 @@ function renderPerson(key: string): string {
 }
 
 function renderStatus(status: (typeof statusOptions)[number]): string {
-    if (status === 'watched') {
-        return translate('movies.watched');
+    if (status === 'all') {
+        return translate('movies.advancedFilters.allStatuses');
     }
 
-    if (status === 'unwatched') {
-        return translate('movies.watchLater');
-    }
-
-    return translate('movies.advancedFilters.allStatuses');
+    return translate(`movies.${status}`);
 }
 
 function submit() {
     close({
         filters: {
-            watched: form.watchStatus === 'all' ? null : form.watchStatus === 'watched',
+            watchingStatus: form.watchingStatus === 'all' ? null : form.watchingStatus,
             genres: form.genres.length > 0 ? form.genres : null,
             directors: form.directors.length > 0 ? form.directors : null,
             cast: form.cast.length > 0 ? form.cast : null,

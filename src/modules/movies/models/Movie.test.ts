@@ -79,4 +79,47 @@ describe('Movie model', () => {
             cast: [{ tmdbId: 6384, name: 'Keanu Reeves' }],
         });
     });
+
+    it('Changes watching status', () => {
+        const watchedAt = new Date('2024-01-01');
+        const droppedAt = new Date('2024-02-01');
+        const instance = new Movie({ url: 'local://movies/test-movie#it', title: 'Test Movie' });
+
+        instance.setWatchingStatus('watched', watchedAt);
+
+        expect(instance.watchingStatus).toBe('watched');
+        expect(instance.watchedAt).toEqual(watchedAt);
+        expect(instance.droppedAt).toBeNull();
+
+        instance.setWatchingStatus('dropped', droppedAt);
+
+        expect(instance.watchingStatus).toBe('dropped');
+        expect(instance.watchedAt).toBeNull();
+        expect(instance.droppedAt).toEqual(droppedAt);
+
+        instance.setWatchingStatus('pending');
+
+        expect(instance.watchingStatus).toBe('pending');
+        expect(instance.watchedAt).toBeNull();
+        expect(instance.droppedAt).toBeNull();
+        expect(instance.watchActions).toHaveLength(1);
+        expect(instance.watchActions?.[0]?.statusUrl).toBe('https://schema.org/PotentialActionStatus');
+        expect(instance.watchActions?.[0]?.endTime).toBeUndefined();
+    });
+
+    it('Treats watch actions without status as watched', () => {
+        const watchedAt = new Date('2024-01-01');
+        const instance = new Movie({ url: 'local://movies/test-movie#it', title: 'Test Movie' });
+
+        instance.relatedWatchActions.attach({ endTime: new Date('2024-03-01') });
+        instance.relatedWatchActions.attach({ endTime: watchedAt });
+
+        expect(instance.watchingStatus).toBe('watched');
+        expect(instance.watchedAt).toEqual(watchedAt);
+
+        instance.setWatchingStatus('dropped');
+
+        expect(instance.watchingStatus).toBe('dropped');
+        expect(instance.watchActions).toHaveLength(1);
+    });
 });

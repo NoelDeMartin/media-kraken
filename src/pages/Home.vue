@@ -69,7 +69,7 @@ const pendingMovies = computedModels(
         const sortedMovies = arraySorted(movies.value, 'createdAt', 'desc');
 
         for (const movie of sortedMovies) {
-            if (movie.watched) {
+            if (movie.watchingStatus !== 'pending') {
                 continue;
             }
 

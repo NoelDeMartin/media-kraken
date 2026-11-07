@@ -23,11 +23,11 @@
                 </li>
             </ul>
             <div class="mt-auto flex justify-end gap-2">
-                <Button class="bg-blue-600 text-white hover:bg-blue-700" @click="saveToCollection({ watched: false })">
+                <Button class="bg-blue-600 text-white hover:bg-blue-700" @click="saveToCollection('pending')">
                     <i-mdi-clock-outline class="size-4" />
                     {{ $t('movies.watchLater') }}
                 </Button>
-                <Button class="bg-green-600 text-white hover:bg-green-700" @click="saveToCollection({ watched: true })">
+                <Button class="bg-green-600 text-white hover:bg-green-700" @click="saveToCollection('watched')">
                     <i-material-symbols-check class="size-4" />
                     {{ $t('movies.watched') }}
                 </Button>
@@ -46,16 +46,17 @@ import Catalog from '@/services/Catalog';
 import type { TMDBMovie, TMDBMovieWithStaff } from '@/services/TMDB';
 import TMDB from '@/services/TMDB';
 import Movie from '@movies/models/Movie';
+import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 
 const { movie } = defineProps<{ movie: TMDBMovie }>();
 const { close } = useModal();
 const model = computed(() => Movie.fromTMDB(movie, { posterSize: 'large' }));
 const details = shallowRef<TMDBMovieWithStaff | null>(null);
 
-async function saveToCollection(options: { watched: boolean }) {
+async function saveToCollection(watchingStatus: MovieWatchingStatus) {
     close();
 
-    await Catalog.importMovieFromTMDB(movie, { watched: options.watched });
+    await Catalog.importMovieFromTMDB(movie, { watchingStatus });
 
     UI.toast(translate('movies.added', { movie: model.value.title }));
 }

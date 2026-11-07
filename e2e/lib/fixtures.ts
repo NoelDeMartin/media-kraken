@@ -17,7 +17,5 @@ export function fixture(path: string, replacements?: Replacements): string | nul
         return null;
     }
 
-    return replacements
-        ? applyReplacements(readFileSync(fixturePath, 'utf-8'), replacements)
-        : readFileSync(fixturePath, 'utf-8');
+    return applyReplacements(readFileSync(fixturePath, 'utf-8'), replacements);
 }

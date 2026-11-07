@@ -20,22 +20,26 @@
                     <span
                         class="flex items-center gap-1 lowercase"
                         :class="{
-                            'text-green-700': movie.watched,
-                            'text-blue-700': !movie.watched,
+                            'text-green-700': movie.watchingStatus === 'watched',
+                            'text-blue-700': movie.watchingStatus === 'pending',
+                            'text-gray-700': movie.watchingStatus === 'dropped',
                         }"
-                        :title="
-                            movie.watchedAt ? $t('movies.watchedAt', { date: formatDate(movie.watchedAt) }) : undefined
-                        "
+                        :title="watchingStatusTitle"
                     >
-                        <i-material-symbols-check v-if="movie.watched" class="size-4" />
+                        <i-material-symbols-check v-if="movie.watchingStatus === 'watched'" class="size-4" />
+                        <i-ph-archive-fill v-else-if="movie.watchingStatus === 'dropped'" class="size-4" />
                         <i-mdi-clock-outline v-else class="size-4" />
-                        {{ movie.watched ? $t('movies.watched') : $t('movies.watchLater') }}
+                        {{
+                            movie.watchingStatus === 'pending'
+                                ? $t('movies.watchLater')
+                                : $t(`movies.${movie.watchingStatus}`)
+                        }}
                     </span>
                     <template v-if="movie.runtimeMinutes">
                         <span aria-hidden="true">·</span>
                         <span>{{ formatDuration({ minutes: movie.runtimeMinutes }) }}</span>
                     </template>
-                    <template v-if="movie.watched || movie.rating !== null">
+                    <template v-if="movie.watchingStatus !== 'pending' || movie.rating !== null">
                         <span aria-hidden="true">·</span>
                         <MediaRating
                             :model-value="movie.rating"
@@ -112,6 +116,7 @@ import { computed, onMounted } from 'vue';
 import IconCheck from '~icons/material-symbols/check';
 import IconClock from '~icons/mdi/clock-outline';
 import IconSync from '~icons/mdi/sync';
+import IconArchive from '~icons/ph/archive-fill';
 import IconDetach from '~icons/ph/link-break-bold';
 import IconIdentify from '~icons/ph/list-magnifying-glass';
 import IconManageLists from '~icons/ph/list-plus';
@@ -131,19 +136,47 @@ import Movie from '@movies/models/Movie';
 
 const { movie } = defineProps<{ movie: ModelWithUrl<Movie> }>();
 const { loading: syncing, run: runSync } = useLoading();
+const watchingStatusOptions = computed(() => {
+    const statuses = [
+        {
+            value: 'watched' as const,
+            label: translate('movies.watch'),
+            icon: IconCheck,
+        },
+        {
+            value: 'dropped' as const,
+            label: translate('movies.markAsDropped'),
+            icon: IconArchive,
+        },
+        {
+            value: 'pending' as const,
+            label: translate('movies.watchLater'),
+            icon: IconClock,
+        },
+    ];
+
+    return statuses
+        .filter((status) => status.value !== movie.watchingStatus)
+        .map((status) => ({
+            label: status.label,
+            icon: status.icon,
+            click: () => movie.updateWatchingStatus(status.value),
+        }));
+});
+const watchingStatusTitle = computed(() => {
+    if (movie.watchedAt) {
+        return translate('movies.watchedAt', { date: formatDate(movie.watchedAt) });
+    }
+
+    if (movie.droppedAt) {
+        return translate('movies.droppedAt', { date: formatDate(movie.droppedAt) });
+    }
+
+    return undefined;
+});
 const menuOptions = computed(() =>
     arrayFilter([
-        movie.watched
-            ? {
-                  label: translate('movies.watchLater'),
-                  icon: IconClock,
-                  click: () => movie.unwatch(),
-              }
-            : {
-                  label: translate('movies.watch'),
-                  icon: IconCheck,
-                  click: () => movie.watch(),
-              },
+        ...watchingStatusOptions.value,
         {
             label: translate('lists.manage.action'),
             icon: IconManageLists,
@@ -266,7 +299,7 @@ async function identifyAsShow(tmdbShow: TMDBShow) {
 
     await runSync(async () => {
         const show = await Catalog.importShowFromTMDB(tmdbShow, {
-            watchingStatus: movie.watched ? 'completed' : 'pending',
+            watchingStatus: movie.watchingStatus === 'watched' ? 'completed' : movie.watchingStatus,
             rating: movie.rating,
             notes: movie.notes,
         });

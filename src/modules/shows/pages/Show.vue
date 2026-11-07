@@ -142,7 +142,15 @@ import Catalog from '@/services/Catalog';
 import type { TMDBMovie, TMDBShow } from '@/services/TMDB';
 import ManageListsModal from '@lists/components/modals/ManageListsModal.vue';
 import { removeFromLists, replaceInLists } from '@lists/lib/lists';
+import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 import Show from '@shows/models/Show';
+
+const SHOW_TO_MOVIE_WATCHING_STATUSES: Record<Show['watchingStatus'], MovieWatchingStatus> = {
+    watching: 'pending',
+    completed: 'watched',
+    dropped: 'dropped',
+    pending: 'pending',
+};
 
 const { show } = defineProps<{ show: ModelWithUrl<Show> }>();
 const { loading: syncing, run: runSync } = useLoading();
@@ -322,7 +330,7 @@ async function identifyAsMovie(tmdbMovie: TMDBMovie) {
 
     await runSync(async () => {
         const movie = await Catalog.importMovieFromTMDB(tmdbMovie, {
-            watched: show.watchingStatus === 'completed',
+            watchingStatus: SHOW_TO_MOVIE_WATCHING_STATUSES[show.watchingStatus],
             rating: show.rating,
             notes: show.notes,
         });

@@ -141,8 +141,9 @@ function getVarietyTraits(): Trait[] {
 
 function getCompletionTraits(): Trait[] {
     const { movies } = snapshot;
-    const processedCount = movies.watched.length + getStartedShows(snapshot).length;
-    const totalCount = movies.watched.length + movies.pending.length + getAllShows(snapshot).length;
+    const processedCount = movies.watched.length + movies.dropped.length + getStartedShows(snapshot).length;
+    const totalCount =
+        movies.watched.length + movies.dropped.length + movies.pending.length + getAllShows(snapshot).length;
 
     if (totalCount === 0 || processedCount / totalCount < 0.5) {
         return [{ name: 'hoarder', title: translate('stats.traits.hoarderTitle') }];

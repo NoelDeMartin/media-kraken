@@ -4,6 +4,7 @@ import { genreKey, type GenreKey, type KnownGenreName } from '@/lib/genres';
 import { personFilterKey } from '@/lib/media';
 import type { PersonCredit } from '@/models/Person';
 import type Movie from '@movies/models/Movie';
+import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 import type Show from '@shows/models/Show';
 import type { ShowWatchingStatus } from '@shows/models/ShowWatching';
 
@@ -27,8 +28,7 @@ export type MediaType = (typeof MediaTypes)[number];
 
 export interface StatsSnapshot {
     movies: {
-        watched: MovieSnapshot[];
-        pending: MovieSnapshot[];
+        [status in MovieWatchingStatus]: MovieSnapshot[];
     };
     shows: {
         [status in ShowWatchingStatus]: ShowSnapshot[];
@@ -71,7 +71,7 @@ export interface MediaSnapshot {
 export interface MovieSnapshot extends MediaSnapshot {
     title: string;
     releaseDate: Date | null;
-    watched: boolean;
+    watchingStatus: MovieWatchingStatus;
     watchedAt: Date | null;
     runtimeMinutes: number;
 }
@@ -99,7 +99,7 @@ function getMovieSnapshot(movie: Movie): MovieSnapshot {
         releaseDate: movie.releaseDate ?? null,
         makers: movie.credits.value?.directors ?? [],
         cast: movie.credits.value?.cast ?? [],
-        watched: !!movie.watched,
+        watchingStatus: movie.watchingStatus,
         watchedAt: movie.watchedAt,
         runtimeMinutes: movie.runtimeMinutes ?? 0,
     };
@@ -171,6 +171,7 @@ export function getStatsSnapshot(movies: Movie[], shows: Show[]): StatsSnapshot 
     const snapshot: Omit<StatsSnapshot, 'mediaStats'> = {
         movies: {
             watched: [],
+            dropped: [],
             pending: [],
         },
         shows: {
@@ -182,7 +183,7 @@ export function getStatsSnapshot(movies: Movie[], shows: Show[]): StatsSnapshot 
     };
 
     for (const movie of movies) {
-        snapshot.movies[movie.watched ? 'watched' : 'pending'].push(getMovieSnapshot(movie));
+        snapshot.movies[movie.watchingStatus].push(getMovieSnapshot(movie));
     }
 
     for (const show of shows) {

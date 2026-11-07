@@ -13,6 +13,8 @@ import type { TMDBMovie } from '@/services/TMDB';
 
 import Model from './Movie.schema';
 import type WatchAction from './WatchAction';
+import { MOVIE_WATCHING_STATUSES } from './WatchAction';
+import type { MovieWatchingStatus } from './WatchAction';
 
 export type MovieCredits = {
     directors: PersonCredit[];
@@ -71,15 +73,20 @@ export default class Movie extends Model {
         return this.duration ? isoDurationToMinutes(this.duration) : null;
     }
 
-    public get watched(): boolean | null {
-        return this.watchActions ? this.watchActions.length > 0 : null;
+    public get watchingStatus(): MovieWatchingStatus {
+        return this.watchAction?.status ?? 'pending';
     }
 
     public get watchedAt(): Date | null {
-        const watchActions = this.watchActions?.filter((action) => action.endTime) ?? [];
-        const [firstWatch] = arraySorted(watchActions, 'endTime', 'asc');
+        return this.watchingStatus === 'watched' ? (this.watchAction?.endTime ?? null) : null;
+    }
 
-        return firstWatch?.endTime ?? null;
+    public get droppedAt(): Date | null {
+        return this.watchingStatus === 'dropped' ? (this.watchAction?.endTime ?? null) : null;
+    }
+
+    private get watchAction(): WatchAction | null {
+        return arraySorted(this.watchActions ?? [], 'endTime', 'asc')[0] ?? null;
     }
 
     public get route(): RouteLocationRaw {
@@ -90,48 +97,27 @@ export default class Movie extends Model {
         };
     }
 
-    public setWatchedAt(date: Date | null): void {
+    public setWatchingStatus(status: MovieWatchingStatus, date?: Date): void {
         this.assertRelationLoaded('watchActions');
 
-        const watchActions = this.watchActions ?? [];
-
-        if (!date) {
-            this.relatedWatchActions.detach(watchActions, { delete: true });
-
+        if (this.watchingStatus === status && !date) {
             return;
         }
 
-        const [firstWatch] = arraySorted(watchActions, 'endTime', 'asc');
+        const [watchAction, ...staleWatchActions] = arraySorted(this.watchActions ?? [], 'endTime', 'asc');
 
-        if (firstWatch) {
-            firstWatch.setAttribute('endTime', date);
+        this.relatedWatchActions.detach(staleWatchActions, { delete: true });
 
-            return;
-        }
-
-        this.relatedWatchActions.attach({ endTime: date });
+        (watchAction ?? this.relatedWatchActions.attach({})).setAttributes({
+            statusUrl: MOVIE_WATCHING_STATUSES[status],
+            endTime: status === 'pending' ? undefined : (date ?? new Date()),
+        });
     }
 
-    public async watch(date?: Date): Promise<void> {
+    public async updateWatchingStatus(status: MovieWatchingStatus, date?: Date): Promise<void> {
         await this.loadRelationIfUnloaded('watchActions');
 
-        if (this.watched) {
-            return;
-        }
-
-        this.setWatchedAt(date ?? new Date());
-
-        await this.save();
-    }
-
-    public async unwatch(): Promise<void> {
-        await this.loadRelationIfUnloaded('watchActions');
-
-        if (!this.watched) {
-            return;
-        }
-
-        this.setWatchedAt(null);
+        this.setWatchingStatus(status, date);
 
         await this.save();
     }

@@ -39,11 +39,14 @@ import { computed } from 'vue';
 import { formatHours, formatNumber } from '@/lib/formatting';
 import { getEpisodesWatched } from '@/pages/stats/utils/snapshot';
 import type { StatsSnapshot } from '@/pages/stats/utils/snapshot';
+import { MOVIE_WATCHING_STATUSES } from '@movies/models/WatchAction';
+import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 import { SHOW_WATCHING_STATUSES } from '@shows/models/ShowWatching';
 import type { ShowWatchingStatus } from '@shows/models/ShowWatching';
 
-const MOVIE_STATUS_COLORS = {
+const MOVIE_STATUS_COLORS: Record<MovieWatchingStatus, string> = {
     watched: 'var(--color-green-500)',
+    dropped: 'var(--color-gray-500)',
     pending: 'var(--color-blue-500)',
 };
 
@@ -62,18 +65,13 @@ const watchTimeMinutes = computed(() =>
     snapshot.movies.watched.reduce((total, movie) => total + movie.runtimeMinutes, 0),
 );
 
-const movieStatusSlices = computed(() => [
-    {
-        label: translate('movies.watched'),
-        value: snapshot.movies.watched.length,
-        color: MOVIE_STATUS_COLORS.watched,
-    },
-    {
-        label: translate('movies.pending'),
-        value: snapshot.movies.pending.length,
-        color: MOVIE_STATUS_COLORS.pending,
-    },
-]);
+const movieStatusSlices = computed(() =>
+    (Object.keys(MOVIE_WATCHING_STATUSES) as MovieWatchingStatus[]).map((status) => ({
+        label: translate(`movies.${status}`),
+        value: snapshot.movies[status].length,
+        color: MOVIE_STATUS_COLORS[status],
+    })),
+);
 
 const showStatusSlices = computed(() =>
     (Object.keys(SHOW_WATCHING_STATUSES) as ShowWatchingStatus[]).map((status) => ({

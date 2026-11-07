@@ -86,9 +86,9 @@ test('Filters movies with advanced filters', async ({ page }) => {
     await see(page, 'Movies (1)');
     await see(page, 'The Matrix (Watched)');
     await dontSee(page, 'Inception');
-    await expect(page).toHaveURL(/\/movies\?watched=true$/);
+    await expect(page).toHaveURL(/\/movies\?watchingStatus=watched$/);
 
-    await page.goto('/movies?watched=false');
+    await page.goto('/movies?watchingStatus=pending');
     await see(page, 'Movies (1)');
     await see(page, 'Inception');
     await dontSee(page, 'The Matrix');

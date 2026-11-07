@@ -22,7 +22,7 @@ test('Shows watching stats', async ({ page }) => {
         duration: 'PT2H16M',
     });
 
-    await movie.watch();
+    await movie.updateWatchingStatus('watched');
 
     await page.goto('/stats');
     await see(page, "You're just getting started");

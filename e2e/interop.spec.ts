@@ -45,17 +45,13 @@ test('Updates movies with legacy data', async ({ page }) => {
     await waitSync(page);
 
     expect(updateDocument.all).toHaveLength(2);
-    expect(updateDocument.nth(2)?.body).toEqualSparql(`
-        INSERT DATA {
-            @prefix schema: <https://schema.org/> .
-            @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
-
-            <#[[watch-action][%uuid%]]>
-                a schema:WatchAction ;
-                schema:object <#it> ;
-                schema:endTime "[[.*]]"^^xsd:dateTime .
-        }
-    `);
+    expect(updateDocument.nth(2)?.body).toEqualSparql(
+        requiredFixture('/sparql/watch-movie.sparql', {
+            actionHash: '[[watch-action][%uuid%]]',
+            endTime: '[[.*]]',
+            createdAt: '[[createdAt][.*]]',
+        }),
+    );
 
     await see(page, 'Watched');
 });

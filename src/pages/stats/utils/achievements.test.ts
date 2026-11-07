@@ -5,7 +5,7 @@ import { minutesToISODuration } from '@/lib/durations';
 import { genreUrl, type KnownGenreName } from '@/lib/genres';
 import type { PersonCredit } from '@/models/Person';
 import Movie from '@movies/models/Movie';
-import WatchAction from '@movies/models/WatchAction';
+import WatchAction, { MOVIE_WATCHING_STATUSES } from '@movies/models/WatchAction';
 import Show from '@shows/models/Show';
 import ShowWatching, { SHOW_WATCHING_STATUSES } from '@shows/models/ShowWatching';
 
@@ -66,7 +66,9 @@ function movie(
 
     const url = instance.mintUrl();
 
-    instance.relatedWatchActions.attach(new WatchAction({ object: url, endTime: attributes.watchedAt }));
+    instance.relatedWatchActions.attach(
+        new WatchAction({ object: url, statusUrl: MOVIE_WATCHING_STATUSES.watched, endTime: attributes.watchedAt }),
+    );
     instance.getComputedAttribute('credits').setValue({ directors: attributes.makers ?? [], cast: [] });
 
     return instance;

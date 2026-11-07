@@ -1,9 +1,13 @@
 <template>
-    <span v-if="movie.watched" :class="renderedSpanClass">
+    <span v-if="movie.watchingStatus === 'watched'" :class="renderedSpanClass">
         <i-app-bookmark class="size-12 text-green-200" />
         <i-material-symbols-check
             class="absolute top-1/2 left-1/2 size-6 -translate-x-1/2 -translate-y-1/2 text-green-600"
         />
+    </span>
+    <span v-else-if="movie.watchingStatus === 'dropped'" :class="renderedSpanClass">
+        <i-app-bookmark class="size-12 text-gray-200" />
+        <i-ph-archive-fill class="absolute top-1/2 left-1/2 size-5 -translate-x-1/2 -translate-y-1/2 text-gray-600" />
     </span>
     <button
         v-else
@@ -11,7 +15,7 @@
         :class="renderedButtonClass"
         :disabled="loading"
         :title="$t('movies.watch')"
-        @click="run(movie.watch())"
+        @click="run(movie.updateWatchingStatus('watched'))"
     >
         <i-app-bookmark class="size-12 text-blue-200 group-focus-within:text-green-200 group-hover:text-green-200" />
         <i-mdi-clock-outline
