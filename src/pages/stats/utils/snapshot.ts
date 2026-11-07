@@ -73,6 +73,7 @@ export interface MovieSnapshot extends MediaSnapshot {
     releaseDate: Date | null;
     watchingStatus: MovieWatchingStatus;
     watchedAt: Date | null;
+    watchCount: number;
     runtimeMinutes: number;
 }
 
@@ -101,6 +102,7 @@ function getMovieSnapshot(movie: Movie): MovieSnapshot {
         cast: movie.credits.value?.cast ?? [],
         watchingStatus: movie.watchingStatus,
         watchedAt: movie.watchedAt,
+        watchCount: movie.watchCount,
         runtimeMinutes: movie.runtimeMinutes ?? 0,
     };
 }
@@ -165,6 +167,10 @@ export function getStartedShows(snapshot: Pick<StatsSnapshot, 'shows'>): ShowSna
 
 export function getEpisodesWatched(snapshot: Pick<StatsSnapshot, 'shows'>): number {
     return getAllShows(snapshot).reduce((total, show) => total + show.episodesWatched, 0);
+}
+
+export function getMoviesWatchTime(snapshot: Pick<StatsSnapshot, 'movies'>): number {
+    return snapshot.movies.watched.reduce((total, movie) => total + movie.runtimeMinutes * movie.watchCount, 0);
 }
 
 export function getStatsSnapshot(movies: Movie[], shows: Show[]): StatsSnapshot {

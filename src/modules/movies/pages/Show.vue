@@ -32,7 +32,9 @@
                         {{
                             movie.watchingStatus === 'pending'
                                 ? $t('movies.watchLater')
-                                : $t(`movies.${movie.watchingStatus}`)
+                                : movie.watchCount > 1
+                                  ? $t('movies.watchedTimes', { count: movie.watchCount })
+                                  : $t(`movies.${movie.watchingStatus}`)
                         }}
                     </span>
                     <template v-if="movie.runtimeMinutes">
@@ -115,6 +117,7 @@ import type { ModelWithUrl } from 'soukai-bis';
 import { computed, onMounted } from 'vue';
 import IconCheck from '~icons/material-symbols/check';
 import IconClock from '~icons/mdi/clock-outline';
+import IconRewatch from '~icons/mdi/repeat';
 import IconSync from '~icons/mdi/sync';
 import IconArchive from '~icons/ph/archive-fill';
 import IconDetach from '~icons/ph/link-break-bold';
@@ -133,6 +136,7 @@ import type { TMDBMovie, TMDBShow } from '@/services/TMDB';
 import ManageListsModal from '@lists/components/modals/ManageListsModal.vue';
 import { removeFromLists, replaceInLists } from '@lists/lib/lists';
 import Movie from '@movies/models/Movie';
+import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 
 const { movie } = defineProps<{ movie: ModelWithUrl<Movie> }>();
 const { loading: syncing, run: runSync } = useLoading();
@@ -155,15 +159,29 @@ const watchingStatusOptions = computed(() => {
         },
     ];
 
-    return statuses
+    const options = statuses
         .filter((status) => status.value !== movie.watchingStatus)
         .map((status) => ({
             label: status.label,
             icon: status.icon,
-            click: () => movie.updateWatchingStatus(status.value),
+            click: () => updateWatchingStatus(status.value),
         }));
+
+    if (movie.watchingStatus === 'watched') {
+        options.unshift({ label: translate('movies.rewatch'), icon: IconRewatch, click: rewatch });
+    }
+
+    return options;
 });
 const watchingStatusTitle = computed(() => {
+    if (movie.watchCount > 1) {
+        const dates = movie.watches.map((watch) =>
+            watch.endTime ? formatDate(watch.endTime) : translate('movies.unknownWatchDate'),
+        );
+
+        return [translate('movies.watchedOnDates'), ...dates].join('\n');
+    }
+
     if (movie.watchedAt) {
         return translate('movies.watchedAt', { date: formatDate(movie.watchedAt) });
     }
@@ -230,6 +248,27 @@ const details = computed(() => {
         },
     ].filter((detail) => detail.value);
 });
+
+async function updateWatchingStatus(status: MovieWatchingStatus) {
+    if (
+        movie.watchCount > 1 &&
+        !(await UI.confirm(
+            translate('movies.resetWatchHistory.title'),
+            translate(`movies.resetWatchHistory.${status}`, { count: movie.watchCount }),
+            { acceptVariant: 'danger', acceptText: translate('movies.resetWatchHistory.accept') },
+        ))
+    ) {
+        return;
+    }
+
+    await movie.updateWatchingStatus(status);
+}
+
+async function rewatch() {
+    await movie.rewatch();
+
+    UI.toast(translate('movies.rewatched', { movie: movie.title }));
+}
 
 async function identify() {
     const { media } = await UI.modal(IdentifyMediaModal, { initialQuery: movie.title });

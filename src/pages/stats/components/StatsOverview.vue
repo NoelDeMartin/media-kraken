@@ -37,7 +37,7 @@ import { translate } from '@aerogel/core';
 import { computed } from 'vue';
 
 import { formatHours, formatNumber } from '@/lib/formatting';
-import { getEpisodesWatched } from '@/pages/stats/utils/snapshot';
+import { getEpisodesWatched, getMoviesWatchTime } from '@/pages/stats/utils/snapshot';
 import type { StatsSnapshot } from '@/pages/stats/utils/snapshot';
 import { MOVIE_WATCHING_STATUSES } from '@movies/models/WatchAction';
 import type { MovieWatchingStatus } from '@movies/models/WatchAction';
@@ -61,9 +61,7 @@ const { snapshot } = defineProps<{ snapshot: StatsSnapshot }>();
 
 const episodesWatched = computed(() => getEpisodesWatched(snapshot));
 
-const watchTimeMinutes = computed(() =>
-    snapshot.movies.watched.reduce((total, movie) => total + movie.runtimeMinutes, 0),
-);
+const watchTimeMinutes = computed(() => getMoviesWatchTime(snapshot));
 
 const movieStatusSlices = computed(() =>
     (Object.keys(MOVIE_WATCHING_STATUSES) as MovieWatchingStatus[]).map((status) => ({

@@ -48,6 +48,7 @@ export function renderMovieTableItem(movie: Movie) {
         runtimeMinutes: movie.runtimeMinutes,
         releaseYear: movie.releaseYear,
         watchedAt: movie.watchedAt,
+        watchDates: movie.watches.map((watch) => watch.endTime ?? null),
         rating: movie.rating,
         hasNotes: !!movie.notes,
         get notesPreview(): string | undefined {

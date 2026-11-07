@@ -1,7 +1,15 @@
 <template>
     <span v-if="movie.watchingStatus === 'watched'" :class="renderedSpanClass">
         <i-app-bookmark class="size-12 text-green-200" />
+        <span
+            v-if="movie.watchCount > 1"
+            aria-hidden="true"
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-sm font-bold text-green-600"
+        >
+            ×{{ movie.watchCount }}
+        </span>
         <i-material-symbols-check
+            v-else
             class="absolute top-1/2 left-1/2 size-6 -translate-x-1/2 -translate-y-1/2 text-green-600"
         />
     </span>

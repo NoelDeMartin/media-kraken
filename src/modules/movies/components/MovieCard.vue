@@ -10,7 +10,14 @@
                 <div
                     class="absolute inset-0 bg-black/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                 />
-                <span class="sr-only"> {{ movie.title }} ({{ $t(`movies.${movie.watchingStatus}`) }}) </span>
+                <span class="sr-only">
+                    {{ movie.title }}
+                    ({{
+                        movie.watchCount > 1
+                            ? $t('movies.watchedTimes', { count: movie.watchCount })
+                            : $t(`movies.${movie.watchingStatus}`)
+                    }})
+                </span>
             </RouterLink>
         </h2>
         <MovieCardBadge :movie class="absolute -top-1 -right-3.5 z-10" />

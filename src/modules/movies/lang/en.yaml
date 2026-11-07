@@ -5,6 +5,11 @@ movies:
     watchMovie: 'Mark {movie} as watched'
     watched: 'Watched'
     watchedAt: 'Watched on {date}'
+    watchedTimes: 'Watched once|Watched {count} times'
+    watchedOnDates: 'Watched on:'
+    unknownWatchDate: 'Unknown date'
+    rewatch: 'Mark as rewatched'
+    rewatched: '**{movie}** has been marked as rewatched!'
     droppedAt: 'Dropped on {date}'
     pending: 'Pending'
     dropped: 'Dropped'
@@ -46,6 +51,11 @@ movies:
         withNotes: 'Only movies with notes'
         apply: 'Apply'
         clear: 'Clear filters'
+    resetWatchHistory:
+        title: 'Reset watch history'
+        dropped: "You've watched this movie {count} times. Marking it as dropped will reset its watch history."
+        pending: "You've watched this movie {count} times. Marking it to watch later will reset its watch history."
+        accept: 'Reset watch history'
     delete:
         action: 'Delete'
         title: 'Delete movie'

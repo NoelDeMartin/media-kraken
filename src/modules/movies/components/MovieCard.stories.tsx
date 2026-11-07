@@ -34,6 +34,13 @@ export const Primary: Story = {
     },
 };
 
+export const Rewatched: Story = {
+    ...Primary,
+    args: {
+        movie: 'The Tale of The Princess Kaguya',
+    },
+};
+
 export const Grid: Story = {
     render: () => (
         <div style={{ maxWidth: '90vw', width: '90%', margin: '0 auto' }}>

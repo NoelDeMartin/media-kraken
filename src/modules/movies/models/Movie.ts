@@ -74,11 +74,23 @@ export default class Movie extends Model {
     }
 
     public get watchingStatus(): MovieWatchingStatus {
-        return this.watchAction?.status ?? 'pending';
+        return this.watches.length > 0 ? 'watched' : (this.watchAction?.status ?? 'pending');
+    }
+
+    public get watches(): WatchAction[] {
+        return arraySorted(
+            (this.watchActions ?? []).filter((action) => action.status === 'watched'),
+            'endTime',
+            'asc',
+        );
+    }
+
+    public get watchCount(): number {
+        return this.watches.length;
     }
 
     public get watchedAt(): Date | null {
-        return this.watchingStatus === 'watched' ? (this.watchAction?.endTime ?? null) : null;
+        return this.watches.find((watch) => watch.endTime)?.endTime ?? null;
     }
 
     public get droppedAt(): Date | null {
@@ -112,6 +124,26 @@ export default class Movie extends Model {
             statusUrl: MOVIE_WATCHING_STATUSES[status],
             endTime: status === 'pending' ? undefined : (date ?? new Date()),
         });
+    }
+
+    public addWatch(date: Date = new Date()): void {
+        this.assertRelationLoaded('watchActions');
+
+        if (this.watchingStatus !== 'watched') {
+            this.setWatchingStatus('watched', date);
+
+            return;
+        }
+
+        this.relatedWatchActions.attach({ statusUrl: MOVIE_WATCHING_STATUSES.watched, endTime: date });
+    }
+
+    public async rewatch(): Promise<void> {
+        await this.loadRelationIfUnloaded('watchActions');
+
+        this.addWatch();
+
+        await this.save();
     }
 
     public async updateWatchingStatus(status: MovieWatchingStatus, date?: Date): Promise<void> {

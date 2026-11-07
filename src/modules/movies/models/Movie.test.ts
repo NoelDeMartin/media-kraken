@@ -4,6 +4,7 @@ import PerformanceRole from '@/models/PerformanceRole';
 import Person from '@/models/Person';
 
 import Movie from './Movie';
+import { MOVIE_WATCHING_STATUSES } from './WatchAction';
 
 describe('Movie model', () => {
     function movie(externalUrls: string[]): Movie {
@@ -121,5 +122,51 @@ describe('Movie model', () => {
 
         expect(instance.watchingStatus).toBe('dropped');
         expect(instance.watchActions).toHaveLength(1);
+    });
+
+    it('Adds rewatches', () => {
+        const laterWatch = new Date('2024-03-01');
+        const earlierWatch = new Date('2024-01-01');
+        const instance = new Movie({ url: 'local://movies/test-movie#it', title: 'Test Movie' });
+
+        instance.setWatchingStatus('dropped');
+        instance.addWatch(laterWatch);
+
+        expect(instance.watchActions).toHaveLength(1);
+        expect(instance.watchCount).toBe(1);
+
+        instance.addWatch(earlierWatch);
+        instance.setWatchingStatus('watched');
+
+        expect(instance.watchingStatus).toBe('watched');
+        expect(instance.watchActions).toHaveLength(2);
+        expect(instance.watchCount).toBe(2);
+        expect(instance.watchedAt).toEqual(earlierWatch);
+        expect(instance.watches.map((watch) => watch.endTime)).toEqual([earlierWatch, laterWatch]);
+    });
+
+    it('Discards rewatches when changing watching status', () => {
+        const droppedAt = new Date('2024-04-01');
+        const instance = new Movie({ url: 'local://movies/test-movie#it', title: 'Test Movie' });
+
+        instance.addWatch(new Date('2024-01-01'));
+        instance.addWatch(new Date('2024-02-01'));
+        instance.setWatchingStatus('dropped', droppedAt);
+
+        expect(instance.watchingStatus).toBe('dropped');
+        expect(instance.watchCount).toBe(0);
+        expect(instance.watchActions).toHaveLength(1);
+        expect(instance.droppedAt).toEqual(droppedAt);
+    });
+
+    it('Infers watched date from the first dated watch', () => {
+        const watchedAt = new Date('2024-01-01');
+        const instance = new Movie({ url: 'local://movies/test-movie#it', title: 'Test Movie' });
+
+        instance.addWatch(watchedAt);
+        instance.relatedWatchActions.attach({ statusUrl: MOVIE_WATCHING_STATUSES.watched });
+
+        expect(instance.watchCount).toBe(2);
+        expect(instance.watchedAt).toEqual(watchedAt);
     });
 });

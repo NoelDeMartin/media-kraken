@@ -25,7 +25,11 @@
         <TableColumn :header="$t('movies.table.languages')" field="languages" sortable />
         <TableColumn :header="$t('movies.table.watched')" field="watchedAt" sortable>
             <template #default="{ item: movie }">
-                <span v-if="movie.watchedAt">{{ formatDate(movie.watchedAt) }}</span>
+                <span v-if="movie.watchDates.length > 0" class="flex flex-col">
+                    <span v-for="(date, index) in movie.watchDates" :key="index">
+                        {{ date ? formatDate(date) : $t('movies.unknownWatchDate') }}
+                    </span>
+                </span>
                 <span v-else>-</span>
             </template>
         </TableColumn>
