@@ -5,6 +5,7 @@ import routing from '@aerogel/plugin-routing';
 import solid from '@aerogel/plugin-solid';
 
 import '@/assets/css/main.css';
+import { authConfig } from '@/auth';
 import env from '@/lib/env';
 import routes from '@/pages';
 import { services } from '@/services';
@@ -18,5 +19,5 @@ export default await bootstrap(App, {
     env,
     services,
     modules: [movies, shows, lists],
-    plugins: [i18n(), routing({ routes }), solid(), localFirst()],
+    plugins: [i18n(), routing({ routes }), solid(authConfig), localFirst()],
 });

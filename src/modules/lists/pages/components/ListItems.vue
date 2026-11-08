@@ -21,33 +21,41 @@
             @drop.prevent="drop(item)"
             @dragend="stopDragging()"
         >
-            <MediaImage
-                :url="media?.posterUrl"
-                class="relative aspect-2/3 w-12 shrink-0 rounded bg-gray-100 shadow-sm"
-            />
-            <div v-if="media" class="min-w-0 flex-1">
-                <Link
-                    class="text-normal inline-block min-h-0 max-w-full truncate align-top leading-5 font-medium"
-                    :to="media.route"
-                    draggable="false"
-                >
-                    {{ mediaDisplayName(media) }}
+            <template v-if="media">
+                <Link tabindex="-1" :to="media.route" draggable="false">
+                    <MediaImage
+                        :url="media.posterUrl"
+                        class="relative aspect-2/3 w-12 shrink-0 rounded bg-gray-100 shadow-sm"
+                    />
                 </Link>
-                <p class="mt-1 flex items-center gap-1 text-xs text-gray-500">
-                    <i-ph-film-slate v-if="isInstanceOf(media, Movie)" class="size-4 shrink-0" />
-                    <i-ph-television-simple v-else class="size-4 shrink-0" />
-                    <span>
-                        {{ isInstanceOf(media, Movie) ? $t('lists.movie') : $t('lists.show') }}
-                        <template v-if="media.releaseYear">· {{ media.releaseYear }}</template>
-                    </span>
-                </p>
-                <MovieWatchingStatus v-if="isInstanceOf(media, Movie)" :movie="media" class="mt-1 text-xs sm:hidden" />
-                <ShowWatchingStatus
-                    v-else-if="isInstanceOf(media, Show)"
-                    :status="media.watchingStatus"
-                    class="mt-1 text-xs sm:hidden"
-                />
-            </div>
+                <div class="min-w-0 flex-1">
+                    <Link
+                        class="text-normal inline-block min-h-0 max-w-full truncate align-top leading-5 font-medium"
+                        :to="media.route"
+                        draggable="false"
+                    >
+                        {{ mediaDisplayName(media) }}
+                    </Link>
+                    <p class="mt-1 flex items-center gap-1 text-xs text-gray-500">
+                        <i-ph-film-slate v-if="isInstanceOf(media, Movie)" class="size-4 shrink-0" />
+                        <i-ph-television-simple v-else class="size-4 shrink-0" />
+                        <span>
+                            {{ isInstanceOf(media, Movie) ? $t('lists.movie') : $t('lists.show') }}
+                            <template v-if="media.releaseYear">· {{ media.releaseYear }}</template>
+                        </span>
+                    </p>
+                    <MovieWatchingStatus
+                        v-if="isInstanceOf(media, Movie)"
+                        :movie="media"
+                        class="mt-1 text-xs sm:hidden"
+                    />
+                    <ShowWatchingStatus
+                        v-else-if="isInstanceOf(media, Show)"
+                        :status="media.watchingStatus"
+                        class="mt-1 text-xs sm:hidden"
+                    />
+                </div>
+            </template>
             <div v-else-if="loading" class="min-w-0 flex-1 animate-pulse" aria-hidden="true">
                 <div class="h-4 w-40 max-w-full rounded bg-gray-200" />
                 <div class="mt-2 h-3 w-20 rounded bg-gray-200" />
