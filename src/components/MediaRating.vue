@@ -4,7 +4,7 @@
             :is="starIcon(star)"
             v-for="star in MAX_STARS"
             :key="star"
-            :class="['size-4', starClass(star)]"
+            :class="[size === 'sm' ? 'size-4' : 'size-5', starClass(star)]"
             aria-hidden="true"
         />
         <span class="sr-only">{{ ratingLabel }}</span>
@@ -29,7 +29,7 @@
         <span v-for="star in MAX_STARS" :key="star" class="relative">
             <component
                 :is="starIcon(star)"
-                :class="[size === 'sm' ? 'size-5' : 'size-6', starClass(star)]"
+                :class="[size === 'sm' ? 'size-4' : 'size-5', starClass(star)]"
                 aria-hidden="true"
             />
             <RadioGroupItem

@@ -35,7 +35,7 @@
         </TableColumn>
         <TableColumn :header="$t('media.rating.label')" field="rating" sortable>
             <template #default="{ item }">
-                <MediaRating v-if="item.rating !== null" :model-value="item.rating" readonly />
+                <MediaRating v-if="item.rating !== null" :model-value="item.rating" size="sm" readonly />
                 <span v-else>-</span>
             </template>
         </TableColumn>

@@ -11,7 +11,7 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'Core/MediaImage',
+    title: 'Atoms/MediaImage',
     component: MediaImage,
     argTypes: {
         movie: movies.control,

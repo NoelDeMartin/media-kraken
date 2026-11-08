@@ -16,7 +16,7 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'Core/MediaSearch',
+    title: 'Molecules/MediaSearch',
     component: MediaSearch,
     argTypes: {
         loading: { control: 'boolean' },

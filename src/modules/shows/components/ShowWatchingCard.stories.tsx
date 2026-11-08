@@ -12,7 +12,7 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'modules/shows/ShowWatchingCard',
+    title: 'Molecules/ShowWatchingCard',
     component: ShowWatchingCard,
     argTypes: {
         show: shows.control,

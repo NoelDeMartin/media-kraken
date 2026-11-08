@@ -17,7 +17,7 @@ type StoryArgs = {
 const mediaByUrl: MediaByUrl = new Map([...movies.all, ...shows.all].map((media) => [media.url, media]));
 
 const meta: Meta<StoryArgs> = {
-    title: 'modules/lists/ListCard',
+    title: 'Molecules/ListCard',
     component: ListCard,
     argTypes: {
         list: lists.control,

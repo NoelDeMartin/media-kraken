@@ -13,7 +13,7 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'modules/lists/AddListItemsModal',
+    title: 'Modals/AddListItemsModal',
     component: AddListItemsModal,
     parameters: { layout: 'fullscreen' },
     args: {

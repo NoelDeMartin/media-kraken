@@ -15,7 +15,7 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'modules/lists/ListItems',
+    title: 'Organisms/ListItems',
     component: ListItems,
     args: {
         disabled: false,

@@ -1,10 +1,2566 @@
 [
     {
-        "id": 1,
+        "id": 933260,
+        "title": "The Substance",
+        "overview": "A fading celebrity decides to use a black market drug, a cell-replicating substance that temporarily creates a younger, better version of herself.",
+        "release_date": "2024-09-18",
+        "poster_path": "/lqoMzCcZYEFK729d6qzt349fB4o.jpg",
+        "imdb_id": "tt17526714",
+        "runtime": 142,
+        "genres": [
+            {
+                "id": 27,
+                "name": "Horror"
+            },
+            {
+                "id": 878,
+                "name": "Science Fiction"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "GB"
+            },
+            {
+                "iso_3166_1": "US"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 3416,
+                    "name": "Demi Moore",
+                    "character": "Elisabeth",
+                    "order": 0,
+                    "profile_path": "/wApParZYBDi4yxekjfxjKEifJYh.jpg"
+                },
+                {
+                    "id": 1392137,
+                    "name": "Margaret Qualley",
+                    "character": "Sue",
+                    "order": 1,
+                    "profile_path": "/r5WeMrU4YLJqRRE3joeOrBVicAH.jpg"
+                },
+                {
+                    "id": 6065,
+                    "name": "Dennis Quaid",
+                    "character": "Harvey",
+                    "order": 2,
+                    "profile_path": "/lMaDAJHzsKH7U3dln2B3kY3rOhE.jpg"
+                },
+                {
+                    "id": 2313436,
+                    "name": "Edward Hamilton-Clark",
+                    "character": "Fred",
+                    "order": 3,
+                    "profile_path": "/q1EWL2z2xMcbf84TpOTqGs6Csxs.jpg"
+                },
+                {
+                    "id": 1508131,
+                    "name": "Gore Abrams",
+                    "character": "Oliver",
+                    "order": 4,
+                    "profile_path": "/bKMTqbl0FYlzIC6aTMKQZNAhhXK.jpg"
+                },
+                {
+                    "id": 2566289,
+                    "name": "Oscar Lesage",
+                    "character": "Troy",
+                    "order": 5,
+                    "profile_path": "/uWSiPLMBem0ikdtr6uq2bMnz8fr.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 1607016,
+                    "name": "Coralie Fargeat",
+                    "job": "Director",
+                    "profile_path": "/weElmtGXU0eqSDyJxh32ZBgIpqw.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 613,
+                    "name": "new year's eve"
+                },
+                {
+                    "id": 837,
+                    "name": "show business"
+                },
+                {
+                    "id": 1284,
+                    "name": "identity"
+                },
+                {
+                    "id": 2449,
+                    "name": "black market"
+                },
+                {
+                    "id": 3258,
+                    "name": "beauty"
+                },
+                {
+                    "id": 4995,
+                    "name": "aging"
+                },
+                {
+                    "id": 6562,
+                    "name": "celebrity"
+                },
+                {
+                    "id": 8201,
+                    "name": "satire"
+                },
+                {
+                    "id": 10123,
+                    "name": "dark comedy"
+                },
+                {
+                    "id": 11322,
+                    "name": "female protagonist"
+                },
+                {
+                    "id": 12670,
+                    "name": "los angeles, california"
+                },
+                {
+                    "id": 15208,
+                    "name": "biting"
+                },
+                {
+                    "id": 157774,
+                    "name": "has been"
+                },
+                {
+                    "id": 163405,
+                    "name": "aerobics"
+                },
+                {
+                    "id": 170383,
+                    "name": "disfigurement"
+                }
+            ]
+        }
+    },
+    {
+        "id": 149871,
+        "title": "The Tale of The Princess Kaguya",
+        "overview": "Found inside a shining stalk of bamboo by an old bamboo cutter and his wife, a tiny girl grows rapidly into an exquisite young lady. The mysterious young princess enthrals all who encounter her. But, ultimately, she must confront her fate.",
+        "release_date": "2013-11-23",
+        "poster_path": "/cQidJuA546OSSXKWXoiCeINDxuj.jpg",
+        "imdb_id": "tt2576852",
+        "runtime": 137,
+        "genres": [
+            {
+                "id": 16,
+                "name": "Animation"
+            },
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 14,
+                "name": "Fantasy"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "JP"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "ja"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 1115687,
+                    "name": "Aki Asakura",
+                    "character": "The Princess Kaguya (voice)",
+                    "order": 0,
+                    "profile_path": "/65ZiHTem1HFNx4aHBcqQPdRRsPn.jpg"
+                },
+                {
+                    "id": 227629,
+                    "name": "Takeo Chii",
+                    "character": "Sanuki no Miyatsuko (voice)",
+                    "order": 1,
+                    "profile_path": "/1DMf3RKwhtEipZAdmgj7hkkbe8V.jpg"
+                },
+                {
+                    "id": 70627,
+                    "name": "Nobuko Miyamoto",
+                    "character": "Ōna / Narrator (voice)",
+                    "order": 2,
+                    "profile_path": "/pkIBgyBP4UYOlqK8EnpJ1BMuv9D.jpg"
+                },
+                {
+                    "id": 120690,
+                    "name": "Kengo Kora",
+                    "character": "Sutemaru (voice)",
+                    "order": 3,
+                    "profile_path": "/wb293WmYQ7yTAtf3opmhCoTJQfa.jpg"
+                },
+                {
+                    "id": 90570,
+                    "name": "Atsuko Takahata",
+                    "character": "Lady Sagami (voice)",
+                    "order": 4,
+                    "profile_path": "/xfVilFePWPW5qkJMa8GWQmvc5Fp.jpg"
+                },
+                {
+                    "id": 148286,
+                    "name": "Tomoko Tabata",
+                    "character": "Menowarawa (voice)",
+                    "order": 5,
+                    "profile_path": "/8jtrmUQWICGtcaCbeceLGqteVtq.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 628,
+                    "name": "Isao Takahata",
+                    "job": "Director",
+                    "profile_path": "/qbvnGLByh0N9ni7gZSREIgvO1sM.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 7376,
+                    "name": "princess"
+                },
+                {
+                    "id": 10683,
+                    "name": "coming of age"
+                },
+                {
+                    "id": 15126,
+                    "name": "historical"
+                },
+                {
+                    "id": 18447,
+                    "name": "japanese woman"
+                },
+                {
+                    "id": 179411,
+                    "name": "based on fairy tale"
+                },
+                {
+                    "id": 194938,
+                    "name": "japanese folklore"
+                },
+                {
+                    "id": 210024,
+                    "name": "anime"
+                },
+                {
+                    "id": 293198,
+                    "name": "fantasy"
+                },
+                {
+                    "id": 325790,
+                    "name": "cruel"
+                }
+            ]
+        }
+    },
+    {
+        "id": 16858,
+        "title": "All That Jazz",
+        "overview": "Joe Gideon is at the top of the heap, one of the most successful directors and choreographers in musical theater. But he can feel his world slowly collapsing around him - his obsession with work has almost destroyed his personal life, and only his bottles of pills keep him going.",
+        "release_date": "1979-12-16",
+        "poster_path": "/culCEdj4srLljefgn4XKd6k3C5t.jpg",
+        "imdb_id": "tt0078754",
+        "runtime": 123,
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drama"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 6355,
+                    "name": "Roy Scheider",
+                    "character": "Joe Gideon",
+                    "order": 0,
+                    "profile_path": "/yyZ0DwUz3qAelJIUGVoOktGgMIh.jpg"
+                },
+                {
+                    "id": 4431,
+                    "name": "Jessica Lange",
+                    "character": "Angelique",
+                    "order": 1,
+                    "profile_path": "/aWcO6trggSWsglUOdTVzjG4LSh3.jpg"
+                },
+                {
+                    "id": 80928,
+                    "name": "Ann Reinking",
+                    "character": "Kate Jagger",
+                    "order": 2,
+                    "profile_path": "/7arkhrziMSTt3NJ4DeP2WtdEdsA.jpg"
+                },
+                {
+                    "id": 80927,
+                    "name": "Leland Palmer",
+                    "character": "Audrey Paris",
+                    "order": 3,
+                    "profile_path": "/YJKhptxL9dHdWY7nVKsAA9fe5r.jpg"
+                },
+                {
+                    "id": 19183,
+                    "name": "Cliff Gorman",
+                    "character": "Davis Newman",
+                    "order": 4,
+                    "profile_path": "/sWCUAavM204vykyoVKW3TlRYmWF.jpg"
+                },
+                {
+                    "id": 26664,
+                    "name": "Ben Vereen",
+                    "character": "O'Connor Flood",
+                    "order": 5,
+                    "profile_path": "/krMLkdkj1rtLsU2h2BBPCK0E7HH.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 66777,
+                    "name": "Bob Fosse",
+                    "job": "Director",
+                    "profile_path": "/wFbanc6eRqdqACXAtvVqTbi0OZQ.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 837,
+                    "name": "show business"
+                },
+                {
+                    "id": 886,
+                    "name": "movie business"
+                },
+                {
+                    "id": 4345,
+                    "name": "tap dancing"
+                },
+                {
+                    "id": 9732,
+                    "name": "film in film"
+                },
+                {
+                    "id": 10614,
+                    "name": "tragedy"
+                },
+                {
+                    "id": 15160,
+                    "name": "divorce"
+                },
+                {
+                    "id": 156028,
+                    "name": "broadway"
+                },
+                {
+                    "id": 156507,
+                    "name": "rainstorm"
+                },
+                {
+                    "id": 157959,
+                    "name": "surgery"
+                },
+                {
+                    "id": 165399,
+                    "name": "editing"
+                },
+                {
+                    "id": 165402,
+                    "name": "semi autobiographical"
+                },
+                {
+                    "id": 165407,
+                    "name": "restroom"
+                },
+                {
+                    "id": 165419,
+                    "name": "screening room"
+                },
+                {
+                    "id": 165420,
+                    "name": "amphetamine"
+                },
+                {
+                    "id": 165423,
+                    "name": "prescription drug abuse"
+                }
+            ]
+        }
+    },
+    {
+        "id": 42430,
+        "title": "Symbol",
+        "overview": "A Japanese man in polka-dot pajamas wakes up in a room with no doors. Meanwhile, a middle-aged Mexican wrestler prepares for his most challenging match ever.",
+        "release_date": "2009-09-12",
+        "poster_path": "/3hWWrQ86GJMb0JQEY6JhHPnveW4.jpg",
+        "imdb_id": "tt1410261",
+        "runtime": 93,
+        "genres": [
+            {
+                "id": 35,
+                "name": "Comedy"
+            },
+            {
+                "id": 14,
+                "name": "Fantasy"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "JP"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "ja"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 71080,
+                    "name": "Hitoshi Matsumoto",
+                    "character": "The Man",
+                    "order": 0,
+                    "profile_path": "/Iq03j6VtB9V1wtq8fvGNEcmW9.jpg"
+                },
+                {
+                    "id": 553568,
+                    "name": "David Quintero",
+                    "character": "Escargot Man, Antonio's Father",
+                    "order": 1,
+                    "profile_path": null
+                },
+                {
+                    "id": 2638840,
+                    "name": "Carlos C. Torres",
+                    "character": "Antonio",
+                    "order": 2,
+                    "profile_path": "/9xoCDFiRKoJX0PxcAHZR6Ts2X6r.jpg"
+                },
+                {
+                    "id": 84170,
+                    "name": "Luis Accinelli",
+                    "character": "Antonio's Uncle",
+                    "order": 3,
+                    "profile_path": "/29BVkAgDLfRz5FjKbo0lcLiIqvD.jpg"
+                },
+                {
+                    "id": 553569,
+                    "name": "Lilian Tapia",
+                    "character": "Antonio's Mother",
+                    "order": 4,
+                    "profile_path": "/x7aQRhgR0DNstpay7jz7IH8dt0M.jpg"
+                },
+                {
+                    "id": 1286615,
+                    "name": "Ivana Wong Yuen-chi",
+                    "character": "Antonio's Sister",
+                    "order": 5,
+                    "profile_path": "/vi2x0Emd1kMIq6V1jT36Jd8BI5N.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 71080,
+                    "name": "Hitoshi Matsumoto",
+                    "job": "Director",
+                    "profile_path": "/Iq03j6VtB9V1wtq8fvGNEcmW9.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 194998,
+                    "name": "curious"
+                },
+                {
+                    "id": 214655,
+                    "name": "absurdism"
+                },
+                {
+                    "id": 333071,
+                    "name": "penis"
+                }
+            ]
+        }
+    },
+    {
+        "id": 3763,
+        "title": "Onibaba",
+        "overview": "While her son, Kichi, is away at war, a woman and her daughter-in-law survive by killing samurai who stray into their swamp, then selling whatever valuables they find. Both are devastated when they learn that Kichi has died, but his wife soon begins an affair with a neighbor who survived the war, Hachi. The mother disapproves and, when she can't steal Hachi for herself, tries to scare her daughter-in-law with a mysterious mask from a dead samurai.",
+        "release_date": "1964-11-21",
+        "poster_path": "/xyPLG53OodhJtvfQEfcmC43l16O.jpg",
+        "imdb_id": "tt0058430",
+        "runtime": 105,
+        "genres": [
+            {
+                "id": 27,
+                "name": "Horror"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "JP"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "ja"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 33728,
+                    "name": "Nobuko Otowa",
+                    "character": "Woman",
+                    "order": 0,
+                    "profile_path": "/6vcByiFlOE9JiLGWNKRtN8k0uil.jpg"
+                },
+                {
+                    "id": 33729,
+                    "name": "Jitsuko Yoshimura",
+                    "character": "Young Woman",
+                    "order": 1,
+                    "profile_path": "/wlH7kdIzQuTwOJDLmM9Qw43uf5z.jpg"
+                },
+                {
+                    "id": 33730,
+                    "name": "Kei Satō",
+                    "character": "Hachi",
+                    "order": 2,
+                    "profile_path": "/xyb1DI4HViq1aEvc3pgJV5Xw2Sn.jpg"
+                },
+                {
+                    "id": 33731,
+                    "name": "Jūkichi Uno",
+                    "character": "The Samurai",
+                    "order": 3,
+                    "profile_path": "/jxXsvpNQDo0AOG3fippKtlZHQUm.jpg"
+                },
+                {
+                    "id": 33732,
+                    "name": "Taiji Tonoyama",
+                    "character": "Ushi",
+                    "order": 4,
+                    "profile_path": "/k88bvJ91SiL2Nn6QtQf7hB8U4iv.jpg"
+                },
+                {
+                    "id": 1429146,
+                    "name": "Someshō Matsumoto",
+                    "character": "Runaway Warrior",
+                    "order": 5,
+                    "profile_path": null
+                }
+            ],
+            "crew": [
+                {
+                    "id": 33727,
+                    "name": "Kaneto Shindō",
+                    "job": "Director",
+                    "profile_path": "/slPRV7aV1R2W15HeVztiapjRdOH.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 233,
+                    "name": "japan"
+                },
+                {
+                    "id": 931,
+                    "name": "jealousy"
+                },
+                {
+                    "id": 1462,
+                    "name": "samurai"
+                },
+                {
+                    "id": 1806,
+                    "name": "desertion"
+                },
+                {
+                    "id": 3607,
+                    "name": "hold-up robbery"
+                },
+                {
+                    "id": 6943,
+                    "name": "bamboo hut"
+                },
+                {
+                    "id": 9826,
+                    "name": "murder"
+                },
+                {
+                    "id": 10349,
+                    "name": "survival"
+                },
+                {
+                    "id": 12999,
+                    "name": "black and white"
+                },
+                {
+                    "id": 15001,
+                    "name": "demon"
+                },
+                {
+                    "id": 186753,
+                    "name": "jidaigeki"
+                },
+                {
+                    "id": 194424,
+                    "name": "sengoku period"
+                },
+                {
+                    "id": 237612,
+                    "name": "14th century"
+                },
+                {
+                    "id": 262925,
+                    "name": "myths"
+                }
+            ]
+        }
+    },
+    {
+        "id": 12206,
+        "title": "The Testament of Dr. Mabuse",
+        "overview": "After a detective is assaulted by thugs and placed in an asylum run by Professor Baum, he observes the professor's preoccupation with another patient, the criminal genius Dr. Mabuse the hypnotist. When Mabuse's notes are found to be connected with a rash of recent crimes, Commissioner Lohmann must determine how Mabuse is communicating with the criminals, despite conflicting reports on the doctor's whereabouts, and capture him for good.",
+        "release_date": "1933-04-21",
+        "poster_path": "/tc2ET7j6X066VCjdHblSwLr8sEz.jpg",
+        "imdb_id": "tt0023563",
+        "runtime": 122,
+        "genres": [
+            {
+                "id": 80,
+                "name": "Crime"
+            },
+            {
+                "id": 9648,
+                "name": "Mystery"
+            },
+            {
+                "id": 53,
+                "name": "Thriller"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "DE"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "de"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 77,
+                    "name": "Rudolf Klein-Rogge",
+                    "character": "Dr. Mabuse",
+                    "order": 0,
+                    "profile_path": "/fbP75fGfXFQlkf3Q5oHbJ4wjG1g.jpg"
+                },
+                {
+                    "id": 71648,
+                    "name": "Oscar Beregi Sr.",
+                    "character": "Prof. Dr. Baum",
+                    "order": 1,
+                    "profile_path": "/kyvlRxndaba2aKMwOmJkLCde2Cp.jpg"
+                },
+                {
+                    "id": 37910,
+                    "name": "Camilla Spira",
+                    "character": "Juwelen-Anna",
+                    "order": 2,
+                    "profile_path": "/cUxrNf4h4wSbdUpciRGRxIewtoP.jpg"
+                },
+                {
+                    "id": 12324,
+                    "name": "Otto Wernicke",
+                    "character": "Kommissar Lohmann",
+                    "order": 3,
+                    "profile_path": "/xHWKwyOG7JyqUDoKQmbOnk5wJB5.jpg"
+                },
+                {
+                    "id": 13377,
+                    "name": "Paul Henckels",
+                    "character": "Lithograph",
+                    "order": 4,
+                    "profile_path": null
+                },
+                {
+                    "id": 28066,
+                    "name": "Theo Lingen",
+                    "character": "Karetzky",
+                    "order": 5,
+                    "profile_path": "/bQ7uX7aHM88sRpldILmLdjW7NSM.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 68,
+                    "name": "Fritz Lang",
+                    "job": "Director",
+                    "profile_path": "/9dz4PmFzlSyexldWrOXBLLpkBqB.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 3363,
+                    "name": "hypnosis"
+                },
+                {
+                    "id": 4399,
+                    "name": "victim"
+                },
+                {
+                    "id": 4779,
+                    "name": "delinquent"
+                },
+                {
+                    "id": 13005,
+                    "name": "doctor"
+                },
+                {
+                    "id": 15009,
+                    "name": "criminal"
+                },
+                {
+                    "id": 244516,
+                    "name": "german expressionism"
+                }
+            ]
+        }
+    },
+    {
+        "id": 603,
         "title": "The Matrix",
+        "overview": "Set in the 22nd century, The Matrix tells the story of a computer hacker who joins a group of underground insurgents fighting the vast and powerful computers who now rule the earth.",
         "release_date": "1999-03-31",
-        "poster_path": "/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg",
-        "overview": "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers."
+        "poster_path": "/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg",
+        "imdb_id": "tt0133093",
+        "runtime": 136,
+        "genres": [
+            {
+                "id": 28,
+                "name": "Action"
+            },
+            {
+                "id": 878,
+                "name": "Science Fiction"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 6384,
+                    "name": "Keanu Reeves",
+                    "character": "Neo",
+                    "order": 0,
+                    "profile_path": "/8RZLOyYGsoRe9p44q3xin9QkMHv.jpg"
+                },
+                {
+                    "id": 2975,
+                    "name": "Laurence Fishburne",
+                    "character": "Morpheus",
+                    "order": 1,
+                    "profile_path": "/2GbXERENPpl5MmlqOLlPVaVtifD.jpg"
+                },
+                {
+                    "id": 530,
+                    "name": "Carrie-Anne Moss",
+                    "character": "Trinity",
+                    "order": 2,
+                    "profile_path": "/9zya72vRZYBQILfetACsnmCBgdj.jpg"
+                },
+                {
+                    "id": 1331,
+                    "name": "Hugo Weaving",
+                    "character": "Agent Smith",
+                    "order": 3,
+                    "profile_path": "/lSC8Et0PYi5zeQb3IpPkFje7hgR.jpg"
+                },
+                {
+                    "id": 9364,
+                    "name": "Gloria Foster",
+                    "character": "Oracle",
+                    "order": 4,
+                    "profile_path": "/AriGXtC9fjBOia9Zr8CZjn4o3rx.jpg"
+                },
+                {
+                    "id": 532,
+                    "name": "Joe Pantoliano",
+                    "character": "Cypher",
+                    "order": 5,
+                    "profile_path": "/3OHUI3nX4SYGGItDk3xqeIvWtIf.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 9340,
+                    "name": "Lana Wachowski",
+                    "job": "Director",
+                    "profile_path": "/4nE4ttPQBuw1virOz0LYT08c1Vm.jpg"
+                },
+                {
+                    "id": 9339,
+                    "name": "Lilly Wachowski",
+                    "job": "Director",
+                    "profile_path": "/rCScAjSpeKA19BLNR07MqNNeeTT.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 83,
+                    "name": "saving the world"
+                },
+                {
+                    "id": 310,
+                    "name": "artificial intelligence (a.i.)"
+                },
+                {
+                    "id": 312,
+                    "name": "man vs machine"
+                },
+                {
+                    "id": 490,
+                    "name": "philosophy"
+                },
+                {
+                    "id": 530,
+                    "name": "prophecy"
+                },
+                {
+                    "id": 663,
+                    "name": "fortune teller"
+                },
+                {
+                    "id": 779,
+                    "name": "martial arts"
+                },
+                {
+                    "id": 1501,
+                    "name": "allegory"
+                },
+                {
+                    "id": 3074,
+                    "name": "insurgence"
+                },
+                {
+                    "id": 3972,
+                    "name": "simulated reality"
+                },
+                {
+                    "id": 4238,
+                    "name": "chosen one"
+                },
+                {
+                    "id": 4565,
+                    "name": "dystopia"
+                },
+                {
+                    "id": 12190,
+                    "name": "cyberpunk"
+                },
+                {
+                    "id": 163540,
+                    "name": "christ allegory"
+                },
+                {
+                    "id": 194063,
+                    "name": "messiah"
+                }
+            ]
+        }
+    },
+    {
+        "id": 496243,
+        "title": "Parasite",
+        "overview": "All unemployed, Ki-taek's family takes peculiar interest in the wealthy and glamorous Parks for their livelihood until they get entangled in an unexpected incident.",
+        "release_date": "2019-05-30",
+        "poster_path": "/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+        "imdb_id": "tt6751668",
+        "runtime": 133,
+        "genres": [
+            {
+                "id": 35,
+                "name": "Comedy"
+            },
+            {
+                "id": 53,
+                "name": "Thriller"
+            },
+            {
+                "id": 18,
+                "name": "Drama"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "KR"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "ko"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 20738,
+                    "name": "Song Kang-ho",
+                    "character": "Kim Ki-taek",
+                    "order": 0,
+                    "profile_path": "/kBM9UTPYXUA2RNk210DXhztLFns.jpg"
+                },
+                {
+                    "id": 115290,
+                    "name": "Lee Sun-kyun",
+                    "character": "Park Dong-ik",
+                    "order": 1,
+                    "profile_path": "/nHFBbSFohzOUOvMxPVwe3Es2nJw.jpg"
+                },
+                {
+                    "id": 556435,
+                    "name": "Cho Yeo-jeong",
+                    "character": "Yeon-kyo",
+                    "order": 2,
+                    "profile_path": "/5MgWM8pkUiYkj9MEaEpO0Ir1FD9.jpg"
+                },
+                {
+                    "id": 1255881,
+                    "name": "Choi Woo-shik",
+                    "character": "Ki-woo",
+                    "order": 3,
+                    "profile_path": "/9mZ9DNopxpCLUjXd0rLd42TLamw.jpg"
+                },
+                {
+                    "id": 1442583,
+                    "name": "Park So-dam",
+                    "character": "Ki-jung",
+                    "order": 4,
+                    "profile_path": "/fGVOikpvivopeATDy6ZzLdKYXDu.jpg"
+                },
+                {
+                    "id": 1572354,
+                    "name": "Lee Jung-eun",
+                    "character": "Moon-gwang",
+                    "order": 5,
+                    "profile_path": "/4r3K47UpSmzZ5t9cyTRRqRl9rdz.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 21684,
+                    "name": "Bong Joon Ho",
+                    "job": "Director",
+                    "profile_path": "/stwnTvZAoD8gEJEDHpDQyLCyDy5.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 10123,
+                    "name": "dark comedy"
+                },
+                {
+                    "id": 10453,
+                    "name": "con artist"
+                },
+                {
+                    "id": 11479,
+                    "name": "social commentary"
+                },
+                {
+                    "id": 11935,
+                    "name": "working class"
+                },
+                {
+                    "id": 12347,
+                    "name": "infiltration"
+                },
+                {
+                    "id": 12565,
+                    "name": "psychological thriller"
+                },
+                {
+                    "id": 14514,
+                    "name": "class differences"
+                },
+                {
+                    "id": 18035,
+                    "name": "family"
+                },
+                {
+                    "id": 198673,
+                    "name": "unemployed"
+                },
+                {
+                    "id": 215138,
+                    "name": "domestic worker"
+                },
+                {
+                    "id": 237462,
+                    "name": "wealthy family"
+                },
+                {
+                    "id": 261681,
+                    "name": "south korea"
+                },
+                {
+                    "id": 283556,
+                    "name": "caste violence"
+                },
+                {
+                    "id": 290327,
+                    "name": "seoul, south korea"
+                },
+                {
+                    "id": 352649,
+                    "name": "anti-capitalist"
+                }
+            ]
+        }
+    },
+    {
+        "id": 129,
+        "title": "Spirited Away",
+        "overview": "A young girl, Chihiro, becomes trapped in a strange new world of spirits. When her parents undergo a mysterious transformation, she must call upon the courage she never knew she had to free her family.",
+        "release_date": "2001-07-20",
+        "poster_path": "/39wmItIWsg5sZMyRUHLkWBcuVCM.jpg",
+        "imdb_id": "tt0245429",
+        "runtime": 125,
+        "genres": [
+            {
+                "id": 16,
+                "name": "Animation"
+            },
+            {
+                "id": 10751,
+                "name": "Family"
+            },
+            {
+                "id": 14,
+                "name": "Fantasy"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "JP"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "ja"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 19587,
+                    "name": "Rumi Hiiragi",
+                    "character": "Chihiro (voice)",
+                    "order": 0,
+                    "profile_path": "/nTKM4GgfkrZvAOFL55uhEuckt7M.jpg"
+                },
+                {
+                    "id": 19588,
+                    "name": "Miyu Irino",
+                    "character": "Haku (voice)",
+                    "order": 1,
+                    "profile_path": "/8qEEhHUObNvGQr4e6eqLu5z4qTz.jpg"
+                },
+                {
+                    "id": 19589,
+                    "name": "Mari Natsuki",
+                    "character": "Yubaba / Zeniba (voice)",
+                    "order": 2,
+                    "profile_path": "/MIFzUc77Sx57FQOZsoiGWEbpH2.jpg"
+                },
+                {
+                    "id": 19590,
+                    "name": "Takashi Naito",
+                    "character": "Father (voice)",
+                    "order": 3,
+                    "profile_path": "/xwsm0ygjG79jLIogutwo6r64igy.jpg"
+                },
+                {
+                    "id": 19591,
+                    "name": "Yasuko Sawaguchi",
+                    "character": "Mother (voice)",
+                    "order": 4,
+                    "profile_path": "/rWspusb13VeJowmctnniXYYTcqq.jpg"
+                },
+                {
+                    "id": 19592,
+                    "name": "Tatsuya Gashuin",
+                    "character": "Aogaeru (voice)",
+                    "order": 5,
+                    "profile_path": "/fLqIdkShknsJmZy4EfBWuWyHN4C.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 608,
+                    "name": "Hayao Miyazaki",
+                    "job": "Director",
+                    "profile_path": "/ouhjt9KugzhWtdEyBPipihB3ic8.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 616,
+                    "name": "witch"
+                },
+                {
+                    "id": 970,
+                    "name": "parent child relationship"
+                },
+                {
+                    "id": 2343,
+                    "name": "magic"
+                },
+                {
+                    "id": 3762,
+                    "name": "darkness"
+                },
+                {
+                    "id": 4652,
+                    "name": "bath house"
+                },
+                {
+                    "id": 13153,
+                    "name": "spirit"
+                },
+                {
+                    "id": 33465,
+                    "name": "parallel world"
+                },
+                {
+                    "id": 155582,
+                    "name": "amusement park"
+                },
+                {
+                    "id": 196509,
+                    "name": "youkai"
+                },
+                {
+                    "id": 207695,
+                    "name": "japanese mythology"
+                },
+                {
+                    "id": 210024,
+                    "name": "anime"
+                }
+            ]
+        }
+    },
+    {
+        "id": 346,
+        "title": "Seven Samurai",
+        "overview": "A samurai answers a village's request for protection after he falls on hard times. The town needs protection from bandits, so the samurai gathers six others to help him teach the people how to defend themselves, and the villagers provide the soldiers with food.",
+        "release_date": "1954-04-26",
+        "poster_path": "/lOMGc8bnSwQhS4XyE1S99uH8NXf.jpg",
+        "imdb_id": "tt0047478",
+        "runtime": 207,
+        "genres": [
+            {
+                "id": 28,
+                "name": "Action"
+            },
+            {
+                "id": 18,
+                "name": "Drama"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "JP"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "ja"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 7450,
+                    "name": "Toshirō Mifune",
+                    "character": "Kikuchiyo",
+                    "order": 0,
+                    "profile_path": "/cZ5ybA7cDA0EBMaM5jX2f7RNBVb.jpg"
+                },
+                {
+                    "id": 7453,
+                    "name": "Takashi Shimura",
+                    "character": "Kambei Shimada",
+                    "order": 1,
+                    "profile_path": "/ydyAm2vyBbEPZRICIMqqjDm0NM9.jpg"
+                },
+                {
+                    "id": 20828,
+                    "name": "Yoshio Inaba",
+                    "character": "Gorobei Katayama",
+                    "order": 2,
+                    "profile_path": "/5qIAqM5PegWTNq67qNofz78fb6U.jpg"
+                },
+                {
+                    "id": 20829,
+                    "name": "Seiji Miyaguchi",
+                    "character": "Kyuzo",
+                    "order": 3,
+                    "profile_path": "/mAGkZlsowKzgpvvi40mRLU4vA53.jpg"
+                },
+                {
+                    "id": 7454,
+                    "name": "Minoru Chiaki",
+                    "character": "Heihachi Hayashida",
+                    "order": 4,
+                    "profile_path": "/9E3efYEg8pxANdfVLqYGiX8zJE8.jpg"
+                },
+                {
+                    "id": 7457,
+                    "name": "Daisuke Katō",
+                    "character": "Shichiroji",
+                    "order": 5,
+                    "profile_path": "/dTcLO2XWLwp6RiJTpwDjxzbnuSp.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 5026,
+                    "name": "Akira Kurosawa",
+                    "job": "Director",
+                    "profile_path": "/ca8fRqLDfTJTCamLKHp70up23ET.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 233,
+                    "name": "japan"
+                },
+                {
+                    "id": 779,
+                    "name": "martial arts"
+                },
+                {
+                    "id": 1462,
+                    "name": "samurai"
+                },
+                {
+                    "id": 1938,
+                    "name": "sword"
+                },
+                {
+                    "id": 3691,
+                    "name": "forbidden love"
+                },
+                {
+                    "id": 4402,
+                    "name": "peasant"
+                },
+                {
+                    "id": 4631,
+                    "name": "looting"
+                },
+                {
+                    "id": 5329,
+                    "name": "rice"
+                },
+                {
+                    "id": 5330,
+                    "name": "fencing"
+                },
+                {
+                    "id": 5331,
+                    "name": "village"
+                },
+                {
+                    "id": 11426,
+                    "name": "moral ambiguity"
+                },
+                {
+                    "id": 12999,
+                    "name": "black and white"
+                },
+                {
+                    "id": 14643,
+                    "name": "battle"
+                },
+                {
+                    "id": 15060,
+                    "name": "period drama"
+                },
+                {
+                    "id": 33344,
+                    "name": "bandit"
+                }
+            ]
+        }
+    },
+    {
+        "id": 680,
+        "title": "Pulp Fiction",
+        "overview": "A burger-loving hit man, his philosophical partner, a drug-addled gangster's moll and a washed-up boxer converge in this sprawling, comedic crime caper. Their adventures unfurl in three stories that ingeniously trip back and forth in time.",
+        "release_date": "1994-09-10",
+        "poster_path": "/vQWk5YBFWF4bZaofAbv0tShwBvQ.jpg",
+        "imdb_id": "tt0110912",
+        "runtime": 154,
+        "genres": [
+            {
+                "id": 53,
+                "name": "Thriller"
+            },
+            {
+                "id": 80,
+                "name": "Crime"
+            },
+            {
+                "id": 35,
+                "name": "Comedy"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 8891,
+                    "name": "John Travolta",
+                    "character": "Vincent Vega",
+                    "order": 0,
+                    "profile_path": "/ap8eEYfBKTLixmVVpRlq4NslDD5.jpg"
+                },
+                {
+                    "id": 2231,
+                    "name": "Samuel L. Jackson",
+                    "character": "Jules Winnfield",
+                    "order": 1,
+                    "profile_path": "/AiAYAqwpM5xmiFrAIeQvUXDCVvo.jpg"
+                },
+                {
+                    "id": 139,
+                    "name": "Uma Thurman",
+                    "character": "Mia Wallace",
+                    "order": 2,
+                    "profile_path": "/sBgAZWi3o4FsnaTvnTNtK6jpQcF.jpg"
+                },
+                {
+                    "id": 62,
+                    "name": "Bruce Willis",
+                    "character": "Butch Coolidge",
+                    "order": 3,
+                    "profile_path": "/w3aXr1e7gQCn8MSp1vW4sXHn99P.jpg"
+                },
+                {
+                    "id": 10182,
+                    "name": "Ving Rhames",
+                    "character": "Marsellus Wallace",
+                    "order": 4,
+                    "profile_path": "/tOVDvu1EQP78AwaUw6uh1wN818E.jpg"
+                },
+                {
+                    "id": 1037,
+                    "name": "Harvey Keitel",
+                    "character": "The Wolf",
+                    "order": 5,
+                    "profile_path": "/7P30hza1neYWW3r7rSQOC736K2Z.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 138,
+                    "name": "Quentin Tarantino",
+                    "job": "Director",
+                    "profile_path": "/1gjcpAa99FAOWGnrUvHEXXsRs7o.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 2151,
+                    "name": "drug crime"
+                },
+                {
+                    "id": 2231,
+                    "name": "drug dealer"
+                },
+                {
+                    "id": 3149,
+                    "name": "gangster"
+                },
+                {
+                    "id": 8627,
+                    "name": "stolen money"
+                },
+                {
+                    "id": 9730,
+                    "name": "crime boss"
+                },
+                {
+                    "id": 10123,
+                    "name": "dark comedy"
+                },
+                {
+                    "id": 11436,
+                    "name": "redemption"
+                },
+                {
+                    "id": 12670,
+                    "name": "los angeles, california"
+                },
+                {
+                    "id": 14604,
+                    "name": "theft"
+                },
+                {
+                    "id": 33494,
+                    "name": "couple"
+                },
+                {
+                    "id": 157171,
+                    "name": "nonlinear timeline"
+                },
+                {
+                    "id": 171366,
+                    "name": "multiple storylines"
+                },
+                {
+                    "id": 199524,
+                    "name": "disturbed"
+                },
+                {
+                    "id": 202371,
+                    "name": "aggressive"
+                },
+                {
+                    "id": 207268,
+                    "name": "neo-noir"
+                }
+            ]
+        }
+    },
+    {
+        "id": 348,
+        "title": "Alien",
+        "overview": "During its return to the earth, commercial spaceship Nostromo intercepts a distress signal from a distant planet. When a three-member team of the crew discovers a chamber containing thousands of eggs on the planet, a creature inside one of the eggs attacks an explorer. The entire crew is unaware of the impending nightmare set to descend upon them when the alien parasite planted inside its unfortunate host is birthed.",
+        "release_date": "1979-05-25",
+        "poster_path": "/vfrQk5IPloGg1v9Rzbh2Eg3VGyM.jpg",
+        "imdb_id": "tt0078748",
+        "runtime": 117,
+        "genres": [
+            {
+                "id": 27,
+                "name": "Horror"
+            },
+            {
+                "id": 878,
+                "name": "Science Fiction"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 4139,
+                    "name": "Tom Skerritt",
+                    "character": "Dallas",
+                    "order": 0,
+                    "profile_path": "/oWFCyBLm1lsbsbT5Nmx3SPMaqFZ.jpg"
+                },
+                {
+                    "id": 10205,
+                    "name": "Sigourney Weaver",
+                    "character": "Ripley",
+                    "order": 1,
+                    "profile_path": "/wTSnfktNBLd6kwQxgvkqYw6vEon.jpg"
+                },
+                {
+                    "id": 5047,
+                    "name": "Veronica Cartwright",
+                    "character": "Lambert",
+                    "order": 2,
+                    "profile_path": "/1CiknHO8ssMM4bWPsIMMzCTVHeB.jpg"
+                },
+                {
+                    "id": 5048,
+                    "name": "Harry Dean Stanton",
+                    "character": "Brett",
+                    "order": 3,
+                    "profile_path": "/9zOTpVMwMHNjPFBNoPy9vOBT1NC.jpg"
+                },
+                {
+                    "id": 5049,
+                    "name": "John Hurt",
+                    "character": "Kane",
+                    "order": 4,
+                    "profile_path": "/bjNSzt1d7uK3q5PbtFXUJrRt4qg.jpg"
+                },
+                {
+                    "id": 65,
+                    "name": "Ian Holm",
+                    "character": "Ash",
+                    "order": 5,
+                    "profile_path": "/cOJDgvgj4nMec6Inzj1H5nugTO5.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 578,
+                    "name": "Ridley Scott",
+                    "job": "Director",
+                    "profile_path": "/zABJmN9opmqD4orWl3KSdCaSo7Q.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 803,
+                    "name": "android"
+                },
+                {
+                    "id": 1612,
+                    "name": "spacecraft"
+                },
+                {
+                    "id": 1825,
+                    "name": "countdown"
+                },
+                {
+                    "id": 1826,
+                    "name": "space marine"
+                },
+                {
+                    "id": 1828,
+                    "name": "space suit"
+                },
+                {
+                    "id": 1829,
+                    "name": "beheading"
+                },
+                {
+                    "id": 3801,
+                    "name": "space travel"
+                },
+                {
+                    "id": 4565,
+                    "name": "dystopia"
+                },
+                {
+                    "id": 6016,
+                    "name": "biology"
+                },
+                {
+                    "id": 7956,
+                    "name": "cowardice"
+                },
+                {
+                    "id": 9882,
+                    "name": "space"
+                },
+                {
+                    "id": 9951,
+                    "name": "alien"
+                },
+                {
+                    "id": 11322,
+                    "name": "female protagonist"
+                },
+                {
+                    "id": 157634,
+                    "name": "parasite"
+                },
+                {
+                    "id": 161176,
+                    "name": "space opera"
+                }
+            ]
+        }
+    },
+    {
+        "id": 372058,
+        "title": "Your Name.",
+        "overview": "High schoolers Mitsuha and Taki are complete strangers living separate lives. But one night, they suddenly switch places. Mitsuha wakes up in Taki’s body, and he in hers. This bizarre occurrence continues to happen randomly, and the two must adjust their lives around each other.",
+        "release_date": "2016-07-01",
+        "poster_path": "/vfJFJPepRKapMd5G2ro7klIRysq.jpg",
+        "imdb_id": "tt5311514",
+        "runtime": 106,
+        "genres": [
+            {
+                "id": 16,
+                "name": "Animation"
+            },
+            {
+                "id": 10749,
+                "name": "Romance"
+            },
+            {
+                "id": 18,
+                "name": "Drama"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "JP"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "ja"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 225730,
+                    "name": "Ryunosuke Kamiki",
+                    "character": "Taki Tachibana (voice)",
+                    "order": 0,
+                    "profile_path": "/ut7ewXjdgUmgkhJ1EtbOo9tbc7s.jpg"
+                },
+                {
+                    "id": 1369100,
+                    "name": "Mone Kamishiraishi",
+                    "character": "Mitsuha Miyamizu (voice)",
+                    "order": 1,
+                    "profile_path": "/cPydoy2sSqFDsbXeBPmzQGPmq0R.jpg"
+                },
+                {
+                    "id": 1668610,
+                    "name": "Ryo Narita",
+                    "character": "Katsuhiko Teshigawara (voice)",
+                    "order": 2,
+                    "profile_path": "/nuDFEGyuL4b1u5JUNee7WmJfgp3.jpg"
+                },
+                {
+                    "id": 936275,
+                    "name": "Aoi Yuki",
+                    "character": "Sayaka Natori (voice)",
+                    "order": 3,
+                    "profile_path": "/a5Mkd66GV1l3c9bZZtnvjUf33T2.jpg"
+                },
+                {
+                    "id": 1210634,
+                    "name": "Nobunaga Shimazaki",
+                    "character": "Tsukasa Fujii (voice)",
+                    "order": 4,
+                    "profile_path": "/qke5rZusHsjSlvB0NKlJ5dQF5D.jpg"
+                },
+                {
+                    "id": 1324666,
+                    "name": "Kaito Ishikawa",
+                    "character": "Shinta Takagi (voice)",
+                    "order": 5,
+                    "profile_path": "/fzjIkotjUHHs3wgftM9tqdsG8ph.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 74091,
+                    "name": "Makoto Shinkai",
+                    "job": "Director",
+                    "profile_path": "/z8TN4Nkmhem6XqcnH2jMn5Ayf97.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 1566,
+                    "name": "dreams"
+                },
+                {
+                    "id": 4379,
+                    "name": "time travel"
+                },
+                {
+                    "id": 4776,
+                    "name": "race against time"
+                },
+                {
+                    "id": 4803,
+                    "name": "comet"
+                },
+                {
+                    "id": 5096,
+                    "name": "natural disaster"
+                },
+                {
+                    "id": 6152,
+                    "name": "supernatural"
+                },
+                {
+                    "id": 6155,
+                    "name": "afterlife"
+                },
+                {
+                    "id": 6270,
+                    "name": "high school"
+                },
+                {
+                    "id": 9840,
+                    "name": "romance"
+                },
+                {
+                    "id": 10614,
+                    "name": "tragedy"
+                },
+                {
+                    "id": 10873,
+                    "name": "school"
+                },
+                {
+                    "id": 33721,
+                    "name": "body swap"
+                },
+                {
+                    "id": 33910,
+                    "name": "high school student"
+                },
+                {
+                    "id": 157171,
+                    "name": "nonlinear timeline"
+                },
+                {
+                    "id": 165086,
+                    "name": "star crossed lovers"
+                }
+            ]
+        }
+    },
+    {
+        "id": 244786,
+        "title": "Whiplash",
+        "overview": "Under the direction of a ruthless instructor, a talented young drummer begins to pursue perfection at any cost, even his humanity.",
+        "release_date": "2014-10-10",
+        "poster_path": "/7fn624j5lj3xTme2SgiLCeuedmO.jpg",
+        "imdb_id": "tt2582802",
+        "runtime": 107,
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 10402,
+                "name": "Music"
+            },
+            {
+                "id": 53,
+                "name": "Thriller"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 996701,
+                    "name": "Miles Teller",
+                    "character": "Andrew",
+                    "order": 0,
+                    "profile_path": "/kDf3sW3USjEBDQ3Ua7lbwOfwty6.jpg"
+                },
+                {
+                    "id": 18999,
+                    "name": "J.K. Simmons",
+                    "character": "Fletcher",
+                    "order": 1,
+                    "profile_path": "/ScmKoJ9eiSUOthAt1PDNLi8Fkw.jpg"
+                },
+                {
+                    "id": 781,
+                    "name": "Paul Reiser",
+                    "character": "Jim",
+                    "order": 2,
+                    "profile_path": "/rGryzG00uSk8LsidacSBXVgo3iv.jpg"
+                },
+                {
+                    "id": 129104,
+                    "name": "Melissa Benoist",
+                    "character": "Nicole",
+                    "order": 3,
+                    "profile_path": "/1F0fCPNhb5W0WyFe8Tszfbx1DEp.jpg"
+                },
+                {
+                    "id": 970216,
+                    "name": "Austin Stowell",
+                    "character": "Ryan",
+                    "order": 4,
+                    "profile_path": "/At09XQpVXnChgedNsxu4ceR5W9i.jpg"
+                },
+                {
+                    "id": 1451540,
+                    "name": "Nate Lang",
+                    "character": "Carl",
+                    "order": 5,
+                    "profile_path": "/6TC0gKxJIttIhXLnCttANV9gd1G.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 136495,
+                    "name": "Damien Chazelle",
+                    "job": "Director",
+                    "profile_path": "/14kRZ3XxNMyBv717YQSXr3wCucy.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 242,
+                    "name": "new york city"
+                },
+                {
+                    "id": 1416,
+                    "name": "jazz"
+                },
+                {
+                    "id": 1523,
+                    "name": "obsession"
+                },
+                {
+                    "id": 1640,
+                    "name": "conservatory"
+                },
+                {
+                    "id": 2176,
+                    "name": "music teacher"
+                },
+                {
+                    "id": 2696,
+                    "name": "drums"
+                },
+                {
+                    "id": 4048,
+                    "name": "musician"
+                },
+                {
+                    "id": 33896,
+                    "name": "montage"
+                },
+                {
+                    "id": 164657,
+                    "name": "perfectionist"
+                },
+                {
+                    "id": 170418,
+                    "name": "public humiliation"
+                },
+                {
+                    "id": 176095,
+                    "name": "jazz band"
+                },
+                {
+                    "id": 206298,
+                    "name": "young adult"
+                },
+                {
+                    "id": 207739,
+                    "name": "music school"
+                },
+                {
+                    "id": 212404,
+                    "name": "verbal abuse"
+                },
+                {
+                    "id": 236377,
+                    "name": "emotional abuse"
+                }
+            ]
+        }
+    },
+    {
+        "id": 38,
+        "title": "Eternal Sunshine of the Spotless Mind",
+        "overview": "Joel Barish, heartbroken that his girlfriend underwent a procedure to erase him from her memory, decides to do the same. However, as he watches his memories of her fade away, he realises that he still loves her, and may be too late to correct his mistake.",
+        "release_date": "2004-03-19",
+        "poster_path": "/5MwkWH9tYHv3mV9OdYTMR5qreIz.jpg",
+        "imdb_id": "tt0338013",
+        "runtime": 108,
+        "genres": [
+            {
+                "id": 878,
+                "name": "Science Fiction"
+            },
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 10749,
+                "name": "Romance"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 206,
+                    "name": "Jim Carrey",
+                    "character": "Joel Barish",
+                    "order": 0,
+                    "profile_path": "/y3U9QfPN6sJaGl6l68xjwWj28ig.jpg"
+                },
+                {
+                    "id": 204,
+                    "name": "Kate Winslet",
+                    "character": "Clementine Kruczynski",
+                    "order": 1,
+                    "profile_path": "/6qNnMsKtKz9si5rabpUEG85UfHp.jpg"
+                },
+                {
+                    "id": 205,
+                    "name": "Kirsten Dunst",
+                    "character": "Mary",
+                    "order": 2,
+                    "profile_path": "/yhLKGjuiMMdbGnFrR8AREkCZcVF.jpg"
+                },
+                {
+                    "id": 103,
+                    "name": "Mark Ruffalo",
+                    "character": "Stan",
+                    "order": 3,
+                    "profile_path": "/5GilHMOt5PAQh6rlUKZzGmaKEI7.jpg"
+                },
+                {
+                    "id": 109,
+                    "name": "Elijah Wood",
+                    "character": "Patrick",
+                    "order": 4,
+                    "profile_path": "/7UKRbJBNG7mxBl2QQc5XsAh6F8B.jpg"
+                },
+                {
+                    "id": 207,
+                    "name": "Tom Wilkinson",
+                    "character": "Dr. Mierzwiak",
+                    "order": 5,
+                    "profile_path": "/d5yLk0PK8q7EKR3E3G2txO758IW.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 201,
+                    "name": "Michel Gondry",
+                    "job": "Director",
+                    "profile_path": "/4U9DhwQtrs2UUFPya2ixaYh091i.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 242,
+                    "name": "new york city"
+                },
+                {
+                    "id": 563,
+                    "name": "deja vu"
+                },
+                {
+                    "id": 802,
+                    "name": "regret"
+                },
+                {
+                    "id": 931,
+                    "name": "jealousy"
+                },
+                {
+                    "id": 1453,
+                    "name": "amnesia"
+                },
+                {
+                    "id": 1566,
+                    "name": "dreams"
+                },
+                {
+                    "id": 1604,
+                    "name": "operation"
+                },
+                {
+                    "id": 4232,
+                    "name": "melancholy"
+                },
+                {
+                    "id": 5625,
+                    "name": "relationship problems"
+                },
+                {
+                    "id": 9673,
+                    "name": "love"
+                },
+                {
+                    "id": 10937,
+                    "name": "memory"
+                },
+                {
+                    "id": 12400,
+                    "name": "brainwashing"
+                },
+                {
+                    "id": 14534,
+                    "name": "relationship"
+                },
+                {
+                    "id": 34265,
+                    "name": "heartbreak"
+                },
+                {
+                    "id": 157171,
+                    "name": "nonlinear timeline"
+                }
+            ]
+        }
+    },
+    {
+        "id": 62,
+        "title": "2001: A Space Odyssey",
+        "overview": "Humanity finds a mysterious object buried beneath the lunar surface and sets off to find its origins with the help of HAL 9000, the world's most advanced super computer.",
+        "release_date": "1968-04-02",
+        "poster_path": "/ve72VxNqjGM69Uky4WTo2bK6rfq.jpg",
+        "imdb_id": "tt0062622",
+        "runtime": 149,
+        "genres": [
+            {
+                "id": 878,
+                "name": "Science Fiction"
+            },
+            {
+                "id": 9648,
+                "name": "Mystery"
+            },
+            {
+                "id": 12,
+                "name": "Adventure"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 245,
+                    "name": "Keir Dullea",
+                    "character": "Dr. David Bowman",
+                    "order": 0,
+                    "profile_path": "/5QyrGWxujX8XA3Ny3M8D18TWupi.jpg"
+                },
+                {
+                    "id": 246,
+                    "name": "Gary Lockwood",
+                    "character": "Dr. Frank Poole",
+                    "order": 1,
+                    "profile_path": "/1tfGE7RW8GgCLEFFJUXETq9Td1T.jpg"
+                },
+                {
+                    "id": 247,
+                    "name": "William Sylvester",
+                    "character": "Dr. Heywood Floyd",
+                    "order": 2,
+                    "profile_path": "/4NaExzBKqv4GPEfJ2w7S16MYS2y.jpg"
+                },
+                {
+                    "id": 253,
+                    "name": "Douglas Rain",
+                    "character": "HAL 9000 (voice)",
+                    "order": 3,
+                    "profile_path": "/wCjNcbW1u9cYc7jzlV5FPKqXGNF.jpg"
+                },
+                {
+                    "id": 248,
+                    "name": "Daniel Richter",
+                    "character": "Moonwatcher",
+                    "order": 4,
+                    "profile_path": "/cq8Fprv33RgYPwu39cGx6fxk5Qp.jpg"
+                },
+                {
+                    "id": 249,
+                    "name": "Leonard Rossiter",
+                    "character": "Dr. Andrei Smyslov",
+                    "order": 5,
+                    "profile_path": "/qXjGUJ2TjO3ltiEYMEJ658VeqkA.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 240,
+                    "name": "Stanley Kubrick",
+                    "job": "Director",
+                    "profile_path": "/yFT0VyIelI9aegZrsAwOG5iVP4v.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 305,
+                    "name": "moon"
+                },
+                {
+                    "id": 306,
+                    "name": "jupiter"
+                },
+                {
+                    "id": 310,
+                    "name": "artificial intelligence (a.i.)"
+                },
+                {
+                    "id": 312,
+                    "name": "man vs machine"
+                },
+                {
+                    "id": 818,
+                    "name": "based on novel or book"
+                },
+                {
+                    "id": 1576,
+                    "name": "technology"
+                },
+                {
+                    "id": 3222,
+                    "name": "super computer"
+                },
+                {
+                    "id": 3801,
+                    "name": "space travel"
+                },
+                {
+                    "id": 4040,
+                    "name": "space mission"
+                },
+                {
+                    "id": 12185,
+                    "name": "moon base"
+                },
+                {
+                    "id": 14626,
+                    "name": "astronaut"
+                },
+                {
+                    "id": 34152,
+                    "name": "evolution"
+                },
+                {
+                    "id": 155689,
+                    "name": "monolith"
+                },
+                {
+                    "id": 156039,
+                    "name": "space station"
+                },
+                {
+                    "id": 161176,
+                    "name": "space opera"
+                }
+            ]
+        }
+    },
+    {
+        "id": 25237,
+        "title": "Come and See",
+        "overview": "The invasion of a village in Belarus by German forces sends young Flyora into the forest to join the weary Resistance fighters, against his family's wishes. There he meets a girl, Glasha, who accompanies him back to his village. On returning home, Flyora finds his family and fellow peasants massacred. His continued survival amidst the brutal debris of war becomes increasingly nightmarish, a battle between despair and hope.",
+        "release_date": "1985-10-17",
+        "poster_path": "/qNbMsKVzigERgJUbwf8pKyZogpb.jpg",
+        "imdb_id": "tt0091251",
+        "runtime": 142,
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 10752,
+                "name": "War"
+            },
+            {
+                "id": 27,
+                "name": "Horror"
+            },
+            {
+                "id": 36,
+                "name": "History"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "SU"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "ru"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 93407,
+                    "name": "Aleksei Kravchenko",
+                    "character": "Flyora Gayshun",
+                    "order": 0,
+                    "profile_path": "/o7UD6o30iJ29dTHPCbtOScv9s5E.jpg"
+                },
+                {
+                    "id": 93408,
+                    "name": "Olga Mironova",
+                    "character": "Glasha",
+                    "order": 1,
+                    "profile_path": "/l4H4wR7B1NiY48uif6PITGB4T6.jpg"
+                },
+                {
+                    "id": 93409,
+                    "name": "Liubomiras Laucevičius",
+                    "character": "Kosach",
+                    "order": 2,
+                    "profile_path": "/r6Gdi2P7D6cPHcgTvvO4NSzvb9I.jpg"
+                },
+                {
+                    "id": 139096,
+                    "name": "Vladas Bagdonas",
+                    "character": "Rubezh",
+                    "order": 3,
+                    "profile_path": "/58chkP7aSp51iKDjEtP295ZWl6k.jpg"
+                },
+                {
+                    "id": 1148739,
+                    "name": "Jüri Lumiste",
+                    "character": "Obersturmführer",
+                    "order": 4,
+                    "profile_path": "/wU5CyMxiwzEU5mCSSUsTZeIHp8A.jpg"
+                },
+                {
+                    "id": 1148740,
+                    "name": "Viktors Lorencs",
+                    "character": "Sturmbannführer",
+                    "order": 5,
+                    "profile_path": "/24LC3IfTgkY7Mj7fjQENx6Q9oaf.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 93406,
+                    "name": "Elem Klimov",
+                    "job": "Director",
+                    "profile_path": "/jjTULtyYm3Rabvl95xelM8Kl7XO.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 1327,
+                    "name": "war crimes"
+                },
+                {
+                    "id": 1956,
+                    "name": "world war ii"
+                },
+                {
+                    "id": 2652,
+                    "name": "nazi"
+                },
+                {
+                    "id": 5403,
+                    "name": "wehrmacht"
+                },
+                {
+                    "id": 6255,
+                    "name": "insanity"
+                },
+                {
+                    "id": 9887,
+                    "name": "surrealism"
+                },
+                {
+                    "id": 10809,
+                    "name": "teenage girl"
+                },
+                {
+                    "id": 11872,
+                    "name": "atrocity"
+                },
+                {
+                    "id": 14900,
+                    "name": "genocide"
+                },
+                {
+                    "id": 166454,
+                    "name": "russian army"
+                },
+                {
+                    "id": 168839,
+                    "name": "mine field"
+                },
+                {
+                    "id": 190351,
+                    "name": "horrors of war"
+                },
+                {
+                    "id": 190352,
+                    "name": "premature aging"
+                },
+                {
+                    "id": 190353,
+                    "name": "byelorussia"
+                },
+                {
+                    "id": 241982,
+                    "name": "children in wartime"
+                }
+            ]
+        }
+    },
+    {
+        "id": 694,
+        "title": "The Shining",
+        "overview": "Jack Torrance accepts a caretaker job at the Overlook Hotel, where he, along with his wife Wendy and their son Danny, must live isolated from the rest of the world for the winter. But they aren't prepared for the madness that lurks within.",
+        "release_date": "1980-05-23",
+        "poster_path": "/uAR0AWqhQL1hQa69UDEbb2rE5Wx.jpg",
+        "imdb_id": "tt0081505",
+        "runtime": 144,
+        "genres": [
+            {
+                "id": 27,
+                "name": "Horror"
+            },
+            {
+                "id": 53,
+                "name": "Thriller"
+            }
+        ],
+        "production_countries": [
+            {
+                "iso_3166_1": "US"
+            }
+        ],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "credits": {
+            "cast": [
+                {
+                    "id": 514,
+                    "name": "Jack Nicholson",
+                    "character": "Jack Torrance",
+                    "order": 0,
+                    "profile_path": "/6h12pZsgj3WWjMtykUgfLkLEBWz.jpg"
+                },
+                {
+                    "id": 10409,
+                    "name": "Shelley Duvall",
+                    "character": "Wendy Torrance",
+                    "order": 1,
+                    "profile_path": "/zwscEWl7QLiOsfsvzGXFjAQCVp3.jpg"
+                },
+                {
+                    "id": 10410,
+                    "name": "Danny Lloyd",
+                    "character": "Danny",
+                    "order": 2,
+                    "profile_path": "/5pEmugZ6m25RB0cXbL4t5D4kZAO.jpg"
+                },
+                {
+                    "id": 7077,
+                    "name": "Scatman Crothers",
+                    "character": "Hallorann",
+                    "order": 3,
+                    "profile_path": "/ughfThqQuuoPLSsC9HfkxwX370w.jpg"
+                },
+                {
+                    "id": 10411,
+                    "name": "Barry Nelson",
+                    "character": "Ullman",
+                    "order": 4,
+                    "profile_path": "/fSrHmvOxZJbeKpNM0uWGvha1aK9.jpg"
+                },
+                {
+                    "id": 694,
+                    "name": "Philip Stone",
+                    "character": "Grady",
+                    "order": 5,
+                    "profile_path": "/l9riEGDgSK1NkVDUN6fn1TaXdpy.jpg"
+                }
+            ],
+            "crew": [
+                {
+                    "id": 240,
+                    "name": "Stanley Kubrick",
+                    "job": "Director",
+                    "profile_path": "/yFT0VyIelI9aegZrsAwOG5iVP4v.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "keywords": [
+                {
+                    "id": 516,
+                    "name": "child abuse"
+                },
+                {
+                    "id": 612,
+                    "name": "hotel"
+                },
+                {
+                    "id": 818,
+                    "name": "based on novel or book"
+                },
+                {
+                    "id": 1475,
+                    "name": "telepathy"
+                },
+                {
+                    "id": 1533,
+                    "name": "isolation"
+                },
+                {
+                    "id": 1981,
+                    "name": "colorado"
+                },
+                {
+                    "id": 3373,
+                    "name": "snowstorm"
+                },
+                {
+                    "id": 3556,
+                    "name": "seclusion"
+                },
+                {
+                    "id": 5914,
+                    "name": "writer's block"
+                },
+                {
+                    "id": 6262,
+                    "name": "delusion"
+                },
+                {
+                    "id": 7464,
+                    "name": "alcoholism"
+                },
+                {
+                    "id": 9815,
+                    "name": "psychic power"
+                },
+                {
+                    "id": 9887,
+                    "name": "surrealism"
+                },
+                {
+                    "id": 9957,
+                    "name": "loneliness"
+                },
+                {
+                    "id": 10170,
+                    "name": "premonition"
+                }
+            ]
+        }
     },
     {
         "id": 2,

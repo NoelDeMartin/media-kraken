@@ -10,7 +10,7 @@ import VirtualMediaGrid from './VirtualMediaGrid.vue';
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Core/VirtualMediaGrid',
+    title: 'Organisms/VirtualMediaGrid',
     render() {
         const stubs = Array.from({ length: 3000 }, (_, index) => {
             const movie = new Movie({

@@ -1,6 +1,5 @@
-import { Button, UI } from '@aerogel/core';
+import { ModalStory } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import { onMounted } from 'vue';
 
 import tmdbMovies from '@movies/lib/stubs/tmdb-movies';
 
@@ -13,29 +12,20 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'modules/movies/MoviePreviewModal',
+    title: 'Modals/MoviePreviewModal',
     component: MoviePreviewModal,
+    parameters: { layout: 'fullscreen' },
     argTypes: {
         movie: tmdbMovies.control,
     },
     args: {
         movie: tmdbMovies.first,
     },
-    render(args) {
-        const movie = tmdbMovies.resolve(args.movie);
-
-        async function open() {
-            await UI.modal(MoviePreviewModal, { movie });
-        }
-
-        onMounted(() => open());
-
-        return (
-            <div style={{ display: 'flex', justifyContent: 'start' }}>
-                <Button onClick={open}>Open</Button>
-            </div>
-        );
-    },
+    render: (args) => ({
+        setup: () => () => (
+            <ModalStory component={MoviePreviewModal} props={{ movie: tmdbMovies.resolve(args.movie) }} />
+        ),
+    }),
 };
 
 export const Primary: Story = {};

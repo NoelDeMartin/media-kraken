@@ -1,19 +1,2239 @@
 [
     {
+        "id": 95396,
+        "name": "Severance",
+        "overview": "Mark leads a team of office workers whose memories have been surgically divided between their work and personal lives. When a mysterious colleague appears outside of work, it begins a journey to discover the truth about their jobs.",
+        "first_air_date": "2022-02-17",
+        "poster_path": "/pPHpeI2X1qEd1CS1SeyrdhZ4qnT.jpg",
+        "backdrop_path": "/ixgFmf1X59PUZam2qbAfskx2gQr.jpg",
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 9648,
+                "name": "Mystery"
+            },
+            {
+                "id": 10765,
+                "name": "Sci-Fi & Fantasy"
+            }
+        ],
+        "origin_country": ["US"],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "created_by": [
+            {
+                "id": 3442409,
+                "name": "Dan Erickson",
+                "profile_path": null
+            }
+        ],
+        "number_of_seasons": 2,
+        "number_of_episodes": 19,
+        "credits": {
+            "cast": [
+                {
+                    "id": 36801,
+                    "name": "Adam Scott",
+                    "character": "Mark Scout",
+                    "order": 0,
+                    "profile_path": "/b82C29R6fGiPoqIglQ4lzS6q2YX.jpg"
+                },
+                {
+                    "id": 973497,
+                    "name": "Britt Lower",
+                    "character": "Helly Riggs",
+                    "order": 1,
+                    "profile_path": "/5XIcTMDSyj7hRICQAcnY9U83ujF.jpg"
+                },
+                {
+                    "id": 2028037,
+                    "name": "Tramell Tillman",
+                    "character": "Seth Milchick",
+                    "order": 2,
+                    "profile_path": "/bEA15zMnkcXlRroYjKrFUWiiK7y.jpg"
+                },
+                {
+                    "id": 1838225,
+                    "name": "Zach Cherry",
+                    "character": "Dylan George",
+                    "order": 3,
+                    "profile_path": "/fT3Wv8ef0Vn0daHWAObCp2Bd4Y.jpg"
+                },
+                {
+                    "id": 4687,
+                    "name": "Patricia Arquette",
+                    "character": "Harmony Cobel",
+                    "order": 4,
+                    "profile_path": "/jeThSouMatiuRiLkjDvSBLHpmq0.jpg"
+                },
+                {
+                    "id": 1569165,
+                    "name": "Jen Tullock",
+                    "character": "Devon Scout-Hale",
+                    "order": 5,
+                    "profile_path": "/91vck8hZ1VZGV6PTcwFWEEdzGE0.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "results": [
+                {
+                    "id": 1438,
+                    "name": "office"
+                },
+                {
+                    "id": 6282,
+                    "name": "workplace"
+                },
+                {
+                    "id": 10937,
+                    "name": "memory"
+                },
+                {
+                    "id": 11923,
+                    "name": "office politics"
+                },
+                {
+                    "id": 189401,
+                    "name": "brain surgery"
+                },
+                {
+                    "id": 316362,
+                    "name": "thriller"
+                }
+            ]
+        },
+        "external_ids": {
+            "imdb_id": "tt11280740"
+        },
+        "seasons": [
+            {
+                "id": 9539601,
+                "name": "Season 1",
+                "season_number": 1,
+                "episode_count": 9,
+                "air_date": "2022-02-17",
+                "episodes": [
+                    {
+                        "id": 953960101,
+                        "name": "Good News About Hell",
+                        "episode_number": 1,
+                        "season_number": 1,
+                        "air_date": "2022-02-17",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 953960102,
+                        "name": "Half Loop",
+                        "episode_number": 2,
+                        "season_number": 1,
+                        "air_date": "2022-02-17",
+                        "runtime": 57
+                    },
+                    {
+                        "id": 953960103,
+                        "name": "In Perpetuity",
+                        "episode_number": 3,
+                        "season_number": 1,
+                        "air_date": "2022-02-24",
+                        "runtime": 60
+                    },
+                    {
+                        "id": 953960104,
+                        "name": "The You You Are",
+                        "episode_number": 4,
+                        "season_number": 1,
+                        "air_date": "2022-03-03",
+                        "runtime": 50
+                    },
+                    {
+                        "id": 953960105,
+                        "name": "The Grim Barbarity of Optics and Design",
+                        "episode_number": 5,
+                        "season_number": 1,
+                        "air_date": "2022-03-10",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 953960106,
+                        "name": "Hide and Seek",
+                        "episode_number": 6,
+                        "season_number": 1,
+                        "air_date": "2022-03-17",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 953960107,
+                        "name": "Defiant Jazz",
+                        "episode_number": 7,
+                        "season_number": 1,
+                        "air_date": "2022-03-24",
+                        "runtime": 53
+                    },
+                    {
+                        "id": 953960108,
+                        "name": "What's for Dinner?",
+                        "episode_number": 8,
+                        "season_number": 1,
+                        "air_date": "2022-03-31",
+                        "runtime": 50
+                    },
+                    {
+                        "id": 953960109,
+                        "name": "The We We Are",
+                        "episode_number": 9,
+                        "season_number": 1,
+                        "air_date": "2022-04-07",
+                        "runtime": 44
+                    }
+                ]
+            },
+            {
+                "id": 9539602,
+                "name": "Season 2",
+                "season_number": 2,
+                "episode_count": 10,
+                "air_date": "2025-01-16",
+                "episodes": [
+                    {
+                        "id": 953960201,
+                        "name": "Hello, Ms. Cobel",
+                        "episode_number": 1,
+                        "season_number": 2,
+                        "air_date": "2025-01-16",
+                        "runtime": 54
+                    },
+                    {
+                        "id": 953960202,
+                        "name": "Goodbye, Mrs. Selvig",
+                        "episode_number": 2,
+                        "season_number": 2,
+                        "air_date": "2025-01-23",
+                        "runtime": 49
+                    },
+                    {
+                        "id": 953960203,
+                        "name": "Who Is Alive?",
+                        "episode_number": 3,
+                        "season_number": 2,
+                        "air_date": "2025-01-30",
+                        "runtime": 57
+                    },
+                    {
+                        "id": 953960204,
+                        "name": "Woe's Hollow",
+                        "episode_number": 4,
+                        "season_number": 2,
+                        "air_date": "2025-02-06",
+                        "runtime": 54
+                    },
+                    {
+                        "id": 953960205,
+                        "name": "Trojan's Horse",
+                        "episode_number": 5,
+                        "season_number": 2,
+                        "air_date": "2025-02-13",
+                        "runtime": 50
+                    },
+                    {
+                        "id": 953960206,
+                        "name": "Attila",
+                        "episode_number": 6,
+                        "season_number": 2,
+                        "air_date": "2025-02-20",
+                        "runtime": 52
+                    },
+                    {
+                        "id": 953960207,
+                        "name": "Chikhai Bardo",
+                        "episode_number": 7,
+                        "season_number": 2,
+                        "air_date": "2025-02-27",
+                        "runtime": 53
+                    },
+                    {
+                        "id": 953960208,
+                        "name": "Sweet Vitriol",
+                        "episode_number": 8,
+                        "season_number": 2,
+                        "air_date": "2025-03-06",
+                        "runtime": 41
+                    },
+                    {
+                        "id": 953960209,
+                        "name": "The After Hours",
+                        "episode_number": 9,
+                        "season_number": 2,
+                        "air_date": "2025-03-13",
+                        "runtime": 48
+                    },
+                    {
+                        "id": 953960210,
+                        "name": "Cold Harbor",
+                        "episode_number": 10,
+                        "season_number": 2,
+                        "air_date": "2025-03-20",
+                        "runtime": 80
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 76331,
+        "name": "Succession",
+        "overview": "Follow the lives of the Roy family as they contemplate their future once their aging father begins to step back from the media and entertainment conglomerate they control.",
+        "first_air_date": "2018-06-03",
+        "poster_path": "/z0XiwdrCQ9yVIr4O0pxzaAYRxdW.jpg",
+        "backdrop_path": "/d87JXX3DLkRJMfm5StCmmnmhHuX.jpg",
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 35,
+                "name": "Comedy"
+            }
+        ],
+        "origin_country": ["US"],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "created_by": [
+            {
+                "id": 62946,
+                "name": "Jesse Armstrong",
+                "profile_path": null
+            }
+        ],
+        "number_of_seasons": 4,
+        "number_of_episodes": 39,
+        "credits": {
+            "cast": [
+                {
+                    "id": 239271,
+                    "name": "Jeremy Strong",
+                    "character": "Kendall Roy",
+                    "order": 0,
+                    "profile_path": "/jcMhXWICSi4QjQttJVhFSiKVvpF.jpg"
+                },
+                {
+                    "id": 18793,
+                    "name": "Kieran Culkin",
+                    "character": "Roman Roy",
+                    "order": 1,
+                    "profile_path": "/b5EC4nziLhBRX4GOcYx2BdS3FTt.jpg"
+                },
+                {
+                    "id": 235416,
+                    "name": "Sarah Snook",
+                    "character": "Siobhan 'Shiv' Roy",
+                    "order": 2,
+                    "profile_path": "/w9xv72oaTISLgeT381fU4Jor9GV.jpg"
+                },
+                {
+                    "id": 1248,
+                    "name": "Brian Cox",
+                    "character": "Logan Roy",
+                    "order": 3,
+                    "profile_path": "/scSjbFCTRngXlkJRoKptM5kQGw7.jpg"
+                },
+                {
+                    "id": 15576,
+                    "name": "Matthew Macfadyen",
+                    "character": "Tom Wambsgans",
+                    "order": 4,
+                    "profile_path": "/sFaIfkykJdftwrc3BdEfpdg2mYW.jpg"
+                },
+                {
+                    "id": 2394,
+                    "name": "Alan Ruck",
+                    "character": "Connor Roy",
+                    "order": 5,
+                    "profile_path": "/hj7CuWinT12hMKjRhSO4XEMVq7w.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "results": [
+                {
+                    "id": 242,
+                    "name": "new york city"
+                },
+                {
+                    "id": 380,
+                    "name": "sibling relationship"
+                },
+                {
+                    "id": 3587,
+                    "name": "media tycoon"
+                },
+                {
+                    "id": 4480,
+                    "name": "businessman"
+                },
+                {
+                    "id": 4677,
+                    "name": "patriarch"
+                },
+                {
+                    "id": 5683,
+                    "name": "family business"
+                },
+                {
+                    "id": 10041,
+                    "name": "dysfunctional family"
+                },
+                {
+                    "id": 10329,
+                    "name": "wealth"
+                },
+                {
+                    "id": 18027,
+                    "name": "sibling"
+                },
+                {
+                    "id": 196595,
+                    "name": "succession"
+                },
+                {
+                    "id": 207059,
+                    "name": "white collar criminal"
+                },
+                {
+                    "id": 222823,
+                    "name": "failed marriage"
+                },
+                {
+                    "id": 325776,
+                    "name": "baffled"
+                },
+                {
+                    "id": 325785,
+                    "name": "commanding"
+                },
+                {
+                    "id": 374442,
+                    "name": "media empire"
+                }
+            ]
+        },
+        "external_ids": {
+            "imdb_id": "tt7660850"
+        },
+        "seasons": [
+            {
+                "id": 7633101,
+                "name": "Season 1",
+                "season_number": 1,
+                "episode_count": 10,
+                "air_date": "2018-06-03",
+                "episodes": [
+                    {
+                        "id": 763310101,
+                        "name": "Celebration",
+                        "episode_number": 1,
+                        "season_number": 1,
+                        "air_date": "2018-06-03",
+                        "runtime": 62
+                    },
+                    {
+                        "id": 763310102,
+                        "name": "Sh*t Show at the F**k Factory",
+                        "episode_number": 2,
+                        "season_number": 1,
+                        "air_date": "2018-06-10",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 763310103,
+                        "name": "Lifeboats",
+                        "episode_number": 3,
+                        "season_number": 1,
+                        "air_date": "2018-06-17",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310104,
+                        "name": "Sad Sack Wasp Trap",
+                        "episode_number": 4,
+                        "season_number": 1,
+                        "air_date": "2018-06-24",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310105,
+                        "name": "I Went to Market",
+                        "episode_number": 5,
+                        "season_number": 1,
+                        "air_date": "2018-07-01",
+                        "runtime": 56
+                    },
+                    {
+                        "id": 763310106,
+                        "name": "Which Side Are You On?",
+                        "episode_number": 6,
+                        "season_number": 1,
+                        "air_date": "2018-07-08",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310107,
+                        "name": "Austerlitz",
+                        "episode_number": 7,
+                        "season_number": 1,
+                        "air_date": "2018-07-15",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310108,
+                        "name": "Prague",
+                        "episode_number": 8,
+                        "season_number": 1,
+                        "air_date": "2018-07-22",
+                        "runtime": 56
+                    },
+                    {
+                        "id": 763310109,
+                        "name": "Pre-Nuptial",
+                        "episode_number": 9,
+                        "season_number": 1,
+                        "air_date": "2018-07-29",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310110,
+                        "name": "Nobody Is Ever Missing",
+                        "episode_number": 10,
+                        "season_number": 1,
+                        "air_date": "2018-08-05",
+                        "runtime": 66
+                    }
+                ]
+            },
+            {
+                "id": 7633102,
+                "name": "Season 2",
+                "season_number": 2,
+                "episode_count": 10,
+                "air_date": "2019-08-11",
+                "episodes": [
+                    {
+                        "id": 763310201,
+                        "name": "The Summer Palace",
+                        "episode_number": 1,
+                        "season_number": 2,
+                        "air_date": "2019-08-11",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 763310202,
+                        "name": "Vaulter",
+                        "episode_number": 2,
+                        "season_number": 2,
+                        "air_date": "2019-08-18",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310203,
+                        "name": "Hunting",
+                        "episode_number": 3,
+                        "season_number": 2,
+                        "air_date": "2019-08-25",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 763310204,
+                        "name": "Safe Room",
+                        "episode_number": 4,
+                        "season_number": 2,
+                        "air_date": "2019-09-01",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310205,
+                        "name": "Tern Haven",
+                        "episode_number": 5,
+                        "season_number": 2,
+                        "air_date": "2019-09-08",
+                        "runtime": 60
+                    },
+                    {
+                        "id": 763310206,
+                        "name": "Argestes",
+                        "episode_number": 6,
+                        "season_number": 2,
+                        "air_date": "2019-09-15",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310207,
+                        "name": "Return",
+                        "episode_number": 7,
+                        "season_number": 2,
+                        "air_date": "2019-09-22",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310208,
+                        "name": "Dundee",
+                        "episode_number": 8,
+                        "season_number": 2,
+                        "air_date": "2019-09-29",
+                        "runtime": 60
+                    },
+                    {
+                        "id": 763310209,
+                        "name": "DC",
+                        "episode_number": 9,
+                        "season_number": 2,
+                        "air_date": "2019-10-06",
+                        "runtime": 61
+                    },
+                    {
+                        "id": 763310210,
+                        "name": "This Is Not for Tears",
+                        "episode_number": 10,
+                        "season_number": 2,
+                        "air_date": "2019-10-13",
+                        "runtime": 69
+                    }
+                ]
+            },
+            {
+                "id": 7633103,
+                "name": "Season 3",
+                "season_number": 3,
+                "episode_count": 9,
+                "air_date": "2021-10-17",
+                "episodes": [
+                    {
+                        "id": 763310301,
+                        "name": "Secession",
+                        "episode_number": 1,
+                        "season_number": 3,
+                        "air_date": "2021-10-17",
+                        "runtime": 57
+                    },
+                    {
+                        "id": 763310302,
+                        "name": "Mass in Time of War",
+                        "episode_number": 2,
+                        "season_number": 3,
+                        "air_date": "2021-10-24",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 763310303,
+                        "name": "The Disruption",
+                        "episode_number": 3,
+                        "season_number": 3,
+                        "air_date": "2021-10-31",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 763310304,
+                        "name": "Lion in the Meadow",
+                        "episode_number": 4,
+                        "season_number": 3,
+                        "air_date": "2021-11-07",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 763310305,
+                        "name": "Retired Janitors of Idaho",
+                        "episode_number": 5,
+                        "season_number": 3,
+                        "air_date": "2021-11-14",
+                        "runtime": 60
+                    },
+                    {
+                        "id": 763310306,
+                        "name": "What It Takes",
+                        "episode_number": 6,
+                        "season_number": 3,
+                        "air_date": "2021-11-21",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310307,
+                        "name": "Too Much Birthday",
+                        "episode_number": 7,
+                        "season_number": 3,
+                        "air_date": "2021-11-28",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 763310308,
+                        "name": "Chiantishire",
+                        "episode_number": 8,
+                        "season_number": 3,
+                        "air_date": "2021-12-05",
+                        "runtime": 64
+                    },
+                    {
+                        "id": 763310309,
+                        "name": "All the Bells Say",
+                        "episode_number": 9,
+                        "season_number": 3,
+                        "air_date": "2021-12-12",
+                        "runtime": 65
+                    }
+                ]
+            },
+            {
+                "id": 7633104,
+                "name": "Season 4",
+                "season_number": 4,
+                "episode_count": 10,
+                "air_date": "2023-03-26",
+                "episodes": [
+                    {
+                        "id": 763310401,
+                        "name": "The Munsters",
+                        "episode_number": 1,
+                        "season_number": 4,
+                        "air_date": "2023-03-26",
+                        "runtime": 61
+                    },
+                    {
+                        "id": 763310402,
+                        "name": "Rehearsal",
+                        "episode_number": 2,
+                        "season_number": 4,
+                        "air_date": "2023-04-02",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 763310403,
+                        "name": "Connor's Wedding",
+                        "episode_number": 3,
+                        "season_number": 4,
+                        "air_date": "2023-04-09",
+                        "runtime": 62
+                    },
+                    {
+                        "id": 763310404,
+                        "name": "Honeymoon States",
+                        "episode_number": 4,
+                        "season_number": 4,
+                        "air_date": "2023-04-16",
+                        "runtime": 60
+                    },
+                    {
+                        "id": 763310405,
+                        "name": "Kill List",
+                        "episode_number": 5,
+                        "season_number": 4,
+                        "air_date": "2023-04-23",
+                        "runtime": 61
+                    },
+                    {
+                        "id": 763310406,
+                        "name": "Living+",
+                        "episode_number": 6,
+                        "season_number": 4,
+                        "air_date": "2023-04-30",
+                        "runtime": 63
+                    },
+                    {
+                        "id": 763310407,
+                        "name": "Tailgate Party",
+                        "episode_number": 7,
+                        "season_number": 4,
+                        "air_date": "2023-05-07",
+                        "runtime": 62
+                    },
+                    {
+                        "id": 763310408,
+                        "name": "America Decides",
+                        "episode_number": 8,
+                        "season_number": 4,
+                        "air_date": "2023-05-14",
+                        "runtime": 66
+                    },
+                    {
+                        "id": 763310409,
+                        "name": "Church and State",
+                        "episode_number": 9,
+                        "season_number": 4,
+                        "air_date": "2023-05-21",
+                        "runtime": 74
+                    },
+                    {
+                        "id": 763310410,
+                        "name": "With Open Eyes",
+                        "episode_number": 10,
+                        "season_number": 4,
+                        "air_date": "2023-05-28",
+                        "runtime": 89
+                    }
+                ]
+            }
+        ]
+    },
+    {
         "id": 2382,
         "name": "Freaks and Geeks",
+        "overview": "High school mathlete Lindsay Weir rebels and begins hanging out with a crowd of burnouts (the \"freaks\"), while her brother Sam Weir navigates a different part of the social universe with his nerdy friends (the \"geeks\").",
         "first_air_date": "1999-09-25",
         "poster_path": "/tPqV63zcW6ZV0Hd48DMGb5UzQIG.jpg",
-        "overview": "High school mathlete Lindsay Weir rebels and begins hanging out with a crowd of burnouts (the \"freaks\"), while her brother Sam Weir navigates a different part of the social universe with his nerdy friends (the \"geeks\")."
+        "backdrop_path": "/1lOGkpGa9SjZ2uP1PxfxDkSXRNs.jpg",
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 35,
+                "name": "Comedy"
+            }
+        ],
+        "origin_country": ["US"],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "created_by": [
+            {
+                "id": 116805,
+                "name": "Paul Feig",
+                "profile_path": null
+            }
+        ],
+        "number_of_seasons": 1,
+        "number_of_episodes": 18,
+        "credits": {
+            "cast": [
+                {
+                    "id": 52935,
+                    "name": "John Francis Daley",
+                    "character": "Sam Weir",
+                    "order": 0,
+                    "profile_path": "/rKZL3e8gI2tQD6Kv0QojXK5sG4u.jpg"
+                },
+                {
+                    "id": 1817,
+                    "name": "Linda Cardellini",
+                    "character": "Lindsay Weir",
+                    "order": 1,
+                    "profile_path": "/bcycvynDprC1rrhBNrnBjn5uOUd.jpg"
+                },
+                {
+                    "id": 17051,
+                    "name": "James Franco",
+                    "character": "Daniel Desario",
+                    "order": 2,
+                    "profile_path": "/bjmAntHGiibLZixH8nTNVBzaFQn.jpg"
+                },
+                {
+                    "id": 58507,
+                    "name": "Samm Levine",
+                    "character": "Neal Schweiber",
+                    "order": 3,
+                    "profile_path": "/9w1FEtxjXkfafAmJ2B8yoDOISP2.jpg"
+                },
+                {
+                    "id": 41089,
+                    "name": "Martin Starr",
+                    "character": "Bill Haverchuck",
+                    "order": 4,
+                    "profile_path": "/cxGxr0S1jnvOpOHyZDYXrg2GHju.jpg"
+                },
+                {
+                    "id": 41088,
+                    "name": "Jason Segel",
+                    "character": "Nick Andopolis",
+                    "order": 5,
+                    "profile_path": "/aG6tVNSbl1YEjN65G3luFYnWbUM.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "results": [
+                {
+                    "id": 6270,
+                    "name": "high school"
+                },
+                {
+                    "id": 10683,
+                    "name": "coming of age"
+                },
+                {
+                    "id": 193171,
+                    "name": "sitcom"
+                },
+                {
+                    "id": 193400,
+                    "name": "teen drama"
+                },
+                {
+                    "id": 208289,
+                    "name": "1980s"
+                },
+                {
+                    "id": 325806,
+                    "name": "empathetic"
+                },
+                {
+                    "id": 325849,
+                    "name": "sincere"
+                }
+            ]
+        },
+        "external_ids": {
+            "imdb_id": "tt0193676"
+        },
+        "seasons": [
+            {
+                "id": 238201,
+                "name": "Season 1",
+                "season_number": 1,
+                "episode_count": 18,
+                "air_date": "1999-09-25",
+                "episodes": [
+                    {
+                        "id": 23820101,
+                        "name": "Pilot",
+                        "episode_number": 1,
+                        "season_number": 1,
+                        "air_date": "1999-09-25",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820102,
+                        "name": "Beers and Weirs",
+                        "episode_number": 2,
+                        "season_number": 1,
+                        "air_date": "1999-10-02",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820103,
+                        "name": "Tricks and Treats",
+                        "episode_number": 3,
+                        "season_number": 1,
+                        "air_date": "1999-10-30",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820104,
+                        "name": "Tests and Breasts",
+                        "episode_number": 4,
+                        "season_number": 1,
+                        "air_date": "1999-11-06",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820105,
+                        "name": "I'm with the Band",
+                        "episode_number": 5,
+                        "season_number": 1,
+                        "air_date": "1999-11-13",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820106,
+                        "name": "Carded and Discarded",
+                        "episode_number": 6,
+                        "season_number": 1,
+                        "air_date": "2000-01-10",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820107,
+                        "name": "Girlfriends and Boyfriends",
+                        "episode_number": 7,
+                        "season_number": 1,
+                        "air_date": "2000-01-17",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820108,
+                        "name": "We've Got Spirit",
+                        "episode_number": 8,
+                        "season_number": 1,
+                        "air_date": "2000-01-24",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820109,
+                        "name": "The Diary",
+                        "episode_number": 9,
+                        "season_number": 1,
+                        "air_date": "2000-01-31",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820110,
+                        "name": "Looks and Books",
+                        "episode_number": 10,
+                        "season_number": 1,
+                        "air_date": "2000-02-07",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820111,
+                        "name": "The Garage Door",
+                        "episode_number": 11,
+                        "season_number": 1,
+                        "air_date": "2000-03-13",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820112,
+                        "name": "Chokin' and Tokin'",
+                        "episode_number": 12,
+                        "season_number": 1,
+                        "air_date": "2000-03-20",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820113,
+                        "name": "Smooching and Mooching",
+                        "episode_number": 13,
+                        "season_number": 1,
+                        "air_date": "2000-07-08",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820114,
+                        "name": "The Little Things",
+                        "episode_number": 14,
+                        "season_number": 1,
+                        "air_date": "2000-07-08",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820115,
+                        "name": "Discos and Dragons",
+                        "episode_number": 15,
+                        "season_number": 1,
+                        "air_date": "2000-07-08",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820116,
+                        "name": "Kim Kelly Is My Friend",
+                        "episode_number": 16,
+                        "season_number": 1,
+                        "air_date": "2000-09-05",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820117,
+                        "name": "Dead Dogs and Gym Teachers",
+                        "episode_number": 17,
+                        "season_number": 1,
+                        "air_date": "2000-10-10",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 23820118,
+                        "name": "Noshing and Moshing",
+                        "episode_number": 18,
+                        "season_number": 1,
+                        "air_date": "2000-10-17",
+                        "runtime": 44
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 225171,
+        "name": "Pluribus",
+        "overview": "The most miserable person on Earth must save the world from happiness.",
+        "first_air_date": "2025-11-06",
+        "poster_path": "/z7Nga7Q9IGFWs5OEduY2gGFxnX3.jpg",
+        "backdrop_path": "/ulm1ex4JFYJByyaPyqTr47MFyEQ.jpg",
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 10765,
+                "name": "Sci-Fi & Fantasy"
+            }
+        ],
+        "origin_country": ["US"],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "created_by": [
+            {
+                "id": 66633,
+                "name": "Vince Gilligan",
+                "profile_path": null
+            }
+        ],
+        "number_of_seasons": 1,
+        "number_of_episodes": 9,
+        "credits": {
+            "cast": [
+                {
+                    "id": 62765,
+                    "name": "Rhea Seehorn",
+                    "character": "Carol Sturka",
+                    "order": 0,
+                    "profile_path": "/tql4gvY8NfYvmAdmdp1olkwJnrq.jpg"
+                },
+                {
+                    "id": 210829,
+                    "name": "Karolina Wydra",
+                    "character": "Zosia",
+                    "order": 1,
+                    "profile_path": "/141nqX6Ikw7sXgWAkMTEbLbzqpU.jpg"
+                },
+                {
+                    "id": 1251536,
+                    "name": "Carlos-Manuel Vesga",
+                    "character": "Manousos Oviedo",
+                    "order": 2,
+                    "profile_path": "/crm5YcUTtb5pXhZbJsATA8EAoPD.jpg"
+                },
+                {
+                    "id": 18273,
+                    "name": "Miriam Shor",
+                    "character": "Helen",
+                    "order": 3,
+                    "profile_path": "/n6hpEZqCpxxb4yln76mfDvuz5lh.jpg"
+                },
+                {
+                    "id": 58791,
+                    "name": "Patrick Fabian",
+                    "character": "Others' Phone Answering Service (voice) (uncredited)",
+                    "order": 4,
+                    "profile_path": "/bbsYGlnvGUTTExcabKL1OIhcKyZ.jpg"
+                },
+                {
+                    "id": 1274719,
+                    "name": "Samba Schutte",
+                    "character": "Mr. Diabaté",
+                    "order": 5,
+                    "profile_path": "/cZ0JklTvPQrwtA6TwC4V0hdSgNt.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "results": [
+                {
+                    "id": 1508,
+                    "name": "new mexico"
+                },
+                {
+                    "id": 4565,
+                    "name": "dystopia"
+                },
+                {
+                    "id": 6511,
+                    "name": "alone"
+                },
+                {
+                    "id": 9957,
+                    "name": "loneliness"
+                },
+                {
+                    "id": 10123,
+                    "name": "dark comedy"
+                },
+                {
+                    "id": 188957,
+                    "name": "virus"
+                },
+                {
+                    "id": 191005,
+                    "name": "albuquerque, new mexico"
+                },
+                {
+                    "id": 199524,
+                    "name": "disturbed"
+                },
+                {
+                    "id": 215191,
+                    "name": "strange"
+                },
+                {
+                    "id": 219843,
+                    "name": "immunity"
+                },
+                {
+                    "id": 264386,
+                    "name": "lesbian"
+                },
+                {
+                    "id": 274024,
+                    "name": "miserable"
+                },
+                {
+                    "id": 281963,
+                    "name": "helpfulness"
+                },
+                {
+                    "id": 325045,
+                    "name": "happiness"
+                },
+                {
+                    "id": 339126,
+                    "name": "collective"
+                }
+            ]
+        },
+        "external_ids": {
+            "imdb_id": "tt22202452"
+        },
+        "seasons": [
+            {
+                "id": 22517101,
+                "name": "Season 1",
+                "season_number": 1,
+                "episode_count": 9,
+                "air_date": "2025-11-06",
+                "episodes": [
+                    {
+                        "id": 2251710101,
+                        "name": "We Is Us",
+                        "episode_number": 1,
+                        "season_number": 1,
+                        "air_date": "2025-11-06",
+                        "runtime": 57
+                    },
+                    {
+                        "id": 2251710102,
+                        "name": "Pirate Lady",
+                        "episode_number": 2,
+                        "season_number": 1,
+                        "air_date": "2025-11-06",
+                        "runtime": 63
+                    },
+                    {
+                        "id": 2251710103,
+                        "name": "Grenade",
+                        "episode_number": 3,
+                        "season_number": 1,
+                        "air_date": "2025-11-13",
+                        "runtime": 44
+                    },
+                    {
+                        "id": 2251710104,
+                        "name": "Please, Carol",
+                        "episode_number": 4,
+                        "season_number": 1,
+                        "air_date": "2025-11-20",
+                        "runtime": 46
+                    },
+                    {
+                        "id": 2251710105,
+                        "name": "Got Milk",
+                        "episode_number": 5,
+                        "season_number": 1,
+                        "air_date": "2025-11-25",
+                        "runtime": 46
+                    },
+                    {
+                        "id": 2251710106,
+                        "name": "HDP",
+                        "episode_number": 6,
+                        "season_number": 1,
+                        "air_date": "2025-12-04",
+                        "runtime": 50
+                    },
+                    {
+                        "id": 2251710107,
+                        "name": "The Gap",
+                        "episode_number": 7,
+                        "season_number": 1,
+                        "air_date": "2025-12-11",
+                        "runtime": 46
+                    },
+                    {
+                        "id": 2251710108,
+                        "name": "Charm Offensive",
+                        "episode_number": 8,
+                        "season_number": 1,
+                        "air_date": "2025-12-18",
+                        "runtime": 43
+                    },
+                    {
+                        "id": 2251710109,
+                        "name": "La Chica o El Mundo",
+                        "episode_number": 9,
+                        "season_number": 1,
+                        "air_date": "2025-12-23",
+                        "runtime": 58
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 318918,
+        "name": "LEGO ONE PIECE",
+        "overview": "The Straw Hats hit the high seas in a two-part LEGO special! Join Luffy, Nami, Usopp and the crew on their epic journey, fully reimagined brick by brick.",
+        "first_air_date": "2026-09-29",
+        "poster_path": "/hTUHZ337JzqPvRXBQ3lu0GBkOvz.jpg",
+        "backdrop_path": "/qA8U2ABepV5E2BcNIBcgUaFy4fM.jpg",
+        "genres": [
+            {
+                "id": 16,
+                "name": "Animation"
+            },
+            {
+                "id": 10759,
+                "name": "Action & Adventure"
+            },
+            {
+                "id": 10765,
+                "name": "Sci-Fi & Fantasy"
+            },
+            {
+                "id": 35,
+                "name": "Comedy"
+            },
+            {
+                "id": 10751,
+                "name": "Family"
+            }
+        ],
+        "origin_country": ["US"],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "created_by": [],
+        "number_of_seasons": 1,
+        "number_of_episodes": 2,
+        "credits": {
+            "cast": [
+                {
+                    "id": 2177750,
+                    "name": "Iñaki Godoy",
+                    "character": "Luffy (voice)",
+                    "order": 0,
+                    "profile_path": "/oPwyLvGfgApD7MfRwj8zp7HOLMF.jpg"
+                },
+                {
+                    "id": 1568101,
+                    "name": "Emily Rudd",
+                    "character": "Nami (voice)",
+                    "order": 1,
+                    "profile_path": "/vVl4ABlqUuh5n1M2B9AOOa9r6kV.jpg"
+                },
+                {
+                    "id": 1566805,
+                    "name": "Mackenyu Maeda",
+                    "character": "Zoro (voice)",
+                    "order": 2,
+                    "profile_path": "/4L3HRO6FGpCT20AnEgkr9OoamJK.jpg"
+                },
+                {
+                    "id": 2355316,
+                    "name": "Jacob Gibson",
+                    "character": "Usopp",
+                    "order": 3,
+                    "profile_path": "/rjBm6lA9A077Id2lAnoNyryo268.jpg"
+                },
+                {
+                    "id": 2498631,
+                    "name": "Taz Skylar",
+                    "character": "Sanji (voice)",
+                    "order": 4,
+                    "profile_path": "/3EXMkfzB8EXn3ZJPJvK6OfPWLfz.jpg"
+                },
+                {
+                    "id": 1363394,
+                    "name": "Mikaela Hoover",
+                    "character": "Chopper (voice)",
+                    "order": 5,
+                    "profile_path": "/mC2jcUUd8I9eyRm1liQiMA63Vvm.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "results": [
+                {
+                    "id": 9717,
+                    "name": "based on comic"
+                },
+                {
+                    "id": 11162,
+                    "name": "miniseries"
+                },
+                {
+                    "id": 12988,
+                    "name": "pirate"
+                },
+                {
+                    "id": 15285,
+                    "name": "spin off"
+                },
+                {
+                    "id": 157186,
+                    "name": "swashbuckler"
+                },
+                {
+                    "id": 186847,
+                    "name": "retelling"
+                },
+                {
+                    "id": 207372,
+                    "name": "quest"
+                },
+                {
+                    "id": 210090,
+                    "name": "lego"
+                }
+            ]
+        },
+        "external_ids": {
+            "imdb_id": "tt41538904"
+        },
+        "seasons": [
+            {
+                "id": 31891801,
+                "name": "Season 1",
+                "season_number": 1,
+                "episode_count": 2,
+                "air_date": "2026-09-29",
+                "episodes": [
+                    {
+                        "id": 3189180101,
+                        "name": "Tall Tales from the East Blue",
+                        "episode_number": 1,
+                        "season_number": 1,
+                        "air_date": "2026-09-29",
+                        "runtime": 33
+                    },
+                    {
+                        "id": 3189180102,
+                        "name": "Grand Line, Grand Time",
+                        "episode_number": 2,
+                        "season_number": 1,
+                        "air_date": "2026-09-29",
+                        "runtime": 34
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 1920,
+        "name": "Twin Peaks",
+        "overview": "The body of Laura Palmer is washed up on a beach near the small Washington state town of Twin Peaks. FBI Special Agent Dale Cooper is called in to investigate her strange demise only to uncover a web of mystery that ultimately leads him deep into the heart of the surrounding woodland and his very own soul.",
+        "first_air_date": "1990-04-08",
+        "poster_path": "/lA9CNSdo50iQPZ8A2fyVpMvJZAf.jpg",
+        "backdrop_path": "/dZklTql88IDOmkC3JAYQSTgyK6f.jpg",
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 9648,
+                "name": "Mystery"
+            }
+        ],
+        "origin_country": ["US"],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "created_by": [
+            {
+                "id": 58837,
+                "name": "Mark Frost",
+                "profile_path": null
+            },
+            {
+                "id": 5602,
+                "name": "David Lynch",
+                "profile_path": null
+            }
+        ],
+        "number_of_seasons": 3,
+        "number_of_episodes": 48,
+        "credits": {
+            "cast": [
+                {
+                    "id": 6677,
+                    "name": "Kyle MacLachlan",
+                    "character": "Dale Cooper / Dougie Jones",
+                    "order": 0,
+                    "profile_path": "/7gNyx8fYAUdOp2jpCEH3dyFbeV.jpg"
+                },
+                {
+                    "id": 175468,
+                    "name": "Michael Horse",
+                    "character": "Tommy 'Hawk' Hill",
+                    "order": 1,
+                    "profile_path": "/5111zpfxrX6Udb6rFgWQF2W5wNV.jpg"
+                },
+                {
+                    "id": 213799,
+                    "name": "Harry Goaz",
+                    "character": "Andy Brennan",
+                    "order": 2,
+                    "profile_path": "/oeWNUiLjboZG3UdKr4ZWKDnK3LZ.jpg"
+                },
+                {
+                    "id": 6727,
+                    "name": "Kimmy Robertson",
+                    "character": "Lucy Moran / Lucy Brennan / Lucy Brennan (voice)",
+                    "order": 3,
+                    "profile_path": "/nZAiIyKFNHfVdgEjvdBIPOb8m0B.jpg"
+                },
+                {
+                    "id": 6715,
+                    "name": "Dana Ashbrook",
+                    "character": "Bobby Briggs",
+                    "order": 4,
+                    "profile_path": "/Aj2y03r4pEoyvr2Ed1m28aQNmMs.jpg"
+                },
+                {
+                    "id": 6679,
+                    "name": "Richard Beymer",
+                    "character": "Benjamin Horne",
+                    "order": 5,
+                    "profile_path": "/q0RQwBRnBFonTgXXDyE7I8MgucV.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "results": [
+                {
+                    "id": 1411,
+                    "name": "brothel"
+                },
+                {
+                    "id": 1415,
+                    "name": "small town"
+                },
+                {
+                    "id": 1559,
+                    "name": "deputy sheriff"
+                },
+                {
+                    "id": 1812,
+                    "name": "fbi"
+                },
+                {
+                    "id": 2439,
+                    "name": "coffee"
+                },
+                {
+                    "id": 5774,
+                    "name": "forest"
+                },
+                {
+                    "id": 6270,
+                    "name": "high school"
+                },
+                {
+                    "id": 9712,
+                    "name": "possession"
+                },
+                {
+                    "id": 9820,
+                    "name": "alternate dimension"
+                },
+                {
+                    "id": 9887,
+                    "name": "surrealism"
+                },
+                {
+                    "id": 10303,
+                    "name": "domestic abuse"
+                },
+                {
+                    "id": 10714,
+                    "name": "serial killer"
+                },
+                {
+                    "id": 10738,
+                    "name": "diner"
+                },
+                {
+                    "id": 10809,
+                    "name": "teenage girl"
+                },
+                {
+                    "id": 10873,
+                    "name": "school"
+                }
+            ]
+        },
+        "external_ids": {
+            "imdb_id": "tt0098936"
+        },
+        "seasons": [
+            {
+                "id": 192001,
+                "name": "Season 1",
+                "season_number": 1,
+                "episode_count": 8,
+                "air_date": "1990-04-08",
+                "episodes": [
+                    {
+                        "id": 19200101,
+                        "name": "Pilot",
+                        "episode_number": 1,
+                        "season_number": 1,
+                        "air_date": "1990-04-08",
+                        "runtime": 95
+                    },
+                    {
+                        "id": 19200102,
+                        "name": "Traces to Nowhere",
+                        "episode_number": 2,
+                        "season_number": 1,
+                        "air_date": "1990-04-12",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200103,
+                        "name": "Zen, or the Skill to Catch a Killer",
+                        "episode_number": 3,
+                        "season_number": 1,
+                        "air_date": "1990-04-19",
+                        "runtime": 49
+                    },
+                    {
+                        "id": 19200104,
+                        "name": "Rest In Pain",
+                        "episode_number": 4,
+                        "season_number": 1,
+                        "air_date": "1990-04-26",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200105,
+                        "name": "The One-Armed Man",
+                        "episode_number": 5,
+                        "season_number": 1,
+                        "air_date": "1990-05-03",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200106,
+                        "name": "Cooper's Dreams",
+                        "episode_number": 6,
+                        "season_number": 1,
+                        "air_date": "1990-05-10",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200107,
+                        "name": "Realization Time",
+                        "episode_number": 7,
+                        "season_number": 1,
+                        "air_date": "1990-05-17",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200108,
+                        "name": "The Last Evening",
+                        "episode_number": 8,
+                        "season_number": 1,
+                        "air_date": "1990-05-23",
+                        "runtime": 47
+                    }
+                ]
+            },
+            {
+                "id": 192002,
+                "name": "Season 2",
+                "season_number": 2,
+                "episode_count": 22,
+                "air_date": "1990-09-30",
+                "episodes": [
+                    {
+                        "id": 19200201,
+                        "name": "May the Giant Be with You",
+                        "episode_number": 1,
+                        "season_number": 2,
+                        "air_date": "1990-09-30",
+                        "runtime": 95
+                    },
+                    {
+                        "id": 19200202,
+                        "name": "Coma",
+                        "episode_number": 2,
+                        "season_number": 2,
+                        "air_date": "1990-10-06",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200203,
+                        "name": "The Man Behind the Glass",
+                        "episode_number": 3,
+                        "season_number": 2,
+                        "air_date": "1990-10-13",
+                        "runtime": 48
+                    },
+                    {
+                        "id": 19200204,
+                        "name": "Laura's Secret Diary",
+                        "episode_number": 4,
+                        "season_number": 2,
+                        "air_date": "1990-10-20",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200205,
+                        "name": "The Orchid's Curse",
+                        "episode_number": 5,
+                        "season_number": 2,
+                        "air_date": "1990-10-27",
+                        "runtime": 48
+                    },
+                    {
+                        "id": 19200206,
+                        "name": "Demons",
+                        "episode_number": 6,
+                        "season_number": 2,
+                        "air_date": "1990-11-03",
+                        "runtime": 48
+                    },
+                    {
+                        "id": 19200207,
+                        "name": "Lonely Souls",
+                        "episode_number": 7,
+                        "season_number": 2,
+                        "air_date": "1990-11-10",
+                        "runtime": 48
+                    },
+                    {
+                        "id": 19200208,
+                        "name": "Drive with a Dead Girl",
+                        "episode_number": 8,
+                        "season_number": 2,
+                        "air_date": "1990-11-17",
+                        "runtime": 48
+                    },
+                    {
+                        "id": 19200209,
+                        "name": "Arbitrary Law",
+                        "episode_number": 9,
+                        "season_number": 2,
+                        "air_date": "1990-12-01",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200210,
+                        "name": "Dispute Between Brothers",
+                        "episode_number": 10,
+                        "season_number": 2,
+                        "air_date": "1990-12-08",
+                        "runtime": 48
+                    },
+                    {
+                        "id": 19200211,
+                        "name": "Masked Ball",
+                        "episode_number": 11,
+                        "season_number": 2,
+                        "air_date": "1990-12-15",
+                        "runtime": 48
+                    },
+                    {
+                        "id": 19200212,
+                        "name": "The Black Widow",
+                        "episode_number": 12,
+                        "season_number": 2,
+                        "air_date": "1991-01-12",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200213,
+                        "name": "Checkmate",
+                        "episode_number": 13,
+                        "season_number": 2,
+                        "air_date": "1991-01-19",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200214,
+                        "name": "Double Play",
+                        "episode_number": 14,
+                        "season_number": 2,
+                        "air_date": "1991-02-02",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200215,
+                        "name": "Slaves and Masters",
+                        "episode_number": 15,
+                        "season_number": 2,
+                        "air_date": "1991-02-09",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200216,
+                        "name": "The Condemned Woman",
+                        "episode_number": 16,
+                        "season_number": 2,
+                        "air_date": "1991-02-16",
+                        "runtime": 48
+                    },
+                    {
+                        "id": 19200217,
+                        "name": "Wounds and Scars",
+                        "episode_number": 17,
+                        "season_number": 2,
+                        "air_date": "1991-03-28",
+                        "runtime": 46
+                    },
+                    {
+                        "id": 19200218,
+                        "name": "On the Wings of Love",
+                        "episode_number": 18,
+                        "season_number": 2,
+                        "air_date": "1991-04-04",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200219,
+                        "name": "Variations on Relations",
+                        "episode_number": 19,
+                        "season_number": 2,
+                        "air_date": "1991-04-11",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200220,
+                        "name": "The Path to the Black Lodge",
+                        "episode_number": 20,
+                        "season_number": 2,
+                        "air_date": "1991-04-18",
+                        "runtime": 46
+                    },
+                    {
+                        "id": 19200221,
+                        "name": "Miss Twin Peaks",
+                        "episode_number": 21,
+                        "season_number": 2,
+                        "air_date": "1991-06-10",
+                        "runtime": 47
+                    },
+                    {
+                        "id": 19200222,
+                        "name": "Beyond Life and Death",
+                        "episode_number": 22,
+                        "season_number": 2,
+                        "air_date": "1991-06-10",
+                        "runtime": 51
+                    }
+                ]
+            },
+            {
+                "id": 192003,
+                "name": "Season 3",
+                "season_number": 3,
+                "episode_count": 18,
+                "air_date": "2017-05-21",
+                "episodes": [
+                    {
+                        "id": 19200301,
+                        "name": "Part 1",
+                        "episode_number": 1,
+                        "season_number": 3,
+                        "air_date": "2017-05-21",
+                        "runtime": 61
+                    },
+                    {
+                        "id": 19200302,
+                        "name": "Part 2",
+                        "episode_number": 2,
+                        "season_number": 3,
+                        "air_date": "2017-05-21",
+                        "runtime": 55
+                    },
+                    {
+                        "id": 19200303,
+                        "name": "Part 3",
+                        "episode_number": 3,
+                        "season_number": 3,
+                        "air_date": "2017-05-28",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 19200304,
+                        "name": "Part 4",
+                        "episode_number": 4,
+                        "season_number": 3,
+                        "air_date": "2017-05-28",
+                        "runtime": 57
+                    },
+                    {
+                        "id": 19200305,
+                        "name": "Part 5",
+                        "episode_number": 5,
+                        "season_number": 3,
+                        "air_date": "2017-06-04",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 19200306,
+                        "name": "Part 6",
+                        "episode_number": 6,
+                        "season_number": 3,
+                        "air_date": "2017-06-11",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 19200307,
+                        "name": "Part 7",
+                        "episode_number": 7,
+                        "season_number": 3,
+                        "air_date": "2017-06-18",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 19200308,
+                        "name": "Part 8",
+                        "episode_number": 8,
+                        "season_number": 3,
+                        "air_date": "2017-06-25",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 19200309,
+                        "name": "Part 9",
+                        "episode_number": 9,
+                        "season_number": 3,
+                        "air_date": "2017-07-09",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 19200310,
+                        "name": "Part 10",
+                        "episode_number": 10,
+                        "season_number": 3,
+                        "air_date": "2017-07-16",
+                        "runtime": 54
+                    },
+                    {
+                        "id": 19200311,
+                        "name": "Part 11",
+                        "episode_number": 11,
+                        "season_number": 3,
+                        "air_date": "2017-07-23",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 19200312,
+                        "name": "Part 12",
+                        "episode_number": 12,
+                        "season_number": 3,
+                        "air_date": "2017-07-30",
+                        "runtime": 55
+                    },
+                    {
+                        "id": 19200313,
+                        "name": "Part 13",
+                        "episode_number": 13,
+                        "season_number": 3,
+                        "air_date": "2017-08-06",
+                        "runtime": 60
+                    },
+                    {
+                        "id": 19200314,
+                        "name": "Part 14",
+                        "episode_number": 14,
+                        "season_number": 3,
+                        "air_date": "2017-08-13",
+                        "runtime": 57
+                    },
+                    {
+                        "id": 19200315,
+                        "name": "Part 15",
+                        "episode_number": 15,
+                        "season_number": 3,
+                        "air_date": "2017-08-20",
+                        "runtime": 56
+                    },
+                    {
+                        "id": 19200316,
+                        "name": "Part 16",
+                        "episode_number": 16,
+                        "season_number": 3,
+                        "air_date": "2017-08-27",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 19200317,
+                        "name": "Part 17",
+                        "episode_number": 17,
+                        "season_number": 3,
+                        "air_date": "2017-09-03",
+                        "runtime": 60
+                    },
+                    {
+                        "id": 19200318,
+                        "name": "Part 18",
+                        "episode_number": 18,
+                        "season_number": 3,
+                        "air_date": "2017-09-03",
+                        "runtime": 58
+                    }
+                ]
+            }
+        ]
+    },
+    {
+        "id": 126308,
+        "name": "Shōgun",
+        "overview": "In Japan in the year 1600, at the dawn of a century-defining civil war, Lord Yoshii Toranaga is fighting for his life as his enemies on the Council of Regents unite against him, when a mysterious European ship is found marooned in a nearby fishing village.",
+        "first_air_date": "2024-02-27",
+        "poster_path": "/7O4iVfOMQmdCSxhOg1WnzG1AgYT.jpg",
+        "backdrop_path": "/bwSmgmd90hCWwqOKQYTEraeOZhJ.jpg",
+        "genres": [
+            {
+                "id": 18,
+                "name": "Drama"
+            },
+            {
+                "id": 10768,
+                "name": "War & Politics"
+            }
+        ],
+        "origin_country": ["US"],
+        "spoken_languages": [
+            {
+                "iso_639_1": "en"
+            }
+        ],
+        "created_by": [
+            {
+                "id": 3102407,
+                "name": "Rachel Kondo",
+                "profile_path": null
+            },
+            {
+                "id": 78428,
+                "name": "Justin Marks",
+                "profile_path": null
+            }
+        ],
+        "number_of_seasons": 1,
+        "number_of_episodes": 10,
+        "credits": {
+            "cast": [
+                {
+                    "id": 9195,
+                    "name": "Hiroyuki Sanada",
+                    "character": "Yoshii Toranaga",
+                    "order": 0,
+                    "profile_path": "/SOwDxhGnRccP2lAtssQ7TxCzOe.jpg"
+                },
+                {
+                    "id": 1363054,
+                    "name": "Cosmo Jarvis",
+                    "character": "John Blackthorne",
+                    "order": 1,
+                    "profile_path": "/1kgghZ558CxZCJip5ufO6BAqUGp.jpg"
+                },
+                {
+                    "id": 1434487,
+                    "name": "Anna Sawai",
+                    "character": "Toda Mariko",
+                    "order": 2,
+                    "profile_path": "/6uFaCOupDTPRnTiedveTUvjOikC.jpg"
+                },
+                {
+                    "id": 13275,
+                    "name": "Tadanobu Asano",
+                    "character": "Kashigi Yabushige",
+                    "order": 3,
+                    "profile_path": "/3CBpfGRcPq1jEeYr51TiOiNbZzT.jpg"
+                },
+                {
+                    "id": 1082509,
+                    "name": "Takehiro Hira",
+                    "character": "Ishido Kazunari",
+                    "order": 4,
+                    "profile_path": "/f8UK7xqwkfpIZiECcDgc0AErkj6.jpg"
+                },
+                {
+                    "id": 73358,
+                    "name": "Tommy Bastow",
+                    "character": "Father Martin Alvito",
+                    "order": 5,
+                    "profile_path": "/dIQcrDm9dZqc98Ca6Em67x5ivba.jpg"
+                }
+            ]
+        },
+        "keywords": {
+            "results": [
+                {
+                    "id": 233,
+                    "name": "japan"
+                },
+                {
+                    "id": 393,
+                    "name": "civil war"
+                },
+                {
+                    "id": 818,
+                    "name": "based on novel or book"
+                },
+                {
+                    "id": 1462,
+                    "name": "samurai"
+                },
+                {
+                    "id": 2297,
+                    "name": "interpreter"
+                },
+                {
+                    "id": 11860,
+                    "name": "fish out of water"
+                },
+                {
+                    "id": 186753,
+                    "name": "jidaigeki"
+                },
+                {
+                    "id": 192772,
+                    "name": "historical drama"
+                },
+                {
+                    "id": 193083,
+                    "name": "shipwrecked"
+                },
+                {
+                    "id": 194424,
+                    "name": "sengoku period"
+                },
+                {
+                    "id": 198754,
+                    "name": "feudal japan"
+                },
+                {
+                    "id": 207941,
+                    "name": "17th century"
+                }
+            ]
+        },
+        "external_ids": {
+            "imdb_id": "tt2788316"
+        },
+        "seasons": [
+            {
+                "id": 12630801,
+                "name": "Season 1",
+                "season_number": 1,
+                "episode_count": 10,
+                "air_date": "2024-02-27",
+                "episodes": [
+                    {
+                        "id": 1263080101,
+                        "name": "Anjin",
+                        "episode_number": 1,
+                        "season_number": 1,
+                        "air_date": "2024-02-27",
+                        "runtime": 71
+                    },
+                    {
+                        "id": 1263080102,
+                        "name": "Servants of Two Masters",
+                        "episode_number": 2,
+                        "season_number": 1,
+                        "air_date": "2024-02-27",
+                        "runtime": 60
+                    },
+                    {
+                        "id": 1263080103,
+                        "name": "Tomorrow Is Tomorrow",
+                        "episode_number": 3,
+                        "season_number": 1,
+                        "air_date": "2024-03-05",
+                        "runtime": 54
+                    },
+                    {
+                        "id": 1263080104,
+                        "name": "The Eightfold Fence",
+                        "episode_number": 4,
+                        "season_number": 1,
+                        "air_date": "2024-03-12",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 1263080105,
+                        "name": "Broken to the Fist",
+                        "episode_number": 5,
+                        "season_number": 1,
+                        "air_date": "2024-03-19",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 1263080106,
+                        "name": "Ladies of the Willow World",
+                        "episode_number": 6,
+                        "season_number": 1,
+                        "air_date": "2024-03-26",
+                        "runtime": 58
+                    },
+                    {
+                        "id": 1263080107,
+                        "name": "A Stick of Time",
+                        "episode_number": 7,
+                        "season_number": 1,
+                        "air_date": "2024-04-02",
+                        "runtime": 56
+                    },
+                    {
+                        "id": 1263080108,
+                        "name": "The Abyss of Life",
+                        "episode_number": 8,
+                        "season_number": 1,
+                        "air_date": "2024-04-09",
+                        "runtime": 59
+                    },
+                    {
+                        "id": 1263080109,
+                        "name": "Crimson Sky",
+                        "episode_number": 9,
+                        "season_number": 1,
+                        "air_date": "2024-04-16",
+                        "runtime": 62
+                    },
+                    {
+                        "id": 1263080110,
+                        "name": "A Dream of a Dream",
+                        "episode_number": 10,
+                        "season_number": 1,
+                        "air_date": "2024-04-23",
+                        "runtime": 63
+                    }
+                ]
+            }
+        ]
     },
     {
         "id": 2,
         "name": "Invalid Poster",
-        "poster_path": "/invalid.jpg"
+        "poster_path": "/invalid.jpg",
+        "backdrop_path": null
     },
     {
         "id": 3,
         "name": "Missing Poster",
-        "poster_path": null
+        "poster_path": null,
+        "backdrop_path": null
     }
 ]

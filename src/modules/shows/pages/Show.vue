@@ -36,7 +36,6 @@
                         <span aria-hidden="true">·</span>
                         <MediaRating
                             :model-value="show.rating"
-                            size="sm"
                             class="-ml-0.5"
                             @update:model-value="(rating) => show.updateRating(rating)"
                         />

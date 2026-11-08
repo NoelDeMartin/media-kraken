@@ -401,7 +401,7 @@ export class TMDBService extends Service {
         );
     }
 
-    private async request<T extends z.ZodType>(
+    protected async request<T extends z.ZodType>(
         schema: T,
         path: string,
         parameters: Record<string, string | number> = {},

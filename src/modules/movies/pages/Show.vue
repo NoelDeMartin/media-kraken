@@ -45,7 +45,6 @@
                         <span aria-hidden="true">·</span>
                         <MediaRating
                             :model-value="movie.rating"
-                            size="sm"
                             class="-ml-0.5"
                             @update:model-value="(rating) => movie.updateRating(rating)"
                         />

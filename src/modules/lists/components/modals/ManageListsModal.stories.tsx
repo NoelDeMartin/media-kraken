@@ -15,7 +15,7 @@ type StoryArgs = {
 const MOVIE_URL = 'local://movies/the-substance-2024#it';
 
 const meta: Meta<StoryArgs> = {
-    title: 'modules/lists/ManageListsModal',
+    title: 'Modals/ManageListsModal',
     component: ManageListsModal,
     parameters: { layout: 'fullscreen' },
     args: {

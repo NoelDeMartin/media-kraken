@@ -1,66 +1,66 @@
-import { computedModel } from '@aerogel/plugin-solid';
-import { useSeededModels } from '@aerogel/storybook';
-import type { JsonLDGraph } from '@noeldemartin/solid-utils';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
-import type { ModelWithUrl } from 'soukai-bis';
 import { screen, userEvent } from 'storybook/test';
 
-import movies from '@/lib/fixtures/solid/movies.jsonld';
-import solidMovies from '@movies/lib/stubs/solid-movies';
+import { sampleMovie, type SampleCollection } from '@/lib/storybook/collection';
+import PageStory from '@/lib/storybook/PageStory.vue';
 import Movie from '@movies/models/Movie';
 
 import MoviesShow from './Show.vue';
 
 type Story = StoryObj<typeof meta>;
 
-type StoryArgs = {
-    movie: string;
-};
-
-const meta: Meta<StoryArgs> = {
-    title: 'modules/movies/pages/Show',
+const meta: Meta = {
+    title: 'Pages/Movies/Show',
     component: MoviesShow,
-    argTypes: {
-        movie: solidMovies.control,
-    },
-    args: {
-        movie: 'Symbol',
-    },
-    render: (args) => ({
-        setup() {
-            const seededMovies = useSeededModels(Movie, { documents: movies as JsonLDGraph[] });
-            const movie = computedModel(() =>
-                seededMovies.value?.find((seededMovie) => seededMovie.title === args.movie),
-            );
-
-            return () => movie.value && <MoviesShow key={movie.value.url} movie={movie.value as ModelWithUrl<Movie>} />;
-        },
-    }),
+    tags: ['!autodocs'],
+    parameters: { layout: 'fullscreen' },
 };
 
-export const Watched: Story = {};
+function movieRoute(title: string) {
+    return (collection: SampleCollection) => sampleMovie(collection, title).route;
+}
+
+async function openActionsMenu(): Promise<void> {
+    await userEvent.click(await screen.findByRole('button', { name: 'Open actions menu' }, { timeout: 10000 }));
+}
+
+export const Watched: Story = {
+    render: () => <PageStory route={movieRoute('The Substance')} />,
+};
 
 export const Rewatched: Story = {
-    args: { movie: 'The Tale of The Princess Kaguya' },
+    render: () => <PageStory route={movieRoute('The Tale of The Princess Kaguya')} />,
 };
 
 export const RewatchedActions: Story = {
-    args: { movie: 'The Tale of The Princess Kaguya' },
-    async play() {
-        await userEvent.click(await screen.findByRole('button', { name: 'Open actions menu' }));
-    },
+    ...Rewatched,
+    play: openActionsMenu,
 };
 
 export const ResetWatchHistoryConfirmation: Story = {
-    args: { movie: 'The Tale of The Princess Kaguya' },
+    ...Rewatched,
     async play() {
-        await userEvent.click(await screen.findByRole('button', { name: 'Open actions menu' }));
+        await openActionsMenu();
         await userEvent.click(await screen.findByRole('menuitem', { name: 'Mark as dropped' }));
     },
 };
 
 export const Pending: Story = {
-    args: { movie: 'All That Jazz' },
+    render: () => <PageStory route={movieRoute('All That Jazz')} />,
+};
+
+export const Dropped: Story = {
+    render: () => <PageStory route={movieRoute('The Testament of Dr. Mabuse')} />,
+};
+
+export const WithoutMetadata: Story = {
+    render: () => (
+        <PageStory route={async () => (await Movie.create({ title: "Grandma's home videos" })).route} empty />
+    ),
+};
+
+export const NotFound: Story = {
+    render: () => <PageStory route={{ name: 'movies.show', params: { movie: 'not-found' } }} empty />,
 };
 
 export default meta;
