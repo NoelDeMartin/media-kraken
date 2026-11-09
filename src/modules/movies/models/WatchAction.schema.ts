@@ -1,4 +1,4 @@
-import { belongsToOne, defineSchema, requireBootedModel } from 'soukai-bis';
+import { belongsToOne, defineSchema } from 'soukai-bis';
 import { date, url } from 'zod';
 
 export default defineSchema({
@@ -11,6 +11,6 @@ export default defineSchema({
         statusUrl: url().rdfProperty('actionStatus').optional(),
     },
     relations: {
-        movie: belongsToOne(() => requireBootedModel('Movie'), 'object'),
+        movie: belongsToOne('Movie', 'object'),
     },
 });

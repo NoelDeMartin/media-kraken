@@ -1,7 +1,5 @@
-import { belongsToMany, defineSchema, hasOne, requireBootedModel } from 'soukai-bis';
+import { belongsToMany, defineSchema, hasOne } from 'soukai-bis';
 import { array, number, url } from 'zod';
-
-import Episode from './Episode';
 
 export default defineSchema({
     rdfContext: 'https://schema.org/',
@@ -12,7 +10,7 @@ export default defineSchema({
         episodeUrls: array(url()).rdfProperty('episode').default([]),
     },
     relations: {
-        show: hasOne(() => requireBootedModel('Show'), 'seasonUrls'),
-        episodes: belongsToMany(Episode, 'episodeUrls'),
+        show: hasOne('Show', 'seasonUrls'),
+        episodes: belongsToMany('Episode', 'episodeUrls'),
     },
 });

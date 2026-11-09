@@ -1,8 +1,6 @@
 import { belongsToOne, defineSchema } from 'soukai-bis';
 import { array, string, url } from 'zod';
 
-import Person from './Person';
-
 export default defineSchema({
     rdfContext: 'https://schema.org/',
     rdfClass: 'PerformanceRole',
@@ -12,6 +10,6 @@ export default defineSchema({
         characterNames: array(string()).rdfProperty('characterName').default([]),
     },
     relations: {
-        actor: belongsToOne(Person, 'actorUrl').usingSameDocument(),
+        actor: belongsToOne('Person', 'actorUrl').usingSameDocument(),
     },
 });

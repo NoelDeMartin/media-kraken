@@ -1,7 +1,5 @@
-import { defineSchema, hasOne, requireBootedModel } from 'soukai-bis';
+import { defineSchema, hasOne } from 'soukai-bis';
 import { date, number, string } from 'zod';
-
-import EpisodeWatched from './EpisodeWatched';
 
 export default defineSchema({
     rdfContext: 'https://schema.org/',
@@ -13,7 +11,7 @@ export default defineSchema({
         publishedAt: date().rdfProperty('datePublished').optional(),
     },
     relations: {
-        season: hasOne(() => requireBootedModel('Season'), 'episodeUrls'),
-        watched: hasOne(EpisodeWatched, 'episodeUrl').usingSameDocument(),
+        season: hasOne('Season', 'episodeUrls'),
+        watched: hasOne('EpisodeWatched', 'episodeUrl').usingSameDocument(),
     },
 });

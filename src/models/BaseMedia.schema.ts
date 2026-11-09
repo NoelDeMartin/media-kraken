@@ -1,10 +1,6 @@
 import { belongsToMany, defineSchema, hasOne } from 'soukai-bis';
 import { array, string, url } from 'zod';
 
-import Note from './Note';
-import PerformanceRole from './PerformanceRole';
-import Review from './Review';
-
 export default defineSchema({
     rdfContext: 'https://schema.org/',
     history: true,
@@ -18,8 +14,8 @@ export default defineSchema({
         languages: array(string()).rdfProperty('inLanguage').default([]),
     },
     relations: {
-        cast: belongsToMany(PerformanceRole, 'actorUrls').usingSameDocument().autoload(false),
-        review: hasOne(Review, 'itemReviewedUrl').usingSameDocument(),
-        note: hasOne(Note, 'aboutUrl').usingSameDocument(),
+        cast: belongsToMany('PerformanceRole', 'actorUrls').usingSameDocument().autoload(false),
+        review: hasOne('Review', 'itemReviewedUrl').usingSameDocument(),
+        note: hasOne('Note', 'aboutUrl').usingSameDocument(),
     },
 });

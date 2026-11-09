@@ -1,10 +1,7 @@
-import { belongsToMany, defineSchema, hasOne, requireBootedModel } from 'soukai-bis';
+import { belongsToMany, defineSchema, hasOne } from 'soukai-bis';
 import { array, date, number, string, url } from 'zod';
 
 import BaseMedia from '@/models/BaseMedia';
-import Person from '@/models/Person';
-
-import Season from './Season';
 
 export default defineSchema(BaseMedia, {
     rdfClass: 'TVSeries',
@@ -18,8 +15,8 @@ export default defineSchema(BaseMedia, {
         _numberOfEpisodes: number().rdfProperty('numberOfEpisodes').optional(),
     },
     relations: {
-        creators: belongsToMany(Person, 'creatorUrls').usingSameDocument().autoload(false),
-        seasons: belongsToMany(Season, 'seasonUrls').usingSameDocument(),
-        watching: hasOne(() => requireBootedModel('ShowWatching'), 'showUrl').usingSameDocument(),
+        creators: belongsToMany('Person', 'creatorUrls').usingSameDocument().autoload(false),
+        seasons: belongsToMany('Season', 'seasonUrls').usingSameDocument(),
+        watching: hasOne('ShowWatching', 'showUrl').usingSameDocument(),
     },
 });
