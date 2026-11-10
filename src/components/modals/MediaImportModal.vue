@@ -44,9 +44,9 @@ import CustomParser from '@/lib/parsers/CustomParser';
 import type { ExternalMedia } from '@/lib/parsers/MediaParser';
 import NetflixParser from '@/lib/parsers/NetflixParser';
 
-import ImportMediaFromImdbModal from './ImportMediaFromImdbModal.vue';
-import ImportMediaHelpForCustomModal from './ImportMediaHelpForCustomModal.vue';
-import ImportMediaResultModal from './ImportMediaResultModal.vue';
+import MediaImportCustomHelpModal from './MediaImportCustomHelpModal.vue';
+import MediaImportFromImdbModal from './MediaImportFromImdbModal.vue';
+import MediaImportResultModal from './MediaImportResultModal.vue';
 
 type MediaSource = (typeof sources)[number];
 
@@ -82,7 +82,7 @@ const sourceTranslations: Record<
 
 function showHelp(source: MediaSource) {
     if (source === 'custom') {
-        UI.modal(ImportMediaHelpForCustomModal);
+        UI.modal(MediaImportCustomHelpModal);
 
         return;
     }
@@ -98,7 +98,7 @@ async function importFrom(source: MediaSource) {
     if (source === 'imdb') {
         close();
 
-        const { matches } = await UI.modal(ImportMediaFromImdbModal);
+        const { matches } = await UI.modal(MediaImportFromImdbModal);
 
         if (!matches) {
             return;
@@ -187,6 +187,6 @@ async function processData(data: ExternalMedia[]) {
         message: translate('import.importing'),
     });
 
-    await UI.modal(ImportMediaResultModal, { result });
+    await UI.modal(MediaImportResultModal, { result });
 }
 </script>

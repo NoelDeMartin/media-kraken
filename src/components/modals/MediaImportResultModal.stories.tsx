@@ -5,7 +5,7 @@ import type { ImportMediaJobResult } from '@/jobs/ImportMedia';
 import MediaNotFoundError from '@/lib/errors/MediaNotFoundError';
 import movies from '@movies/lib/stubs/solid-movies';
 
-import ImportMediaResultModal from './ImportMediaResultModal.vue';
+import MediaImportResultModal from './MediaImportResultModal.vue';
 
 type Story = StoryObj<typeof meta>;
 
@@ -29,14 +29,15 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'Modals/Import/ImportMediaResultModal',
-    component: ImportMediaResultModal,
+    title: 'Modals/MediaImportResultModal',
+    component: MediaImportResultModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     argTypes: {
         result: { control: { type: 'select' }, options: Object.keys(RESULTS) },
     },
     args: { result: 'allOutcomes' },
-    render: (args) => <ModalStory component={ImportMediaResultModal} props={{ result: RESULTS[args.result] }} />,
+    render: (args) => <ModalStory component={MediaImportResultModal} props={{ result: RESULTS[args.result] }} />,
 };
 
 export const AllOutcomes: Story = {};

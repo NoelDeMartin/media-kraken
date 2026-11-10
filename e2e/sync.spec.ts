@@ -168,6 +168,10 @@ test('Creates lists', async ({ page }) => {
         requiredFixture('/sparql/add-list-item.sparql', {
             name: 'Favorites',
             mediaUrl: podUrl('/movies/the-matrix-1999#it'),
+            mediaName: 'The Matrix',
+            mediaImage: 'https://image.tmdb.org/t/p/w500/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg',
+            mediaTmdbUrl: 'https://www.themoviedb.org/movie/603',
+            mediaImdbUrl: 'https://www.imdb.com/title/tt0133093/',
         }),
     );
 });
@@ -232,4 +236,80 @@ test('Pulls in existing lists & updates', async ({ page }) => {
     await see(page, 'All-time favorites (1)');
     await press(page, 'My Lists');
     await see(page, 'All-time favorites');
+});
+
+test('Shares lists', async ({ page }) => {
+    const listUrl = podUrl('/lists/favorites');
+    const visibility = (name: string) => page.getByRole('radio', { name: new RegExp(`^${name}`) });
+    const publicTypeIndex = async () => {
+        const response = await fetch(podUrl('/settings/publicTypeIndex'), {
+            headers: { Accept: 'application/n-triples' },
+        });
+
+        return response.ok ? await response.text() : '';
+    };
+
+    const publicList = async () => {
+        const response = await fetch(listUrl, { headers: { Accept: 'application/n-triples' } });
+
+        return response.ok ? await response.text() : '';
+    };
+
+    // Populate POD (with a list item that doesn't have media details) & Log in
+    await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));
+    await solidCreateDocument('/settings/preferences', requiredFixture('/turtle/preferences.ttl'));
+    await solidCreateDocument('/settings/privateTypeIndex', requiredFixture('/turtle/type-index.ttl'));
+    await solidCreateDocument('/movies/the-substance-2024', requiredFixture('/turtle/the-substance-2024.ttl'));
+    await solidCreateDocument('/lists/favorites', requiredFixture('/turtle/favorites-list.ttl'));
+    await localFirstLogin(page);
+    await press(page, 'My Lists');
+    await press(page, 'Favorites');
+    await see(page, 'The Substance');
+
+    expect((await fetch(listUrl)).status).toEqual(401);
+
+    // Unlisted
+    await press(page, 'Open actions menu');
+    await press(page, 'Share');
+    await expect(visibility('Private')).toBeChecked();
+    await visibility('Unlisted').click();
+    await expect(visibility('Unlisted')).toBeChecked();
+
+    expect((await fetch(listUrl)).status).toEqual(200);
+    expect(await publicTypeIndex()).not.toContain(listUrl);
+    expect(await publicList()).toContain('<https://schema.org/name> "The Substance"');
+    expect(await publicList()).toContain(
+        '<https://schema.org/image> <https://image.tmdb.org/t/p/w500/uYJvxMWMb9W4zIY3cbM50sj3dpC.jpg>',
+    );
+    expect(await publicList()).toContain('<https://schema.org/sameAs> <https://www.themoviedb.org/movie/933260>');
+
+    // Public
+    await visibility('Public').click();
+    await expect(visibility('Public')).toBeChecked();
+
+    expect((await fetch(listUrl)).status).toEqual(200);
+    expect(await publicTypeIndex()).toContain(`${listUrl}#it`);
+
+    await page.keyboard.press('Escape');
+    await press(page, 'Open actions menu');
+    await press(page, 'Share');
+    await expect(visibility('Public')).toBeChecked();
+
+    // Private
+    await visibility('Private').click();
+    await expect(visibility('Private')).toBeChecked();
+
+    expect((await fetch(listUrl)).status).toEqual(401);
+    expect(await publicTypeIndex()).not.toContain(listUrl);
+
+    // Delete public list
+    await visibility('Public').click();
+    await expect(visibility('Public')).toBeChecked();
+    await page.keyboard.press('Escape');
+    await press(page, 'Open actions menu');
+    await press(page, 'Delete');
+    await press(page, 'Delete', { role: 'button' });
+    await see(page, 'Favorites has been deleted.');
+
+    expect(await publicTypeIndex()).not.toContain(listUrl);
 });

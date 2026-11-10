@@ -8,7 +8,7 @@ import StatsMostWatched from './StatsMostWatched.vue';
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Organisms/Stats/StatsMostWatched',
+    title: 'Organisms/StatsMostWatched',
     component: StatsMostWatched,
 };
 

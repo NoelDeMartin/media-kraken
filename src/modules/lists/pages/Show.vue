@@ -31,19 +31,28 @@
 
 <script setup lang="ts">
 import { translate, UI, useLoading } from '@aerogel/core';
+import { Cloud } from '@aerogel/plugin-local-first';
 import { Router } from '@aerogel/plugin-routing';
 import { computed } from 'vue';
 import IconEdit from '~icons/mdi/pencil';
+import IconShare from '~icons/ph/share-network';
 import IconDelete from '~icons/ph/trash';
 
-import AddListItemsModal from '@lists/components/modals/AddListItemsModal.vue';
 import ListFormModal from '@lists/components/modals/ListFormModal.vue';
+import ListItemsAddModal from '@lists/components/modals/ListItemsAddModal.vue';
+import ListShareModal from '@lists/components/modals/ListShareModal.vue';
+import { canShareList, unpublishList } from '@lists/lib/sharing';
 import type List from '@lists/models/List';
 import ListItems from '@lists/pages/components/ListItems.vue';
 
 const { list } = defineProps<{ list: List }>();
 const { loading: updating, run: runUpdate } = useLoading();
 const menuOptions = computed(() => [
+    {
+        label: translate('lists.share.action'),
+        icon: IconShare,
+        click: share,
+    },
     {
         label: translate('lists.edit.action'),
         icon: IconEdit,
@@ -57,7 +66,11 @@ const menuOptions = computed(() => [
 ]);
 
 async function addItems() {
-    await UI.modal(AddListItemsModal, { list });
+    await UI.modal(ListItemsAddModal, { list });
+}
+
+async function share() {
+    await UI.modal(ListShareModal, { list });
 }
 
 async function edit() {
@@ -74,7 +87,14 @@ async function deleteList() {
         return;
     }
 
-    await runUpdate(list.delete());
+    await runUpdate(async () => {
+        if (canShareList(list) && Cloud.online) {
+            await unpublishList(list);
+        }
+
+        await list.delete();
+    });
+
     await Router.push('/lists');
 
     UI.toast(translate('lists.delete.success', { list: list.name }));

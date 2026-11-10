@@ -1,20 +1,10 @@
-import { findTrackedModel } from '@aerogel/plugin-solid';
 import { computed, ref, shallowRef, watch } from 'vue';
 import type { ComputedRef, Ref } from 'vue';
 
 import type { Media } from '@/lib/media';
-import Movie from '@movies/models/Movie';
-import Show from '@shows/models/Show';
+import { findMedia } from '@lists/lib/lists';
 
 export type MediaByUrl = Map<string, Media>;
-
-async function findMedia(url: string): Promise<Media | null> {
-    if (url.startsWith(Show.defaultContainerUrl)) {
-        return (await findTrackedModel(Show, url)) ?? (await findTrackedModel(Movie, url));
-    }
-
-    return (await findTrackedModel(Movie, url)) ?? (await findTrackedModel(Show, url));
-}
 
 export function useListMedia(urls: () => string[]): {
     mediaByUrl: Readonly<Ref<MediaByUrl>>;

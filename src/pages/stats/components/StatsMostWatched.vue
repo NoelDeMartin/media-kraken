@@ -16,7 +16,7 @@
                 :title-level="3"
                 title-class="mb-4 text-lg font-medium text-gray-900"
             >
-                <BarChart v-if="chart.entries.length" :entries="chart.entries" />
+                <ChartBar v-if="chart.entries.length" :entries="chart.entries" />
                 <p v-else class="text-gray-500">
                     {{ $t('stats.emptyChart') }}
                 </p>

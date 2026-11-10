@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { documents, seedLists } from '@lists/lib/stubs/lists';
 import List from '@lists/models/List';
 
-import AddListItemsModal from './AddListItemsModal.vue';
+import ListItemsAddModal from './ListItemsAddModal.vue';
 
 type Story = StoryObj<typeof meta>;
 
@@ -13,8 +13,9 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'Modals/AddListItemsModal',
-    component: AddListItemsModal,
+    title: 'Modals/ListItemsAddModal',
+    component: ListItemsAddModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     args: {
         mediaUrls: ['local://movies/the-substance-2024#it', 'local://shows/severance-2022/info#it'],
@@ -27,7 +28,7 @@ const meta: Meta<StoryArgs> = {
             });
 
             return () =>
-                lists.value?.[0] && <ModalStory component={AddListItemsModal} props={{ list: lists.value[0] }} />;
+                lists.value?.[0] && <ModalStory component={ListItemsAddModal} props={{ list: lists.value[0] }} />;
         },
     }),
 };

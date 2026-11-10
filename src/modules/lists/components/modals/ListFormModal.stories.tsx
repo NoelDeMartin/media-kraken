@@ -15,6 +15,7 @@ type StoryArgs = {
 const meta: Meta<StoryArgs> = {
     title: 'Modals/ListFormModal',
     component: ListFormModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     args: {
         edit: false,

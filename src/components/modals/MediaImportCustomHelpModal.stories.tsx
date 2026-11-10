@@ -1,15 +1,16 @@
 import { ModalStory } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import ImportMediaHelpForCustomModal from './ImportMediaHelpForCustomModal.vue';
+import MediaImportCustomHelpModal from './MediaImportCustomHelpModal.vue';
 
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Modals/Import/ImportMediaHelpForCustomModal',
-    component: ImportMediaHelpForCustomModal,
+    title: 'Modals/MediaImportCustomHelpModal',
+    component: MediaImportCustomHelpModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
-    render: () => <ModalStory component={ImportMediaHelpForCustomModal} />,
+    render: () => <ModalStory component={MediaImportCustomHelpModal} />,
 };
 
 export const Default: Story = {};

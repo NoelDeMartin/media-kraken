@@ -125,15 +125,15 @@ import IconManageLists from '~icons/ph/list-plus';
 import IconNotes from '~icons/ph/note-pencil';
 import IconDelete from '~icons/ph/trash';
 
-import IdentifyMediaModal from '@/components/modals/IdentifyMediaModal.vue';
+import MediaIdentifyModal from '@/components/modals/MediaIdentifyModal.vue';
 import MediaNotesModal from '@/components/modals/MediaNotesModal.vue';
 import { formatDate, formatDuration, formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';
 import Catalog from '@/services/Catalog';
 import type { TMDBMovie, TMDBShow } from '@/services/TMDB';
-import ManageListsModal from '@lists/components/modals/ManageListsModal.vue';
-import { removeFromLists, replaceInLists } from '@lists/lib/lists';
+import ListManageModal from '@lists/components/modals/ListManageModal.vue';
+import { removeFromLists, replaceInLists, updateInLists } from '@lists/lib/lists';
 import Movie from '@movies/models/Movie';
 import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 
@@ -197,7 +197,7 @@ const menuOptions = computed(() =>
         {
             label: translate('lists.manage.action'),
             icon: IconManageLists,
-            click: () => UI.modal(ManageListsModal, { media: movie }),
+            click: () => UI.modal(ListManageModal, { media: movie }),
         },
         {
             label: movie.notes ? translate('media.notes.edit') : translate('media.notes.add'),
@@ -270,7 +270,7 @@ async function rewatch() {
 }
 
 async function identify() {
-    const { media } = await UI.modal(IdentifyMediaModal, { initialQuery: movie.title });
+    const { media } = await UI.modal(MediaIdentifyModal, { initialQuery: movie.title });
 
     if (!media) {
         return;
@@ -295,11 +295,12 @@ async function detach() {
         return;
     }
 
-    await runSync(
-        movie.update({
+    await runSync(async () => {
+        await movie.update({
             externalUrls: movie.externalUrls.filter((url) => !url.includes('themoviedb.org')),
-        }),
-    );
+        });
+        await updateInLists(movie);
+    });
 }
 
 async function deleteMovie() {

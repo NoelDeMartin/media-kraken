@@ -3,7 +3,7 @@
         <PageTitle>{{ $t('welcome.title') }}</PageTitle>
         <Markdown lang-key="welcome.message" />
         <div class="flex flex-col gap-4">
-            <Button variant="outline" class="w-full" @click="$ui.modal(ImportMediaModal)">
+            <Button variant="outline" class="w-full" @click="$ui.modal(MediaImportModal)">
                 {{ $t('welcome.import') }}
             </Button>
             <Button variant="outline" route="discover" class="w-full">
@@ -17,6 +17,6 @@
 </template>
 
 <script setup lang="ts">
-import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
+import MediaImportModal from '@/components/modals/MediaImportModal.vue';
 import SeedCollectionModal from '@/components/modals/SeedCollectionModal.vue';
 </script>

@@ -6,7 +6,6 @@ import type { PersonCredit } from '@/models/Person';
 import type Movie from '@movies/models/Movie';
 import type Show from '@shows/models/Show';
 
-const NOTES_PREVIEW_LENGTH = 300;
 
 export type Media = Movie | Show;
 
@@ -46,13 +45,4 @@ export function toSearchText(text: string): string {
 
 export function uniquePersonKeys(people: PersonCredit[]): string[] {
     return Array.from(new Set(people.map(personFilterKey).filter(isTruthy)));
-}
-
-export function notesPreview(notes: string): string {
-    const text = renderMarkdownAsText(notes);
-    const characters = Array.from(text);
-
-    return characters.length > NOTES_PREVIEW_LENGTH
-        ? `${characters.slice(0, NOTES_PREVIEW_LENGTH).join('').trimEnd()}…`
-        : text;
 }

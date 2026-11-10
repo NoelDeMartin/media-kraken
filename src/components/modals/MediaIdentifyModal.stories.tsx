@@ -1,7 +1,7 @@
 import { ModalStory } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import IdentifyMediaModal from './IdentifyMediaModal.vue';
+import MediaIdentifyModal from './MediaIdentifyModal.vue';
 
 type Story = StoryObj<typeof meta>;
 
@@ -10,11 +10,12 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'Modals/IdentifyMediaModal',
-    component: IdentifyMediaModal,
+    title: 'Modals/MediaIdentifyModal',
+    component: MediaIdentifyModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     args: { initialQuery: 'the' },
-    render: (args) => <ModalStory component={IdentifyMediaModal} props={{ initialQuery: args.initialQuery }} />,
+    render: (args) => <ModalStory component={MediaIdentifyModal} props={{ initialQuery: args.initialQuery }} />,
 };
 
 export const Default: Story = {};

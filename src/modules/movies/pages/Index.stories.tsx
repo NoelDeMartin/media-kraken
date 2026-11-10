@@ -7,7 +7,7 @@ import MoviesIndex from './Index.vue';
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Pages/Movies/Index',
+    title: 'Pages/MoviesIndex',
     component: MoviesIndex,
     tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },

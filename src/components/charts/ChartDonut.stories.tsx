@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import DonutChart from './DonutChart.vue';
+import ChartDonut from './ChartDonut.vue';
 
 type Story = StoryObj<typeof meta>;
 
 const meta = {
-    title: 'Molecules/Charts/DonutChart',
-    component: DonutChart,
+    title: 'Molecules/ChartDonut',
+    component: ChartDonut,
     args: {
         label: 'Movies',
         slices: [
@@ -15,7 +15,7 @@ const meta = {
             { label: 'Pending', value: 5, color: 'var(--color-blue-500)' },
         ],
     },
-} satisfies Meta<typeof DonutChart>;
+} satisfies Meta<typeof ChartDonut>;
 
 export const Default: Story = {};
 

@@ -40,6 +40,7 @@ import TMDB, {
     type TMDBShowExternalIds,
     type TMDBShowWithStaff,
 } from '@/services/TMDB';
+import { updateInLists } from '@lists/lib/lists';
 import Movie from '@movies/models/Movie';
 import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 import type Episode from '@shows/models/Episode';
@@ -128,13 +129,13 @@ export class CatalogService extends Service {
                 chunk.map(async (item) => {
                     if (item instanceof Show) {
                         await this.syncShow(item);
-
-                        return;
                     }
 
                     if (item instanceof Movie) {
                         await this.syncMovie(item);
                     }
+
+                    await updateInLists(item);
                 }),
             );
         }

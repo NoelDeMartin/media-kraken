@@ -14,6 +14,7 @@ type StoryArgs = {
 const meta: Meta<StoryArgs> = {
     title: 'Modals/ShowPreviewModal',
     component: ShowPreviewModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     argTypes: {
         show: tmdbShows.control,

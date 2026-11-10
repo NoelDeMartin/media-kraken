@@ -8,7 +8,7 @@ import ListsShow from './Show.vue';
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Pages/Lists/Show',
+    title: 'Pages/ListsShow',
     component: ListsShow,
     tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },

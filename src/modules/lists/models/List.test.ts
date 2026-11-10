@@ -108,6 +108,7 @@ describe('List model', () => {
 
         expect(titles(list)).toEqual(['Scream', 'Jaws']);
         expect(titles(freshList)).toEqual(['Scream', 'Jaws']);
+        expect(freshList.sortedItems.map((item) => item.name)).toEqual(['Scream', 'Jaws']);
     });
 
     it('Removes original when replacement is already listed', async () => {
@@ -139,6 +140,34 @@ describe('List model', () => {
             'https://vocab.noeldemartin.com/crdt/Tombstone',
             'https://vocab.noeldemartin.com/crdt/Tombstone',
         ]);
+    });
+
+    it('Stores media details in items', async () => {
+        alien.setAttributes({
+            posterUrl: 'https://image.tmdb.org/t/p/w500/alien.jpg',
+            externalUrls: ['https://www.themoviedb.org/movie/348'],
+        });
+
+        const list = await createList([alien, jaws]);
+
+        alien.setAttributes({
+            title: "Alien (Director's Cut)",
+            externalUrls: ['https://www.themoviedb.org/movie/348', 'https://www.imdb.com/title/tt0078748'],
+        });
+
+        await list.updateItemDetails([alien]);
+
+        const [alienItem, jawsItem] = (await List.findOrFail(list.url)).sortedItems;
+
+        expect(alienItem?.name).toEqual("Alien (Director's Cut)");
+        expect(alienItem?.imageUrl).toEqual('https://image.tmdb.org/t/p/w500/alien.jpg');
+        expect(alienItem?.externalUrls).toEqual([
+            'https://www.themoviedb.org/movie/348',
+            'https://www.imdb.com/title/tt0078748',
+        ]);
+        expect(jawsItem?.name).toEqual('Jaws');
+        expect(jawsItem?.imageUrl).toBeUndefined();
+        expect(jawsItem?.externalUrls).toEqual([]);
     });
 
     it('Keeps slug after renaming', async () => {

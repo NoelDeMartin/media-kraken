@@ -3,10 +3,15 @@ import { isLocalUrl } from 'soukai-bis';
 import type { BelongsToManyRelation, ModelWithUrl } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
-import type { Media } from '@/lib/media';
+import { mediaDisplayName, type Media } from '@/lib/media';
 
 import Model from './List.schema';
 import type ListItem from './ListItem';
+
+// Media documents are private, so list items keep the details needed to display them without reading those documents.
+function itemDetails(media: Media): Pick<ListItem, 'name' | 'imageUrl' | 'externalUrls'> {
+    return { name: mediaDisplayName(media), imageUrl: media.posterUrl, externalUrls: media.externalUrls };
+}
 
 export default class List extends Model {
     public static cloud = true;
@@ -45,7 +50,21 @@ export default class List extends Model {
 
         const lastPosition = this.sortedItems.at(-1)?.position ?? 0;
 
-        await this.relatedItems.create({ mediaUrl: media.url, position: lastPosition + 1 });
+        await this.relatedItems.create({ mediaUrl: media.url, position: lastPosition + 1, ...itemDetails(media) });
+    }
+
+    public async updateItemDetails(media: Media[]): Promise<void> {
+        for (const item of this.items ?? []) {
+            const itemMedia = media.find(({ url }) => url === item.mediaUrl);
+
+            itemMedia && item.setAttributes(itemDetails(itemMedia));
+        }
+
+        if (!this.isDirty()) {
+            return;
+        }
+
+        await this.save();
     }
 
     public async move(item: ListItem, target: ListItem): Promise<void> {
@@ -75,7 +94,7 @@ export default class List extends Model {
                 continue;
             }
 
-            item.setAttribute('mediaUrl', replacement.url);
+            item.setAttributes({ mediaUrl: replacement.url, ...itemDetails(replacement) });
         }
 
         await this.save();

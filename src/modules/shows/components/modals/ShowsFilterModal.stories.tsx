@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { useSampleCollection } from '@/lib/storybook/collection';
 import type { ShowsFilter } from '@shows/lib/shows';
 
-import FilterShowsModal from './FilterShowsModal.vue';
+import ShowsFilterModal from './ShowsFilterModal.vue';
 
 type Story = StoryObj<typeof meta>;
 
@@ -13,8 +13,9 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'Modals/FilterShowsModal',
-    component: FilterShowsModal,
+    title: 'Modals/ShowsFilterModal',
+    component: ShowsFilterModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     args: { filters: null },
     render: (args) => ({
@@ -24,7 +25,7 @@ const meta: Meta<StoryArgs> = {
             return () =>
                 collection.value && (
                     <ModalStory
-                        component={FilterShowsModal}
+                        component={ShowsFilterModal}
                         props={{ shows: collection.value.shows, filters: args.filters }}
                     />
                 );
