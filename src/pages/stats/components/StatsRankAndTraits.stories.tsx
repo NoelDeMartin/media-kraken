@@ -8,7 +8,7 @@ import StatsRankAndTraits from './StatsRankAndTraits.vue';
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Organisms/Stats/StatsRankAndTraits',
+    title: 'Organisms/StatsRankAndTraits',
     component: StatsRankAndTraits,
 };
 

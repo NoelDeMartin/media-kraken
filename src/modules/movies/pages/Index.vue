@@ -9,7 +9,7 @@
                 {
                     icon: IconUpload,
                     label: $t('movies.import'),
-                    click: () => $ui.modal(ImportMediaModal),
+                    click: () => $ui.modal(MediaImportModal),
                 },
                 {
                     icon: IconSync,
@@ -97,11 +97,11 @@ import { computed } from 'vue';
 import IconSync from '~icons/mdi/sync';
 import IconUpload from '~icons/mdi/upload';
 
-import ImportMediaModal from '@/components/modals/ImportMediaModal.vue';
+import MediaImportModal from '@/components/modals/MediaImportModal.vue';
 import SynchronizeMedia from '@/jobs/SynchronizeMedia';
 import { useMediaFilters } from '@/lib/composition/filters';
 import { toSearchText } from '@/lib/media';
-import FilterMoviesModal from '@movies/components/modals/FilterMoviesModal.vue';
+import MoviesFilterModal from '@movies/components/modals/MoviesFilterModal.vue';
 import {
     createMovieSearchEntry,
     hasActiveMovieFilters,
@@ -140,7 +140,7 @@ const filteredMovies = computed(() => {
 const sortedMovies = computed(() => arraySorted(filteredMovies.value, 'createdAt', 'desc'));
 
 async function updateAdvancedFilters() {
-    const { filters } = await UI.modal(FilterMoviesModal, {
+    const { filters } = await UI.modal(MoviesFilterModal, {
         filters: advancedFilters.value,
         movies: allMovies.value,
     });

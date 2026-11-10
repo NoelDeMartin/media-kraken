@@ -14,6 +14,7 @@ type StoryArgs = {
 const meta: Meta<StoryArgs> = {
     title: 'Modals/MediaNotesModal',
     component: MediaNotesModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     args: { movie: 'All That Jazz' },
     render: (args) => ({

@@ -88,7 +88,7 @@ import IconSync from '~icons/mdi/sync';
 import SynchronizeMedia from '@/jobs/SynchronizeMedia';
 import { useMediaFilters } from '@/lib/composition/filters';
 import { toSearchText } from '@/lib/media';
-import FilterShowsModal from '@shows/components/modals/FilterShowsModal.vue';
+import ShowsFilterModal from '@shows/components/modals/ShowsFilterModal.vue';
 import {
     createShowSearchEntry,
     hasActiveShowFilters,
@@ -127,7 +127,7 @@ const filteredShows = computed(() => {
 const sortedShows = computed(() => arraySorted(filteredShows.value, 'createdAt', 'desc'));
 
 async function updateAdvancedFilters() {
-    const { filters } = await UI.modal(FilterShowsModal, {
+    const { filters } = await UI.modal(ShowsFilterModal, {
         filters: advancedFilters.value,
         shows: allShows.value,
     });

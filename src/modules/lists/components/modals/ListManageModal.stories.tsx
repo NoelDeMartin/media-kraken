@@ -4,7 +4,7 @@ import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { documents, seedLists, type StubList } from '@lists/lib/stubs/lists';
 import Movie from '@movies/models/Movie';
 
-import ManageListsModal from './ManageListsModal.vue';
+import ListManageModal from './ListManageModal.vue';
 
 type Story = StoryObj<typeof meta>;
 
@@ -15,8 +15,9 @@ type StoryArgs = {
 const MOVIE_URL = 'local://movies/the-substance-2024#it';
 
 const meta: Meta<StoryArgs> = {
-    title: 'Modals/ManageListsModal',
-    component: ManageListsModal,
+    title: 'Modals/ListManageModal',
+    component: ListManageModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     args: {
         lists: [
@@ -36,7 +37,7 @@ const meta: Meta<StoryArgs> = {
             return () => {
                 const media = movies.value?.find((movie) => movie.url === MOVIE_URL);
 
-                return media && <ModalStory component={ManageListsModal} props={{ media }} />;
+                return media && <ModalStory component={ListManageModal} props={{ media }} />;
             };
         },
     }),

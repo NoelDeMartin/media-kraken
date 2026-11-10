@@ -24,7 +24,6 @@ export default definePreview({
                     'Organisms',
                     'Modals',
                     'Pages',
-                    ['Home', 'Movies', 'Shows', 'Lists', 'Stats', 'Discover'],
                 ],
             },
         },

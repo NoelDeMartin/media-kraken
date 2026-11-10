@@ -8,7 +8,7 @@ import StatsOverview from './StatsOverview.vue';
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Organisms/Stats/StatsOverview',
+    title: 'Organisms/StatsOverview',
     component: StatsOverview,
 };
 

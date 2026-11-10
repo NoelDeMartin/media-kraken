@@ -10,7 +10,7 @@ import MoviesShow from './Show.vue';
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Pages/Movies/Show',
+    title: 'Pages/MoviesShow',
     component: MoviesShow,
     tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },

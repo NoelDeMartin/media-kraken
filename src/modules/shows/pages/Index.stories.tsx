@@ -7,7 +7,7 @@ import ShowsIndex from './Index.vue';
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Pages/Shows/Index',
+    title: 'Pages/ShowsIndex',
     component: ShowsIndex,
     tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },

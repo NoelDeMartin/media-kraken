@@ -132,14 +132,14 @@ import IconManageLists from '~icons/ph/list-plus';
 import IconNotes from '~icons/ph/note-pencil';
 import IconDelete from '~icons/ph/trash';
 
-import IdentifyMediaModal from '@/components/modals/IdentifyMediaModal.vue';
+import MediaIdentifyModal from '@/components/modals/MediaIdentifyModal.vue';
 import MediaNotesModal from '@/components/modals/MediaNotesModal.vue';
 import { formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import type PerformanceRole from '@/models/PerformanceRole';
 import type Person from '@/models/Person';
 import Catalog from '@/services/Catalog';
 import type { TMDBMovie, TMDBShow } from '@/services/TMDB';
-import ManageListsModal from '@lists/components/modals/ManageListsModal.vue';
+import ListManageModal from '@lists/components/modals/ListManageModal.vue';
 import { removeFromLists, replaceInLists } from '@lists/lib/lists';
 import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 import Show from '@shows/models/Show';
@@ -198,7 +198,7 @@ const menuOptions = computed(() =>
         {
             label: translate('lists.manage.action'),
             icon: IconManageLists,
-            click: () => UI.modal(ManageListsModal, { media: show }),
+            click: () => UI.modal(ListManageModal, { media: show }),
         },
         {
             label: show.notes ? translate('media.notes.edit') : translate('media.notes.add'),
@@ -262,7 +262,7 @@ async function sync() {
 }
 
 async function identify() {
-    const { media } = await UI.modal(IdentifyMediaModal, { initialQuery: show.name });
+    const { media } = await UI.modal(MediaIdentifyModal, { initialQuery: show.name });
 
     if (!media) {
         return;

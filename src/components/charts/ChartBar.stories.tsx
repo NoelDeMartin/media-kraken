@@ -1,12 +1,12 @@
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
-import BarChart from './BarChart.vue';
+import ChartBar from './ChartBar.vue';
 
 type Story = StoryObj<typeof meta>;
 
 const meta = {
-    title: 'Molecules/Charts/BarChart',
-    component: BarChart,
+    title: 'Molecules/ChartBar',
+    component: ChartBar,
     args: {
         entries: [
             { key: 'scifi', label: 'Science Fiction', value: 42 },
@@ -18,10 +18,10 @@ const meta = {
     },
     render: (args) => (
         <div class="max-w-md">
-            <BarChart {...args} />
+            <ChartBar {...args} />
         </div>
     ),
-} satisfies Meta<typeof BarChart>;
+} satisfies Meta<typeof ChartBar>;
 
 export const Default: Story = {};
 

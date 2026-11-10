@@ -8,6 +8,7 @@ type Story = StoryObj<typeof meta>;
 const meta: Meta = {
     title: 'Modals/SeedCollectionModal',
     component: SeedCollectionModal,
+    tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     render: () => <ModalStory component={SeedCollectionModal} />,
 };

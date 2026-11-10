@@ -24,10 +24,10 @@
 
     <div class="grid gap-4 md:grid-cols-2">
         <StatsCard :title="$t('stats.overview.moviesChart')" title-class="sr-only">
-            <DonutChart :label="$t('stats.overview.moviesChartLabel')" :slices="movieStatusSlices" />
+            <ChartDonut :label="$t('stats.overview.moviesChartLabel')" :slices="movieStatusSlices" />
         </StatsCard>
         <StatsCard :title="$t('stats.overview.showsChart')" title-class="sr-only">
-            <DonutChart :label="$t('stats.overview.showsChartLabel')" :slices="showStatusSlices" />
+            <ChartDonut :label="$t('stats.overview.showsChartLabel')" :slices="showStatusSlices" />
         </StatsCard>
     </div>
 </template>

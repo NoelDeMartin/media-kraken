@@ -8,7 +8,7 @@ import StatsAchievements from './StatsAchievements.vue';
 type Story = StoryObj<typeof meta>;
 
 const meta: Meta = {
-    title: 'Organisms/Stats/StatsAchievements',
+    title: 'Organisms/StatsAchievements',
     component: StatsAchievements,
 };
 

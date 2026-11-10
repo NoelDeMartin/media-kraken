@@ -36,8 +36,8 @@ import { computed } from 'vue';
 import IconEdit from '~icons/mdi/pencil';
 import IconDelete from '~icons/ph/trash';
 
-import AddListItemsModal from '@lists/components/modals/AddListItemsModal.vue';
 import ListFormModal from '@lists/components/modals/ListFormModal.vue';
+import ListItemsAddModal from '@lists/components/modals/ListItemsAddModal.vue';
 import type List from '@lists/models/List';
 import ListItems from '@lists/pages/components/ListItems.vue';
 
@@ -57,7 +57,7 @@ const menuOptions = computed(() => [
 ]);
 
 async function addItems() {
-    await UI.modal(AddListItemsModal, { list });
+    await UI.modal(ListItemsAddModal, { list });
 }
 
 async function edit() {
