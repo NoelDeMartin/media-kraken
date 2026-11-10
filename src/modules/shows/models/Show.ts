@@ -1,12 +1,4 @@
-import {
-    arrayFilter,
-    isTruthy,
-    parseDate,
-    required,
-    stringToSlug,
-    urlParentDirectory,
-    urlRoute,
-} from '@noeldemartin/utils';
+import { isTruthy, parseDate, required, stringToSlug, urlParentDirectory, urlRoute } from '@noeldemartin/utils';
 import { emitModelEvent, InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
 import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, UrlFromSlugOptions } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
@@ -214,36 +206,6 @@ export default class Show extends Model {
         this.setWatchingStatus(status);
 
         await this.save();
-    }
-
-    public async deleteWithRelations(): Promise<void> {
-        await this.loadAllRelationsIfUnloaded();
-
-        const seasons = this.seasons ?? [];
-        const episodes = seasons.flatMap((season) => season.episodes ?? []);
-
-        await Promise.all(
-            episodes.map(async (episode) => {
-                await episode.watched?.delete();
-                await episode.delete();
-            }),
-        );
-
-        const documentModels = arrayFilter([
-            ...(this.cast ?? []).flatMap((role) => [role.actor, role]),
-            ...(this.creators ?? []),
-            ...seasons,
-            this.watching,
-            this.review?.rating,
-            this.review,
-            this.note,
-        ]);
-
-        for (const model of documentModels) {
-            await model.delete();
-        }
-
-        await this.delete();
     }
 
     protected newUrlSlug(): string | null {

@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { requireEngine } from 'soukai-bis';
+import { describe, expect, it, vi } from 'vite-plus/test';
 
 import PerformanceRole from '@/models/PerformanceRole';
 import Person from '@/models/Person';
@@ -102,5 +103,43 @@ describe('Show model', () => {
 
         expect(instance.numberOfSeasons).toBeNull();
         expect(instance.numberOfEpisodes).toBeNull();
+    });
+
+    it('Deletes seasons and episodes', async () => {
+        const engine = requireEngine();
+        const show = await Show.create({ name: 'Breaking Bad' });
+        const season = await show.relatedSeasons.create({ number: 1 });
+        const firstEpisode = await season.relatedEpisodes.create({ name: 'Pilot', number: 1 });
+        const secondEpisode = await season.relatedEpisodes.create({ name: "Cat's in the Bag...", number: 2 });
+
+        await firstEpisode.watch();
+
+        const documentUrls = [
+            firstEpisode.requireDocumentUrl(),
+            secondEpisode.requireDocumentUrl(),
+            show.requireDocumentUrl(),
+        ];
+        const updateDocumentSpy = vi.spyOn(engine, 'updateDocument');
+        const deleteDocumentSpy = vi.spyOn(engine, 'deleteDocument');
+
+        await (await Show.findOrFail(show.requireUrl())).delete();
+
+        const documentsTypes = await Promise.all(
+            documentUrls.map(async (documentUrl) => {
+                const document = await engine.readDocument(documentUrl);
+
+                return document.statements(undefined, 'rdf:type').map((statement) => statement.object.value);
+            }),
+        );
+
+        expect(new Set(documentUrls).size).toBe(3);
+        expect(deleteDocumentSpy).not.toHaveBeenCalled();
+        expect(updateDocumentSpy).toHaveBeenCalledTimes(3);
+        expect(updateDocumentSpy.mock.calls.map(([url]) => url).slice(0, 2)).toEqual(
+            expect.arrayContaining(documentUrls.slice(0, 2)),
+        );
+        expect(updateDocumentSpy.mock.calls[2]?.[0]).toEqual(show.requireDocumentUrl());
+        expect(documentsTypes.map((types) => types.length)).toEqual([2, 1, 2]);
+        expect(new Set(documentsTypes.flat())).toEqual(new Set(['https://vocab.noeldemartin.com/crdt/Tombstone']));
     });
 });

@@ -12,6 +12,6 @@ export default defineSchema({
     },
     relations: {
         season: hasOne('Season', 'episodeUrls'),
-        watched: hasOne('EpisodeWatched', 'episodeUrl').usingSameDocument(),
+        watched: hasOne('EpisodeWatched', 'episodeUrl').usingSameDocument().onDelete('cascade'),
     },
 });

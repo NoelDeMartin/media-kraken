@@ -1,4 +1,4 @@
-import { arrayFilter, arraySorted, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
+import { arraySorted, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
 import { InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
 import type { BelongsToManyRelation, ComputedAttribute, HasManyRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
@@ -158,25 +158,6 @@ export default class Movie extends Model {
         await super.loadAllRelationsIfUnloaded();
         await this.loadRelationIfUnloaded('watchActions');
         await this.loadRelationIfUnloaded('directors');
-    }
-
-    public async deleteWithRelations(): Promise<void> {
-        await this.loadAllRelationsIfUnloaded();
-
-        const documentModels = arrayFilter([
-            ...(this.cast ?? []).flatMap((role) => [role.actor, role]),
-            ...(this.directors ?? []),
-            ...(this.watchActions ?? []),
-            this.review?.rating,
-            this.review,
-            this.note,
-        ]);
-
-        for (const model of documentModels) {
-            await model.delete();
-        }
-
-        await this.delete();
     }
 
     protected newUrlSlug(): string | null {

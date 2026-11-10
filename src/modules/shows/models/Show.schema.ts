@@ -15,8 +15,8 @@ export default defineSchema(BaseMedia, {
         _numberOfEpisodes: number().rdfProperty('numberOfEpisodes').optional(),
     },
     relations: {
-        creators: belongsToMany('Person', 'creatorUrls').usingSameDocument().autoload(false),
-        seasons: belongsToMany('Season', 'seasonUrls').usingSameDocument(),
-        watching: hasOne('ShowWatching', 'showUrl').usingSameDocument(),
+        creators: belongsToMany('Person', 'creatorUrls').usingSameDocument().autoload(false).onDelete('cascade'),
+        seasons: belongsToMany('Season', 'seasonUrls').usingSameDocument().onDelete('cascade'),
+        watching: hasOne('ShowWatching', 'showUrl').usingSameDocument().onDelete('cascade'),
     },
 });

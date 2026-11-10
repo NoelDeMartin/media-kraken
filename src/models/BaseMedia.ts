@@ -49,7 +49,6 @@ export default class BaseMedia extends Model {
         this.assertRelationLoaded('review');
 
         if (rating === null) {
-            this.review?.relatedRating.detach({ delete: true });
             this.relatedReview.detach({ delete: true });
 
             return;

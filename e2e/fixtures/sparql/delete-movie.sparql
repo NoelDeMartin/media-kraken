@@ -1,0 +1,276 @@
+DELETE DATA {
+    @prefix schema: <https://schema.org/> .
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it>
+        a schema:Movie ;
+        schema:name "{{ name }}" ;
+        schema:description "[[.*]]" ;
+        schema:image <[[.*]]> ;
+        schema:datePublished "[[.*]]"^^xsd:dateTime ;
+        schema:sameAs <https://www.themoviedb.org/movie/[[.*]]>, <https://www.imdb.com/title/[[.*]]/> ;
+        schema:genre {{ genres.map(id => '<https://www.themoviedb.org/genre/' + id + '>').join(', ') }} ;
+        schema:countryOfOrigin {{ countries.map(id => '<http://www.wikidata.org/entity/' + id + '>').join(', ') }} ;
+        schema:inLanguage {{ languages.map(code => '"' + code + '"').join(', ') }} ;
+        schema:duration "[[.*]]" ;
+        schema:director <#[[director-1][%uuid%]]>, <#[[director-2][%uuid%]]> ;
+        schema:actor <#[[role-1][%uuid%]]>, <#[[role-2][%uuid%]]>, <#[[role-3][%uuid%]]>, <#[[role-4][%uuid%]]>, <#[[role-5][%uuid%]]>, <#[[role-6][%uuid%]]> .
+
+    <#it-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#it> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[director-1][%uuid%]]>
+        a schema:Person ;
+        schema:name "[[.*]]" ;
+        schema:sameAs <https://www.themoviedb.org/person/[[.*]]> .
+
+    <#[[director-1][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[director-1][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[director-2][%uuid%]]>
+        a schema:Person ;
+        schema:name "[[.*]]" ;
+        schema:sameAs <https://www.themoviedb.org/person/[[.*]]> .
+
+    <#[[director-2][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[director-2][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[role-1][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "[[.*]]" ;
+        schema:actor <#[[actor-1][%uuid%]]> .
+
+    <#[[role-1][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-1][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-1][%uuid%]]>
+        a schema:Person ;
+        schema:name "[[.*]]" ;
+        schema:sameAs <https://www.themoviedb.org/person/[[.*]]> .
+
+    <#[[actor-1][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-1][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[role-2][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "[[.*]]" ;
+        schema:actor <#[[actor-2][%uuid%]]> .
+
+    <#[[role-2][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-2][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-2][%uuid%]]>
+        a schema:Person ;
+        schema:name "[[.*]]" ;
+        schema:sameAs <https://www.themoviedb.org/person/[[.*]]> .
+
+    <#[[actor-2][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-2][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[role-3][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "[[.*]]" ;
+        schema:actor <#[[actor-3][%uuid%]]> .
+
+    <#[[role-3][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-3][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-3][%uuid%]]>
+        a schema:Person ;
+        schema:name "[[.*]]" ;
+        schema:sameAs <https://www.themoviedb.org/person/[[.*]]> .
+
+    <#[[actor-3][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-3][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[role-4][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "[[.*]]" ;
+        schema:actor <#[[actor-4][%uuid%]]> .
+
+    <#[[role-4][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-4][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-4][%uuid%]]>
+        a schema:Person ;
+        schema:name "[[.*]]" ;
+        schema:sameAs <https://www.themoviedb.org/person/[[.*]]> .
+
+    <#[[actor-4][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-4][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[role-5][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "[[.*]]" ;
+        schema:actor <#[[actor-5][%uuid%]]> .
+
+    <#[[role-5][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-5][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-5][%uuid%]]>
+        a schema:Person ;
+        schema:name "[[.*]]" ;
+        schema:sameAs <https://www.themoviedb.org/person/[[.*]]> .
+
+    <#[[actor-5][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-5][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[role-6][%uuid%]]>
+        a schema:PerformanceRole ;
+        schema:characterName "[[.*]]" ;
+        schema:actor <#[[actor-6][%uuid%]]> .
+
+    <#[[role-6][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[role-6][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[actor-6][%uuid%]]>
+        a schema:Person ;
+        schema:name "[[.*]]" ;
+        schema:sameAs <https://www.themoviedb.org/person/[[.*]]> .
+
+    <#[[actor-6][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[actor-6][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+
+    <#[[watch-action][%uuid%]]>
+        a schema:WatchAction ;
+        schema:object <#it> ;
+        schema:actionStatus schema:CompletedActionStatus ;
+        schema:endTime "[[watchedAt][.*]]"^^xsd:dateTime .
+
+    <#[[watch-action][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[watch-action][%uuid%]]> ;
+        crdt:createdAt "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[createdAt][.*]]"^^xsd:dateTime .
+} ;
+
+INSERT DATA {
+    @prefix crdt: <https://vocab.noeldemartin.com/crdt/> .
+    @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+    <#it-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#it> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[director-1][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[director-1][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[director-2][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[director-2][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[role-1][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[role-1][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[actor-1][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[actor-1][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[role-2][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[role-2][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[actor-2][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[actor-2][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[role-3][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[role-3][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[actor-3][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[actor-3][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[role-4][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[role-4][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[actor-4][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[actor-4][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[role-5][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[role-5][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[actor-5][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[actor-5][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[role-6][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[role-6][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[actor-6][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[actor-6][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+
+    <#[[watch-action][%uuid%]]-tombstone>
+        a crdt:Tombstone ;
+        crdt:resource <#[[watch-action][%uuid%]]> ;
+        crdt:deletedAt "[[.*]]"^^xsd:dateTime .
+}

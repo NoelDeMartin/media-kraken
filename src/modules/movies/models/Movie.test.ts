@@ -1,4 +1,5 @@
-import { describe, expect, it } from 'vite-plus/test';
+import { requireEngine } from 'soukai-bis';
+import { describe, expect, it, vi } from 'vite-plus/test';
 
 import PerformanceRole from '@/models/PerformanceRole';
 import Person from '@/models/Person';
@@ -168,5 +169,59 @@ describe('Movie model', () => {
 
         expect(instance.watchCount).toBe(2);
         expect(instance.watchedAt).toEqual(watchedAt);
+    });
+
+    it('Deletes relations in a single write', async () => {
+        const engine = requireEngine();
+        const movie = new Movie({ title: 'Alien' });
+
+        movie.mintUrl();
+
+        const director = movie.relatedDirectors.attach(new Person({ name: 'Ridley Scott' }), { mintUrl: true });
+        const role = movie.relatedCast.attach(new PerformanceRole({ actorUrl: director.requireUrl() }), {
+            mintUrl: true,
+        });
+
+        role.relatedActor.attach(director);
+        movie.setWatchingStatus('watched');
+        movie.setRating(8);
+        movie.setNotes('Classic');
+
+        await movie.save();
+
+        const updateDocumentSpy = vi.spyOn(engine, 'updateDocument');
+
+        await (await Movie.findOrFail(movie.requireUrl())).delete();
+
+        const document = await engine.readDocument(movie.requireDocumentUrl());
+        const types = document.statements(undefined, 'rdf:type').map((statement) => statement.object.value);
+
+        expect(updateDocumentSpy).toHaveBeenCalledTimes(1);
+        expect(types).toHaveLength(7);
+        expect(new Set(types)).toEqual(new Set(['https://vocab.noeldemartin.com/crdt/Tombstone']));
+    });
+
+    it('Removes ratings', async () => {
+        const engine = requireEngine();
+        const movie = new Movie({ title: 'Alien' });
+
+        movie.mintUrl();
+        movie.setRating(8);
+
+        await movie.save();
+
+        const freshMovie = await Movie.findOrFail(movie.requireUrl());
+
+        freshMovie.setRating(null);
+
+        await freshMovie.save();
+
+        const document = await engine.readDocument(movie.requireDocumentUrl());
+        const types = document.statements(undefined, 'rdf:type').map((statement) => statement.object.value);
+
+        expect(freshMovie.rating).toBeNull();
+        expect(types).not.toContain('https://schema.org/Review');
+        expect(types).not.toContain('https://schema.org/Rating');
+        expect(types.filter((type) => type === 'https://vocab.noeldemartin.com/crdt/Tombstone')).toHaveLength(2);
     });
 });

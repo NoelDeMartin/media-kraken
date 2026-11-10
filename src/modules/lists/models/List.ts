@@ -89,16 +89,6 @@ export default class List extends Model {
         await this.removeItems([item]);
     }
 
-    public async deleteWithItems(): Promise<void> {
-        await this.loadRelationIfUnloaded('items');
-
-        for (const item of this.items ?? []) {
-            await item.delete();
-        }
-
-        await this.delete();
-    }
-
     protected async removeItems(items: ListItem[]): Promise<void> {
         if (items.length === 0) {
             return;

@@ -73,6 +73,38 @@ test('Imports a movie from tmdb', async ({ page }) => {
     );
 });
 
+test('Deletes movies', async ({ page }) => {
+    await localFirstLogin(page);
+    await press(page, 'Press "s" to start searching');
+    await input(page, 'Search movies and shows').fill('matrix');
+    await press(page, 'The Matrix');
+    await press(page, 'Watched');
+    await waitSync(page);
+
+    const deleteDocument = interceptRequests(page, 'DELETE', podUrl('/movies/*'));
+    const updateDocument = interceptRequests(page, 'PATCH', podUrl('/movies/*'));
+
+    await press(page, 'My Movies');
+    await press(page, 'The Matrix');
+    await press(page, 'Open actions menu');
+    await press(page, 'Delete');
+    await press(page, 'Delete', { role: 'button' });
+    await see(page, 'The Matrix has been deleted.');
+    await waitSync(page);
+
+    expect(deleteDocument.all).toHaveLength(0);
+    expect(updateDocument.all).toHaveLength(1);
+    expect(updateDocument.nth(1)?.url).toEqual(podUrl('/movies/the-matrix-1999'));
+    expect(updateDocument.nth(1)?.body).toEqualSparql(
+        requiredFixture('/sparql/delete-movie.sparql', {
+            name: 'The Matrix',
+            genres: [28, 878],
+            countries: ['Q30'],
+            languages: ['en'],
+        }),
+    );
+});
+
 test('Pulls in existing movies & updates', async ({ page }) => {
     // Populate POD & Log in
     await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));

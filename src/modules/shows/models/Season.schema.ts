@@ -11,6 +11,6 @@ export default defineSchema({
     },
     relations: {
         show: hasOne('Show', 'seasonUrls'),
-        episodes: belongsToMany('Episode', 'episodeUrls'),
+        episodes: belongsToMany('Episode', 'episodeUrls').onDelete('cascade'),
     },
 });

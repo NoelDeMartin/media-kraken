@@ -10,6 +10,6 @@ export default defineSchema({
         reviewRatingUrl: url().rdfProperty('reviewRating').optional(),
     },
     relations: {
-        rating: belongsToOne('Rating', 'reviewRatingUrl').usingSameDocument(),
+        rating: belongsToOne('Rating', 'reviewRatingUrl').usingSameDocument().onDelete('cascade'),
     },
 });

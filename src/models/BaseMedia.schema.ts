@@ -14,8 +14,8 @@ export default defineSchema({
         languages: array(string()).rdfProperty('inLanguage').default([]),
     },
     relations: {
-        cast: belongsToMany('PerformanceRole', 'actorUrls').usingSameDocument().autoload(false),
-        review: hasOne('Review', 'itemReviewedUrl').usingSameDocument(),
-        note: hasOne('Note', 'aboutUrl').usingSameDocument(),
+        cast: belongsToMany('PerformanceRole', 'actorUrls').usingSameDocument().autoload(false).onDelete('cascade'),
+        review: hasOne('Review', 'itemReviewedUrl').usingSameDocument().onDelete('cascade'),
+        note: hasOne('Note', 'aboutUrl').usingSameDocument().onDelete('cascade'),
     },
 });

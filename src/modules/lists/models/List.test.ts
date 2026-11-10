@@ -1,16 +1,12 @@
 import { fail, required } from '@noeldemartin/utils';
-import { InMemoryEngine, bootCoreModels, bootModels, setEngine } from 'soukai-bis';
+import { requireEngine } from 'soukai-bis';
 import type { ModelWithUrl } from 'soukai-bis';
-import { beforeEach, describe, expect, it } from 'vite-plus/test';
+import { beforeEach, describe, expect, it, vi } from 'vite-plus/test';
 
-import PerformanceRole from '@/models/PerformanceRole';
-import Person from '@/models/Person';
 import Movie from '@movies/models/Movie';
-import WatchAction from '@movies/models/WatchAction';
-import Show from '@shows/models/Show';
 
 import List from './List';
-import ListItem from './ListItem';
+import type ListItem from './ListItem';
 
 describe('List model', () => {
     let alien: ModelWithUrl<Movie>;
@@ -42,10 +38,6 @@ describe('List model', () => {
     }
 
     beforeEach(() => {
-        bootCoreModels({ reset: true });
-        bootModels({ List, ListItem, Movie, PerformanceRole, Person, Show, WatchAction }, { reset: true });
-        setEngine(new InMemoryEngine());
-
         alien = newMovie('local://movies/alien#it', 'Alien');
         jaws = newMovie('local://movies/jaws#it', 'Jaws');
         scream = newMovie('local://movies/scream#it', 'Scream');
@@ -124,6 +116,29 @@ describe('List model', () => {
         await list.replace(alien, jaws);
 
         expect(titles(list)).toEqual(['Jaws']);
+    });
+
+    it('Deletes items with the list', async () => {
+        const list = await createList([alien, jaws]);
+        const freshList = await List.findOrFail(list.url);
+        const engine = requireEngine();
+        const updateDocumentSpy = vi.spyOn(engine, 'updateDocument');
+        const deleteDocumentSpy = vi.spyOn(engine, 'deleteDocument');
+
+        await freshList.delete();
+
+        const document = await engine.readDocument(list.requireDocumentUrl());
+        const types = document.statements(undefined, 'rdf:type').map((statement) => statement.object.value);
+
+        expect(updateDocumentSpy).toHaveBeenCalledTimes(1);
+        expect(deleteDocumentSpy).not.toHaveBeenCalled();
+        expect(freshList.items).toHaveLength(2);
+        expect(freshList.items?.every((listItem) => !listItem.exists())).toBe(true);
+        expect(types).toEqual([
+            'https://vocab.noeldemartin.com/crdt/Tombstone',
+            'https://vocab.noeldemartin.com/crdt/Tombstone',
+            'https://vocab.noeldemartin.com/crdt/Tombstone',
+        ]);
     });
 
     it('Keeps slug after renaming', async () => {

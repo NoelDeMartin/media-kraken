@@ -74,7 +74,7 @@ async function deleteList() {
         return;
     }
 
-    await runUpdate(list.deleteWithItems());
+    await runUpdate(list.delete());
     await Router.push('/lists');
 
     UI.toast(translate('lists.delete.success', { list: list.name }));

@@ -10,6 +10,6 @@ export default defineSchema({
         characterNames: array(string()).rdfProperty('characterName').default([]),
     },
     relations: {
-        actor: belongsToOne('Person', 'actorUrl').usingSameDocument(),
+        actor: belongsToOne('Person', 'actorUrl').usingSameDocument().onDelete('cascade'),
     },
 });

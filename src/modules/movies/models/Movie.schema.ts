@@ -12,7 +12,7 @@ export default defineSchema(BaseMedia, {
         duration: string().optional(),
     },
     relations: {
-        watchActions: hasMany('WatchAction', 'object').usingSameDocument(),
-        directors: belongsToMany('Person', 'directorUrls').usingSameDocument().autoload(false),
+        watchActions: hasMany('WatchAction', 'object').usingSameDocument().onDelete('cascade'),
+        directors: belongsToMany('Person', 'directorUrls').usingSameDocument().autoload(false).onDelete('cascade'),
     },
 });

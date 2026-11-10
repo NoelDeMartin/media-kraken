@@ -314,7 +314,7 @@ async function deleteMovie() {
 
     await runSync(async () => {
         await removeFromLists(movie);
-        await movie.deleteWithRelations();
+        await movie.delete();
     });
     await Router.push('/movies');
 
@@ -344,7 +344,7 @@ async function identifyAsShow(tmdbShow: TMDBShow) {
 
         await replaceInLists(movie, show);
         await Router.push(show.route);
-        await movie.deleteWithRelations();
+        await movie.delete();
     });
 }
 

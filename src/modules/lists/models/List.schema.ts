@@ -11,6 +11,6 @@ export default defineSchema({
         itemUrls: array(url()).rdfProperty('itemListElement').default([]),
     },
     relations: {
-        items: belongsToMany('ListItem', 'itemUrls').usingSameDocument(),
+        items: belongsToMany('ListItem', 'itemUrls').usingSameDocument().onDelete('cascade'),
     },
 });

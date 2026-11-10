@@ -3,6 +3,7 @@ import {
     arrayChunk,
     arrayFrom,
     arrayUnique,
+    arrayWithout,
     facade,
     isInstanceOf,
     isNullable,
@@ -484,11 +485,11 @@ export class CatalogService extends Service {
             });
         }
 
-        for (const role of staleRoles) {
-            role.relatedActor.detach({ delete: true });
-        }
-
         media.relatedCast.detach(staleRoles, { delete: true });
+
+        for (const role of staleRoles) {
+            role.relatedActor.detach({ delete: !this.isStaffMember(media, role.actor) });
+        }
     }
 
     private reconcilePersons<T extends Media>(
@@ -515,7 +516,24 @@ export class CatalogService extends Service {
             });
         }
 
-        relation.detach(stalePersons, { delete: true });
+        const staleActors = stalePersons.filter((person) => this.isCastMember(relation.parent, person));
+
+        relation.detach(staleActors);
+        relation.detach(arrayWithout(stalePersons, staleActors), { delete: true });
+    }
+
+    private isStaffMember(media: Media, person: Nullable<Person>): boolean {
+        return this.isCastMember(media, person) || this.isCrewMember(media, person);
+    }
+
+    private isCastMember(media: Media, person: Nullable<Person>): boolean {
+        return !!person && !!media.cast?.some((role) => role.actorUrl === person.url);
+    }
+
+    private isCrewMember(media: Media, person: Nullable<Person>): boolean {
+        const crew = media instanceof Movie ? media.directors : media.creators;
+
+        return !!person && !!crew?.some((crewMember) => crewMember.url === person.url);
     }
 
     private async newMovieFromName(name: string, options: NewMovieOptions = {}): Promise<Movie> {
