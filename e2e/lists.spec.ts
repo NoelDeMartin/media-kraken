@@ -28,12 +28,6 @@ test('Shares lists', async ({ page }) => {
         return response.ok ? await response.text() : '';
     };
 
-    const publicList = async () => {
-        const response = await fetch(listUrl, { headers: { Accept: 'application/n-triples' } });
-
-        return response.ok ? await response.text() : '';
-    };
-
     // Populate POD & Log in
     await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));
     await solidCreateDocument('/settings/preferences', requiredFixture('/turtle/preferences.ttl'));

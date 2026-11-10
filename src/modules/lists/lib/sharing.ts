@@ -1,7 +1,7 @@
 import { Solid } from '@aerogel/plugin-solid';
 import { SolidDocumentPermissions } from '@noeldemartin/solid-utils';
-import { TypeRegistration, isLocalUrl } from 'soukai-bis';
-import type { ModelWithUrl } from 'soukai-bis';
+import { isLocalUrl } from 'soukai-bis';
+import type { ModelWithUrl, TypeRegistration } from 'soukai-bis';
 
 import List from '@lists/models/List';
 
