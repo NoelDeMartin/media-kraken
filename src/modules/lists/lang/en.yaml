@@ -40,6 +40,25 @@ lists:
         add: 'Add'
         addA11y: 'Add {name}'
         alreadyAdded: 'Already in the list'
+    share:
+        action: 'Share'
+        title: 'Sharing'
+        loading: 'Loading permissions...'
+        visibility: 'Visibility'
+        public: 'Public'
+        publicDescription: "Anyone with the link can view this list, and it will appear in your friends' discovery page."
+        unlisted: 'Unlisted'
+        unlistedDescription: 'Anyone with the link can view this list.'
+        private: 'Private'
+        privateDescription: 'You are the only one who can view this list.'
+        disconnected: 'You need to be connected to your account in order to share lists.'
+        guest: 'Lists are only stored in this device for now. Connect your account to share them.'
+        connect: 'Connect'
+        reconnect: 'Reconnect'
+        fetchError: "It wasn't possible to read the permissions for this list."
+        updateError: "It wasn't possible to update the permissions for this list."
+        errorDetails: 'View error details'
+        retry: 'Try again'
     manage:
         action: 'Manage lists'
         title: 'Manage lists'
