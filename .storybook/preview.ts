@@ -20,14 +20,7 @@ export default definePreview({
     parameters: {
         options: {
             storySort: {
-                order: [
-                    'Foundations',
-                    'Atoms',
-                    'Molecules',
-                    'Organisms',
-                    'Modals',
-                    'Pages',
-                ],
+                order: ['Foundations', 'Atoms', 'Molecules', 'Organisms', 'Modals', 'Pages'],
             },
         },
     },
