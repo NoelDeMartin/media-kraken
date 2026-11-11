@@ -5,14 +5,14 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/');
 });
 
-test('Seeds sample media', async ({ page }) => {
+test('Seed sample media', async ({ page }) => {
     await press(page, 'No, just give me something to watch');
     await press(page, 'Add the top 100 rated movies from IMDb to my collection');
     await see(page, 'Prepare the popcorn');
     await see(page, 'The Shawshank Redemption (Pending)');
 });
 
-test('Shows watching stats', async ({ page }) => {
+test('View watching stats', async ({ page }) => {
     const movie = await createModel(page, 'Movie', {
         title: 'The Matrix',
         releaseDate: new Date('1999-03-31'),

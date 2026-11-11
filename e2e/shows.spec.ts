@@ -15,7 +15,7 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/shows');
 });
 
-test('Adds shows from search', async ({ page }) => {
+test('Add shows from search', async ({ page }) => {
     await press(page, 'Press "s" to start searching');
     await input(page, 'Search movies and shows').fill('breaking bad');
     await press(page, 'Breaking Bad');
@@ -26,7 +26,7 @@ test('Adds shows from search', async ({ page }) => {
     await see(page, 'Watching (7 new episodes)');
 });
 
-test('Views show details', async ({ page }) => {
+test('View show details', async ({ page }) => {
     await seedShow(page);
 
     await page.goto('/shows/breaking-bad-2008');
@@ -36,7 +36,7 @@ test('Views show details', async ({ page }) => {
     await see(page, 'Pilot');
 });
 
-test('Changes watching status from details page', async ({ page }) => {
+test('Change watching status from details page', async ({ page }) => {
     await seedShow(page);
 
     await page.goto('/shows/breaking-bad-2008');
@@ -47,7 +47,7 @@ test('Changes watching status from details page', async ({ page }) => {
     await see(page, 'Completed');
 });
 
-test('Views show metadata', async ({ page }) => {
+test('View show metadata', async ({ page }) => {
     await seedShow(page);
 
     await page.goto('/shows/breaking-bad-2008');
@@ -59,7 +59,7 @@ test('Views show metadata', async ({ page }) => {
     await see(page, '7 episodes');
 });
 
-test('Filters shows by name', async ({ page }) => {
+test('Filter shows by name', async ({ page }) => {
     await createModel(page, 'Show', { name: 'Breaking Bad' });
     await createModel(page, 'Show', { name: 'The Wire' });
     await see(page, 'Shows (2)');
@@ -71,7 +71,7 @@ test('Filters shows by name', async ({ page }) => {
     await dontSee(page, 'The Wire');
 });
 
-test('Filters shows with advanced filters', async ({ page }) => {
+test('Filter shows with advanced filters', async ({ page }) => {
     await seedShow(page);
     await createModel(page, 'Show', { name: 'The Wire' });
     await see(page, 'Shows (2)');
@@ -90,7 +90,7 @@ test('Filters shows with advanced filters', async ({ page }) => {
     await dontSee(page, 'Breaking Bad');
 });
 
-test('Identifies a show', async ({ page }) => {
+test('Identify a show', async ({ page }) => {
     await createModel(page, 'Show', { name: 'Breaking Bad' });
     await press(page, 'Breaking Bad');
     await press(page, 'Open actions menu');
@@ -100,7 +100,7 @@ test('Identifies a show', async ({ page }) => {
     await see(page, 'Vince Gilligan');
 });
 
-test('Deletes shows', async ({ page }) => {
+test('Delete shows', async ({ page }) => {
     await createModel(page, 'Show', { name: 'The Wire' });
     await press(page, 'The Wire');
     await press(page, 'Open actions menu');

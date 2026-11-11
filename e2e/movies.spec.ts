@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/movies');
 });
 
-test('Adds movies from search', async ({ page }) => {
+test('Add movies from search', async ({ page }) => {
     await press(page, 'Press "s" to start searching');
     await input(page, 'Search movies and shows').fill('matrix');
     await press(page, 'The Matrix');
@@ -13,7 +13,7 @@ test('Adds movies from search', async ({ page }) => {
     await see(page, 'The Matrix has been added to your collection!');
 });
 
-test('Adds watched movies from search', async ({ page }) => {
+test('Add watched movies from search', async ({ page }) => {
     await press(page, 'Press "s" to start searching');
     await input(page, 'Search movies and shows').fill('matrix');
     await press(page, 'The Matrix');
@@ -22,13 +22,13 @@ test('Adds watched movies from search', async ({ page }) => {
     await see(page, 'The Matrix (Watched)');
 });
 
-test('Marks movies as watched from collection', async ({ page }) => {
+test('Mark movies as watched from collection', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await press(page, 'Mark The Matrix as watched');
     await see(page, 'The Matrix (Watched)');
 });
 
-test('Marks movies as watched from details page', async ({ page }) => {
+test('Mark movies as watched from details page', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await press(page, 'The Matrix');
     await press(page, 'Open actions menu');
@@ -36,7 +36,7 @@ test('Marks movies as watched from details page', async ({ page }) => {
     await see(page, 'Watched');
 });
 
-test('Rates movies', async ({ page }) => {
+test('Rate movies', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await press(page, 'The Matrix');
     await dontSee(page, 'Rate 3.5 out of 5');
@@ -56,7 +56,7 @@ test('Rates movies', async ({ page }) => {
     await see(page, 'Movies (1)');
 });
 
-test('Filters movies by title', async ({ page }) => {
+test('Filter movies by title', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await createModel(page, 'Movie', { title: 'Inception' });
     await see(page, 'Movies (2)');
@@ -73,7 +73,7 @@ test('Filters movies by title', async ({ page }) => {
     await dontSee(page, 'Inception');
 });
 
-test('Filters movies with advanced filters', async ({ page }) => {
+test('Filter movies with advanced filters', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await createModel(page, 'Movie', { title: 'Inception' });
     await press(page, 'Mark The Matrix as watched');
@@ -94,7 +94,7 @@ test('Filters movies with advanced filters', async ({ page }) => {
     await dontSee(page, 'The Matrix');
 });
 
-test('Paginates movies table', async ({ page }) => {
+test('Paginate movies table', async ({ page }) => {
     for (let index = 1; index <= 11; index++) {
         await createModel(page, 'Movie', { title: `Movie ${index}` });
     }
@@ -118,7 +118,7 @@ test('Paginates movies table', async ({ page }) => {
     await expect(page).toHaveURL(/\/movies\?view=table&q=movie(\+|%20)1$/);
 });
 
-test('Identifies a movie', async ({ page }) => {
+test('Identify a movie', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'The Matrix' });
     await press(page, 'The Matrix');
     await press(page, 'Open actions menu');
@@ -127,7 +127,7 @@ test('Identifies a movie', async ({ page }) => {
     await see(page, 'The Matrix (1999)');
 });
 
-test('Deletes movies', async ({ page }) => {
+test('Delete movies', async ({ page }) => {
     await createModel(page, 'Movie', { title: 'Inception' });
     await press(page, 'Inception');
     await press(page, 'Open actions menu');

@@ -17,7 +17,7 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/');
 });
 
-test('Shares lists', async ({ page }) => {
+test('Update lists sharing', async ({ page }) => {
     const listUrl = podUrl('/lists/favorites');
     const visibility = (name: string) => page.getByRole('radio', { name: new RegExp(`^${name}`) });
     const publicTypeIndex = async () => {
@@ -56,7 +56,9 @@ test('Shares lists', async ({ page }) => {
     await expect(visibility('Public')).toBeChecked();
 
     expect((await fetch(listUrl)).status).toEqual(200);
-    expect(await publicTypeIndex()).toContain(`${listUrl}#it`);
+    expect(await publicTypeIndex()).toEqualTurtle(
+        requiredFixture('/turtle/public-type-index.ttl', { listSlug: 'favorites' }),
+    );
 
     await page.keyboard.press('Escape');
     await press(page, 'Open actions menu');

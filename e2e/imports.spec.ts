@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/');
 });
 
-test('Imports movies from IMDb', async ({ page }) => {
+test('Import movies from IMDb', async ({ page }) => {
     await press(page, "Yes, I have some content I'd like to import");
     await press(page, 'IMDb');
     await input(page, 'Urls').fill('https://www.imdb.com/title/tt0073195/');
@@ -16,7 +16,7 @@ test('Imports movies from IMDb', async ({ page }) => {
     await see(page, 'Jaws (Pending)');
 });
 
-test('Imports movies from Netflix', async ({ page }) => {
+test('Import movies from Netflix', async ({ page }) => {
     await press(page, "Yes, I have some content I'd like to import");
     await press(page, 'Netflix');
     await page.setInputFiles('input[type="file"]', 'e2e/fixtures/imports/netflix.csv');
@@ -28,7 +28,7 @@ test('Imports movies from Netflix', async ({ page }) => {
     await see(page, 'Jaws (Watched)');
 });
 
-test('Imports movies from CSV', async ({ page }) => {
+test('Import movies from CSV', async ({ page }) => {
     await press(page, "Yes, I have some content I'd like to import");
     await press(page, 'Others');
     await page.setInputFiles('input[type="file"]', 'e2e/fixtures/imports/custom.csv');

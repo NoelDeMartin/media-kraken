@@ -19,7 +19,7 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/');
 });
 
-test('Updates movies with legacy data', async ({ page }) => {
+test('Update movies with legacy data', async ({ page }) => {
     // Populate POD & Log in
     await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));
     await solidCreateDocument('/settings/preferences', requiredFixture('/turtle/preferences.ttl'));

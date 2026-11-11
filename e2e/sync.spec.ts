@@ -20,7 +20,7 @@ test.beforeEach(async ({ page }) => {
     await page.goto('/');
 });
 
-test('Imports a movie from tmdb', async ({ page }) => {
+test('Import a movie from tmdb', async ({ page }) => {
     const createDocument = interceptRequests(page, 'PATCH', podUrl('/movies/*'));
     const registerContainer = interceptRequests(page, 'PATCH', podUrl('/settings/privateTypeIndex'));
     const createPreferencesFile = interceptRequests(page, 'PUT', podUrl('/settings/preferences'));
@@ -73,7 +73,7 @@ test('Imports a movie from tmdb', async ({ page }) => {
     );
 });
 
-test('Deletes movies', async ({ page }) => {
+test('Delete movies', async ({ page }) => {
     await localFirstLogin(page);
     await press(page, 'Press "s" to start searching');
     await input(page, 'Search movies and shows').fill('matrix');
@@ -105,7 +105,7 @@ test('Deletes movies', async ({ page }) => {
     );
 });
 
-test('Pulls in existing movies & updates', async ({ page }) => {
+test('Pull in existing movies & updates', async ({ page }) => {
     // Populate POD & Log in
     await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));
     await solidCreateDocument('/settings/preferences', requiredFixture('/turtle/preferences.ttl'));
@@ -128,7 +128,7 @@ test('Pulls in existing movies & updates', async ({ page }) => {
     await see(page, 'The Substance (Watched)');
 });
 
-test('Creates lists', async ({ page }) => {
+test('Create lists', async ({ page }) => {
     const listRequests = interceptRequests(page, 'PATCH', podUrl('/lists/*'));
     const registerContainer = interceptRequests(page, 'PATCH', podUrl('/settings/privateTypeIndex'));
 
@@ -172,7 +172,7 @@ test('Creates lists', async ({ page }) => {
     );
 });
 
-test('Uploads lists created before logging in', async ({ page }) => {
+test('Upload lists created before logging in', async ({ page }) => {
     const createList = interceptRequests(page, 'PUT', podUrl('/lists/*'));
     const patchList = interceptRequests(page, 'PATCH', podUrl('/lists/*'));
 
@@ -204,7 +204,7 @@ test('Uploads lists created before logging in', async ({ page }) => {
     await see(page, 'The Matrix');
 });
 
-test('Pulls in existing lists & updates', async ({ page }) => {
+test('Pull in existing lists & updates', async ({ page }) => {
     // Populate POD & Log in
     await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));
     await solidCreateDocument('/settings/preferences', requiredFixture('/turtle/preferences.ttl'));

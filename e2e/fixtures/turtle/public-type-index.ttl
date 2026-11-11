@@ -1,0 +1,8 @@
+@prefix solid: <http://www.w3.org/ns/solid/terms#> .
+@prefix schema: <https://schema.org/> .
+
+<http://localhost:3000/alice/settings/publicTypeIndex> a solid:TypeIndex, solid:ListedDocument .
+
+<http://localhost:3000/alice/settings/publicTypeIndex#[[.*]]> a solid:TypeRegistration ;
+    solid:forClass schema:ItemList ;
+    solid:instance <http://localhost:3000/alice/lists/{{ listSlug }}#it> .
