@@ -1,10 +1,10 @@
-import type { RangeSliderValue } from '@aerogel/core';
+import { renderMarkdownAsText, type RangeSliderValue } from '@aerogel/core';
 import { isNullable, isTruthy, type Nullable } from '@noeldemartin/utils';
 
 import type { QueryFilterFields } from '@/lib/composition/filters';
 import { formatCountries, formatGenres, formatLanguages } from '@/lib/formatting';
 import type { GenreKey } from '@/lib/genres';
-import { matchesAny, matchesRange, notesPreview, personFilterKey, toSearchText } from '@/lib/media';
+import { matchesAny, matchesRange, personFilterKey, toSearchText } from '@/lib/media';
 import type Movie from '@movies/models/Movie';
 import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 
@@ -52,7 +52,7 @@ export function renderMovieTableItem(movie: Movie) {
         rating: movie.rating,
         hasNotes: !!movie.notes,
         get notesPreview(): string | undefined {
-            return movie.notes ? notesPreview(movie.notes) : undefined;
+            return movie.notes ? renderMarkdownAsText(movie.notes, { maxLength: 300 }) : undefined;
         },
     };
 }

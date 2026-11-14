@@ -14,14 +14,14 @@ INSERT DATA {
 
     <#it-metadata> crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
 
-    <#it-operation-[[operation-1][%uuid%]]>
+    <#it-operation-[[operation-1][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:name ;
         crdt:value "{{ name }}" .
 
-    <#it-operation-[[operation-2][%uuid%]]>
+    <#it-operation-[[operation-2][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
@@ -30,12 +30,24 @@ INSERT DATA {
 
     <#[[item][%uuid%]]>
         a schema:ListItem ;
-        schema:item <{{ mediaUrl }}> ;
+        schema:item <#[[media][%uuid%]]> ;
         schema:position 1 .
 
     <#[[item][%uuid%]]-metadata>
         a crdt:Metadata ;
         crdt:resource <#[[item][%uuid%]]> ;
+        crdt:createdAt "[[updatedAt][.*]]"^^xsd:dateTime ;
+        crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
+
+    <#[[media][%uuid%]]>
+        a schema:Movie ;
+        schema:name "{{ mediaName }}" ;
+        schema:image <{{ mediaImage }}> ;
+        schema:sameAs <{{ mediaUrl }}>, <{{ mediaTmdbUrl }}>, <{{ mediaImdbUrl }}> .
+
+    <#[[media][%uuid%]]-metadata>
+        a crdt:Metadata ;
+        crdt:resource <#[[media][%uuid%]]> ;
         crdt:createdAt "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:updatedAt "[[updatedAt][.*]]"^^xsd:dateTime .
 }

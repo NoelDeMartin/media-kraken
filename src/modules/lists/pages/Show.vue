@@ -1,7 +1,7 @@
 <template>
     <Page>
         <SectionTitle :level="1" :loading="updating" :menu="menuOptions">
-            {{ list.name }} ({{ list.mediaUrls.length }})
+            {{ list.name }} ({{ list.itemUrls.length }})
             <template #actions>
                 <Button
                     variant="secondary"
@@ -23,8 +23,8 @@
             class="mt-4"
             :list
             :disabled="updating"
-            @move="(item, target) => runUpdate(list.move(item, target))"
-            @remove="(item) => runUpdate(list.removeItem(item))"
+            @move="(item, target) => runUpdate(list.moveItem(item, target))"
+            @remove="(item) => runUpdate(list.removeItems([item]))"
         />
     </Page>
 </template>

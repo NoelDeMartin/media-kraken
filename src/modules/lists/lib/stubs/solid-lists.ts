@@ -1,11 +1,19 @@
 import { defineStub, type StubDefinition } from '@/lib/stubs/helpers';
+import { attachStubItem } from '@lists/lib/stubs/lists';
 import List from '@lists/models/List';
+import movies from '@movies/lib/stubs/solid-movies';
+import shows from '@shows/lib/stubs/solid-shows';
 
 function list(slug: string, name: string, mediaUrls: string[]): List {
     const instance = new List({ url: `local://lists/${slug}#it`, name });
+    const media = [...movies.all, ...shows.all];
 
-    for (const [index, mediaUrl] of mediaUrls.entries()) {
-        instance.relatedItems.attach({ mediaUrl, position: index + 1 });
+    for (const mediaUrl of mediaUrls) {
+        attachStubItem(
+            instance,
+            mediaUrl,
+            media.find(({ url }) => url === mediaUrl),
+        );
     }
 
     return instance;

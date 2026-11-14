@@ -30,9 +30,7 @@
             <li v-if="result.ignored.length > 0" class="flex flex-col">
                 <div class="flex items-center gap-2 text-sm text-gray-800">
                     <i-mdi-information-outline class="size-5 text-blue-600" />
-                    <span>
-                        <strong>{{ result.ignored.length }}</strong> {{ $t('import.result.ignored') }}
-                    </span>
+                    <span><strong>{{ result.ignored.length }}</strong> {{ $t('import.result.ignored') }}</span>
                 </div>
                 <button
                     type="button"
@@ -61,9 +59,7 @@
             <li v-if="result.invalid.length > 0" class="flex flex-col">
                 <div class="flex items-center gap-2 text-sm text-gray-800">
                     <i-mdi-alert-circle-outline class="size-5 text-red-600" />
-                    <span>
-                        <strong>{{ result.invalid.length }}</strong> {{ $t('import.result.invalid') }}
-                    </span>
+                    <span><strong>{{ result.invalid.length }}</strong> {{ $t('import.result.invalid') }}</span>
                 </div>
                 <button
                     type="button"
@@ -76,9 +72,7 @@
             <li v-if="result.failed.length > 0" class="flex flex-col">
                 <div class="flex items-center gap-2 text-sm text-gray-800">
                     <i-mdi-alert-circle-outline class="size-5 text-red-600" />
-                    <span>
-                        <strong>{{ result.failed.length }}</strong> {{ $t('import.result.failed') }}
-                    </span>
+                    <span><strong>{{ result.failed.length }}</strong> {{ $t('import.result.failed') }}</span>
                 </div>
                 <button
                     type="button"

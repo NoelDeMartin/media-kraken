@@ -27,6 +27,11 @@ test('Update lists sharing', async ({ page }) => {
 
         return response.ok ? await response.text() : '';
     };
+    const publicList = async () => {
+        const response = await fetch(listUrl, { headers: { Accept: 'application/n-triples' } });
+
+        return response.ok ? await response.text() : '';
+    };
 
     // Populate POD & Log in
     await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));
@@ -50,6 +55,7 @@ test('Update lists sharing', async ({ page }) => {
 
     expect((await fetch(listUrl)).status).toEqual(200);
     expect(await publicTypeIndex()).not.toContain(listUrl);
+    expect(await publicList()).toEqualTurtle(requiredFixture('/turtle/public-favorites-list.ttl'));
 
     // Public
     await visibility('Public').click();

@@ -24,7 +24,7 @@
                     {{ list.name }}
                 </RouterLink>
             </h2>
-            <p class="text-xs text-gray-500">{{ $t('lists.itemsCount', { count: list.mediaUrls.length }) }}</p>
+            <p class="text-xs text-gray-500">{{ $t('lists.itemsCount', { count: list.itemUrls.length }) }}</p>
         </div>
         <div
             class="pointer-events-none absolute inset-0 bg-black/10 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
@@ -41,15 +41,14 @@ import { computedModel } from '@aerogel/plugin-solid';
 import { isTruthy } from '@noeldemartin/utils';
 import { computed } from 'vue';
 
-import type { MediaByUrl } from '@lists/lib/composition/lists';
 import type List from '@lists/models/List';
 
-const { list: listProp, mediaByUrl } = defineProps<{ list: List; mediaByUrl: MediaByUrl }>();
+const { list: listProp } = defineProps<{ list: List }>();
 const list = computedModel(() => listProp);
 const previews = computed(() =>
-    list.value.mediaUrls
+    list.value.sortedItems
         .slice(0, LIST_PREVIEWS)
-        .map((url) => mediaByUrl.get(url))
+        .map((item) => item.media)
         .filter(isTruthy),
 );
 </script>

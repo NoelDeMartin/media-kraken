@@ -133,7 +133,7 @@ import type Person from '@/models/Person';
 import Catalog from '@/services/Catalog';
 import type { TMDBMovie, TMDBShow } from '@/services/TMDB';
 import ListManageModal from '@lists/components/modals/ListManageModal.vue';
-import { removeFromLists, replaceInLists } from '@lists/lib/lists';
+import Lists from '@lists/services/Lists';
 import Movie from '@movies/models/Movie';
 import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 
@@ -312,10 +312,7 @@ async function deleteMovie() {
         return;
     }
 
-    await runSync(async () => {
-        await removeFromLists(movie);
-        await movie.delete();
-    });
+    await runSync(movie.delete());
     await Router.push('/movies');
 
     UI.toast(translate('movies.delete.success', { movie: movie.title }));
@@ -342,7 +339,7 @@ async function identifyAsShow(tmdbShow: TMDBShow) {
             notes: movie.notes,
         });
 
-        await replaceInLists(movie, show);
+        await Lists.replaceInLists(movie, show);
         await Router.push(show.route);
         await movie.delete();
     });

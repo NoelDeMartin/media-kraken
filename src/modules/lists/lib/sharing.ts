@@ -1,11 +1,21 @@
 import { Solid } from '@aerogel/plugin-solid';
-import { SolidDocumentPermissions } from '@noeldemartin/solid-utils';
+import {
+    RDFNamedNode,
+    RDFQuad,
+    SolidDocumentPermissions,
+    SparqlUpdate,
+    expandIRI,
+    fetchSolidDocument,
+    updateSolidDocument,
+} from '@noeldemartin/solid-utils';
 import { isLocalUrl } from 'soukai-bis';
-import type { ModelWithUrl, TypeRegistration } from 'soukai-bis';
+import type { ModelWithUrl, TypeIndex, TypeRegistration } from 'soukai-bis';
 
 import List from '@lists/models/List';
+import Movie from '@movies/models/Movie';
+import Show from '@shows/models/Show';
 
-export type ListVisibility = 'public' | 'unlisted' | 'private';
+const ABOUT_PREDICATE = new RDFNamedNode(expandIRI('schema:about'));
 
 function isListRegistration(registration: TypeRegistration, list: ModelWithUrl<List>): boolean {
     return registration.instance === list.url && registration.registers(List);
@@ -27,10 +37,32 @@ async function publishList(list: ModelWithUrl<List>): Promise<void> {
     const typeIndex = await Solid.findOrCreatePublicTypeIndex();
 
     await typeIndex.relatedRegistrations.create({
-        forClass: List.schema.rdfClasses.map((rdfClass) => rdfClass.value),
+        forClass: List.getRdfClasses(),
         instance: list.url,
     });
+
+    await updateSolidDocument(typeIndex.requireDocumentUrl(), new SparqlUpdate().insert(listAboutQuads(list)), {
+        fetch: Solid.fetch,
+    });
 }
+
+function listAboutQuads(list: ModelWithUrl<List>): RDFQuad[] {
+    const listNode = new RDFNamedNode(list.url);
+
+    return [...Movie.getRdfClasses(), ...Show.getRdfClasses()].map(
+        (rdfClass) => new RDFQuad(listNode, ABOUT_PREDICATE, new RDFNamedNode(rdfClass)),
+    );
+}
+
+async function removeListAbout(typeIndex: TypeIndex, list: ModelWithUrl<List>): Promise<void> {
+    const url = typeIndex.requireDocumentUrl();
+    const document = await fetchSolidDocument(url, { fetch: Solid.fetch });
+    const update = new SparqlUpdate(document).delete(new RDFNamedNode(list.url), ABOUT_PREDICATE);
+
+    await updateSolidDocument(url, update, { fetch: Solid.fetch });
+}
+
+export type ListVisibility = 'public' | 'unlisted' | 'private';
 
 export async function unpublishList(list: ModelWithUrl<List>): Promise<void> {
     const publicTypeIndexes = await Solid.findPublicTypeIndexes();
@@ -46,6 +78,7 @@ export async function unpublishList(list: ModelWithUrl<List>): Promise<void> {
         typeIndex.relatedRegistrations.detach(registrations, { delete: true });
 
         await typeIndex.save();
+        await removeListAbout(typeIndex, list);
     }
 }
 

@@ -15,11 +15,23 @@
 
 <#the-substance>
     a schema:ListItem ;
-    schema:item <../movies/the-substance-2024#it> ;
+    schema:item <#the-substance-media> ;
     schema:position 1 .
 
 <#the-substance-metadata>
     a crdts:Metadata ;
     crdts:resource <#the-substance> ;
+    crdts:createdAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime ;
+    crdts:updatedAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime .
+
+<#the-substance-media>
+    a schema:Movie ;
+    schema:name "The Substance" ;
+    schema:image <https://image.tmdb.org/t/p/w500/uYJvxMWMb9W4zIY3cbM50sj3dpC.jpg> ;
+    schema:sameAs <../movies/the-substance-2024#it>, <https://www.themoviedb.org/movie/933260> .
+
+<#the-substance-media-metadata>
+    a crdts:Metadata ;
+    crdts:resource <#the-substance-media> ;
     crdts:createdAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime ;
     crdts:updatedAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime .

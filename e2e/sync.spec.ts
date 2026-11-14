@@ -168,6 +168,10 @@ test('Create lists', async ({ page }) => {
         requiredFixture('/sparql/add-list-item.sparql', {
             name: 'Favorites',
             mediaUrl: podUrl('/movies/the-matrix-1999#it'),
+            mediaName: 'The Matrix',
+            mediaImage: 'https://image.tmdb.org/t/p/w500/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg',
+            mediaTmdbUrl: 'https://www.themoviedb.org/movie/603',
+            mediaImdbUrl: 'https://www.imdb.com/title/tt0133093/',
         }),
     );
 });

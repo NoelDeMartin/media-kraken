@@ -34,35 +34,35 @@ INSERT DATA {
 
     # Inception operations (legacy values)
 
-    <#it-operation-[[inception-1][%uuid%]]>
+    <#it-operation-[[inception-1][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "2020-09-23T18:59:30.000Z"^^xsd:dateTime ;
         crdt:property schema:name ;
         crdt:value "The Matrix" .
 
-    <#it-operation-[[inception-2][%uuid%]]>
+    <#it-operation-[[inception-2][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "2020-09-23T18:59:30.000Z"^^xsd:dateTime ;
         crdt:property schema:description ;
         crdt:value "Set in the 22nd century, The Matrix tells the story of a computer hacker." .
 
-    <#it-operation-[[inception-3][%uuid%]]>
+    <#it-operation-[[inception-3][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "2020-09-23T18:59:30.000Z"^^xsd:dateTime ;
         crdt:property schema:datePublished ;
         crdt:value "1999-03-30T00:00:00.000Z"^^xsd:dateTime .
 
-    <#it-operation-[[inception-4][%uuid%]]>
+    <#it-operation-[[inception-4][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "2020-09-23T18:59:30.000Z"^^xsd:dateTime ;
         crdt:property schema:image ;
         crdt:value <https://image.tmdb.org/t/p/w500/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg> .
 
-    <#it-operation-[[inception-5][%uuid%]]>
+    <#it-operation-[[inception-5][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "2020-09-23T18:59:30.000Z"^^xsd:dateTime ;
@@ -71,63 +71,63 @@ INSERT DATA {
 
     # Update operations
 
-    <#it-operation-[[update-1][%uuid%]]>
+    <#it-operation-[[update-1][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:description ;
         crdt:value "[[.*]]" .
 
-    <#it-operation-[[update-2][%uuid%]]>
+    <#it-operation-[[update-2][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:image ;
         crdt:value <https://image.tmdb.org/t/p/w500/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg> .
 
-    <#it-operation-[[update-3][%uuid%]]>
+    <#it-operation-[[update-3][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:datePublished ;
         crdt:value "1999-03-31T00:00:00.000Z"^^xsd:dateTime .
 
-    <#it-operation-[[update-4][%uuid%]]>
+    <#it-operation-[[update-4][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:countryOfOrigin ;
         crdt:value <http://www.wikidata.org/entity/Q30> .
 
-    <#it-operation-[[update-5][%uuid%]]>
+    <#it-operation-[[update-5][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:genre ;
         crdt:value <https://www.themoviedb.org/genre/28>, <https://www.themoviedb.org/genre/878> .
 
-    <#it-operation-[[update-6][%uuid%]]>
+    <#it-operation-[[update-6][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:inLanguage ;
         crdt:value "en" .
 
-    <#it-operation-[[update-7][%uuid%]]>
+    <#it-operation-[[update-7][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:duration ;
         crdt:value "PT2H16M" .
 
-    <#it-operation-[[update-8][%uuid%]]>
+    <#it-operation-[[update-8][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:actor ;
         crdt:value <#[[role-1][%uuid%]]>, <#[[role-2][%uuid%]]>, <#[[role-3][%uuid%]]>, <#[[role-4][%uuid%]]>, <#[[role-5][%uuid%]]>, <#[[role-6][%uuid%]]> .
 
-    <#it-operation-[[update-9][%uuid%]]>
+    <#it-operation-[[update-9][.*]]>
         a crdt:SetPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;

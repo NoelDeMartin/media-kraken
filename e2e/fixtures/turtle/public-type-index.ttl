@@ -6,3 +6,5 @@
 <http://localhost:3000/alice/settings/publicTypeIndex#[[.*]]> a solid:TypeRegistration ;
     solid:forClass schema:ItemList ;
     solid:instance <http://localhost:3000/alice/lists/{{ listSlug }}#it> .
+
+<http://localhost:3000/alice/lists/{{ listSlug }}#it> schema:about schema:Movie, schema:TVSeries .

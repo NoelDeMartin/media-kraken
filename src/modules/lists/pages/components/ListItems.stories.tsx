@@ -45,8 +45,8 @@ const meta: Meta<StoryArgs> = {
                             <ListItems
                                 list={list}
                                 disabled={args.disabled}
-                                onMove={(item: ListItem, target: ListItem) => list.move(item, target)}
-                                onRemove={(item: ListItem) => list.removeItem(item)}
+                                onMove={(item: ListItem, target: ListItem) => list.moveItem(item, target)}
+                                onRemove={(item: ListItem) => list.removeItems([item])}
                             />
                         </div>
                     )

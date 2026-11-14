@@ -19,7 +19,7 @@
                         {{ list.name }}
                     </Checkbox>
                     <span class="shrink-0 text-right text-xs text-gray-500">
-                        {{ $t('lists.itemsCount', { count: list.mediaUrls.length }) }}
+                        {{ $t('lists.itemsCount', { count: list.itemUrls.length }) }}
                     </span>
                 </li>
             </ul>
@@ -59,13 +59,13 @@ const changes = reactive(new Map<string, boolean>());
 const saving = ref(false);
 
 function isSelected(list: ModelWithUrl<List>): boolean {
-    return changes.get(list.url) ?? list.has(media);
+    return changes.get(list.url) ?? list.hasMedia(media);
 }
 
 function toggle(list: ModelWithUrl<List>) {
     const selected = !isSelected(list);
 
-    if (selected === list.has(media)) {
+    if (selected === list.hasMedia(media)) {
         changes.delete(list.url);
 
         return;
@@ -95,7 +95,7 @@ async function submit() {
                 continue;
             }
 
-            await (selected ? list.add(media) : list.remove(media));
+            await (selected ? list.addMedia(media) : list.removeMedia(media));
         }
     } finally {
         saving.value = false;

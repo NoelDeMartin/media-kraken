@@ -16,7 +16,7 @@
             {{ $t('lists.empty') }}
         </p>
         <MediaGrid v-else class="mt-4" item-width="16rem">
-            <ListCard v-for="list of sortedLists" :key="list.url" :list :media-by-url="mediaByUrl" />
+            <ListCard v-for="list of sortedLists" :key="list.url" :list />
         </MediaGrid>
     </Page>
 </template>
@@ -29,12 +29,10 @@ import { computed } from 'vue';
 
 import { sortByLocale } from '@/lib/media';
 import ListFormModal from '@lists/components/modals/ListFormModal.vue';
-import { useListMedia } from '@lists/lib/composition/lists';
 import List from '@lists/models/List';
 import ListCard, { LIST_PREVIEWS } from '@lists/pages/components/ListCard.vue';
 
 const { models: lists, loading } = useModels(List);
-const { mediaByUrl } = useListMedia(() => lists.value.flatMap((list) => list.mediaUrls.slice(0, LIST_PREVIEWS)));
 const sortedLists = computed(() => sortByLocale(lists.value, (list) => list.name));
 
 async function create() {

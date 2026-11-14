@@ -1,0 +1,37 @@
+@prefix schema: <https://schema.org/> .
+@prefix crdts: <https://vocab.noeldemartin.com/crdt/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<http://localhost:3000/alice/lists/favorites#it>
+    a schema:ItemList ;
+    schema:name "Favorites" ;
+    schema:itemListElement <http://localhost:3000/alice/lists/favorites#the-substance> .
+
+<http://localhost:3000/alice/lists/favorites#it-metadata>
+    a crdts:Metadata ;
+    crdts:resource <http://localhost:3000/alice/lists/favorites#it> ;
+    crdts:createdAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime ;
+    crdts:updatedAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime .
+
+<http://localhost:3000/alice/lists/favorites#the-substance>
+    a schema:ListItem ;
+    schema:item <http://localhost:3000/alice/lists/favorites#the-substance-media> ;
+    schema:position 1 .
+
+<http://localhost:3000/alice/lists/favorites#the-substance-metadata>
+    a crdts:Metadata ;
+    crdts:resource <http://localhost:3000/alice/lists/favorites#the-substance> ;
+    crdts:createdAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime ;
+    crdts:updatedAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime .
+
+<http://localhost:3000/alice/lists/favorites#the-substance-media>
+    a schema:Movie ;
+    schema:name "The Substance" ;
+    schema:image <https://image.tmdb.org/t/p/w500/uYJvxMWMb9W4zIY3cbM50sj3dpC.jpg> ;
+    schema:sameAs <http://localhost:3000/alice/movies/the-substance-2024#it>, <https://www.themoviedb.org/movie/933260> .
+
+<http://localhost:3000/alice/lists/favorites#the-substance-media-metadata>
+    a crdts:Metadata ;
+    crdts:resource <http://localhost:3000/alice/lists/favorites#the-substance-media> ;
+    crdts:createdAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime ;
+    crdts:updatedAt "2026-08-24T09:04:23.480Z"^^xsd:dateTime .

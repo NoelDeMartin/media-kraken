@@ -1,4 +1,4 @@
-import { isTruthy } from '@noeldemartin/utils';
+import { arrayFilter, isTruthy } from '@noeldemartin/utils';
 import { RelationNotLoaded } from 'soukai-bis';
 import type { BelongsToManyRelation, HasOneRelation } from 'soukai-bis';
 
@@ -43,6 +43,10 @@ export default class BaseMedia extends Model {
 
     public get notes(): string | null {
         return this.note?.text ?? null;
+    }
+
+    public get identityUrls(): string[] {
+        return arrayFilter([this.url, ...this.externalUrls]);
     }
 
     public setRating(rating: number | null): void {

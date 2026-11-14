@@ -36,7 +36,7 @@
                         {{ result.releaseYear ?? '—' }}
                     </p>
                 </div>
-                <span v-if="list.has(result)" class="flex items-center gap-1 text-xs text-gray-500">
+                <span v-if="list.hasMedia(result)" class="flex items-center gap-1 text-xs text-gray-500">
                     <i-mdi-check class="size-4" />
                     {{ $t('lists.addItems.alreadyAdded') }}
                 </span>
@@ -97,7 +97,7 @@ async function add(media: ModelWithUrl<Media>) {
     adding.value = media;
 
     try {
-        await list.value.add(media);
+        await list.value.addMedia(media);
     } finally {
         adding.value = null;
     }
