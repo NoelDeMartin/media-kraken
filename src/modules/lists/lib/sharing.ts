@@ -37,7 +37,7 @@ async function publishList(list: ModelWithUrl<List>): Promise<void> {
     const typeIndex = await Solid.findOrCreatePublicTypeIndex();
 
     await typeIndex.relatedRegistrations.create({
-        forClass: List.getRdfClasses(),
+        forClass: List.getRDFClasses(),
         instance: list.url,
     });
 
@@ -49,7 +49,7 @@ async function publishList(list: ModelWithUrl<List>): Promise<void> {
 function listAboutQuads(list: ModelWithUrl<List>): RDFQuad[] {
     const listNode = new RDFNamedNode(list.url);
 
-    return [...Movie.getRdfClasses(), ...Show.getRdfClasses()].map(
+    return [...Movie.getRDFClasses(), ...Show.getRDFClasses()].map(
         (rdfClass) => new RDFQuad(listNode, ABOUT_PREDICATE, new RDFNamedNode(rdfClass)),
     );
 }
