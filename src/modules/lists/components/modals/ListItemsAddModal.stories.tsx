@@ -18,7 +18,7 @@ const meta: Meta<StoryArgs> = {
     tags: ['!autodocs'],
     parameters: { layout: 'fullscreen' },
     args: {
-        mediaUrls: ['local://movies/the-substance-2024#it', 'local://shows/severance-2022/info#it'],
+        mediaUrls: ['local://movies/the-substance-2024#it', 'local://shows/severance-2022/index#it'],
     },
     render: (args) => ({
         setup() {

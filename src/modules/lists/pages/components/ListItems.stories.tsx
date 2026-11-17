@@ -21,12 +21,12 @@ const meta: Meta<StoryArgs> = {
         disabled: false,
         mediaUrls: [
             'local://movies/the-substance-2024#it',
-            'local://shows/severance-2022/info#it',
+            'local://shows/severance-2022/index#it',
             'local://movies/the-tale-of-the-princess-kaguya-2013#it',
-            'local://shows/pluribus-2025/info#it',
+            'local://shows/pluribus-2025/index#it',
             'local://movies/all-that-jazz-1979#it',
-            'local://shows/freaks-and-geeks-1999/info#it',
-            'local://shows/succession-2018/info#it',
+            'local://shows/freaks-and-geeks-1999/index#it',
+            'local://shows/succession-2018/index#it',
         ],
     },
     render: (args) => ({

@@ -24,11 +24,11 @@ export default defineStub<StubDefinition<string, List>>([
         'Favorites',
         list('favorites', 'Favorites', [
             'local://movies/the-substance-2024#it',
-            'local://shows/severance-2022/info#it',
+            'local://shows/severance-2022/index#it',
             'local://movies/the-tale-of-the-princess-kaguya-2013#it',
-            'local://shows/pluribus-2025/info#it',
+            'local://shows/pluribus-2025/index#it',
             'local://movies/onibaba-1964#it',
-            'local://shows/succession-2018/info#it',
+            'local://shows/succession-2018/index#it',
         ]),
     ],
     [
@@ -51,7 +51,7 @@ export default defineStub<StubDefinition<string, List>>([
         list(
             'long-name',
             'Movies to watch on a rainy Sunday afternoon with a big bowl of popcorn and no plans at all',
-            ['local://shows/freaks-and-geeks-1999/info#it'],
+            ['local://shows/freaks-and-geeks-1999/index#it'],
         ),
     ],
     ['Empty', list('empty', 'Empty list', [])],

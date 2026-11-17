@@ -6,7 +6,7 @@ import BaseMedia from '@/models/BaseMedia';
 export default defineSchema(BaseMedia, {
     rdfClass: 'TVSeries',
     fields: {
-        name: string(),
+        name: string().useAsContainerSlug(),
         startDate: date().rdfProperty('startDate').optional(),
         backdropUrl: url().rdfProperty('thumbnailUrl').optional(),
         creatorUrls: array(url()).rdfProperty('creator').default([]),

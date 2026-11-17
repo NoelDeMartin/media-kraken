@@ -1,6 +1,6 @@
-import { isTruthy, parseDate, required, stringToSlug, urlParentDirectory, urlRoute } from '@noeldemartin/utils';
+import { isTruthy, parseDate, required, stringToSlug } from '@noeldemartin/utils';
 import { emitModelEvent, InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
-import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation, UrlFromSlugOptions } from 'soukai-bis';
+import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
 import { findExternalId } from '@/lib/domains';
@@ -89,14 +89,6 @@ export default class Show extends Model {
             },
         },
     };
-
-    public static documentUrlFromSlug(slug: string, options: UrlFromSlugOptions = {}): string {
-        return super.documentUrlFromSlug(`${slug}/info`, options);
-    }
-
-    public static slugFromUrl(url: string): string | null {
-        return super.slugFromUrl(urlParentDirectory(urlRoute(url)) ?? url);
-    }
 
     declare public readonly pendingEpisodes: ComputedAttribute<PendingEpisode[]>;
     declare public readonly watchedEpisodes: ComputedAttribute<WatchedEpisodes>;
