@@ -93,21 +93,21 @@ INSERT DATA {
         crdt:value "1999-03-31T00:00:00.000Z"^^xsd:dateTime .
 
     <#it-operation-[[update-4][.*]]>
-        a crdt:SetPropertyOperation ;
+        a crdt:AddPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:countryOfOrigin ;
         crdt:value <http://www.wikidata.org/entity/Q30> .
 
     <#it-operation-[[update-5][.*]]>
-        a crdt:SetPropertyOperation ;
+        a crdt:AddPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:genre ;
         crdt:value <https://www.themoviedb.org/genre/28>, <https://www.themoviedb.org/genre/878> .
 
     <#it-operation-[[update-6][.*]]>
-        a crdt:SetPropertyOperation ;
+        a crdt:AddPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:inLanguage ;
@@ -121,14 +121,14 @@ INSERT DATA {
         crdt:value "PT2H16M" .
 
     <#it-operation-[[update-8][.*]]>
-        a crdt:SetPropertyOperation ;
+        a crdt:AddPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:actor ;
         crdt:value <#[[role-1][%uuid%]]>, <#[[role-2][%uuid%]]>, <#[[role-3][%uuid%]]>, <#[[role-4][%uuid%]]>, <#[[role-5][%uuid%]]>, <#[[role-6][%uuid%]]> .
 
     <#it-operation-[[update-9][.*]]>
-        a crdt:SetPropertyOperation ;
+        a crdt:AddPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:director ;

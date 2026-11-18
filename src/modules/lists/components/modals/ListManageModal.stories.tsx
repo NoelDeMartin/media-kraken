@@ -1,4 +1,4 @@
-import { ModalStory, useSeededModels } from '@aerogel/storybook';
+import { ModalStory, modalStoryParameters, useSeededModels } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import { documents, seedLists, type StubList } from '@lists/lib/stubs/lists';
@@ -18,7 +18,7 @@ const meta: Meta<StoryArgs> = {
     title: 'Modals/ListManageModal',
     component: ListManageModal,
     tags: ['!autodocs'],
-    parameters: { layout: 'fullscreen' },
+    parameters: modalStoryParameters,
     args: {
         lists: [
             { name: 'Favorites', mediaUrls: [MOVIE_URL, 'local://movies/onibaba-1964#it'] },

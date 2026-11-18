@@ -59,15 +59,15 @@ describe('Show model', () => {
         expect(instance.countryCodes).toEqual(['US', 'GB']);
     });
 
-    it('Computes credits from cast and creators', () => {
-        const instance = new Show({ name: 'Test Show' });
+    it('Computes credits from cast and creators', async () => {
+        const instance = new Show({ url: 'local://shows/test-show/index#it', name: 'Test Show' });
         const bryan = Person.fromTMDB({ id: 17419, name: 'Bryan Cranston', profile_path: null });
         const role = instance.relatedCast.attach(new PerformanceRole({ actorUrl: bryan.mintUrl() }));
 
         role.relatedActor.attach(bryan);
         instance.relatedCreators.attach(new Person({ name: 'Vince Gilligan' }));
 
-        expect(Show.computed.credits.compute(instance)).toEqual({
+        expect(await instance.credits.updateValue({ useCache: false, loadRelations: false })).toEqual({
             creators: [{ tmdbId: null, name: 'Vince Gilligan' }],
             cast: [{ tmdbId: 17419, name: 'Bryan Cranston' }],
         });

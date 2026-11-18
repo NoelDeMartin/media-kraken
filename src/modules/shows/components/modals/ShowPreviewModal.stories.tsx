@@ -1,4 +1,4 @@
-import { ModalStory } from '@aerogel/storybook';
+import { ModalStory, modalStoryParameters } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import tmdbShows from '@shows/lib/stubs/tmdb-shows';
@@ -15,7 +15,7 @@ const meta: Meta<StoryArgs> = {
     title: 'Modals/ShowPreviewModal',
     component: ShowPreviewModal,
     tags: ['!autodocs'],
-    parameters: { layout: 'fullscreen' },
+    parameters: modalStoryParameters,
     argTypes: {
         show: tmdbShows.control,
     },

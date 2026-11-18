@@ -218,6 +218,29 @@ stats:
             hint: 'Is it snowing already?'
             details: 'You watched {titles} in December {year}!'
 
+cloud:
+    conflicts:
+        movie:
+            deletedRemotely: 'The movie *{name}* was deleted on another device, but it has changes on this device that have not been synchronized yet. Do you want to delete it, or restore it with your changes?'
+            deletedLocally: 'You deleted the movie *{name}* on this device, but it was changed on another device in the meantime. Do you want to delete it, or restore it with those changes?'
+            details:
+                deletedRemotely: 'Some details of the movie *{name}* were deleted on another device, but they have changes on this device that have not been synchronized yet. Do you want to delete them, or restore them with your changes?'
+                deletedLocally: 'You deleted some details of the movie *{name}* on this device, but they were changed on another device in the meantime. Do you want to delete them, or restore them with those changes?'
+        show:
+            deletedRemotely: 'The TV show *{name}* was deleted on another device, but it has changes on this device that have not been synchronized yet. Do you want to delete it, or restore it with your changes?'
+            deletedLocally: 'You deleted the TV show *{name}* on this device, but it was changed on another device in the meantime. Do you want to delete it, or restore it with those changes?'
+            details:
+                deletedRemotely: 'Some details of the TV show *{name}* were deleted on another device, but they have changes on this device that have not been synchronized yet. Do you want to delete them, or restore them with your changes?'
+                deletedLocally: 'You deleted some details of the TV show *{name}* on this device, but they were changed on another device in the meantime. Do you want to delete them, or restore them with those changes?'
+        list:
+            deletedRemotely: 'The list *{name}* was deleted on another device, but it has changes on this device that have not been synchronized yet. Do you want to delete it, or restore it with your changes?'
+            deletedLocally: 'You deleted the list *{name}* on this device, but it was changed on another device in the meantime. Do you want to delete it, or restore it with those changes?'
+        listItem:
+            deletedRemotely: '*{name}* was removed from the list *{list}* on another device, but it has changes on this device that have not been synchronized yet. Do you want to remove it, or keep it in the list with your changes?'
+            deletedLocally: 'You removed *{name}* from the list *{list}* on this device, but it was changed on another device in the meantime. Do you want to remove it, or keep it in the list with those changes?'
+            remove: 'Remove'
+            keep: 'Keep'
+
 discover:
     title: 'Discover'
 

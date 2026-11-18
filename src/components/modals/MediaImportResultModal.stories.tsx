@@ -1,4 +1,4 @@
-import { ModalStory } from '@aerogel/storybook';
+import { ModalStory, modalStoryParameters } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import type { ImportMediaJobResult } from '@/jobs/ImportMedia';
@@ -32,7 +32,7 @@ const meta: Meta<StoryArgs> = {
     title: 'Modals/MediaImportResultModal',
     component: MediaImportResultModal,
     tags: ['!autodocs'],
-    parameters: { layout: 'fullscreen' },
+    parameters: modalStoryParameters,
     argTypes: {
         result: { control: { type: 'select' }, options: Object.keys(RESULTS) },
     },

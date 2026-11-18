@@ -68,15 +68,15 @@ describe('Movie model', () => {
         expect(instance.countryCodes).toEqual(['US', 'GB']);
     });
 
-    it('Computes credits from cast and directors', () => {
-        const instance = new Movie({ title: 'Test Movie' });
+    it('Computes credits from cast and directors', async () => {
+        const instance = new Movie({ url: 'local://movies/test-movie#it', title: 'Test Movie' });
         const keanu = Person.fromTMDB({ id: 6384, name: 'Keanu Reeves', profile_path: null });
         const role = instance.relatedCast.attach(new PerformanceRole({ actorUrl: keanu.mintUrl() }));
 
         role.relatedActor.attach(keanu);
         instance.relatedDirectors.attach(new Person({ name: 'Lana Wachowski' }));
 
-        expect(Movie.computed.credits.compute(instance)).toEqual({
+        expect(await instance.credits.updateValue({ useCache: false, loadRelations: false })).toEqual({
             directors: [{ tmdbId: null, name: 'Lana Wachowski' }],
             cast: [{ tmdbId: 6384, name: 'Keanu Reeves' }],
         });

@@ -1,6 +1,6 @@
-import { arraySorted, isTruthy, parseDate, stringToSlug } from '@noeldemartin/utils';
-import { InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
-import type { BelongsToManyRelation, ComputedAttribute, HasManyRelation } from 'soukai-bis';
+import { arraySorted, parseDate, stringToSlug } from '@noeldemartin/utils';
+import { isLocalUrl } from 'soukai-bis';
+import type { BelongsToManyRelation, HasManyRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
 import { findExternalId } from '@/lib/domains';
@@ -24,22 +24,6 @@ export type MovieCredits = {
 export default class Movie extends Model {
     public static cloud = true;
 
-    public static computed = {
-        credits: {
-            invalidationStrategy: InvalidationStrategies.DOCUMENT,
-            compute(movie: Movie): MovieCredits {
-                return {
-                    directors: loaded(movie, 'directors').map((director) => director.credit),
-                    cast: loaded(movie, 'cast')
-                        .map((role) => loaded(role, 'actor'))
-                        .filter(isTruthy)
-                        .map((actor) => actor.credit),
-                };
-            },
-        },
-    };
-
-    declare public readonly credits: ComputedAttribute<MovieCredits>;
     declare public readonly watchActions?: WatchAction[];
     declare public readonly relatedWatchActions: HasManyRelation<this, WatchAction, typeof WatchAction>;
     declare public readonly directors?: Person[];

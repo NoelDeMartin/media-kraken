@@ -1,4 +1,4 @@
-import { ModalStory } from '@aerogel/storybook';
+import { ModalStory, modalStoryParameters } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import tmdbMovies from '@movies/lib/stubs/tmdb-movies';
@@ -15,7 +15,7 @@ const meta: Meta<StoryArgs> = {
     title: 'Modals/MoviePreviewModal',
     component: MoviePreviewModal,
     tags: ['!autodocs'],
-    parameters: { layout: 'fullscreen' },
+    parameters: modalStoryParameters,
     argTypes: {
         movie: tmdbMovies.control,
     },

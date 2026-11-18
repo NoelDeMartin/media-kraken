@@ -1,4 +1,4 @@
-import { ModalStory } from '@aerogel/storybook';
+import { ModalStory, modalStoryParameters } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import SeedCollectionModal from './SeedCollectionModal.vue';
@@ -9,7 +9,7 @@ const meta: Meta = {
     title: 'Modals/SeedCollectionModal',
     component: SeedCollectionModal,
     tags: ['!autodocs'],
-    parameters: { layout: 'fullscreen' },
+    parameters: modalStoryParameters,
     render: () => <ModalStory component={SeedCollectionModal} />,
 };
 

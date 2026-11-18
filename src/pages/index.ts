@@ -1,12 +1,12 @@
 import { translate } from '@aerogel/core';
-import { defineRoutes } from '@aerogel/plugin-routing';
+import routing, { defineRoutes } from '@aerogel/plugin-routing';
 
 import StatsIndex from '@/pages/stats/Index.vue';
 
 import Discover from './Discover.vue';
 import Home from './Home.vue';
 
-export default defineRoutes([
+const routes = defineRoutes([
     { name: 'home', path: '/', component: Home },
     {
         name: 'stats.index',
@@ -21,3 +21,8 @@ export default defineRoutes([
         title: () => translate('discover.title'),
     },
 ]);
+
+// oxlint-disable-next-line typescript/explicit-module-boundary-types
+export default function () {
+    return routing({ routes });
+}

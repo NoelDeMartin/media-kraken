@@ -1,5 +1,5 @@
 import { SolidFake } from '@aerogel/plugin-solid';
-import { ModalStory, useSeededModels } from '@aerogel/storybook';
+import { ModalStory, modalStoryParameters, useSeededModels } from '@aerogel/storybook';
 import { after } from '@noeldemartin/utils';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 import { mocked, userEvent, within } from 'storybook/test';
@@ -21,7 +21,7 @@ const meta: Meta<StoryArgs> = {
     title: 'Modals/ListShareModal',
     component: ListShareModal,
     tags: ['!autodocs'],
-    parameters: { layout: 'fullscreen' },
+    parameters: modalStoryParameters,
     args: {
         state: 'private',
     },

@@ -1,4 +1,4 @@
-import { ModalStory } from '@aerogel/storybook';
+import { ModalStory, modalStoryParameters } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import { sampleMovie, useSampleCollection } from '@/lib/storybook/collection';
@@ -15,7 +15,7 @@ const meta: Meta<StoryArgs> = {
     title: 'Modals/MediaNotesModal',
     component: MediaNotesModal,
     tags: ['!autodocs'],
-    parameters: { layout: 'fullscreen' },
+    parameters: modalStoryParameters,
     args: { movie: 'All That Jazz' },
     render: (args) => ({
         setup() {

@@ -21,7 +21,7 @@ export class ListsService extends Service {
     }
 
     private watchMediaModel(mediaClass: ModelConstructor<Media>): void {
-        mediaClass.on('updated', (media) => {
+        mediaClass.on('updated', ({ model: media }) => {
             if (!media.url?.startsWith(mediaClass.defaultContainerUrl)) {
                 return;
             }
@@ -29,7 +29,7 @@ export class ListsService extends Service {
             return this.updateInLists(media);
         });
 
-        mediaClass.on('deleted', (media) => {
+        mediaClass.on('deleted', ({ model: media }) => {
             if (!media.url?.startsWith(mediaClass.defaultContainerUrl)) {
                 return;
             }

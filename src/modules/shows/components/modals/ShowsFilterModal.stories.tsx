@@ -1,4 +1,4 @@
-import { ModalStory } from '@aerogel/storybook';
+import { ModalStory, modalStoryParameters } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import { useSampleCollection } from '@/lib/storybook/collection';
@@ -16,7 +16,7 @@ const meta: Meta<StoryArgs> = {
     title: 'Modals/ShowsFilterModal',
     component: ShowsFilterModal,
     tags: ['!autodocs'],
-    parameters: { layout: 'fullscreen' },
+    parameters: modalStoryParameters,
     args: { filters: null },
     render: (args) => ({
         setup() {

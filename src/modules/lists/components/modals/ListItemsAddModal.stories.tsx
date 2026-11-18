@@ -1,4 +1,4 @@
-import { ModalStory, useSeededModels } from '@aerogel/storybook';
+import { ModalStory, modalStoryParameters, useSeededModels } from '@aerogel/storybook';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import { documents, seedLists } from '@lists/lib/stubs/lists';
@@ -16,7 +16,7 @@ const meta: Meta<StoryArgs> = {
     title: 'Modals/ListItemsAddModal',
     component: ListItemsAddModal,
     tags: ['!autodocs'],
-    parameters: { layout: 'fullscreen' },
+    parameters: modalStoryParameters,
     args: {
         mediaUrls: ['local://movies/the-substance-2024#it', 'local://shows/severance-2022/index#it'],
     },

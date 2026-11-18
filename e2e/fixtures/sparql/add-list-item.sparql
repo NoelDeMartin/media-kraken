@@ -22,7 +22,7 @@ INSERT DATA {
         crdt:value "{{ name }}" .
 
     <#it-operation-[[operation-2][.*]]>
-        a crdt:SetPropertyOperation ;
+        a crdt:AddPropertyOperation ;
         crdt:resource <#it> ;
         crdt:date "[[updatedAt][.*]]"^^xsd:dateTime ;
         crdt:property schema:itemListElement ;

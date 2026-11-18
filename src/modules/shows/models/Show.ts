@@ -1,6 +1,6 @@
-import { isTruthy, parseDate, required, stringToSlug } from '@noeldemartin/utils';
-import { emitModelEvent, InvalidationStrategies, isLocalUrl, loaded } from 'soukai-bis';
-import type { BelongsToManyRelation, ComputedAttribute, HasOneRelation } from 'soukai-bis';
+import { parseDate, stringToSlug } from '@noeldemartin/utils';
+import { emitModelInstanceEvent, isLocalUrl } from 'soukai-bis';
+import type { BelongsToManyRelation, HasOneRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
 import { findExternalId } from '@/lib/domains';
@@ -37,62 +37,6 @@ export type ShowCredits = {
 export default class Show extends Model {
     public static cloud = { depth: 1 };
 
-    public static computed = {
-        pendingEpisodes: {
-            invalidationStrategy: InvalidationStrategies.CONTAINER,
-            compute(show: Show): PendingEpisode[] {
-                return loaded(show, 'seasons')
-                    .filter((season) => season.number !== 0)
-                    .flatMap((season) =>
-                        loaded(season, 'episodes')
-                            .filter((episode) => !loaded(episode, 'watched') && episode.url && episode.publishedAt)
-                            .map((episode) => ({
-                                url: required(episode.url),
-                                seasonNumber: season.number,
-                                episodeNumber: episode.number,
-                                name: episode.name,
-                                publishedAt: required(episode.publishedAt),
-                            })),
-                    );
-            },
-        },
-        watchedEpisodes: {
-            invalidationStrategy: InvalidationStrategies.CONTAINER,
-            compute(show: Show): WatchedEpisodes {
-                let episodes = 0;
-                let seasons = 0;
-
-                for (const season of loaded(show, 'seasons')) {
-                    const seasonEpisodes = loaded(season, 'episodes');
-                    const watchedEpisodes = seasonEpisodes.filter((episode) => loaded(episode, 'watched')).length;
-
-                    episodes += watchedEpisodes;
-
-                    if (season.number !== 0 && seasonEpisodes.length > 0 && watchedEpisodes === seasonEpisodes.length) {
-                        seasons++;
-                    }
-                }
-
-                return { episodes, seasons };
-            },
-        },
-        credits: {
-            invalidationStrategy: InvalidationStrategies.DOCUMENT,
-            compute(show: Show): ShowCredits {
-                return {
-                    creators: loaded(show, 'creators').map((creator) => creator.credit),
-                    cast: loaded(show, 'cast')
-                        .map((role) => loaded(role, 'actor'))
-                        .filter(isTruthy)
-                        .map((actor) => actor.credit),
-                };
-            },
-        },
-    };
-
-    declare public readonly pendingEpisodes: ComputedAttribute<PendingEpisode[]>;
-    declare public readonly watchedEpisodes: ComputedAttribute<WatchedEpisodes>;
-    declare public readonly credits: ComputedAttribute<ShowCredits>;
     declare public readonly creators?: Person[];
     declare public readonly relatedCreators: BelongsToManyRelation<this, Person, typeof Person>;
     declare public readonly watching?: ShowWatching;
@@ -175,7 +119,7 @@ export default class Show extends Model {
 
                 episode.relatedWatched.related = null;
 
-                await emitModelEvent(episode, 'relation-loaded', episode.relatedWatched);
+                await emitModelInstanceEvent(episode, 'relation-loaded', { relation: episode.relatedWatched });
             }
         }
     }
