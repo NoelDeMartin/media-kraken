@@ -1,6 +1,6 @@
 import { arraySorted, isInstanceOf, uuid } from '@noeldemartin/utils';
 import { isLocalUrl } from 'soukai-bis';
-import type { BelongsToManyRelation, GetModelInput } from 'soukai-bis';
+import type { GetModelInput } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
 import type { Media } from '@/lib/media';
@@ -12,9 +12,6 @@ import type ListItem from './ListItem';
 
 export default class List extends Model {
     public static cloud = true;
-
-    declare public readonly items?: ListItem[];
-    declare public readonly relatedItems: BelongsToManyRelation<this, ListItem, typeof ListItem>;
 
     public get slug(): string {
         return this.requireSlug();

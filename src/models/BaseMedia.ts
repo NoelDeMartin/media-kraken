@@ -1,6 +1,5 @@
 import { arrayFilter, isTruthy } from '@noeldemartin/utils';
 import { RelationNotLoaded } from 'soukai-bis';
-import type { BelongsToManyRelation, HasOneRelation } from 'soukai-bis';
 
 import { countryCodeFromUrl } from '@/lib/countries';
 import { findExternalId } from '@/lib/domains';
@@ -8,19 +7,9 @@ import { genreKeysFromUrls, type GenreKey } from '@/lib/genres';
 import { parseImdbId } from '@/lib/imdb';
 
 import Model from './BaseMedia.schema';
-import type Note from './Note';
-import type PerformanceRole from './PerformanceRole';
 import { normalizeRating } from './Rating';
-import type Review from './Review';
 
 export default class BaseMedia extends Model {
-    declare public readonly cast?: PerformanceRole[];
-    declare public readonly relatedCast: BelongsToManyRelation<this, PerformanceRole, typeof PerformanceRole>;
-    declare public readonly review?: Review;
-    declare public readonly relatedReview: HasOneRelation<this, Review, typeof Review>;
-    declare public readonly note?: Note;
-    declare public readonly relatedNote: HasOneRelation<this, Note, typeof Note>;
-
     public get slug(): string {
         return this.requireSlug();
     }

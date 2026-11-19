@@ -24,7 +24,7 @@ export default defineSchema(BaseMedia, {
     },
     computed: {
         pendingEpisodes: {
-            invalidationStrategy: InvalidationStrategies.CONTAINER,
+            invalidationStrategy: InvalidationStrategies.Container,
             compute(show): PendingEpisode[] {
                 return loaded(show, 'seasons')
                     .filter((season) => season.number !== 0)
@@ -42,7 +42,7 @@ export default defineSchema(BaseMedia, {
             },
         },
         watchedEpisodes: {
-            invalidationStrategy: InvalidationStrategies.CONTAINER,
+            invalidationStrategy: InvalidationStrategies.Container,
             compute(show): WatchedEpisodes {
                 let episodes = 0;
                 let seasons = 0;
@@ -62,7 +62,7 @@ export default defineSchema(BaseMedia, {
             },
         },
         credits: {
-            invalidationStrategy: InvalidationStrategies.DOCUMENT,
+            invalidationStrategy: InvalidationStrategies.Document,
             compute(show): ShowCredits {
                 return {
                     creators: loaded(show, 'creators').map((creator) => creator.credit),

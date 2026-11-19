@@ -1,6 +1,6 @@
 import { parseDate, stringToSlug } from '@noeldemartin/utils';
 import { emitModelInstanceEvent, isLocalUrl } from 'soukai-bis';
-import type { BelongsToManyRelation, HasOneRelation } from 'soukai-bis';
+import type { BelongsToManyRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
 import { findExternalId } from '@/lib/domains';
@@ -12,7 +12,6 @@ import type { TMDBShow } from '@/services/TMDB';
 
 import type Season from './Season';
 import Model from './Show.schema';
-import type ShowWatching from './ShowWatching';
 import { SHOW_WATCHING_STATUSES } from './ShowWatching';
 import type { ShowWatchingStatus } from './ShowWatching';
 
@@ -37,12 +36,7 @@ export type ShowCredits = {
 export default class Show extends Model {
     public static cloud = { depth: 1 };
 
-    declare public readonly creators?: Person[];
     declare public readonly relatedCreators: BelongsToManyRelation<this, Person, typeof Person>;
-    declare public readonly watching?: ShowWatching;
-    declare public readonly relatedWatching: HasOneRelation<this, ShowWatching, typeof ShowWatching>;
-    declare public readonly seasons?: Season[];
-    declare public readonly relatedSeasons: BelongsToManyRelation<this, Season, typeof Season>;
 
     static fromTMDB(show: TMDBShow, options: { posterSize?: TMDBImageSize; mintUrl?: boolean } = {}): Show {
         const instance = new Show({

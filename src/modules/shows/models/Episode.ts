@@ -1,11 +1,9 @@
 import { DAY_MILLISECONDS } from '@noeldemartin/utils';
-import type { HasOneRelation, MintUrlOptions } from 'soukai-bis';
+import type { MintUrlOptions } from 'soukai-bis';
 
 import { NOW } from '@/lib/time';
 
 import Model from './Episode.schema';
-import type EpisodeWatched from './EpisodeWatched';
-import type Season from './Season';
 
 const UPCOMING_THRESHOLD = NOW + 7 * DAY_MILLISECONDS;
 
@@ -17,11 +15,6 @@ export default class Episode extends Model {
     public static isReleased(date: Date): boolean {
         return date.getTime() < NOW;
     }
-
-    declare public readonly watched?: EpisodeWatched;
-    declare public readonly relatedWatched: HasOneRelation<this, EpisodeWatched, typeof EpisodeWatched>;
-    declare public readonly season?: Season;
-    declare public readonly relatedSeason: HasOneRelation<this, Season, typeof Season>;
 
     public async watch(): Promise<void> {
         await this.loadRelationIfUnloaded('watched');

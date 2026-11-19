@@ -20,7 +20,7 @@ export default defineSchema(BaseMedia, {
     },
     computed: {
         credits: {
-            invalidationStrategy: InvalidationStrategies.DOCUMENT,
+            invalidationStrategy: InvalidationStrategies.Document,
             compute(movie): MovieCredits {
                 return {
                     directors: loaded(movie, 'directors').map((director) => director.credit),

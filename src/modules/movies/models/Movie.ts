@@ -1,6 +1,6 @@
 import { arraySorted, parseDate, stringToSlug } from '@noeldemartin/utils';
 import { isLocalUrl } from 'soukai-bis';
-import type { BelongsToManyRelation, HasManyRelation } from 'soukai-bis';
+import type { BelongsToManyRelation } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
 import { findExternalId } from '@/lib/domains';
@@ -24,9 +24,6 @@ export type MovieCredits = {
 export default class Movie extends Model {
     public static cloud = true;
 
-    declare public readonly watchActions?: WatchAction[];
-    declare public readonly relatedWatchActions: HasManyRelation<this, WatchAction, typeof WatchAction>;
-    declare public readonly directors?: Person[];
     declare public readonly relatedDirectors: BelongsToManyRelation<this, Person, typeof Person>;
 
     static fromTMDB(movie: TMDBMovie, options: { posterSize?: TMDBImageSize; mintUrl?: boolean } = {}): Movie {
