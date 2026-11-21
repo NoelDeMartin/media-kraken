@@ -1,9 +1,9 @@
 import { translate } from '@aerogel/core';
 import localFirst from '@aerogel/plugin-local-first';
-import type { DeletionConflictPrompt } from '@aerogel/plugin-local-first';
+import type { CloudConflict, ConflictHandlerResult, DeletionConflictPrompt } from '@aerogel/plugin-local-first';
 import type { SolidDocument } from '@noeldemartin/solid-utils';
 import { stringToCamelCase } from '@noeldemartin/utils';
-import type { DeletionConflict, Model } from 'soukai-bis';
+import type { DeletionConflict } from 'soukai-bis';
 
 import { mediaDisplayName } from '@/lib/media';
 import type { Media } from '@/lib/media';
@@ -50,29 +50,30 @@ async function getListItemPrompt(
     };
 }
 
-async function handleConflict(
-    conflict: DeletionConflict,
-    model: Model | null,
-): Promise<DeletionConflictPrompt | undefined> {
+async function handleConflict(conflict: CloudConflict): Promise<ConflictHandlerResult> {
+    if (conflict.resourceType !== 'document') {
+        return;
+    }
+
     const conflictType = stringToCamelCase(conflict.type);
 
-    if (model instanceof Movie || model instanceof Show) {
+    if (conflict.model instanceof Movie || conflict.model instanceof Show) {
         return {
-            message: translate(`cloud.conflicts.${getMediaType(model)}.${conflictType}`, {
-                name: mediaDisplayName(model),
+            message: translate(`cloud.conflicts.${getMediaType(conflict.model)}.${conflictType}`, {
+                name: mediaDisplayName(conflict.model),
             }),
         };
     }
 
-    if (model instanceof List) {
-        return { message: translate(`cloud.conflicts.list.${conflictType}`, { name: model.name }) };
+    if (conflict.model instanceof List) {
+        return { message: translate(`cloud.conflicts.list.${conflictType}`, { name: conflict.model.name }) };
     }
 
-    if (model instanceof ListItem) {
-        return getListItemPrompt(conflict, model);
+    if (conflict.model instanceof ListItem) {
+        return getListItemPrompt(conflict, conflict.model);
     }
 
-    const media = model && (await findDocumentMedia(getConflictDocument(conflict)));
+    const media = conflict.model && (await findDocumentMedia(getConflictDocument(conflict)));
 
     if (!media) {
         return undefined;
