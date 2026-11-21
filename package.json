@@ -15,7 +15,8 @@
     "cy:open": "cypress open",
     "cy:run": "cypress run",
     "cy:dev": "concurrently --kill-others \"npm run test:serve-app\" \"npm run test:serve-pod\" \"npm run cy:open\"",
-    "cy:test": "start-server-and-test test:serve-app http-get://localhost:8080 test:serve-pod http-get://localhost:4000 cy:run"
+    "cy:test": "start-server-and-test test:serve-app http-get://localhost:8080 test:serve-pod http-get://localhost:4000 cy:run",
+    "postinstall": "patch-package"
   },
   "dependencies": {
     "@inrupt/solid-client-authn-browser": "^1.11.2",
@@ -61,6 +62,7 @@
     "marked": "^0.8.2",
     "node-sass": "^4.14.1",
     "nodemon": "^2.0.2",
+    "patch-package": "^6.5.1",
     "raw-loader": "^4.0.0",
     "sass-loader": "^8.0.2",
     "start-server-and-test": "^1.14.0",
