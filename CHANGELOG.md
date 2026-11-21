@@ -8,7 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 
 ### Fixed
 
-- Reading [ESS](https://docs.inrupt.com/ess) containers (See [solid-focus#](https://github.com/NoelDeMartin/solid-focus/issues/31)).
+- Reading [ESS](https://docs.inrupt.com/ess) containers (See [solid-focus#31](https://github.com/NoelDeMartin/solid-focus/issues/31)).
 
 ## [v0.1.30](https://github.com/NoelDeMartin/media-kraken/releases/tag/v0.1.30) - 2026-11-02
 
