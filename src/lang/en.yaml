@@ -243,6 +243,13 @@ cloud:
 
 discover:
     title: 'Discover'
+    friendsLists: 'Lists by friends'
+    guest: 'Connect your account to see the lists that your friends have shared.'
+    connect: 'Connect'
+    disconnected: 'You need to reconnect to your account to see the lists that your friends have shared.'
+    reconnect: 'Reconnect'
+    noFriends: "You haven't added any friends to your profile yet. Once you do, the lists they share will appear here."
+    noLists: "Your friends haven't shared any lists yet."
 
 seedCollection:
     title: 'Kickstart'

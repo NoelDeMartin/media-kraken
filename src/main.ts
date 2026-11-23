@@ -1,10 +1,10 @@
 import { bootstrap } from '@aerogel/core';
 import i18n from '@aerogel/plugin-i18n';
-import solid from '@aerogel/plugin-solid';
 
 import '@/assets/css/main.css';
 import cloud from '@/lib/cloud';
 import env from '@/lib/env';
+import solid from '@/lib/solid';
 import routing from '@/pages';
 import { services } from '@/services';
 

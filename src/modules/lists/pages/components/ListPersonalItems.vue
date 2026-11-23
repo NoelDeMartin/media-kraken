@@ -21,9 +21,9 @@
             @drop.prevent="drop(item)"
             @dragend="stopDragging()"
         >
-            <MediaImage
+            <ListItemPoster
                 :url="item.resolvedMedia?.posterUrl ?? item.media?.posterUrl"
-                class="relative aspect-2/3 w-12 shrink-0 rounded bg-gray-100 shadow-sm"
+                :missing="!item.resolvedMedia && !item.media"
             />
             <div v-if="item.resolvedMedia || item.media" class="min-w-0 flex-1">
                 <Link
@@ -40,21 +40,10 @@
                 >
                     {{ mediaDisplayName(item.media) }}
                 </span>
-                <p class="mt-1 flex items-center gap-1 text-xs text-gray-500">
-                    <i-ph-film-slate
-                        v-if="isInstanceOf(item.resolvedMedia ?? item.media, Movie)"
-                        class="size-4 shrink-0"
-                    />
-                    <i-ph-television-simple v-else class="size-4 shrink-0" />
-                    <span>
-                        {{
-                            isInstanceOf(item.resolvedMedia ?? item.media, Movie) ? $t('lists.movie') : $t('lists.show')
-                        }}
-                        <template v-if="item.resolvedMedia?.releaseYear">
-                            · {{ item.resolvedMedia.releaseYear }}
-                        </template>
-                    </span>
-                </p>
+                <ListItemMediaType
+                    :movie="isInstanceOf(item.resolvedMedia ?? item.media, Movie)"
+                    :release-year="item.resolvedMedia?.releaseYear ?? item.media?.releaseYear"
+                />
                 <MovieWatchingStatus
                     v-if="isInstanceOf(item.resolvedMedia, Movie)"
                     :movie="item.resolvedMedia"
@@ -66,9 +55,7 @@
                     class="mt-1 text-xs sm:hidden"
                 />
             </div>
-            <p v-else class="min-w-0 flex-1 truncate text-sm text-gray-500 italic">
-                {{ $t('lists.missingMedia') }}
-            </p>
+            <ListItemMissingMedia v-else :media-url="item.model.mediaUrl" />
             <template v-if="item.resolvedMedia">
                 <MovieWatchingStatus
                     v-if="isInstanceOf(item.resolvedMedia, Movie)"
@@ -99,7 +86,6 @@
 
 <script setup lang="ts">
 import { translate } from '@aerogel/core';
-import { computedModel, useModels } from '@aerogel/plugin-solid';
 import { isInstanceOf } from '@noeldemartin/utils';
 import { computed, shallowRef } from 'vue';
 import IconMoveToBottom from '~icons/mdi/arrow-collapse-down';
@@ -109,6 +95,7 @@ import IconMoveUp from '~icons/mdi/arrow-up';
 import IconRemove from '~icons/ph/trash';
 
 import { mediaDisplayName } from '@/lib/media';
+import { useResolvedListItems } from '@lists/lib/composition/items';
 import type List from '@lists/models/List';
 import type ListItem from '@lists/models/ListItem';
 import Movie from '@movies/models/Movie';
@@ -118,23 +105,15 @@ type Item = (typeof items.value)[number];
 
 const { list: listProp, disabled } = defineProps<{ list: List; disabled?: boolean }>();
 const emit = defineEmits<{ move: [item: ListItem, target: ListItem]; remove: [item: ListItem] }>();
-const list = computedModel(() => listProp);
-const mediaUrls = computed(() => list.value.sortedItems.map((item) => item.media?.externalUrls ?? []).flat());
-const { models: movies } = useModels(Movie, { urls: mediaUrls });
-const { models: shows } = useModels(Show, { urls: mediaUrls });
+const { items: resolvedItems } = useResolvedListItems(() => listProp);
 const draggedItem = shallowRef<Item | null>(null);
 const dropTarget = shallowRef<Item | null>(null);
 const items = computed(() =>
-    list.value.sortedItems.map((item) => {
-        const media =
-            movies.value.find((movie) => item.media?.externalUrls?.includes(movie.url)) ??
-            shows.value.find((show) => item.media?.externalUrls?.includes(show.url));
-        const displayMedia = media ?? item.media;
+    resolvedItems.value.map((item) => {
+        const displayMedia = item.resolvedMedia ?? item.media;
 
         return {
-            model: item,
-            media: item.media,
-            resolvedMedia: media,
+            ...item,
             actionsLabel: displayMedia
                 ? translate('lists.itemActions', { name: mediaDisplayName(displayMedia) })
                 : translate('lists.missingMedia'),

@@ -29,6 +29,14 @@ export default class List extends Model {
         };
     }
 
+    public get shareRoute(): RouteLocationRaw {
+        return {
+            name: 'lists.show',
+            params: { list: this.slug },
+            query: { url: this.url, sharing: 'true' },
+        };
+    }
+
     public hasMedia(media: Media): boolean {
         return this.itemsFor(media).length > 0;
     }
@@ -144,10 +152,16 @@ export default class List extends Model {
         };
 
         if (isInstanceOf(media, Movie)) {
-            return { mediaType: 'movies', attributes: { ...attributes, title: media.title } };
+            return {
+                mediaType: 'movies',
+                attributes: { ...attributes, title: media.title, releaseDate: media.releaseDate },
+            };
         }
 
-        return { mediaType: 'shows', attributes: { ...attributes, name: media.name } };
+        return {
+            mediaType: 'shows',
+            attributes: { ...attributes, name: media.name, startDate: media.startDate },
+        };
     }
 
     private prepareListItemMedia(media: Media): { itemMedia: Media; attachToItem: (item: ListItem) => void } {

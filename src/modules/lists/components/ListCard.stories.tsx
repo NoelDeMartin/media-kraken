@@ -1,3 +1,4 @@
+import { SolidFake } from '@aerogel/plugin-solid';
 import type { Meta, StoryObj } from '@storybook/vue3-vite';
 
 import MediaGrid from '@/components/MediaGrid.vue';
@@ -29,6 +30,19 @@ export const Primary: Story = {
         return (
             <div style={{ width: '16rem', margin: '0 auto' }}>
                 <ListCard list={list} />
+            </div>
+        );
+    },
+};
+
+export const WithOwner: Story = {
+    render(args) {
+        const list = lists.resolve(args.list);
+        const owner = SolidFake.fakeProfile();
+
+        return (
+            <div style={{ width: '16rem', margin: '0 auto' }}>
+                <ListCard list={list} owner={owner} />
             </div>
         );
     },

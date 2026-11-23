@@ -181,14 +181,14 @@ export class CatalogService extends Service {
     }
 
     public async importMovieFromTMDB(
-        tmdbMovie: TMDBMovie,
+        tmdbMovieId: number,
         options: {
             watchingStatus?: Nullable<MovieWatchingStatus>;
             rating?: Nullable<number>;
             notes?: Nullable<string>;
         } = {},
     ): Promise<ModelWithUrl<Movie>> {
-        const details = await TMDB.getMovie(tmdbMovie.id, { includeCredits: true, includeKeywords: true });
+        const details = await TMDB.getMovie(tmdbMovieId, { includeCredits: true, includeKeywords: true });
         const movie = new Movie(this.getMovieAttributes(details));
 
         movie.mintUrl();
@@ -211,14 +211,14 @@ export class CatalogService extends Service {
     }
 
     public async importShowFromTMDB(
-        tmdbShow: TMDBShow,
+        tmdbShowId: number,
         options: {
             watchingStatus?: Nullable<ShowWatchingStatus>;
             rating?: Nullable<number>;
             notes?: Nullable<string>;
         } = {},
     ): Promise<ModelWithUrl<Show>> {
-        const { details, externalIds, seasons } = await TMDB.getShow(tmdbShow.id, {
+        const { details, externalIds, seasons } = await TMDB.getShow(tmdbShowId, {
             includeSeasons: !!options.watchingStatus && !this.ignoresSeasons(options.watchingStatus),
             includeCredits: true,
             includeKeywords: true,

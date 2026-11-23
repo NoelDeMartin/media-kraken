@@ -50,7 +50,7 @@ const meta: Meta<StoryArgs> = {
     },
     render: (args) => ({
         setup() {
-            const profile = SolidFake.fakeProfile('Alice Cooper');
+            const profile = SolidFake.fakeProfile();
 
             SolidFake.setState({
                 previousSession:

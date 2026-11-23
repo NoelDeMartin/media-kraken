@@ -14,9 +14,13 @@
                     {{ model.description }}
                 </p>
             </div>
+            <div v-else-if="loadingDetails" class="flex flex-1 items-center justify-center">
+                <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-6 w-full" />
+                <span class="sr-only">{{ $t('ui.loading') }}</span>
+            </div>
             <ul :aria-label="$t('movies.externalSites')" class="ml-auto flex items-center gap-2">
                 <li>
-                    <ExternalSiteLink :url="tmdbShowUrl(show.id)" />
+                    <ExternalSiteLink :url="tmdbShowUrl(tmdbId)" />
                 </li>
                 <li v-if="externalIds?.imdb_id">
                     <ExternalSiteLink :url="imdbUrl(externalIds.imdb_id)" />
@@ -40,20 +44,29 @@
 </template>
 
 <script setup lang="ts">
-import { translate, UI, useModal } from '@aerogel/core';
+import { Errors, translate, UI, useModal } from '@aerogel/core';
+import { isInstanceOf, required } from '@noeldemartin/utils';
 import { computed, onMounted, ref, shallowRef } from 'vue';
 
 import { imdbUrl } from '@/lib/imdb';
 import { tmdbShowUrl } from '@/lib/tmdb';
 import Catalog from '@/services/Catalog';
-import type { TMDBShow, TMDBShowExternalIds } from '@/services/TMDB';
+import type { TMDBShow, TMDBShowExternalIds, TMDBShowWithStaff } from '@/services/TMDB';
 import TMDB from '@/services/TMDB';
 import Show from '@shows/models/Show';
 import { SHOW_WATCHING_STATUSES, type ShowWatchingStatus } from '@shows/models/ShowWatching';
 
-const { show } = defineProps<{ show: TMDBShow }>();
+const { show } = defineProps<{ show: TMDBShow | Show }>();
 const { close } = useModal();
-const model = computed(() => Show.fromTMDB(show, { posterSize: 'large' }));
+const tmdbId = isInstanceOf(show, Show) ? required(show.tmdbId) : show.id;
+const details = shallowRef<TMDBShowWithStaff | null>(null);
+const detailsFailed = ref(false);
+const loadingDetails = computed(() => !details.value && !detailsFailed.value && isInstanceOf(show, Show));
+const model = computed(() => {
+    const tmdbShow = details.value ?? (isInstanceOf(show, Show) ? null : show);
+
+    return tmdbShow ? Show.fromTMDB(tmdbShow, { posterSize: 'large' }) : (show as Show);
+});
 const statusOptions = Object.keys(SHOW_WATCHING_STATUSES) as ShowWatchingStatus[];
 const status = ref<ShowWatchingStatus>('pending');
 const externalIds = shallowRef<TMDBShowExternalIds | null>(null);
@@ -65,12 +78,31 @@ function renderStatus(option: ShowWatchingStatus): string {
 async function saveToCollection() {
     close();
 
-    await Catalog.importShowFromTMDB(show, { watchingStatus: status.value });
+    await Catalog.importShowFromTMDB(tmdbId, { watchingStatus: status.value });
 
     UI.toast(translate('shows.added', { show: model.value.name }));
 }
 
+async function loadDetails(): Promise<void> {
+    if (!isInstanceOf(show, Show)) {
+        externalIds.value = await TMDB.getShowExternalIds(tmdbId);
+
+        return;
+    }
+
+    const result = await TMDB.getShow(tmdbId, { includeSeasons: false, includeCredits: false, includeKeywords: false });
+
+    details.value = result.details;
+    externalIds.value = result.externalIds;
+}
+
 onMounted(async () => {
-    externalIds.value = await TMDB.getShowExternalIds(show.id);
+    try {
+        await loadDetails();
+    } catch (error) {
+        detailsFailed.value = true;
+
+        await Errors.report(error);
+    }
 });
 </script>

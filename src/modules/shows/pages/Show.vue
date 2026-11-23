@@ -325,7 +325,7 @@ async function identifyAsMovie(tmdbMovie: TMDBMovie) {
     }
 
     await runSync(async () => {
-        const movie = await Catalog.importMovieFromTMDB(tmdbMovie, {
+        const movie = await Catalog.importMovieFromTMDB(tmdbMovie.id, {
             watchingStatus: SHOW_TO_MOVIE_WATCHING_STATUSES[show.watchingStatus],
             rating: show.rating,
             notes: show.notes,

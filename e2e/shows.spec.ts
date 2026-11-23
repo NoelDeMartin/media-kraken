@@ -1,15 +1,6 @@
 import { comboboxSelect, createModel, dontSee, input, press, see } from '@aerogel/playwright';
 import { expect, test } from '@e2e/lib/setup';
-import type { Page } from '@playwright/test';
-
-async function seedShow(page: Page) {
-    await press(page, 'Press "s" to start searching');
-    await input(page, 'Search movies and shows').fill('breaking bad');
-    await press(page, 'Breaking Bad');
-    await comboboxSelect(page, 'Status', 'Watching');
-    await press(page, 'Add to collection');
-    await see(page, 'Breaking Bad has been added to your collection!');
-}
+import { seedShow } from '@e2e/lib/shows';
 
 test.beforeEach(async ({ page }) => {
     await page.goto('/shows');

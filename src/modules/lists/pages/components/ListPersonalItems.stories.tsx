@@ -5,7 +5,7 @@ import { documents, seedLists } from '@lists/lib/stubs/lists';
 import List from '@lists/models/List';
 import type ListItem from '@lists/models/ListItem';
 
-import ListItems from './ListItems.vue';
+import ListPersonalItems from './ListPersonalItems.vue';
 
 type Story = StoryObj<typeof meta>;
 
@@ -15,8 +15,8 @@ type StoryArgs = {
 };
 
 const meta: Meta<StoryArgs> = {
-    title: 'Organisms/ListItems',
-    component: ListItems,
+    title: 'Organisms/ListPersonalItems',
+    component: ListPersonalItems,
     args: {
         disabled: false,
         mediaUrls: [
@@ -42,7 +42,7 @@ const meta: Meta<StoryArgs> = {
                 return (
                     list && (
                         <div style={{ width: '100%', maxWidth: '64rem', margin: '0 auto', padding: '0 1.25rem' }}>
-                            <ListItems
+                            <ListPersonalItems
                                 list={list}
                                 disabled={args.disabled}
                                 onMove={(item: ListItem, target: ListItem) => list.moveItem(item, target)}

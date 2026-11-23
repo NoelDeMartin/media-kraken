@@ -1,0 +1,5 @@
+INSERT DATA {
+    <{{ webId }}>
+        <http://www.w3.org/ns/solid/terms#publicTypeIndex>
+        <{{ publicTypeIndex }}> .
+}

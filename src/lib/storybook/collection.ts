@@ -106,7 +106,7 @@ function fixture<T extends { title?: string; name?: string }>(fixtures: T[], nam
 
 async function seedMovie(title: string, sample: SampleMovie): Promise<ModelWithUrl<Movie>> {
     const tmdbMovie = fixture(movieFixtures as unknown as TMDBMovie[], title);
-    const movie = await Catalog.importMovieFromTMDB(tmdbMovie, { rating: sample.rating, notes: sample.notes });
+    const movie = await Catalog.importMovieFromTMDB(tmdbMovie.id, { rating: sample.rating, notes: sample.notes });
 
     if (sample.status) {
         await movie.updateWatchingStatus(sample.status, sample.date ? new Date(sample.date) : undefined);
@@ -123,7 +123,7 @@ async function seedMovie(title: string, sample: SampleMovie): Promise<ModelWithU
 
 async function seedShow(name: string, sample: SampleShow): Promise<ModelWithUrl<Show>> {
     const tmdbShow = fixture(showFixtures as unknown as TMDBShow[], name);
-    const show = await Catalog.importShowFromTMDB(tmdbShow, {
+    const show = await Catalog.importShowFromTMDB(tmdbShow.id, {
         watchingStatus: sample.status,
         rating: sample.rating,
         notes: sample.notes,
@@ -157,13 +157,11 @@ export async function seedSampleCollection(): Promise<SampleCollection> {
     for (const { name, description, media: names } of LISTS) {
         const list = await List.create({ name, description });
 
-        for (const [index, mediaName] of names.entries()) {
-            const mediaUrl = required(
-                media.find((item) => ('title' in item ? item.title : item.name) === mediaName),
-            ).url;
-
-            await list.relatedItems.create({ mediaUrl, position: index + 1 });
+        for (const mediaName of names) {
+            list.attachMedia(required(media.find((item) => ('title' in item ? item.title : item.name) === mediaName)));
         }
+
+        await list.save();
 
         lists.push(list);
     }

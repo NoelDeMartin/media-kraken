@@ -16,7 +16,13 @@ export interface StubList {
 export const documents = [...(movies as JsonLDGraph[]), ...(shows as JsonLDGraph[])];
 
 export function attachStubItem(list: List, mediaUrl: string, media?: Media | null): ListItem {
-    return list.attachMedia(media ?? new Movie({ title: mediaUrl, externalUrls: [mediaUrl] }));
+    if (media) {
+        return list.attachMedia(media);
+    }
+
+    const lastPosition = list.sortedItems.at(-1)?.position ?? 0;
+
+    return list.relatedItems.attach({ mediaUrl, position: lastPosition + 1 }, { mintUrl: true });
 }
 
 export async function seedLists(lists: StubList[]): Promise<void> {

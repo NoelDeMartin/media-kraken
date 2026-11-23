@@ -21,6 +21,13 @@ INSERT DATA {
         crdt:property schema:name ;
         crdt:value "{{ name }}" .
 
+    <#it-operation-[[operation-3][.*]]>
+        a crdt:SetPropertyOperation ;
+        crdt:resource <#it> ;
+        crdt:date "[[createdAt][.*]]"^^xsd:dateTime ;
+        crdt:property schema:owner ;
+        crdt:value <{{ owner }}> .
+
     <#it-operation-[[operation-2][.*]]>
         a crdt:AddPropertyOperation ;
         crdt:resource <#it> ;
@@ -42,6 +49,7 @@ INSERT DATA {
     <#[[media][%uuid%]]>
         a schema:Movie ;
         schema:name "{{ mediaName }}" ;
+        schema:datePublished "[[.*]]"^^xsd:dateTime ;
         schema:image <{{ mediaImage }}> ;
         schema:sameAs <{{ mediaUrl }}>, <{{ mediaTmdbUrl }}>, <{{ mediaImdbUrl }}> .
 

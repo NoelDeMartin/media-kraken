@@ -5,7 +5,8 @@ INSERT DATA {
 
     <#it>
         a schema:ItemList ;
-        schema:name "{{ name }}" .
+        schema:name "{{ name }}" ;
+        schema:owner <{{ owner }}> .
 
     <#it-metadata>
         a crdt:Metadata ;

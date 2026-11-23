@@ -1,5 +1,6 @@
 import { Solid } from '@aerogel/plugin-solid';
 import {
+    type SolidUserProfile,
     RDFNamedNode,
     RDFQuad,
     SolidDocumentPermissions,
@@ -62,6 +63,24 @@ async function removeListAbout(typeIndex: TypeIndex, list: ModelWithUrl<List>): 
     await updateSolidDocument(url, update, { fetch: Solid.fetch });
 }
 
+function urlWithTrailingSlash(url: string): string {
+    return url.endsWith('/') ? url : `${url}/`;
+}
+
+async function resolveStorageUrls(user: SolidUserProfile): Promise<string[]> {
+    if (user.storageUrls.length > 0) {
+        return user.storageUrls;
+    }
+
+    const fullProfile = await Solid.requireUserProfile(user.webId);
+
+    return fullProfile.storageUrls;
+}
+
+async function isOwnerOfList(owner: SolidUserProfile, listUrl: string): Promise<boolean> {
+    return isInStorage(listUrl, await fetchStorageUrls(owner));
+}
+
 export type ListVisibility = 'public' | 'unlisted' | 'private';
 
 export async function unpublishList(list: ModelWithUrl<List>): Promise<void> {
@@ -94,6 +113,31 @@ export async function fetchListVisibility(list: ModelWithUrl<List>): Promise<Lis
     }
 
     return (await isListed(list)) ? 'public' : 'unlisted';
+}
+
+export async function fetchStorageUrls(user: SolidUserProfile): Promise<string[]> {
+    const storageUrls = await resolveStorageUrls(user);
+
+    return storageUrls.map(urlWithTrailingSlash);
+}
+
+export function isInStorage(url: string, storageUrls: string[]): boolean {
+    return storageUrls.some((storageUrl) => url.startsWith(storageUrl));
+}
+
+export async function fetchListOwner(list: List): Promise<SolidUserProfile | null> {
+    if (!list.owner || !list.url) {
+        return null;
+    }
+
+    try {
+        const listUrl = list.url;
+        const owner = await Solid.requireUserProfile(list.owner, { shallow: true });
+
+        return (await isOwnerOfList(owner, listUrl)) ? owner : null;
+    } catch {
+        return null;
+    }
 }
 
 export async function updateListVisibility(list: ModelWithUrl<List>, visibility: ListVisibility): Promise<void> {

@@ -64,15 +64,32 @@
                     </span>
                 </RadioGroupItem>
             </RadioGroupRoot>
+            <div
+                v-if="visibility && visibility !== 'private'"
+                class="flex items-center gap-2 rounded-md bg-gray-100 p-1 pl-3"
+            >
+                <span class="min-w-0 flex-1 truncate text-sm text-gray-700" :title="shareUrl">{{ shareUrl }}</span>
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    :title="$t('lists.share.copyUrl')"
+                    :aria-label="$t('lists.share.copyUrl')"
+                    @click="copyShareUrl()"
+                >
+                    <i-ph-copy-bold class="size-4" />
+                </Button>
+            </div>
         </div>
     </Modal>
 </template>
 
 <script setup lang="ts">
-import { UI, useModal } from '@aerogel/core';
+import { translate, UI, useModal } from '@aerogel/core';
 import { AccountLoginModal } from '@aerogel/plugin-local-first';
+import { routeUrl } from '@aerogel/plugin-routing';
 import { Solid } from '@aerogel/plugin-solid';
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui';
+import type { ModelWithUrl } from 'soukai-bis';
 import { computed, onMounted, ref } from 'vue';
 import type { Component } from 'vue';
 import IconPublic from '~icons/ph/globe-hemisphere-west';
@@ -90,6 +107,7 @@ const shareableList = canShareList(list) ? list : null;
 const visibility = ref<ListVisibility | null>(null);
 const pendingVisibility = ref<ListVisibility | null>(null);
 const updating = computed(() => !!pendingVisibility.value);
+const shareUrl = computed(() => routeUrl(list.shareRoute).href);
 const error = ref<{ message: string; source: unknown; retry(): Promise<void> } | null>(null);
 
 async function connect() {
@@ -102,6 +120,12 @@ async function connect() {
     }
 
     await UI.modal(AccountLoginModal);
+}
+
+async function copyShareUrl() {
+    await navigator.clipboard.writeText(shareUrl.value);
+
+    UI.toast(translate('lists.share.urlCopied'));
 }
 
 async function retry() {
@@ -124,6 +148,14 @@ async function fetchVisibility() {
     }
 }
 
+async function ensureListOwner(targetList: ModelWithUrl<List>) {
+    if (targetList.owner) {
+        return;
+    }
+
+    await targetList.update({ owner: Solid.requireUser().webId });
+}
+
 async function update(newVisibility: ListVisibility) {
     if (!shareableList || newVisibility === visibility.value) {
         return;
@@ -133,6 +165,7 @@ async function update(newVisibility: ListVisibility) {
     pendingVisibility.value = newVisibility;
 
     try {
+        await ensureListOwner(shareableList);
         await updateListVisibility(shareableList, newVisibility);
 
         visibility.value = newVisibility;

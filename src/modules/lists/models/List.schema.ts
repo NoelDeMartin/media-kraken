@@ -9,6 +9,7 @@ export default defineSchema({
         name: string().useAsSlug(),
         description: string().optional(),
         itemUrls: array(url()).rdfProperty('itemListElement').default([]),
+        owner: url().optional(),
     },
     relations: {
         items: belongsToMany('ListItem', 'itemUrls').usingSameDocument().onDelete('cascade'),

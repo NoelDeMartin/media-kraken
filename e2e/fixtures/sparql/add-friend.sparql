@@ -1,0 +1,5 @@
+INSERT DATA {
+    <http://localhost:3000/alice/profile/card#me>
+        <http://xmlns.com/foaf/0.1/knows>
+        <http://localhost:3000/bob/profile/card#me> .
+}

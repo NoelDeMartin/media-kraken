@@ -39,19 +39,18 @@ test('Import a movie from tmdb', async ({ page }) => {
     // Assert Registrations
     expect(createPreferencesFile.all).toHaveLength(1);
     expect(updateProfile.all).toHaveLength(1);
-    expect(updateProfile.nth(1)?.body).toEqualSparql(`
-        INSERT DATA {
-            <#me> <http://www.w3.org/ns/pim/space#preferencesFile> <${podUrl('/settings/preferences')}> .
-        }
-    `);
+    expect(updateProfile.nth(1)?.body).toEqualSparql(
+        requiredFixture('/sparql/declare-preferences-file.sparql', {
+            preferencesFile: podUrl('/settings/preferences'),
+        }),
+    );
     expect(updatePreferencesFile.all).toHaveLength(1);
-    expect(updatePreferencesFile.nth(1)?.body).toEqualSparql(`
-        INSERT DATA {
-            <${podUrl('/profile/card#me')}>
-                <http://www.w3.org/ns/solid/terms#privateTypeIndex>
-                <${podUrl('/settings/privateTypeIndex')}> .
-        }
-    `);
+    expect(updatePreferencesFile.nth(1)?.body).toEqualSparql(
+        requiredFixture('/sparql/declare-private-type-index.sparql', {
+            webId: podUrl('/profile/card#me'),
+            privateTypeIndex: podUrl('/settings/privateTypeIndex'),
+        }),
+    );
     expect(createPrivateTypeIndex.all).toHaveLength(1);
     expect(createPrivateTypeIndex.nth(1)?.body).toEqualTurtle(requiredFixture('/turtle/private-type-index.ttl'));
     expect(registerContainer.all).toHaveLength(1);
@@ -107,7 +106,12 @@ test('Delete movies', async ({ page }) => {
 
 test('Pull in existing movies & updates', async ({ page }) => {
     // Populate POD & Log in
-    await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));
+    await solidUpdateDocument(
+        '/profile/card',
+        requiredFixture('/sparql/declare-preferences-file.sparql', {
+            preferencesFile: podUrl('/settings/preferences'),
+        }),
+    );
     await solidCreateDocument('/settings/preferences', requiredFixture('/turtle/preferences.ttl'));
     await solidCreateDocument('/settings/privateTypeIndex', requiredFixture('/turtle/type-index.ttl'));
     await solidCreateDocument('/movies/the-substance-2024', requiredFixture('/turtle/the-substance-2024.ttl'));
@@ -153,7 +157,7 @@ test('Create lists', async ({ page }) => {
     expect(listRequests.all).toHaveLength(1);
     expect(listRequests.nth(1)?.url).toEqual(podUrl('/lists/favorites'));
     expect(listRequests.nth(1)?.body).toEqualSparql(
-        requiredFixture('/sparql/create-list.sparql', { name: 'Favorites' }),
+        requiredFixture('/sparql/create-list.sparql', { name: 'Favorites', owner: podUrl('/profile/card#me') }),
     );
 
     // Add items
@@ -167,6 +171,7 @@ test('Create lists', async ({ page }) => {
     expect(listRequests.nth(2)?.body).toEqualSparql(
         requiredFixture('/sparql/add-list-item.sparql', {
             name: 'Favorites',
+            owner: podUrl('/profile/card#me'),
             mediaUrl: podUrl('/movies/the-matrix-1999#it'),
             mediaName: 'The Matrix',
             mediaImage: 'https://image.tmdb.org/t/p/w500/dXNAPwY7VrqMAo51EKhhCJfaGb5.jpg',
@@ -210,7 +215,12 @@ test('Upload lists created before logging in', async ({ page }) => {
 
 test('Pull in existing lists & updates', async ({ page }) => {
     // Populate POD & Log in
-    await solidUpdateDocument('/profile/card', requiredFixture('/sparql/declare-preferences-file.sparql'));
+    await solidUpdateDocument(
+        '/profile/card',
+        requiredFixture('/sparql/declare-preferences-file.sparql', {
+            preferencesFile: podUrl('/settings/preferences'),
+        }),
+    );
     await solidCreateDocument('/settings/preferences', requiredFixture('/turtle/preferences.ttl'));
     await solidCreateDocument('/settings/privateTypeIndex', requiredFixture('/turtle/type-index.ttl'));
     await solidCreateDocument('/movies/the-substance-2024', requiredFixture('/turtle/the-substance-2024.ttl'));

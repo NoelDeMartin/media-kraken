@@ -1,5 +1,5 @@
 <template>
-    <div v-if="menu || $slots.actions" :class="classes('flex items-center', rootClasses)">
+    <div v-if="menu || $slots.actions || loading" :class="classes('flex items-center', rootClasses)">
         <i-mdi-sync v-if="loading" class="mr-1 size-5 animate-spin" />
         <DropdownMenu v-else-if="menu" align="start" :options="menu">
             <Button size="icon" variant="ghost" :title="$t('ui.openActionsMenu')" class="-ml-3 rounded-md p-1">

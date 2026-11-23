@@ -28,9 +28,9 @@ import { useModels } from '@aerogel/plugin-solid';
 import { computed } from 'vue';
 
 import { sortByLocale } from '@/lib/media';
+import { LIST_PREVIEWS } from '@lists/components/ListCard.vue';
 import ListFormModal from '@lists/components/modals/ListFormModal.vue';
 import List from '@lists/models/List';
-import ListCard, { LIST_PREVIEWS } from '@lists/pages/components/ListCard.vue';
 
 const { models: lists, loading } = useModels(List);
 const sortedLists = computed(() => sortByLocale(lists.value, (list) => list.name));

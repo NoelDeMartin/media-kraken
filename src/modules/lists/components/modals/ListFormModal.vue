@@ -23,6 +23,7 @@
 
 <script setup lang="ts">
 import { useForm, useModal } from '@aerogel/core';
+import { Solid } from '@aerogel/plugin-solid';
 import type { ModelWithUrl } from 'soukai-bis';
 import { ref } from 'vue';
 import { z } from 'zod';
@@ -61,7 +62,7 @@ async function submit() {
             return;
         }
 
-        const newList = await List.create(attributes);
+        const newList = await List.create({ ...attributes, owner: Solid.user?.webId });
 
         close({ list: newList });
     } finally {

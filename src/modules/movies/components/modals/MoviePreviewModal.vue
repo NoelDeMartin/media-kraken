@@ -14,9 +14,13 @@
                     {{ model.description }}
                 </p>
             </div>
+            <div v-else-if="loadingDetails" class="flex flex-1 items-center justify-center">
+                <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-6 w-full" />
+                <span class="sr-only">{{ $t('ui.loading') }}</span>
+            </div>
             <ul :aria-label="$t('movies.externalSites')" class="ml-auto flex items-center gap-2">
                 <li>
-                    <ExternalSiteLink :url="tmdbMovieUrl(movie.id)" />
+                    <ExternalSiteLink :url="tmdbMovieUrl(tmdbId)" />
                 </li>
                 <li v-if="details?.imdb_id">
                     <ExternalSiteLink :url="imdbUrl(details.imdb_id)" />
@@ -37,8 +41,9 @@
 </template>
 
 <script setup lang="ts">
-import { translate, UI, useModal } from '@aerogel/core';
-import { computed, onMounted, shallowRef } from 'vue';
+import { Errors, translate, UI, useModal } from '@aerogel/core';
+import { isInstanceOf, required } from '@noeldemartin/utils';
+import { computed, onMounted, ref, shallowRef } from 'vue';
 
 import { imdbUrl } from '@/lib/imdb';
 import { tmdbMovieUrl } from '@/lib/tmdb';
@@ -48,20 +53,33 @@ import TMDB from '@/services/TMDB';
 import Movie from '@movies/models/Movie';
 import type { MovieWatchingStatus } from '@movies/models/WatchAction';
 
-const { movie } = defineProps<{ movie: TMDBMovie }>();
+const { movie } = defineProps<{ movie: TMDBMovie | Movie }>();
 const { close } = useModal();
-const model = computed(() => Movie.fromTMDB(movie, { posterSize: 'large' }));
+const tmdbId = isInstanceOf(movie, Movie) ? required(movie.tmdbId) : movie.id;
 const details = shallowRef<TMDBMovieWithStaff | null>(null);
+const detailsFailed = ref(false);
+const loadingDetails = computed(() => !details.value && !detailsFailed.value && isInstanceOf(movie, Movie));
+const model = computed(() => {
+    const tmdbMovie = details.value ?? (isInstanceOf(movie, Movie) ? null : movie);
+
+    return tmdbMovie ? Movie.fromTMDB(tmdbMovie, { posterSize: 'large' }) : (movie as Movie);
+});
 
 async function saveToCollection(watchingStatus: MovieWatchingStatus) {
     close();
 
-    await Catalog.importMovieFromTMDB(movie, { watchingStatus });
+    await Catalog.importMovieFromTMDB(tmdbId, { watchingStatus });
 
     UI.toast(translate('movies.added', { movie: model.value.title }));
 }
 
 onMounted(async () => {
-    details.value = await TMDB.getMovie(movie.id, { includeCredits: false, includeKeywords: false });
+    try {
+        details.value = await TMDB.getMovie(tmdbId, { includeCredits: false, includeKeywords: false });
+    } catch (error) {
+        detailsFailed.value = true;
+
+        await Errors.report(error);
+    }
 });
 </script>
