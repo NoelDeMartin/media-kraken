@@ -9,6 +9,7 @@ const config: StorybookConfig = {
         allowedHosts: process.env.STORYBOOK_ALLOWED_HOSTS?.split(','),
     },
     features: {
+        backgrounds: false,
         sidebarOnboardingChecklist: false,
     },
     viteFinal(viteConfig) {

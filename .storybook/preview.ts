@@ -1,5 +1,5 @@
 import { SolidFake } from '@aerogel/plugin-solid';
-import { setup, decorators } from '@aerogel/storybook';
+import { preview, setup } from '@aerogel/storybook';
 import docs from '@storybook/addon-docs';
 import { definePreview } from '@storybook/vue3-vite';
 import { sb } from 'storybook/test';
@@ -17,9 +17,9 @@ registerFakes();
 setup(app);
 
 export default definePreview({
+    ...preview,
     addons: [docs()],
     tags: ['autodocs'],
-    decorators,
     beforeEach: () => {
         SolidFake.setState({ session: null, previousSession: null, profiles: {} });
     },
