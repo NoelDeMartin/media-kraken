@@ -1,4 +1,4 @@
-import { computedModelAttribute } from '@aerogel/plugin-solid';
+import { computedModelAttribute } from '@aerogel/reactivity';
 import { arraySorted } from '@noeldemartin/utils';
 import { computed } from 'vue';
 

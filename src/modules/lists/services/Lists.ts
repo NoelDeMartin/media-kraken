@@ -1,5 +1,5 @@
 import { Service } from '@aerogel/core';
-import { getTrackedModels, loadTrackedModels } from '@aerogel/plugin-solid';
+import { getTrackedModels, loadTrackedModels } from '@aerogel/reactivity';
 import { facade } from '@noeldemartin/utils';
 import type { ModelConstructor } from 'soukai-bis';
 

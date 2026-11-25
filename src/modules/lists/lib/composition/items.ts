@@ -1,4 +1,4 @@
-import { computedModel, useModels } from '@aerogel/plugin-solid';
+import { computedModel, useModels } from '@aerogel/reactivity';
 import { computed } from 'vue';
 import type { ComputedRef } from 'vue';
 
@@ -22,7 +22,7 @@ export interface ResolvedListItems {
 export function useResolvedListItems(list: () => List, options: { foreign?: boolean } = {}): ResolvedListItems {
     const listModel = computedModel(list);
     const mediaUrls = computed(() => listModel.value.sortedItems.map((item) => item.media?.externalUrls ?? []).flat());
-    const query = options.foreign ? {} : { urls: mediaUrls };
+    const query = options.foreign ? {} : { only: mediaUrls };
     const { models: movies, loading: loadingMovies } = useModels(Movie, query);
     const { models: shows, loading: loadingShows } = useModels(Show, query);
 

@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-import { computedModels, useModels } from '@aerogel/plugin-solid';
+import { computedModels, useModels } from '@aerogel/reactivity';
 import { arraySorted } from '@noeldemartin/utils';
 import { computed } from 'vue';
 
@@ -82,7 +82,7 @@ const pendingMovies = computedModels(
 
         return sample;
     },
-    { cache: 'pendingMovies' },
+    { cacheKey: 'pendingMovies' },
 );
 const upcomingShows = computedModels(
     Show,
@@ -95,7 +95,7 @@ const upcomingShows = computedModels(
             show.pendingEpisodes.value?.some(({ publishedAt }) => Episode.isUpcoming(publishedAt)),
         );
     },
-    { watch: ['pendingEpisodes'], cache: 'upcomingShows' },
+    { watchComputedAttributes: ['pendingEpisodes'], cacheKey: 'upcomingShows' },
 );
 const isEmpty = computed(() => upcomingShows.value?.length === 0 && pendingMovies.value?.length === 0);
 </script>

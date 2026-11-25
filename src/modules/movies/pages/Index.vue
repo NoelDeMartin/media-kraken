@@ -91,7 +91,7 @@
 
 <script setup lang="ts">
 import { UI } from '@aerogel/core';
-import { useModels } from '@aerogel/plugin-solid';
+import { useModels } from '@aerogel/reactivity';
 import { arraySorted } from '@noeldemartin/utils';
 import { computed } from 'vue';
 import IconSync from '~icons/mdi/sync';

@@ -1,4 +1,4 @@
-import { resetModelsState, trackModels } from '@aerogel/plugin-solid';
+import { resetReactiveState, trackModels } from '@aerogel/reactivity';
 import { required } from '@noeldemartin/utils';
 import { beforeEach, describe, expect, it } from 'vite-plus/test';
 
@@ -14,10 +14,11 @@ describe('Lists service', () => {
     }
 
     beforeEach(async () => {
-        resetModelsState();
+        resetReactiveState();
 
         await Lists.launch();
-        await trackModels(Show, { depth: Show.cloud.depth, lazy: true, bypassServicesCheck: true });
+
+        trackModels(Show, { depth: Show.cloud.depth });
     });
 
     it('Updates media details in lists', async () => {

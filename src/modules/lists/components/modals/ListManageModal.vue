@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import { translate, UI, useModal } from '@aerogel/core';
-import { useModels } from '@aerogel/plugin-solid';
+import { useModels } from '@aerogel/reactivity';
 import type { ModelWithUrl } from 'soukai-bis';
 import { computed, reactive, ref } from 'vue';
 

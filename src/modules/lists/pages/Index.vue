@@ -24,7 +24,7 @@
 <script setup lang="ts">
 import { translate, UI } from '@aerogel/core';
 import { Router } from '@aerogel/plugin-routing';
-import { useModels } from '@aerogel/plugin-solid';
+import { useModels } from '@aerogel/reactivity';
 import { computed } from 'vue';
 
 import { sortByLocale } from '@/lib/media';

@@ -1,9 +1,9 @@
 import { translate } from '@aerogel/core';
 import localFirst from '@aerogel/plugin-local-first';
-import type { CloudConflict, ConflictHandlerResult, DeletionConflictPrompt } from '@aerogel/plugin-local-first';
+import type { ConflictHandlerResult, ResourceConflictPrompt } from '@aerogel/plugin-local-first';
 import type { SolidDocument } from '@noeldemartin/solid-utils';
-import { stringToCamelCase } from '@noeldemartin/utils';
-import type { DeletionConflict } from 'soukai-bis';
+import { isFileConflict } from 'soukai-bis';
+import type { ResourceConflict, SyncConflict } from 'soukai-bis';
 
 import { mediaDisplayName } from '@/lib/media';
 import type { Media } from '@/lib/media';
@@ -12,8 +12,12 @@ import ListItem from '@lists/models/ListItem';
 import Movie from '@movies/models/Movie';
 import Show from '@shows/models/Show';
 
-function getConflictDocument(conflict: DeletionConflict): SolidDocument {
-    return conflict.type === 'deleted-remotely' ? conflict.localDocument : conflict.remoteDocument;
+function getConflictDocument(conflict: ResourceConflict): SolidDocument {
+    return conflict.type === 'resource-deleted-remotely' ? conflict.localDocument : conflict.remoteDocument;
+}
+
+function getConflictTranslationKey(conflict: ResourceConflict): string {
+    return conflict.type === 'resource-deleted-remotely' ? 'deletedRemotely' : 'deletedLocally';
 }
 
 function getMediaType(media: Media): 'movie' | 'show' {
@@ -29,9 +33,9 @@ async function findDocumentMedia(document: SolidDocument, url?: string): Promise
 }
 
 async function getListItemPrompt(
-    conflict: DeletionConflict,
+    conflict: ResourceConflict,
     item: ListItem,
-): Promise<DeletionConflictPrompt | undefined> {
+): Promise<ResourceConflictPrompt | undefined> {
     const document = getConflictDocument(conflict);
     const [list] = await List.createManyFromDocument(document, { includeSoftDeleted: true });
     const media = item.media ?? (await findDocumentMedia(document, item.mediaUrl));
@@ -41,7 +45,7 @@ async function getListItemPrompt(
     }
 
     return {
-        message: translate(`cloud.conflicts.listItem.${stringToCamelCase(conflict.type)}`, {
+        message: translate(`cloud.conflicts.listItem.${getConflictTranslationKey(conflict)}`, {
             name: mediaDisplayName(media),
             list: list.name,
         }),
@@ -50,12 +54,12 @@ async function getListItemPrompt(
     };
 }
 
-async function handleConflict(conflict: CloudConflict): Promise<ConflictHandlerResult> {
-    if (conflict.resourceType !== 'document') {
+async function handleConflict(conflict: SyncConflict): Promise<ConflictHandlerResult> {
+    if (isFileConflict(conflict)) {
         return;
     }
 
-    const conflictType = stringToCamelCase(conflict.type);
+    const conflictType = getConflictTranslationKey(conflict);
 
     if (conflict.model instanceof Movie || conflict.model instanceof Show) {
         return {

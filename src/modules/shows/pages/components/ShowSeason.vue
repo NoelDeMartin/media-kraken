@@ -66,7 +66,7 @@
 </template>
 
 <script setup lang="ts">
-import { computedModel, computedModels } from '@aerogel/plugin-solid';
+import { computedModel, computedModels } from '@aerogel/reactivity';
 import { computed, ref } from 'vue';
 
 import { formatDate } from '@/lib/formatting';

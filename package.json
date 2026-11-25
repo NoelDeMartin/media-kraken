@@ -25,6 +25,7 @@
         "@aerogel/plugin-local-first": "next",
         "@aerogel/plugin-routing": "next",
         "@aerogel/plugin-solid": "next",
+        "@aerogel/reactivity": "next",
         "@noeldemartin/solid-utils": "catalog:",
         "@noeldemartin/utils": "catalog:",
         "@tailwindcss/forms": "^0.5.10",

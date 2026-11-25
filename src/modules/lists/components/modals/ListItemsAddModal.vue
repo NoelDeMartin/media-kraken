@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { computedModel, useModels } from '@aerogel/plugin-solid';
+import { computedModel, useModels } from '@aerogel/reactivity';
 import { isInstanceOf } from '@noeldemartin/utils';
 import type { ModelWithUrl } from 'soukai-bis';
 import { computed, onMounted, ref, useTemplateRef } from 'vue';

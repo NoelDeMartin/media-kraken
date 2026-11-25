@@ -16,7 +16,7 @@
 </template>
 
 <script setup lang="ts">
-import { computedModels, useModels } from '@aerogel/plugin-solid';
+import { computedModels, useModels } from '@aerogel/reactivity';
 import { computed } from 'vue';
 
 import { getStatsSnapshot } from '@/pages/stats/utils/snapshot';
@@ -35,6 +35,6 @@ const snapshot = computedModels(
 
         return getStatsSnapshot(movies.value, shows.value);
     },
-    { watch: ['credits', 'watchedEpisodes'], cache: 'stats' },
+    { watchComputedAttributes: ['credits', 'watchedEpisodes'], cacheKey: 'stats' },
 );
 </script>

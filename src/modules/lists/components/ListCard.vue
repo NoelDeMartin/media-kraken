@@ -48,7 +48,8 @@ export const LIST_PREVIEWS = 4;
 
 <script setup lang="ts">
 import { translate } from '@aerogel/core';
-import { computedModel, userDisplayName } from '@aerogel/plugin-solid';
+import { userDisplayName } from '@aerogel/plugin-solid';
+import { computedModel } from '@aerogel/reactivity';
 import type { SolidUserProfile } from '@noeldemartin/solid-utils';
 import { isTruthy } from '@noeldemartin/utils';
 import { computed } from 'vue';

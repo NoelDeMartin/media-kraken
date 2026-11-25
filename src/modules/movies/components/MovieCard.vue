@@ -25,7 +25,7 @@
 </template>
 
 <script setup lang="ts">
-import { computedModel } from '@aerogel/plugin-solid';
+import { computedModel } from '@aerogel/reactivity';
 
 import Movie from '@movies/models/Movie';
 
