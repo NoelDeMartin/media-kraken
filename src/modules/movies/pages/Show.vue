@@ -16,13 +16,13 @@
                         </Button>
                     </DropdownMenu>
                 </div>
-                <div class="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-gray-600">
+                <div class="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-gray-600 dark:text-gray-400">
                     <span
                         class="flex items-center gap-1 lowercase"
                         :class="{
-                            'text-green-700': movie.watchingStatus === 'watched',
-                            'text-blue-700': movie.watchingStatus === 'pending',
-                            'text-gray-700': movie.watchingStatus === 'dropped',
+                            'text-green-700 dark:text-green-400': movie.watchingStatus === 'watched',
+                            'text-blue-700 dark:text-blue-400': movie.watchingStatus === 'pending',
+                            'text-gray-700 dark:text-gray-300': movie.watchingStatus === 'dropped',
                         }"
                         :title="watchingStatusTitle"
                     >
@@ -50,7 +50,7 @@
                         />
                     </template>
                 </div>
-                <p v-if="movie.description" class="mt-4 leading-relaxed text-gray-700">
+                <p v-if="movie.description" class="mt-4 leading-relaxed text-gray-700 dark:text-gray-300">
                     {{ movie.description }}
                 </p>
                 <div class="min-h-6 flex-1" />
@@ -62,10 +62,10 @@
                         :aria-label="$t('movies.details.title')"
                     >
                         <template v-if="movie.directors?.length">
-                            <dt class="font-medium text-gray-900">
+                            <dt class="text-primary-text font-medium">
                                 {{ $t('movies.details.directedBy') }}
                             </dt>
-                            <dd class="text-gray-700">
+                            <dd class="text-gray-700 dark:text-gray-300">
                                 <template v-for="(director, index) in movie.directors" :key="director.url">
                                     <MaybeLink
                                         :href="director.tmdbUrl"
@@ -81,8 +81,8 @@
                             </dd>
                         </template>
                         <template v-for="detail in details" :key="detail.label">
-                            <dt class="font-medium text-gray-900">{{ detail.label }}</dt>
-                            <dd class="text-gray-700">{{ detail.value }}</dd>
+                            <dt class="text-primary-text font-medium">{{ detail.label }}</dt>
+                            <dd class="text-gray-700 dark:text-gray-300">{{ detail.value }}</dd>
                         </template>
                     </dl>
                     <ul :aria-label="$t('movies.externalSites')" class="ml-auto flex items-center gap-2">
@@ -95,7 +95,7 @@
         </article>
         <section v-if="movie.notes" class="mt-10" aria-labelledby="notes">
             <SectionTitle id="notes">{{ $t('media.notes.title') }}</SectionTitle>
-            <Markdown :text="movie.notes" class="mt-4 max-w-none wrap-break-word text-gray-700" />
+            <Markdown :text="movie.notes" class="mt-4 max-w-none wrap-break-word text-gray-700 dark:text-gray-300" />
         </section>
         <section v-if="cast.length" class="mt-10" aria-labelledby="cast">
             <SectionTitle id="cast">{{ $t('movies.details.topCast') }}</SectionTitle>

@@ -1,5 +1,5 @@
 <template>
-    <p v-if="items.length === 0" class="mt-8 text-center text-gray-600">
+    <p v-if="items.length === 0" class="mt-8 text-center text-gray-600 dark:text-gray-400">
         {{ $t('lists.emptyReadonlyList') }}
     </p>
     <ol v-else class="-mx-4 [counter-reset:list-items] sm:-mx-5">

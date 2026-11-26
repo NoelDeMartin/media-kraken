@@ -6,13 +6,13 @@
             class="group grid grid-cols-[minmax(0,9rem)_1fr] items-center gap-3"
             :title="`${entry.label}: ${formatNumber(entry.value)}`"
         >
-            <span class="truncate text-gray-700">{{ entry.label }}</span>
+            <span class="truncate text-gray-700 dark:text-gray-300">{{ entry.label }}</span>
             <div class="flex items-center gap-2">
                 <div
                     class="bg-primary-500 group-hover:bg-primary-700 h-4 min-w-0.5 rounded-r transition-colors"
                     :style="{ width: `calc(${entry.value / max} * (100% - 3rem))` }"
                 />
-                <span class="text-gray-600 tabular-nums">{{ formatNumber(entry.value) }}</span>
+                <span class="text-gray-600 tabular-nums dark:text-gray-400">{{ formatNumber(entry.value) }}</span>
             </div>
         </li>
     </ol>

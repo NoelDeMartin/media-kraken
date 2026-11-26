@@ -9,7 +9,7 @@
             aria-hidden="true"
         >
             <div
-                class="rounded-card relative aspect-2/3 w-full overflow-hidden border border-slate-200 bg-gray-200 shadow-sm"
+                class="rounded-card relative aspect-2/3 w-full overflow-hidden border border-slate-200 bg-gray-200 shadow-sm dark:border-white/10 dark:bg-white/10"
             >
                 <img
                     v-if="person.imageUrl && !loadFailed"
@@ -35,12 +35,12 @@
             :href="person.tmdbUrl"
             target="_blank"
             rel="noopener"
-            class="text-sm leading-tight font-medium text-gray-900"
+            class="text-primary-text text-sm leading-tight font-medium"
             :class="person.tmdbUrl ? 'hover:underline' : ''"
         >
             {{ person.name }}
         </MaybeLink>
-        <p v-if="characters?.length" class="-mt-1 text-xs leading-tight text-gray-600">
+        <p v-if="characters?.length" class="-mt-1 text-xs leading-tight text-gray-600 dark:text-gray-400">
             {{ characters.join(' / ') }}
         </p>
     </div>

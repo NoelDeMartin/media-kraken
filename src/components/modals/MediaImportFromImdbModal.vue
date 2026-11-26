@@ -1,6 +1,6 @@
 <template>
     <Modal :title="$t('import.imdb.title')" persistent>
-        <p class="text-sm text-gray-600">
+        <p class="text-sm text-gray-600 dark:text-gray-400">
             {{ $t('import.imdb.description') }}
         </p>
         <Form :form @submit="submit">

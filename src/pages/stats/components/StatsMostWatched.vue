@@ -14,10 +14,10 @@
                 :key="chart.title"
                 :title="chart.title"
                 :title-level="3"
-                title-class="mb-4 text-lg font-medium text-gray-900"
+                title-class="mb-4 text-lg font-medium text-primary-text dark:text-primary-text"
             >
                 <ChartBar v-if="chart.entries.length" :entries="chart.entries" />
-                <p v-else class="text-gray-500">
+                <p v-else class="text-gray-500 dark:text-gray-400">
                     {{ $t('stats.emptyChart') }}
                 </p>
             </StatsCard>

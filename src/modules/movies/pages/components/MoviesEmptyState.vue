@@ -1,8 +1,8 @@
 <template>
-    <div v-if="emptyCollection" class="mt-8 text-center text-gray-600">
+    <div v-if="emptyCollection" class="mt-8 text-center text-gray-600 dark:text-gray-400">
         {{ $t('movies.emptyCollection') }}
     </div>
-    <div v-else class="mt-8 flex flex-col items-center gap-3 text-center text-gray-600">
+    <div v-else class="mt-8 flex flex-col items-center gap-3 text-center text-gray-600 dark:text-gray-400">
         {{ $t('movies.noResults') }}
 
         <Button variant="secondary" @click="$emit('clearFilters')">

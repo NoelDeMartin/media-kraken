@@ -1,6 +1,9 @@
 <template>
     <Modal :title="$t('seedCollection.title')">
-        <Markdown class="text-sm leading-relaxed text-gray-700" :text="$t('seedCollection.description')" />
+        <Markdown
+            class="text-sm leading-relaxed text-gray-700 dark:text-gray-300"
+            :text="$t('seedCollection.description')"
+        />
         <Button variant="outline" class="mt-4 w-full" @click="seed()">
             {{ $t('seedCollection.submit') }}
         </Button>

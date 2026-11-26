@@ -16,7 +16,7 @@
                         </Button>
                     </DropdownMenu>
                 </div>
-                <div class="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-gray-600">
+                <div class="mt-1 flex flex-wrap items-center gap-x-2 text-sm text-gray-600 dark:text-gray-400">
                     <ShowWatchingStatus :status="show.watchingStatus" class="lowercase">
                         <ShowPendingEpisodesCount
                             v-if="show.watchingStatus === 'watching'"
@@ -41,7 +41,7 @@
                         />
                     </template>
                 </div>
-                <p v-if="show.description" class="mt-4 leading-relaxed text-gray-700">
+                <p v-if="show.description" class="mt-4 leading-relaxed text-gray-700 dark:text-gray-300">
                     {{ show.description }}
                 </p>
                 <div class="min-h-6 flex-1" />
@@ -53,10 +53,10 @@
                         :aria-label="$t('shows.details.title')"
                     >
                         <template v-if="show.creators?.length">
-                            <dt class="font-medium text-gray-900">
+                            <dt class="text-primary-text font-medium">
                                 {{ $t('shows.details.createdBy') }}
                             </dt>
-                            <dd class="text-gray-700">
+                            <dd class="text-gray-700 dark:text-gray-300">
                                 <template v-for="(creator, index) in show.creators" :key="creator.url">
                                     <MaybeLink
                                         :href="creator.tmdbUrl"
@@ -72,8 +72,8 @@
                             </dd>
                         </template>
                         <template v-for="detail in details" :key="detail.label">
-                            <dt class="font-medium text-gray-900">{{ detail.label }}</dt>
-                            <dd class="text-gray-700">{{ detail.value }}</dd>
+                            <dt class="text-primary-text font-medium">{{ detail.label }}</dt>
+                            <dd class="text-gray-700 dark:text-gray-300">{{ detail.value }}</dd>
                         </template>
                     </dl>
                     <ul :aria-label="$t('shows.externalSites')" class="ml-auto flex items-center gap-2">
@@ -86,7 +86,7 @@
         </article>
         <section v-if="show.notes" class="mt-10" aria-labelledby="notes">
             <SectionTitle id="notes">{{ $t('media.notes.title') }}</SectionTitle>
-            <Markdown :text="show.notes" class="mt-4 max-w-none wrap-break-word text-gray-700" />
+            <Markdown :text="show.notes" class="mt-4 max-w-none wrap-break-word text-gray-700 dark:text-gray-300" />
         </section>
         <section v-if="cast.length" class="mt-10" aria-labelledby="cast">
             <SectionTitle id="cast">{{ $t('shows.details.topCast') }}</SectionTitle>
@@ -102,7 +102,9 @@
             aria-labelledby="seasons"
         >
             <SectionTitle id="seasons">{{ $t('shows.seasons') }}</SectionTitle>
-            <p v-if="seasons.length === 0" class="mt-4 text-sm text-gray-500">{{ $t('shows.noSeasons') }}</p>
+            <p v-if="seasons.length === 0" class="mt-4 text-sm text-gray-500 dark:text-gray-400">
+                {{ $t('shows.noSeasons') }}
+            </p>
             <div v-else class="mt-6 flex flex-col gap-8">
                 <ShowSeason
                     v-for="season of seasons"

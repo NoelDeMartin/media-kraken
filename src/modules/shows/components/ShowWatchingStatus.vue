@@ -3,9 +3,9 @@
         :class="[
             'flex items-center gap-1',
             {
-                'text-green-700': status === 'completed',
-                'text-blue-700': status === 'pending' || status === 'watching',
-                'text-gray-700': status === 'dropped',
+                'text-green-700 dark:text-green-400': status === 'completed',
+                'text-blue-700 dark:text-blue-400': status === 'pending' || status === 'watching',
+                'text-gray-700 dark:text-gray-300': status === 'dropped',
             },
         ]"
     >

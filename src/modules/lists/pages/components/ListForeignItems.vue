@@ -1,5 +1,5 @@
 <template>
-    <p v-if="items.length === 0" class="mt-8 text-center text-gray-600">
+    <p v-if="items.length === 0" class="mt-8 text-center text-gray-600 dark:text-gray-400">
         {{ $t('lists.emptyReadonlyList') }}
     </p>
     <ol v-else class="-mx-4 [counter-reset:list-items] sm:-mx-5">
@@ -47,7 +47,7 @@
                     :status="item.resolvedMedia.watchingStatus"
                     class="mt-1 text-xs sm:hidden"
                 />
-                <span v-else-if="!loading" class="mt-1 block text-xs text-gray-500 sm:hidden">
+                <span v-else-if="!loading" class="mt-1 block text-xs text-gray-500 sm:hidden dark:text-gray-400">
                     {{ $t('lists.missingFromCollection') }}
                 </span>
             </div>
@@ -62,7 +62,10 @@
                 :status="item.resolvedMedia.watchingStatus"
                 class="hidden shrink-0 text-sm sm:flex"
             />
-            <span v-else-if="!loading && item.media" class="hidden shrink-0 text-sm text-gray-500 sm:inline">
+            <span
+                v-else-if="!loading && item.media"
+                class="hidden shrink-0 text-sm text-gray-500 sm:inline dark:text-gray-400"
+            >
                 {{ $t('lists.missingFromCollection') }}
             </span>
         </li>

@@ -49,7 +49,7 @@
                         <i-mdi-filter class="size-6" />
                         <span
                             v-if="hasAdvancedFilters"
-                            class="bg-primary-500 pointer-events-none absolute top-1.5 right-1.5 size-2 rounded-full ring-2 ring-white"
+                            class="bg-primary-500 ring-background pointer-events-none absolute top-1.5 right-1.5 size-2 rounded-full ring-2"
                         />
                         <span class="sr-only">{{ $t('movies.advancedFilters.button') }}</span>
                     </Button>

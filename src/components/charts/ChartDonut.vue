@@ -2,7 +2,14 @@
     <div class="flex flex-wrap items-center gap-6">
         <div class="relative size-40 shrink-0">
             <svg viewBox="0 0 42 42" class="size-full -rotate-90" aria-hidden="true">
-                <circle cx="21" cy="21" :r="RADIUS" fill="none" class="stroke-gray-200" stroke-width="6" />
+                <circle
+                    cx="21"
+                    cy="21"
+                    :r="RADIUS"
+                    fill="none"
+                    class="stroke-gray-200 dark:stroke-white/10"
+                    stroke-width="6"
+                />
                 <circle
                     v-for="(segment, index) in segments"
                     :key="index"
@@ -20,10 +27,10 @@
                 />
             </svg>
             <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-                <span class="text-2xl font-semibold text-gray-900 tabular-nums">
+                <span class="text-primary-text text-2xl font-semibold tabular-nums">
                     {{ formatNumber(hovered === null ? total : (slices[hovered]?.value ?? 0)) }}
                 </span>
-                <span class="text-xs text-gray-600">
+                <span class="text-xs text-gray-600 dark:text-gray-400">
                     {{ hovered === null ? label : slices[hovered]?.label }}
                 </span>
             </div>
@@ -38,7 +45,7 @@
                 @mouseleave="hovered = null"
             >
                 <span class="size-4 shrink-0 rounded-full" :style="{ backgroundColor: slice.color }" />
-                <span class="text-gray-700">
+                <span class="text-gray-700 dark:text-gray-300">
                     {{ slice.label }} ({{ formatPercentage(total ? slice.value / total : 0) }})
                 </span>
             </li>

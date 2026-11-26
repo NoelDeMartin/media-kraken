@@ -68,8 +68,10 @@
                 <Checkbox name="withNotes" :label="$t('shows.advancedFilters.withNotes')" />
             </div>
 
-            <div class="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 pt-4">
-                <Button type="button" variant="ghost" class="text-gray-600" @click="form.reset()">
+            <div
+                class="mt-6 flex flex-wrap items-center justify-between gap-2 border-t border-gray-100 pt-4 dark:border-white/10"
+            >
+                <Button type="button" variant="ghost" class="text-gray-600 dark:text-gray-400" @click="form.reset()">
                     {{ $t('shows.advancedFilters.clear') }}
                 </Button>
                 <div class="flex items-center gap-2">

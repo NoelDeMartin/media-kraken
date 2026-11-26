@@ -6,14 +6,14 @@
             {{ $t('discover.friendsLists') }}
         </SectionTitle>
         <div v-if="!$solid.hasLoggedIn()" class="mt-4 flex flex-col items-center gap-4 py-8 text-center">
-            <p class="text-gray-600">{{ $t('discover.guest') }}</p>
+            <p class="text-gray-600 dark:text-gray-400">{{ $t('discover.guest') }}</p>
             <Button @click="connect()">{{ $t('discover.connect') }}</Button>
         </div>
         <div
             v-else-if="!$solid.isLoggedIn() && !$solid.loginOngoing"
             class="mt-4 flex flex-col items-center gap-4 py-8 text-center"
         >
-            <p class="text-gray-600">{{ $t('discover.disconnected') }}</p>
+            <p class="text-gray-600 dark:text-gray-400">{{ $t('discover.disconnected') }}</p>
             <Button @click="$solid.reconnect()">{{ $t('discover.reconnect') }}</Button>
         </div>
         <div
@@ -22,7 +22,7 @@
         >
             <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-8 w-full" />
         </div>
-        <p v-else-if="friendsLists.length === 0" class="mt-8 text-center text-gray-600">
+        <p v-else-if="friendsLists.length === 0" class="mt-8 text-center text-gray-600 dark:text-gray-400">
             {{ friendsCount === 0 ? $t('discover.noFriends') : $t('discover.noLists') }}
         </p>
         <MediaGrid v-else class="mt-4" item-width="16rem">

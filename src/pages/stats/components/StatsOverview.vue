@@ -1,22 +1,22 @@
 <template>
     <div class="grid grid-cols-2 gap-4 md:grid-cols-4">
         <StatsCard :title="$t('stats.overview.moviesWatched')">
-            <span class="text-2xl font-semibold text-gray-900 tabular-nums">
+            <span class="text-primary-text text-2xl font-semibold tabular-nums">
                 {{ formatNumber(snapshot.movies.watched.length) }}
             </span>
         </StatsCard>
         <StatsCard :title="$t('stats.overview.moviesWatchTime')">
-            <span class="text-2xl font-semibold text-gray-900 tabular-nums">
+            <span class="text-primary-text text-2xl font-semibold tabular-nums">
                 {{ formatHours(Math.round(watchTimeMinutes / 60)) }}
             </span>
         </StatsCard>
         <StatsCard :title="$t('stats.overview.showsCompleted')">
-            <span class="text-2xl font-semibold text-gray-900 tabular-nums">
+            <span class="text-primary-text text-2xl font-semibold tabular-nums">
                 {{ formatNumber(snapshot.shows.completed.length) }}
             </span>
         </StatsCard>
         <StatsCard :title="$t('stats.overview.episodesWatched')">
-            <span class="text-2xl font-semibold text-gray-900 tabular-nums">
+            <span class="text-primary-text text-2xl font-semibold tabular-nums">
                 {{ formatNumber(episodesWatched) }}
             </span>
         </StatsCard>

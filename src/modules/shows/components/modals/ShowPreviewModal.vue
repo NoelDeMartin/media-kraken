@@ -5,12 +5,12 @@
             class="m-1 aspect-2/3 w-56 rounded-[calc(var(--radius-lg)-(--spacing(1)))]"
         />
         <div class="flex flex-1 flex-col gap-3 p-4">
-            <HeadlessModalTitle class="pr-8 text-xl font-semibold text-gray-900">
+            <HeadlessModalTitle class="text-primary-text pr-8 text-xl font-semibold">
                 {{ model.name }}
                 <span v-if="model.releaseYear" class="text-base font-medium"> ({{ model.releaseYear }}) </span>
             </HeadlessModalTitle>
             <div v-if="model.description" class="relative flex-1">
-                <p class="absolute inset-0 overflow-auto text-sm leading-relaxed text-gray-700">
+                <p class="absolute inset-0 overflow-auto text-sm leading-relaxed text-gray-700 dark:text-gray-300">
                     {{ model.description }}
                 </p>
             </div>

@@ -1,5 +1,5 @@
 <template>
-    <p class="mt-1 flex items-center gap-1 text-xs text-gray-500">
+    <p class="mt-1 flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
         <i-ph-film-slate v-if="movie" class="size-4 shrink-0" />
         <i-ph-television-simple v-else class="size-4 shrink-0" />
         <span>

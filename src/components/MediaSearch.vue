@@ -13,7 +13,7 @@
             <HeadlessComboboxInput
                 id="global-search"
                 type="search"
-                class="focus:ring-focus block w-full rounded-md border-0 py-1.5 pr-2.5 pl-9 text-gray-900 ring-1 ring-gray-900/10 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
+                class="focus:ring-focus bg-surface text-primary-text block w-full rounded-md border-0 py-1.5 pr-2.5 pl-9 ring-1 ring-gray-900/10 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset dark:ring-white/15 dark:placeholder:text-gray-500"
                 :model-value="query"
                 :placeholder="$t('app.search.placeholder')"
                 :display-value="() => ''"
@@ -28,15 +28,18 @@
 
         <HeadlessComboboxContent
             id="search-results"
-            class="mt-1 max-h-[calc(100dvh-(--spacing(26)))] w-full overflow-auto rounded-md bg-white p-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden sm:text-sm"
+            class="bg-surface mt-1 max-h-[calc(100dvh-(--spacing(26)))] w-full overflow-auto rounded-md p-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-hidden sm:text-sm dark:ring-white/10"
         >
-            <div v-if="loading" class="relative cursor-default px-4 py-3 text-center text-sm text-gray-500 select-none">
+            <div
+                v-if="loading"
+                class="relative cursor-default px-4 py-3 text-center text-sm text-gray-500 select-none dark:text-gray-400"
+            >
                 <i-svg-spinners-3-dots-scale-middle class="text-primary h-8 w-full" />
                 <span class="sr-only">{{ $t('app.search.loading') }}</span>
             </div>
             <HeadlessComboboxEmpty
                 v-else-if="results.length === 0"
-                class="relative cursor-default px-4 py-3 text-center text-sm text-gray-500 select-none"
+                class="relative cursor-default px-4 py-3 text-center text-sm text-gray-500 select-none dark:text-gray-400"
             >
                 {{ $t('app.search.noResults') }}
             </HeadlessComboboxEmpty>
@@ -44,14 +47,14 @@
                 <HeadlessComboboxOption v-for="result of results" :key="result.url" :value="result" as-child>
                     <li
                         :id="`result-${result.url}`"
-                        class="relative flex cursor-pointer items-center gap-3 rounded-md px-2 py-1 text-gray-900 transition-colors duration-150 select-none data-highlighted:bg-gray-100 data-highlighted:font-medium data-highlighted:text-gray-900"
+                        class="text-primary-text relative flex cursor-pointer items-center gap-3 rounded-md px-2 py-1 transition-colors duration-150 select-none data-highlighted:bg-gray-100 data-highlighted:font-medium dark:data-highlighted:bg-white/10"
                     >
                         <MediaImage :url="result.posterUrl" class="size-12 rounded" />
                         <div class="min-w-0 flex-auto">
                             <p class="truncate text-sm font-medium">
                                 {{ mediaDisplayName(result) }}
                             </p>
-                            <p class="flex items-center gap-1 text-xs text-gray-500">
+                            <p class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                                 <template v-if="isInstanceOf(result, Movie)">
                                     <i-ph-film-slate class="size-4" />
                                     <span class="sr-only">{{ $t('app.search.movie') }} — </span>

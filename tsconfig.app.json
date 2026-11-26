@@ -1,6 +1,6 @@
 {
     "extends": "@vue/tsconfig/tsconfig.dom.json",
-    "include": ["src/**/*", "src/**/*.vue", ".storybook/**/*", "e2e/**/*.ts"],
+    "include": ["src/**/*", "src/**/*.vue", ".storybook/preview.ts", "e2e/**/*.ts"],
     "compilerOptions": {
         "noUncheckedIndexedAccess": true,
         "paths": {

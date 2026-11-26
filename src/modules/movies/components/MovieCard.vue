@@ -1,5 +1,7 @@
 <template>
-    <article class="rounded-card relative isolate aspect-2/3 border border-slate-200 bg-white shadow-sm">
+    <article
+        class="rounded-card bg-surface relative isolate aspect-2/3 border border-slate-200 shadow-sm dark:border-white/10"
+    >
         <MediaImage :url="movie.posterUrl" class="rounded-card size-full" />
         <h2 class="peer">
             <RouterLink

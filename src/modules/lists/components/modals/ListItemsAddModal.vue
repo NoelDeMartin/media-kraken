@@ -7,7 +7,7 @@
                 type="search"
                 :placeholder="$t('lists.addItems.searchPlaceholder')"
                 :aria-label="$t('lists.addItems.searchPlaceholder')"
-                class="focus:ring-focus block w-full rounded-md border-0 py-1.5 pr-2.5 pl-9 text-gray-900 ring-1 ring-gray-900/10 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
+                class="focus:ring-focus bg-surface text-primary-text block w-full rounded-md border-0 py-1.5 pr-2.5 pl-9 ring-1 ring-gray-900/10 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset dark:ring-white/15 dark:placeholder:text-gray-500"
             />
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
                 <i-ph-magnifying-glass class="size-5 text-gray-400" />
@@ -16,15 +16,15 @@
         <div v-if="loading" class="py-12 text-center">
             <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-8 w-full" />
         </div>
-        <p v-else-if="results.length === 0" class="py-12 text-center text-sm text-gray-500">
+        <p v-else-if="results.length === 0" class="py-12 text-center text-sm text-gray-500 dark:text-gray-400">
             {{ $t('lists.addItems.noResults') }}
         </p>
-        <ul v-else class="mt-4 divide-y divide-gray-100">
+        <ul v-else class="mt-4 divide-y divide-gray-100 dark:divide-white/10">
             <li v-for="result of results" :key="result.url" class="flex items-center gap-3 py-2">
                 <MediaImage :url="result.posterUrl" class="aspect-2/3 w-8 shrink-0 rounded" />
                 <div class="min-w-0 flex-1">
-                    <p class="truncate text-sm font-medium text-gray-900">{{ mediaDisplayName(result) }}</p>
-                    <p class="flex items-center gap-1 text-xs text-gray-500">
+                    <p class="text-primary-text truncate text-sm font-medium">{{ mediaDisplayName(result) }}</p>
+                    <p class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                         <template v-if="isInstanceOf(result, Movie)">
                             <i-ph-film-slate class="size-4" />
                             <span class="sr-only">{{ $t('lists.movie') }} — </span>
@@ -36,7 +36,10 @@
                         {{ result.releaseYear ?? '—' }}
                     </p>
                 </div>
-                <span v-if="list.hasMedia(result)" class="flex items-center gap-1 text-xs text-gray-500">
+                <span
+                    v-if="list.hasMedia(result)"
+                    class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400"
+                >
                     <i-mdi-check class="size-4" />
                     {{ $t('lists.addItems.alreadyAdded') }}
                 </span>
@@ -52,7 +55,7 @@
                 </Button>
             </li>
         </ul>
-        <p v-if="!loading && hiddenResultsCount > 0" class="mt-2 text-center text-xs text-gray-500">
+        <p v-if="!loading && hiddenResultsCount > 0" class="mt-2 text-center text-xs text-gray-500 dark:text-gray-400">
             {{ $t('lists.addItems.moreResults', { count: hiddenResultsCount }) }}
         </p>
     </Modal>

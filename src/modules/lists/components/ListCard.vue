@@ -1,8 +1,8 @@
 <template>
     <article
-        class="group rounded-card relative isolate flex flex-col overflow-hidden border border-slate-200 bg-white shadow-sm"
+        class="group rounded-card bg-surface relative isolate flex flex-col overflow-hidden border border-slate-200 shadow-sm dark:border-white/10"
     >
-        <div class="grid aspect-4/3 grid-cols-4 gap-px bg-slate-100" aria-hidden="true">
+        <div class="grid aspect-4/3 grid-cols-4 gap-px bg-slate-100 dark:bg-white/5" aria-hidden="true">
             <MediaImage
                 v-for="(media, index) of previews"
                 :key="media.url ?? index"
@@ -12,12 +12,12 @@
             <div
                 v-for="index of LIST_PREVIEWS - previews.length"
                 :key="`placeholder-${index}`"
-                class="size-full bg-slate-50"
+                class="size-full bg-slate-50 dark:bg-white/5"
             />
         </div>
         <div class="flex items-center gap-2 px-3 py-2">
             <div class="flex min-w-0 flex-1 flex-col gap-0.5">
-                <h2 class="truncate font-medium text-gray-900">
+                <h2 class="text-primary-text truncate font-medium">
                     <RouterLink
                         :to="list.route"
                         class="focus-visible:ring-focus focus-visible:ring-offset-background after:absolute after:inset-0 focus-visible:outline-none focus-visible:after:ring-2"
@@ -25,7 +25,9 @@
                         {{ list.name }}
                     </RouterLink>
                 </h2>
-                <p class="text-xs text-gray-500">{{ $t('lists.itemsCount', { count: list.itemUrls.length }) }}</p>
+                <p class="text-xs text-gray-500 dark:text-gray-400">
+                    {{ $t('lists.itemsCount', { count: list.itemUrls.length }) }}
+                </p>
             </div>
             <SolidAvatar
                 v-if="owner"

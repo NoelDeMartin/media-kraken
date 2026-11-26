@@ -1,5 +1,5 @@
 <template>
-    <p v-if="items.length === 0" class="mt-8 text-center text-gray-600">
+    <p v-if="items.length === 0" class="mt-8 text-center text-gray-600 dark:text-gray-400">
         {{ $t('lists.emptyList') }}
     </p>
     <ol v-else class="-mx-4 [counter-reset:list-items] sm:-mx-5">
@@ -72,7 +72,7 @@
                 <Button
                     size="icon"
                     variant="ghost"
-                    class="-mr-1 shrink-0 rounded-md p-1 text-gray-500 hover:text-gray-900"
+                    class="hover:text-primary-text -mr-1 shrink-0 rounded-md p-1 text-gray-500 dark:text-gray-400"
                     :title="item.actionsLabel"
                     :disabled
                 >

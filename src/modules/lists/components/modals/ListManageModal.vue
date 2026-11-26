@@ -4,7 +4,7 @@
             <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-8 w-full" />
         </div>
         <Form v-else @submit="submit()">
-            <p v-if="sortedLists.length === 0" class="py-6 text-center text-sm text-gray-500">
+            <p v-if="sortedLists.length === 0" class="py-6 text-center text-sm text-gray-500 dark:text-gray-400">
                 {{ $t('lists.manage.empty') }}
             </p>
             <ul v-else>
@@ -18,7 +18,7 @@
                     >
                         {{ list.name }}
                     </Checkbox>
-                    <span class="shrink-0 text-right text-xs text-gray-500">
+                    <span class="shrink-0 text-right text-xs text-gray-500 dark:text-gray-400">
                         {{ $t('lists.itemsCount', { count: list.itemUrls.length }) }}
                     </span>
                 </li>

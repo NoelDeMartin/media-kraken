@@ -95,7 +95,7 @@ function starClass(star: number): string {
         return 'text-amber-500';
     }
 
-    return selectedRating.value === null ? 'text-gray-400 opacity-50' : 'text-gray-500';
+    return selectedRating.value === null ? 'text-gray-400 opacity-50' : 'text-gray-500 dark:text-gray-400';
 }
 
 function commit() {

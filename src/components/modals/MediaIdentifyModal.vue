@@ -7,28 +7,28 @@
                 v-model="query"
                 :placeholder="$t('media.identify.searchPlaceholder')"
                 :aria-label="$t('media.identify.searchPlaceholder')"
-                class="focus:ring-focus block w-full rounded-md border-0 py-1.5 pr-2.5 pl-9 text-gray-900 ring-1 ring-gray-900/10 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset"
+                class="focus:ring-focus bg-surface text-primary-text block w-full rounded-md border-0 py-1.5 pr-2.5 pl-9 ring-1 ring-gray-900/10 ring-inset placeholder:text-gray-400 focus:ring-2 focus:ring-inset dark:ring-white/15 dark:placeholder:text-gray-500"
             />
             <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-2.5">
                 <i-ph-magnifying-glass class="size-5 text-gray-400" />
             </div>
         </div>
 
-        <div v-if="loading" class="py-12 text-center text-gray-500">
+        <div v-if="loading" class="py-12 text-center text-gray-500 dark:text-gray-400">
             <i-svg-spinners-3-dots-scale-middle class="text-primary h-8 w-full" />
             <span class="sr-only">{{ $t('app.search.loading') }}</span>
         </div>
-        <p v-else-if="results.length === 0" class="py-12 text-center text-sm text-gray-500">
+        <p v-else-if="results.length === 0" class="py-12 text-center text-sm text-gray-500 dark:text-gray-400">
             {{ $t('media.identify.noResults') }}
         </p>
-        <ul v-else class="mt-4 max-h-96 divide-y divide-gray-100 overflow-y-auto">
+        <ul v-else class="mt-4 max-h-96 divide-y divide-gray-100 overflow-y-auto dark:divide-white/10">
             <li v-for="result of results" :key="result.url" class="flex items-center gap-4 py-3">
                 <MediaImage :url="result.posterUrl" class="size-12 rounded" />
                 <div class="min-w-0 flex-1">
                     <h3 class="truncate text-sm font-medium">
                         {{ mediaDisplayName(result) }}
                     </h3>
-                    <p class="flex items-center gap-1 text-xs text-gray-500">
+                    <p class="flex items-center gap-1 text-xs text-gray-500 dark:text-gray-400">
                         <template v-if="isInstanceOf(result, Movie)">
                             <i-ph-film-slate class="size-4" />
                             <span class="sr-only">{{ $t('app.search.movie') }} — </span>

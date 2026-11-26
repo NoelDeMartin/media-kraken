@@ -1,7 +1,7 @@
 <template>
     <Modal :title="$t('lists.share.title')" wrapper-class="sm:max-w-lg">
         <template v-if="!shareableList">
-            <p class="text-sm text-gray-600">
+            <p class="text-sm text-gray-600 dark:text-gray-400">
                 {{ $solid.hasLoggedIn() ? $t('lists.share.disconnected') : $t('lists.share.guest') }}
             </p>
             <div class="mt-4 flex justify-end gap-2">
@@ -12,7 +12,11 @@
             </div>
         </template>
         <div v-else class="flex flex-col gap-4">
-            <div v-if="error" role="alert" class="rounded-md bg-red-50 p-3 text-sm text-red-700">
+            <div
+                v-if="error"
+                role="alert"
+                class="rounded-md bg-red-50 p-3 text-sm text-red-700 dark:bg-red-950/50 dark:text-red-300"
+            >
                 <p>{{ $t(error.message) }}</p>
                 <div class="mt-3 flex flex-wrap gap-2">
                     <Button variant="danger" @click="retry()">
@@ -39,17 +43,17 @@
                     v-for="(icon, option) of icons"
                     :key="option"
                     :value="option"
-                    class="group focus-visible:outline-primary-500 data-[state=checked]:border-primary-500 data-[state=checked]:bg-primary-50 flex cursor-pointer items-start gap-3 rounded-md border border-gray-200 p-3 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 not-data-[state=checked]:enabled:hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60"
+                    class="group focus-visible:outline-primary-500 data-[state=checked]:border-primary-500 data-[state=checked]:bg-primary-50 flex cursor-pointer items-start gap-3 rounded-md border border-gray-200 p-3 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 not-data-[state=checked]:enabled:hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/15 dark:not-data-[state=checked]:enabled:hover:bg-white/5"
                 >
                     <component
                         :is="icon"
-                        class="group-data-[state=checked]:text-primary-600 mt-0.5 size-5 shrink-0 text-gray-500"
+                        class="group-data-[state=checked]:text-primary-600 mt-0.5 size-5 shrink-0 text-gray-500 dark:text-gray-400"
                     />
                     <span class="min-w-0 flex-1">
-                        <span class="block text-sm font-medium text-gray-900">
+                        <span class="text-primary-text block text-sm font-medium">
                             {{ $t(`lists.share.${option}`) }}
                         </span>
-                        <span class="block text-sm text-gray-500">
+                        <span class="block text-sm text-gray-500 dark:text-gray-400">
                             {{ $t(`lists.share.${option}Description`) }}
                         </span>
                     </span>
@@ -66,9 +70,11 @@
             </RadioGroupRoot>
             <div
                 v-if="visibility && visibility !== 'private'"
-                class="flex items-center gap-2 rounded-md bg-gray-100 p-1 pl-3"
+                class="flex items-center gap-2 rounded-md bg-gray-100 p-1 pl-3 dark:bg-white/10"
             >
-                <span class="min-w-0 flex-1 truncate text-sm text-gray-700" :title="shareUrl">{{ shareUrl }}</span>
+                <span class="min-w-0 flex-1 truncate text-sm text-gray-700 dark:text-gray-300" :title="shareUrl">{{
+                    shareUrl
+                }}</span>
                 <Button
                     variant="ghost"
                     size="icon"

@@ -4,7 +4,7 @@
             v-for="option in options"
             :key="option.value"
             :value="option.value"
-            class="focus-visible:outline-primary-500 cursor-pointer rounded-sm px-3 py-1 text-sm font-medium text-gray-600 transition-colors hover:text-gray-900 focus-visible:outline-2 focus-visible:outline-offset-2 data-[state=checked]:bg-white data-[state=checked]:text-gray-900 data-[state=checked]:shadow-sm"
+            class="focus-visible:outline-primary-500 hover:text-primary-text data-[state=checked]:bg-surface data-[state=checked]:text-primary-text cursor-pointer rounded-sm px-3 py-1 text-sm font-medium text-gray-600 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 data-[state=checked]:shadow-sm dark:text-gray-400"
         >
             {{ option.label }}
         </RadioGroupItem>
@@ -28,5 +28,7 @@ const { options, class: rootClasses } = defineProps<{
 }>();
 
 const model = defineModel<T>({ required: true });
-const renderedClasses = computed(() => classes('flex items-center gap-1 rounded-md bg-gray-200 p-1', rootClasses));
+const renderedClasses = computed(() =>
+    classes('flex items-center gap-1 rounded-md bg-gray-200 dark:bg-white/10 p-1', rootClasses),
+);
 </script>

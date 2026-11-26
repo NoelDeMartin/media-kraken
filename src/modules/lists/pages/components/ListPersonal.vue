@@ -17,7 +17,7 @@
         <Markdown
             v-if="list.description"
             :text="list.description"
-            class="mt-2 max-w-none wrap-break-word text-gray-700"
+            class="mt-2 max-w-none wrap-break-word text-gray-700 dark:text-gray-300"
         />
         <ListPersonalItems
             class="mt-4"

@@ -2,47 +2,47 @@
     <Modal :title="$t('import.result.title')">
         <ul class="mt-2 flex flex-col gap-3">
             <li v-if="watchedCount > 0" class="flex flex-col">
-                <div class="flex items-center gap-2 text-sm text-gray-800">
-                    <i-material-symbols-check class="size-5 text-green-600" />
+                <div class="flex items-center gap-2 text-sm text-gray-800 dark:text-gray-200">
+                    <i-material-symbols-check class="size-5 text-green-600 dark:text-green-400" />
                     <Markdown :text="$t('import.result.watchedAdded', { count: watchedCount })" inline />
                 </div>
                 <button
                     type="button"
-                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline"
+                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline dark:text-blue-400"
                     @click="inspectWatched"
                 >
                     {{ $t('import.result.viewDetails') }}
                 </button>
             </li>
             <li v-if="pendingCount > 0" class="flex flex-col">
-                <div class="flex items-center gap-2 text-sm text-gray-800">
-                    <i-mdi-clock-outline class="size-5 text-blue-600" />
+                <div class="flex items-center gap-2 text-sm text-gray-800 dark:text-gray-200">
+                    <i-mdi-clock-outline class="size-5 text-blue-600 dark:text-blue-400" />
                     <Markdown :text="$t('import.result.pendingAdded', { count: pendingCount })" inline />
                 </div>
                 <button
                     type="button"
-                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline"
+                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline dark:text-blue-400"
                     @click="inspectPending"
                 >
                     {{ $t('import.result.viewDetails') }}
                 </button>
             </li>
             <li v-if="result.ignored.length > 0" class="flex flex-col">
-                <div class="flex items-center gap-2 text-sm text-gray-800">
-                    <i-mdi-information-outline class="size-5 text-blue-600" />
+                <div class="flex items-center gap-2 text-sm text-gray-800 dark:text-gray-200">
+                    <i-mdi-information-outline class="size-5 text-blue-600 dark:text-blue-400" />
                     <span><strong>{{ result.ignored.length }}</strong> {{ $t('import.result.ignored') }}</span>
                 </div>
                 <button
                     type="button"
-                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline"
+                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline dark:text-blue-400"
                     @click="inspectIgnored"
                 >
                     {{ $t('import.result.viewDetails') }}
                 </button>
             </li>
             <li v-if="result.unprocessed.length > 0" class="flex flex-col">
-                <div class="flex items-center gap-2 text-sm text-gray-800">
-                    <i-mdi-information-outline class="size-5 text-blue-600" />
+                <div class="flex items-center gap-2 text-sm text-gray-800 dark:text-gray-200">
+                    <i-mdi-information-outline class="size-5 text-blue-600 dark:text-blue-400" />
                     <span>
                         <strong>{{ result.unprocessed.length }}</strong>
                         {{ $t('import.result.unprocessed') }}
@@ -50,33 +50,33 @@
                 </div>
                 <button
                     type="button"
-                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline"
+                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline dark:text-blue-400"
                     @click="inspectUnprocessed"
                 >
                     {{ $t('import.result.viewDetails') }}
                 </button>
             </li>
             <li v-if="result.invalid.length > 0" class="flex flex-col">
-                <div class="flex items-center gap-2 text-sm text-gray-800">
-                    <i-mdi-alert-circle-outline class="size-5 text-red-600" />
+                <div class="flex items-center gap-2 text-sm text-gray-800 dark:text-gray-200">
+                    <i-mdi-alert-circle-outline class="size-5 text-red-600 dark:text-red-400" />
                     <span><strong>{{ result.invalid.length }}</strong> {{ $t('import.result.invalid') }}</span>
                 </div>
                 <button
                     type="button"
-                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline"
+                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline dark:text-blue-400"
                     @click="inspectInvalid"
                 >
                     {{ $t('import.result.viewDetails') }}
                 </button>
             </li>
             <li v-if="result.failed.length > 0" class="flex flex-col">
-                <div class="flex items-center gap-2 text-sm text-gray-800">
-                    <i-mdi-alert-circle-outline class="size-5 text-red-600" />
+                <div class="flex items-center gap-2 text-sm text-gray-800 dark:text-gray-200">
+                    <i-mdi-alert-circle-outline class="size-5 text-red-600 dark:text-red-400" />
                     <span><strong>{{ result.failed.length }}</strong> {{ $t('import.result.failed') }}</span>
                 </div>
                 <button
                     type="button"
-                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline"
+                    class="ml-7 cursor-pointer text-left text-xs text-blue-600 hover:underline dark:text-blue-400"
                     @click="inspectFailed"
                 >
                     {{ $t('import.result.viewDetails') }}

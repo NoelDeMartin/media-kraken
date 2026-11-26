@@ -2,29 +2,39 @@
     <Modal :title="$t('import.custom.title')" wrapper-class="sm:max-w-2xl">
         <Markdown :text="$t('import.custom.description')" />
         <Details :label="$t('import.custom.formatDetails')" content-class="p-0" class="mt-2">
-            <table class="mt-4 w-full border-collapse overflow-hidden rounded-lg border border-slate-200 text-sm">
-                <thead class="bg-slate-50">
+            <table
+                class="mt-4 w-full border-collapse overflow-hidden rounded-lg border border-slate-200 text-sm dark:border-white/10"
+            >
+                <thead class="bg-slate-50 dark:bg-white/5">
                     <tr>
-                        <th class="border-r border-slate-200 px-4 py-2.5 text-left font-semibold text-slate-700">
+                        <th
+                            class="border-r border-slate-200 px-4 py-2.5 text-left font-semibold text-slate-700 dark:border-white/10 dark:text-gray-300"
+                        >
                             {{ $t('import.custom.csv.column') }}
                         </th>
-                        <th class="border-r border-slate-200 px-4 py-2.5 text-left font-semibold text-slate-700">
+                        <th
+                            class="border-r border-slate-200 px-4 py-2.5 text-left font-semibold text-slate-700 dark:border-white/10 dark:text-gray-300"
+                        >
                             {{ $t('import.custom.csv.format') }}
                         </th>
-                        <th class="px-4 py-2.5 text-left font-semibold text-slate-700">
+                        <th class="px-4 py-2.5 text-left font-semibold text-slate-700 dark:text-gray-300">
                             {{ $t('import.custom.csv.description') }}
                         </th>
                     </tr>
                 </thead>
-                <tbody class="divide-y divide-slate-100">
+                <tbody class="divide-y divide-slate-100 dark:divide-white/10">
                     <tr v-for="column in columns" :key="column">
-                        <td class="border-r border-slate-200 px-4 py-2.5 font-medium whitespace-nowrap text-slate-700">
+                        <td
+                            class="border-r border-slate-200 px-4 py-2.5 font-medium whitespace-nowrap text-slate-700 dark:border-white/10 dark:text-gray-300"
+                        >
                             {{ $t(`import.custom.csv.${column}`) }}
                         </td>
-                        <td class="border-r border-slate-200 px-4 py-2.5 font-medium whitespace-nowrap text-slate-700">
+                        <td
+                            class="border-r border-slate-200 px-4 py-2.5 font-medium whitespace-nowrap text-slate-700 dark:border-white/10 dark:text-gray-300"
+                        >
                             {{ $t(`import.custom.csv.${column}Format`) }}
                         </td>
-                        <td class="px-4 py-2.5 text-slate-600">
+                        <td class="px-4 py-2.5 text-slate-600 dark:text-gray-400">
                             <Markdown :text="$t(`import.custom.csv.${column}Description`)" inline />
                         </td>
                     </tr>

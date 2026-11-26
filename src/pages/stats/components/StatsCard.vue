@@ -24,7 +24,7 @@ const {
     class?: HTMLAttributes['class'];
 }>();
 
-const renderedClass = computed(() => classes('rounded-card flex flex-col bg-white p-6 shadow-sm', className));
+const renderedClass = computed(() => classes('rounded-card flex flex-col bg-surface p-6 shadow-sm', className));
 const titleTag = computed(() => `h${titleLevel}`);
-const renderedTitleClasses = computed(() => classes('mb-1 text-sm text-gray-600', titleClass));
+const renderedTitleClasses = computed(() => classes('mb-1 text-sm text-gray-600 dark:text-gray-400', titleClass));
 </script>

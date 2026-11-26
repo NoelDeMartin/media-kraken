@@ -18,20 +18,20 @@
             {{ hasPendingEpisodes ? releasedEpisodes?.length : $t('shows.upcomingEpisodeIn', { days: nextEpisodeIn }) }}
         </span>
         <div
-            class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 border-t border-white/40 bg-white/70 px-4 py-3 backdrop-blur-lg"
+            class="absolute inset-x-0 bottom-0 flex items-center justify-between gap-2 border-t border-white/40 bg-white/70 px-4 py-3 backdrop-blur-lg dark:border-white/10 dark:bg-black/60"
         >
             <div class="flex min-w-0 flex-col gap-0.5">
                 <h2>
                     <RouterLink
                         :to="show.route"
-                        class="focus-visible:ring-focus hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white/70 focus-visible:outline-none"
+                        class="focus-visible:ring-focus hover:underline focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-white/70 focus-visible:outline-none dark:focus-visible:ring-offset-black/60"
                     >
-                        <span class="truncate text-sm leading-tight font-semibold tracking-tight text-gray-900">
+                        <span class="text-primary-text truncate text-sm leading-tight font-semibold tracking-tight">
                             {{ show.name }}
                         </span>
                     </RouterLink>
                 </h2>
-                <p class="text-xs leading-snug font-normal text-gray-700">
+                <p class="text-xs leading-snug font-normal text-gray-700 dark:text-gray-300">
                     {{
                         hasUpcomingEpisodes && nextEpisode
                             ? $t('shows.nextEpisode', {
@@ -44,10 +44,13 @@
                 </p>
             </div>
             <Button v-if="hasPendingEpisodes" variant="ghost" size="icon" class="-mr-1 shrink-0">
-                <i-material-symbols-check class="size-6 text-gray-900" />
+                <i-material-symbols-check class="text-primary-text size-6" />
                 <span class="sr-only">{{ $t('shows.watchEpisode') }}</span>
             </Button>
-            <i-mdi-clock-outline v-else-if="hasUpcomingEpisodes" class="size-5 shrink-0 text-gray-600" />
+            <i-mdi-clock-outline
+                v-else-if="hasUpcomingEpisodes"
+                class="size-5 shrink-0 text-gray-600 dark:text-gray-400"
+            />
         </div>
     </article>
 </template>

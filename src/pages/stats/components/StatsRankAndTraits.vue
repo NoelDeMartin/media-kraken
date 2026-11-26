@@ -1,8 +1,12 @@
 <template>
     <StatsCard class="flex-row">
         <div class="flex flex-1 flex-col">
-            <Markdown inline class="text-2xl font-medium text-gray-900" :lang-key="`stats.ranks.${rank}.title`" />
-            <Markdown inline class="mt-1 leading-normal text-gray-600" :lang-key="`stats.ranks.${rank}.description`" />
+            <Markdown inline class="text-primary-text text-2xl font-medium" :lang-key="`stats.ranks.${rank}.title`" />
+            <Markdown
+                inline
+                class="mt-1 leading-normal text-gray-600 dark:text-gray-400"
+                :lang-key="`stats.ranks.${rank}.description`"
+            />
         </div>
         <ul v-if="traits" class="flex w-64 flex-wrap gap-2 self-start" :aria-label="$t('stats.traits.title')">
             <li

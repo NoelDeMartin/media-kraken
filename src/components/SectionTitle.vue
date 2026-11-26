@@ -39,7 +39,7 @@ const tag = computed(() => `h${level}`);
 
 const headingClasses = computed(() =>
     classes(
-        'flex items-center gap-1 text-gray-900',
+        'flex items-center gap-1 text-primary-text',
         {
             1: 'text-xl font-medium',
             2: 'text-xl font-semibold',

@@ -1,7 +1,7 @@
 <template>
     <footer
         v-if="owner || (loaded && fallback)"
-        class="mt-8 flex items-center gap-2 border-t border-gray-200 pt-4 text-sm text-gray-500"
+        class="mt-8 flex items-center gap-2 border-t border-gray-200 pt-4 text-sm text-gray-500 dark:border-white/10 dark:text-gray-400"
     >
         <template v-if="owner">
             <a :href="owner.webId" target="_blank" rel="noopener" tabindex="-1" aria-hidden="true" class="shrink-0">

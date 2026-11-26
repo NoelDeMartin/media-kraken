@@ -1,17 +1,19 @@
 <template>
     <Modal :title="$t('import.title')">
-        <p class="text-sm leading-relaxed text-gray-700">
+        <p class="text-sm leading-relaxed text-gray-700 dark:text-gray-300">
             {{ $t('import.description') }}
         </p>
         <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-3">
             <div v-for="source in sources" :key="source" class="relative aspect-square">
                 <button
                     type="button"
-                    class="flex size-full cursor-pointer flex-col items-center justify-center rounded-lg border border-slate-300 p-2 shadow-xs transition hover:bg-slate-100"
+                    class="flex size-full cursor-pointer flex-col items-center justify-center rounded-lg border border-slate-300 p-2 shadow-xs transition hover:bg-slate-100 dark:border-white/15 dark:hover:bg-white/5"
                     @click="importFrom(source)"
                 >
                     <component :is="sourceIcons[source]" v-if="sourceIcons[source]" class="size-16" />
-                    <span class="mt-2 font-semibold text-slate-700">{{ sourceTranslations[source]?.name }}</span>
+                    <span class="mt-2 font-semibold text-slate-700 dark:text-gray-300">{{
+                        sourceTranslations[source]?.name
+                    }}</span>
                 </button>
                 <button
                     v-if="sourceTranslations[source] && 'helpTitle' in sourceTranslations[source]"

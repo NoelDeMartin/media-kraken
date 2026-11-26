@@ -3,9 +3,9 @@
         :class="[
             'flex items-center gap-1',
             {
-                'text-green-700': movie.watchingStatus === 'watched',
-                'text-blue-700': movie.watchingStatus === 'pending',
-                'text-gray-700': movie.watchingStatus === 'dropped',
+                'text-green-700 dark:text-green-400': movie.watchingStatus === 'watched',
+                'text-blue-700 dark:text-blue-400': movie.watchingStatus === 'pending',
+                'text-gray-700 dark:text-gray-300': movie.watchingStatus === 'dropped',
             },
         ]"
     >

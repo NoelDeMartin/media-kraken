@@ -1,7 +1,7 @@
 <template>
     <section>
         <SectionTitle>{{ $t('stats.achievements.title') }}</SectionTitle>
-        <p class="text-xs text-gray-600">
+        <p class="text-xs text-gray-600 dark:text-gray-400">
             {{
                 $t('stats.achievements.unlocked', {
                     unlocked: formatNumber(unlockedAchievements),

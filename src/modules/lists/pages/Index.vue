@@ -12,7 +12,7 @@
         <div v-if="loading" class="flex items-center justify-center py-16">
             <i-svg-spinners-3-dots-scale-middle class="text-primary-500 h-8 w-full" />
         </div>
-        <p v-else-if="sortedLists.length === 0" class="mt-8 text-center text-gray-600">
+        <p v-else-if="sortedLists.length === 0" class="mt-8 text-center text-gray-600 dark:text-gray-400">
             {{ $t('lists.empty') }}
         </p>
         <MediaGrid v-else class="mt-4" item-width="16rem">

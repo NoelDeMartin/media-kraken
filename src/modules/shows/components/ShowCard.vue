@@ -1,5 +1,7 @@
 <template>
-    <article class="group rounded-card relative isolate aspect-2/3 border border-slate-200 bg-white shadow-sm">
+    <article
+        class="group rounded-card bg-surface relative isolate aspect-2/3 border border-slate-200 shadow-sm dark:border-white/10"
+    >
         <MediaImage :url="show.posterUrl" class="rounded-card size-full" />
         <ShowCardBadge class="absolute -top-1 -right-3.5 z-10" :show />
         <h2>
