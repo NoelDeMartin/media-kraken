@@ -1,7 +1,10 @@
 <template>
     <Page>
-        <article class="flex flex-row gap-6">
-            <MediaImage :url="show.posterUrl" class="aspect-2/3 w-64 shrink-0 rounded shadow" />
+        <article class="flex flex-col gap-6 sm:flex-row">
+            <MediaImage
+                :url="show.posterUrl"
+                class="aspect-2/3 w-48 shrink-0 self-center rounded shadow sm:w-64 sm:self-auto"
+            />
             <div class="flex flex-1 flex-col">
                 <div class="flex items-center justify-between gap-2">
                     <PageTitle>
@@ -46,7 +49,7 @@
                 </p>
                 <div class="min-h-6 flex-1" />
 
-                <div class="flex items-end gap-6">
+                <div class="flex flex-wrap items-end gap-6">
                     <dl
                         v-if="show.creators?.length || details.length > 0"
                         class="grid grid-cols-[auto_1fr] gap-x-6 gap-y-2 text-sm"
@@ -90,7 +93,7 @@
         </section>
         <section v-if="cast.length" class="mt-10" aria-labelledby="cast">
             <SectionTitle id="cast">{{ $t('shows.details.topCast') }}</SectionTitle>
-            <ul class="mt-4 grid grid-cols-6 gap-4 sm:grid-cols-3 md:grid-cols-6">
+            <ul class="mt-4 grid grid-cols-3 gap-4 md:grid-cols-6">
                 <li v-for="role in cast" :key="role.url">
                     <PersonCard :person="role.actor" :characters="role.characterNames" />
                 </li>

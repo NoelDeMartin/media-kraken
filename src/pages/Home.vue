@@ -12,7 +12,7 @@
                         <i-ph-television-simple class="size-6" />
                         {{ $t('home.shows') }}
                     </SectionTitle>
-                    <Link route="shows.index" class="flex items-center gap-1 text-sm">
+                    <Link route="shows.index" class="flex shrink-0 items-center gap-1 text-sm">
                         <span>{{ $t('home.showsAll') }}</span>
                         <i-ph-arrow-right class="size-4" />
                     </Link>
@@ -27,7 +27,7 @@
                         <i-ph-film-slate class="size-6" />
                         {{ $t('home.movies') }}
                     </SectionTitle>
-                    <Link route="movies.index" class="flex items-center gap-1 text-sm">
+                    <Link route="movies.index" class="flex shrink-0 items-center gap-1 text-sm">
                         <span>{{ $t('home.moviesAll') }}</span>
                         <i-ph-arrow-right class="size-4" />
                     </Link>

@@ -1,8 +1,8 @@
 <template>
-    <Modal wrapper-class="sm:max-w-2xl" class="flex flex-row p-0">
+    <Modal wrapper-class="sm:max-w-2xl" class="flex flex-col p-0 sm:flex-row">
         <MediaImage
             :url="model.posterUrl"
-            class="m-1 aspect-2/3 w-56 rounded-[calc(var(--radius-lg)-(--spacing(1)))]"
+            class="mx-auto mt-4 aspect-2/3 w-40 shrink-0 rounded-[calc(var(--radius-lg)-(--spacing(1)))] sm:m-1 sm:w-56"
         />
         <div class="flex flex-1 flex-col gap-3 p-4">
             <HeadlessModalTitle class="text-primary-text pr-8 text-xl font-semibold">
@@ -10,7 +10,9 @@
                 <span v-if="model.releaseYear" class="text-base font-medium"> ({{ model.releaseYear }}) </span>
             </HeadlessModalTitle>
             <div v-if="model.description" class="relative flex-1">
-                <p class="absolute inset-0 overflow-auto text-sm leading-relaxed text-gray-700 dark:text-gray-300">
+                <p
+                    class="overflow-auto text-sm leading-relaxed text-gray-700 sm:absolute sm:inset-0 dark:text-gray-300"
+                >
                     {{ model.description }}
                 </p>
             </div>

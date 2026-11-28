@@ -1,5 +1,5 @@
 <template>
-    <StatsCard class="flex-row">
+    <StatsCard class="gap-4 sm:flex-row">
         <div class="flex flex-1 flex-col">
             <Markdown inline class="text-primary-text text-2xl font-medium" :lang-key="`stats.ranks.${rank}.title`" />
             <Markdown
@@ -8,7 +8,7 @@
                 :lang-key="`stats.ranks.${rank}.description`"
             />
         </div>
-        <ul v-if="traits" class="flex w-64 flex-wrap gap-2 self-start" :aria-label="$t('stats.traits.title')">
+        <ul v-if="traits" class="flex flex-wrap gap-2 self-start sm:w-64" :aria-label="$t('stats.traits.title')">
             <li
                 v-for="trait in traits"
                 :key="trait.name"
