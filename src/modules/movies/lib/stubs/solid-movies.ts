@@ -5,6 +5,6 @@ import { defineStub } from '@/lib/stubs/helpers';
 import Movie from '@movies/models/Movie';
 
 const quads = await Promise.all((movies as JsonLDGraph[]).map((graph) => jsonldToQuads(graph)));
-const instances = await Movie.createManyFromRDF(quads.flat());
+const instances = await Movie.fromRDF(quads.flat()).all();
 
 export default defineStub(instances.map((movie) => [movie.title, movie]));

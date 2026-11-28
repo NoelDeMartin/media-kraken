@@ -25,8 +25,8 @@ function getMediaType(media: Media): 'movie' | 'show' {
 }
 
 async function findDocumentMedia(document: SolidDocument, url?: string): Promise<Media | null> {
-    const [movie] = await Movie.createManyFromDocument(document, { includeSoftDeleted: true });
-    const [show] = await Show.createManyFromDocument(document, { includeSoftDeleted: true });
+    const [movie] = await Movie.fromDocument(document).all({ includeSoftDeleted: true });
+    const [show] = await Show.fromDocument(document).all({ includeSoftDeleted: true });
     const media = [movie, show].filter((documentMedia) => !!documentMedia);
 
     return (url ? media.find((documentMedia) => documentMedia.url === url) : media[0]) ?? null;
@@ -37,7 +37,7 @@ async function getListItemPrompt(
     item: ListItem,
 ): Promise<ResourceConflictPrompt | undefined> {
     const document = getConflictDocument(conflict);
-    const [list] = await List.createManyFromDocument(document, { includeSoftDeleted: true });
+    const [list] = await List.fromDocument(document).all({ includeSoftDeleted: true });
     const media = item.media ?? (await findDocumentMedia(document, item.mediaUrl));
 
     if (!list || !media) {

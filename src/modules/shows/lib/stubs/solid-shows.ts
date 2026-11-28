@@ -13,8 +13,8 @@ async function refreshPendingEpisodes(show: Show) {
 }
 
 const quads = await Promise.all((shows as JsonLDGraph[]).map((graph) => jsonldToQuads(graph)));
-const instances = await Show.createManyFromRDF(quads.flat());
-const episodes = await Episode.createManyFromRDF(quads.flat());
+const instances = await Show.fromRDF(quads.flat()).all();
+const episodes = await Episode.fromRDF(quads.flat()).all();
 const pluribus = instances.find((show) => show.name === 'Pluribus');
 
 for (const episode of episodes) {

@@ -19,7 +19,7 @@ function isMediaList(document: SolidDocument, listUrl: string): boolean {
 
 async function findPublicListUrls(typeIndexUrl: string): Promise<string[]> {
     const document = await fetchSolidDocument(typeIndexUrl, { fetch: Solid.fetch });
-    const typeIndex = await TypeIndex.createFromDocument(document, { url: typeIndexUrl });
+    const typeIndex = await TypeIndex.fromDocument(document).find(typeIndexUrl);
 
     return (typeIndex?.registrations ?? [])
         .flatMap((registration) =>
