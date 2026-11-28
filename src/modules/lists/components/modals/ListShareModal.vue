@@ -40,7 +40,7 @@
                 @update:model-value="(value) => update(value as ListVisibility)"
             >
                 <RadioGroupItem
-                    v-for="(icon, option) of icons"
+                    v-for="(icon, option) of LIST_VISIBILITY_ICONS"
                     :key="option"
                     :value="option"
                     class="group focus-visible:outline-primary-500 data-[state=checked]:border-primary-500 data-[state=checked]:bg-primary-50 flex cursor-pointer items-start gap-3 rounded-md border border-gray-200 p-3 text-left transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 not-data-[state=checked]:enabled:hover:bg-gray-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/15 dark:not-data-[state=checked]:enabled:hover:bg-white/5"
@@ -97,16 +97,12 @@ import { Solid } from '@aerogel/plugin-solid';
 import { RadioGroupIndicator, RadioGroupItem, RadioGroupRoot } from 'reka-ui';
 import type { ModelWithUrl } from 'soukai-bis';
 import { computed, onMounted, ref } from 'vue';
-import type { Component } from 'vue';
-import IconPublic from '~icons/ph/globe-hemisphere-west';
-import IconLink from '~icons/ph/link';
-import IconLock from '~icons/ph/lock';
 
+import { LIST_VISIBILITY_ICONS } from '@lists/lib/icons';
 import { canShareList, fetchListVisibility, updateListVisibility } from '@lists/lib/sharing';
 import type { ListVisibility } from '@lists/lib/sharing';
 import type List from '@lists/models/List';
 
-const icons: Record<ListVisibility, Component> = { public: IconPublic, unlisted: IconLink, private: IconLock };
 const { list } = defineProps<{ list: List }>();
 const { close } = useModal();
 const shareableList = canShareList(list) ? list : null;

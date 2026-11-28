@@ -16,7 +16,7 @@
             {{ $t('lists.empty') }}
         </p>
         <MediaGrid v-else class="mt-4" item-width="16rem">
-            <ListCard v-for="list of sortedLists" :key="list.url" :list />
+            <ListCard v-for="list of sortedLists" :key="list.url" :list :show-visibility="$solid.hasLoggedIn()" />
         </MediaGrid>
     </Page>
 </template>

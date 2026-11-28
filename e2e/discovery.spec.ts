@@ -132,7 +132,6 @@ test('Share lists', async ({ page }) => {
     expect((await fetch(listUrl)).status).toEqual(401);
 
     // Unlisted
-    await press(page, 'Open actions menu');
     await press(page, 'Share');
     await expect(visibility('Private')).toBeChecked();
     await visibility('Unlisted').click();
@@ -152,7 +151,9 @@ test('Share lists', async ({ page }) => {
     );
 
     await page.keyboard.press('Escape');
-    await press(page, 'Open actions menu');
+    await press(page, 'My Lists');
+    await see(page, 'Public');
+    await press(page, 'Favorites');
     await press(page, 'Share');
     await expect(visibility('Public')).toBeChecked();
 

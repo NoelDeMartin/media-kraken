@@ -15,6 +15,7 @@
                 class="size-full bg-slate-50 dark:bg-white/5"
             />
         </div>
+        <ListCardVisibilityBadge v-if="showVisibility && list.hasUrl()" :list />
         <div class="flex items-center gap-2 px-3 py-2">
             <div class="flex min-w-0 flex-1 flex-col gap-0.5">
                 <h2 class="text-primary-text truncate font-medium">
@@ -56,9 +57,18 @@ import type { SolidUserProfile } from '@noeldemartin/solid-utils';
 import { isTruthy } from '@noeldemartin/utils';
 import { computed } from 'vue';
 
+import ListCardVisibilityBadge from '@lists/components/ListCardVisibilityBadge.vue';
 import type List from '@lists/models/List';
 
-const { list: listProp, owner } = defineProps<{ list: List; owner?: SolidUserProfile }>();
+const {
+    list: listProp,
+    owner,
+    showVisibility,
+} = defineProps<{
+    list: List;
+    owner?: SolidUserProfile;
+    showVisibility?: boolean;
+}>();
 const list = computedModel(() => listProp);
 const ownerLabel = computed(() => owner && translate('lists.by', { name: userDisplayName(owner) }));
 const previews = computed(() =>

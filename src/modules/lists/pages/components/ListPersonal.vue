@@ -3,15 +3,21 @@
         <SectionTitle :level="1" :loading="updating" :menu="menuOptions">
             {{ list.name }} ({{ list.itemUrls.length }})
             <template #actions>
-                <Button
-                    variant="secondary"
-                    :title="$t('lists.addItems.action')"
-                    :disabled="updating"
-                    @click="addItems()"
-                >
-                    <i-mdi-plus class="size-4" />
-                    <span class="sr-only sm:not-sr-only">{{ $t('lists.addItems.action') }}</span>
-                </Button>
+                <div class="flex items-center gap-2">
+                    <Button variant="ghost" :title="$t('lists.share.action')" :disabled="updating" @click="share()">
+                        <i-ph-share-network class="size-4" />
+                        <span class="sr-only">{{ $t('lists.share.action') }}</span>
+                    </Button>
+                    <Button
+                        variant="secondary"
+                        :title="$t('lists.addItems.action')"
+                        :disabled="updating"
+                        @click="addItems()"
+                    >
+                        <i-mdi-plus class="size-4" />
+                        <span class="sr-only sm:not-sr-only">{{ $t('lists.addItems.action') }}</span>
+                    </Button>
+                </div>
             </template>
         </SectionTitle>
         <Markdown
@@ -35,23 +41,17 @@ import { Cloud } from '@aerogel/plugin-local-first';
 import { Router } from '@aerogel/plugin-routing';
 import { computed } from 'vue';
 import IconEdit from '~icons/mdi/pencil';
-import IconShare from '~icons/ph/share-network';
 import IconDelete from '~icons/ph/trash';
 
 import ListFormModal from '@lists/components/modals/ListFormModal.vue';
 import ListItemsAddModal from '@lists/components/modals/ListItemsAddModal.vue';
 import ListShareModal from '@lists/components/modals/ListShareModal.vue';
-import { canShareList, unpublishList } from '@lists/lib/sharing';
+import { canShareList, forgetListVisibility, unpublishList } from '@lists/lib/sharing';
 import type List from '@lists/models/List';
 
 const { list } = defineProps<{ list: List }>();
 const { loading: updating, run: runUpdate } = useLoading();
 const menuOptions = computed(() => [
-    {
-        label: translate('lists.share.action'),
-        icon: IconShare,
-        click: share,
-    },
     {
         label: translate('lists.edit.action'),
         icon: IconEdit,
@@ -92,6 +92,7 @@ async function deleteList() {
         }
 
         await list.delete();
+        await forgetListVisibility(list);
     });
 
     await Router.push('/lists');

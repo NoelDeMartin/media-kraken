@@ -1,3 +1,4 @@
+import { Cache } from '@aerogel/core';
 import { Solid } from '@aerogel/plugin-solid';
 import {
     type SolidUserProfile,
@@ -81,6 +82,16 @@ async function isOwnerOfList(owner: SolidUserProfile, listUrl: string): Promise<
     return isInStorage(listUrl, await fetchStorageUrls(owner));
 }
 
+async function resolveListVisibility(list: ModelWithUrl<List>): Promise<ListVisibility> {
+    await list.fetchPermissions();
+
+    if (list.isPrivate()) {
+        return 'private';
+    }
+
+    return (await isListed(list)) ? 'public' : 'unlisted';
+}
+
 export type ListVisibility = 'public' | 'unlisted' | 'private';
 
 export async function unpublishList(list: ModelWithUrl<List>): Promise<void> {
@@ -105,14 +116,24 @@ export function canShareList(list: List): list is ModelWithUrl<List> {
     return Solid.isLoggedIn() && !!list.url && !isLocalUrl(list.url);
 }
 
-export async function fetchListVisibility(list: ModelWithUrl<List>): Promise<ListVisibility> {
-    await list.fetchPermissions();
+export function listVisibilityCacheKey(list: ModelWithUrl<List>): string {
+    return `list-visibility:${list.url}`;
+}
 
-    if (list.isPrivate()) {
-        return 'private';
+export async function fetchListVisibility(list: ModelWithUrl<List>): Promise<ListVisibility> {
+    const visibility = await resolveListVisibility(list);
+
+    await Cache.set(listVisibilityCacheKey(list), visibility);
+
+    return visibility;
+}
+
+export async function forgetListVisibility(list: List): Promise<void> {
+    if (!list.hasUrl()) {
+        return;
     }
 
-    return (await isListed(list)) ? 'public' : 'unlisted';
+    await Cache.delete(listVisibilityCacheKey(list));
 }
 
 export async function fetchStorageUrls(user: SolidUserProfile): Promise<string[]> {
@@ -145,9 +166,9 @@ export async function updateListVisibility(list: ModelWithUrl<List>, visibility:
 
     if (visibility === 'public') {
         await publishList(list);
-
-        return;
+    } else {
+        await unpublishList(list);
     }
 
-    await unpublishList(list);
+    await Cache.set(listVisibilityCacheKey(list), visibility);
 }
