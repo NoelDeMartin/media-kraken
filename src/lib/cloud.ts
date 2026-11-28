@@ -5,7 +5,7 @@ import type { SolidDocument } from '@noeldemartin/solid-utils';
 import { isFileConflict } from 'soukai-bis';
 import type { ResourceConflict, SyncConflict } from 'soukai-bis';
 
-import { mediaDisplayName } from '@/lib/media';
+import { getMediaType, mediaDisplayName } from '@/lib/media';
 import type { Media } from '@/lib/media';
 import List from '@lists/models/List';
 import ListItem from '@lists/models/ListItem';
@@ -18,10 +18,6 @@ function getConflictDocument(conflict: ResourceConflict): SolidDocument {
 
 function getConflictTranslationKey(conflict: ResourceConflict): string {
     return conflict.type === 'resource-deleted-remotely' ? 'deletedRemotely' : 'deletedLocally';
-}
-
-function getMediaType(media: Media): 'movie' | 'show' {
-    return media instanceof Movie ? 'movie' : 'show';
 }
 
 async function findDocumentMedia(document: SolidDocument, url?: string): Promise<Media | null> {

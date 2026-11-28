@@ -10,7 +10,7 @@ export default defineSchema({
         position: number(),
     },
     relations: {
-        movie: belongsToOne('Movie', 'mediaUrl').usingSameDocument().onDelete('cascade'),
-        show: belongsToOne('Show', 'mediaUrl').usingSameDocument().onDelete('cascade'),
+        movie: belongsToOne('ListMovie', 'mediaUrl').usingSameDocument().onDelete('cascade'),
+        show: belongsToOne('ListShow', 'mediaUrl').usingSameDocument().onDelete('cascade'),
     },
 });

@@ -3,12 +3,15 @@ import { isLocalUrl } from 'soukai-bis';
 import type { GetModelInput } from 'soukai-bis';
 import type { RouteLocationRaw } from 'vue-router';
 
+import { getMediaType } from '@/lib/media';
 import type { Media } from '@/lib/media';
 import Movie from '@movies/models/Movie';
-import Show from '@shows/models/Show';
+import type Show from '@shows/models/Show';
 
 import Model from './List.schema';
 import type ListItem from './ListItem';
+import ListMovie from './ListMovie';
+import ListShow from './ListShow';
 
 export default class List extends Model {
     public static cloud = true;
@@ -86,7 +89,7 @@ export default class List extends Model {
         }
 
         for (const item of originalItems) {
-            if (item.media && item.media.constructor === replacement.constructor) {
+            if (item.media && getMediaType(item.media) === getMediaType(replacement)) {
                 const { attributes } = this.prepareListItemMediaAttributes(replacement);
 
                 item.media.setAttributes(attributes);
@@ -168,7 +171,7 @@ export default class List extends Model {
         const { mediaType, attributes } = this.prepareListItemMediaAttributes(media);
 
         if (mediaType === 'movies') {
-            const itemMedia = new Movie(attributes);
+            const itemMedia = new ListMovie(attributes);
 
             return {
                 itemMedia,
@@ -179,7 +182,7 @@ export default class List extends Model {
             };
         }
 
-        const itemMedia = new Show(attributes);
+        const itemMedia = new ListShow(attributes);
 
         return {
             itemMedia,

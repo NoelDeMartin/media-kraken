@@ -24,3 +24,4 @@ minimumReleaseAgeExclude:
     - playwright-solid
     - soukai-bis
     - vite-plugin-multi-root-workspace
+    - reka-ui@2.12.0

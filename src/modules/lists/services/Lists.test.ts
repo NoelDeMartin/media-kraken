@@ -1,4 +1,4 @@
-import { resetReactiveState, trackModels } from '@aerogel/reactivity';
+import { getTrackedModels, loadTrackedModels, resetReactiveState, trackModels } from '@aerogel/reactivity';
 import { required } from '@noeldemartin/utils';
 import { beforeEach, describe, expect, it } from 'vite-plus/test';
 
@@ -90,5 +90,24 @@ describe('Lists service', () => {
             'https://www.themoviedb.org/tv/1920',
             'https://www.imdb.com/title/tt0098936',
         ]);
+    });
+
+    it('Does not track list media as collection media', async () => {
+        trackModels(Movie);
+
+        const alien = await Movie.create({ title: 'Alien', externalUrls: ['https://www.themoviedb.org/movie/348'] });
+        const twinPeaks = await Show.create({
+            name: 'Twin Peaks',
+            externalUrls: ['https://www.themoviedb.org/tv/1920'],
+        });
+        const list = await List.create({ name: 'Favorites' });
+
+        await loadTrackedModels(Movie);
+        await loadTrackedModels(Show);
+        await list.addMedia(alien);
+        await list.addMedia(twinPeaks);
+
+        expect(getTrackedModels(Movie).map((movie) => movie.url)).toEqual([alien.url]);
+        expect(getTrackedModels(Show).map((show) => show.url)).toEqual([twinPeaks.url]);
     });
 });

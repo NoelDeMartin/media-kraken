@@ -21,21 +21,8 @@ export class ListsService extends Service {
     }
 
     private watchMediaModel(mediaClass: ModelConstructor<Media>): void {
-        mediaClass.on('updated', ({ model: media }) => {
-            if (!media.url?.startsWith(mediaClass.defaultContainerUrl)) {
-                return;
-            }
-
-            return this.updateInLists(media);
-        });
-
-        mediaClass.on('deleted', ({ model: media }) => {
-            if (!media.url?.startsWith(mediaClass.defaultContainerUrl)) {
-                return;
-            }
-
-            return this.removeFromLists(media);
-        });
+        mediaClass.on('updated', ({ model: media }) => this.updateInLists(media));
+        mediaClass.on('deleted', ({ model: media }) => this.removeFromLists(media));
     }
 
     private async updateInLists(media: Media): Promise<void> {

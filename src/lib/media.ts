@@ -1,11 +1,24 @@
 import type { RangeSliderValue } from '@aerogel/core';
-import { isNullable, isTruthy, stringToSlug } from '@noeldemartin/utils';
+import { isInstanceOf, isNullable, isTruthy, stringToSlug } from '@noeldemartin/utils';
 
 import type { PersonCredit } from '@/models/Person';
-import type Movie from '@movies/models/Movie';
-import type Show from '@shows/models/Show';
+import Movie from '@movies/models/Movie';
+import Show from '@shows/models/Show';
 
 export type Media = Movie | Show;
+export type MediaType = 'movie' | 'show';
+
+export function getMediaType(media: Media): MediaType {
+    if (isInstanceOf(media, Movie)) {
+        return 'movie';
+    }
+
+    if (isInstanceOf(media, Show)) {
+        return 'show';
+    }
+
+    return media satisfies never;
+}
 
 export function matchesAny<T>(selected: T[], values: T[]): boolean {
     return values.some((value) => !isNullable(value) && selected.includes(value));
